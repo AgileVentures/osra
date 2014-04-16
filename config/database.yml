@@ -19,7 +19,7 @@ development:
   encoding: unicode
   database: osra_development
   pool: 5
-  username: osra
+  username: postgres
   password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -48,7 +48,7 @@ test: &test
   encoding: unicode
   database: osra_test
   pool: 5
-  username: osra
+  username: postgres
   password:
 
 production:
@@ -56,7 +56,7 @@ production:
   encoding: unicode
   database: osra_production
   pool: 5
-  username: osra
+  username: postgres
   password:
 
 cucumber:
