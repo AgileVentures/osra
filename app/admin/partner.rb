@@ -15,5 +15,5 @@ ActiveAdmin.register Partner do
   # end
 
 
-  permit_params :name, :region, :contact_details
+  permit_params :name, :region, :contact_details, :province
 end
