@@ -1,11 +1,5 @@
 require 'spec_helper'
 
 describe 'visiting the homepage' do
-  before do
-    visit '/'
-  end
-
-  it 'should have a body' do
-    page.should have_css('body')    
-  end
+  pending "add some examples to (or delete) #{__FILE__}"
 end
