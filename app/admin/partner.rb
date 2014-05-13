@@ -13,5 +13,7 @@ ActiveAdmin.register Partner do
   #  permitted << :other if resource.something?
   #  permitted
   # end
-  
+
+
+  permit_params :name, :region, :contact_details
 end
