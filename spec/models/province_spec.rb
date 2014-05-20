@@ -10,19 +10,21 @@ describe Province do
   end
 
   it "should accept provinces with names and valid codes" do
+ #   DatabaseCleaner.clean
+    Province.destroy_all
     [11,12,13,14,15,16,17,18,19,29].each do |c|
-      Province.new(:name => "Damascus", :code => c).should be_valid
+      Province.new(:name => "Damascus#{c}", :code => c).should be_valid
     end
   end
 
   it "name should be unique" do
-    Province.create(:name => "Damascus", :code => 11)
-    Province.create(:name => "Damascus", :code => 12).should_not be_valid
+    Province.new(:name => "Damascus", :code => 11)
+    Province.new(:name => "Damascus", :code => 12).should_not be_valid
   end
 
   it "code should be unique" do
-    Province.create(:name => "Damascus", :code => 11)
-    Province.create(:name => "Aleppo", :code => 11).should_not be_valid
+    Province.new(:name => "Damascus", :code => 11)
+    Province.new(:name => "Aleppo", :code => 11).should_not be_valid
   end
 
 end
