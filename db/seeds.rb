@@ -13,3 +13,9 @@ Province.create(name: "Tartous", code: 21)
 Province.create(name: "Al-Suwayada", code: 22)
 Province.create(name: "Al-Quneitera", code: 23)
 Province.create(name: "Outside Syria", code: 29)
+
+# Creating Default Status
+Status.create(name: "Active", code: 1)
+Status.create(name: "Inactive", code: 2)
+Status.create(name: "On Hold", code: 3)
+Status.create(name: "Under Revision", code: 4)
