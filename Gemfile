@@ -38,7 +38,7 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'debugger', group: [:development, :test]
 
 gem "capybara", group: [:development, :test]
 gem "cucumber-rails", group: [:development, :test]

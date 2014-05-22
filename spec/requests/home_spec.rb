@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe 'visiting the homepage' do
   before do
-    visit '/'
+    get '/'
   end
 
-  it 'should have a body' do
-    page.should have_css('body')    
+  it 'should show the login page' do
+    debugger
+    response.should have_text('Osra login')
   end
 end
