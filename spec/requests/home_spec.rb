@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'visiting the homepage' do
+describe 'visiting the homepage', :pending=> true do
   before do
     visit '/'
   end
