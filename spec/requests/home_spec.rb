@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'visiting the homepage', :pending=> true do
+describe 'visiting the homepage' do
   before do
-    visit '/'
+    get_via_redirect '/'
   end
 
-  it 'should have a body' do
-    page.should have_css('body')    
+  it 'should show the login page' do
+    expect(response.body).to include('Osra Login')
   end
 end
