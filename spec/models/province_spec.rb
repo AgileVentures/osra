@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+
+
 describe Province do
   it "should not be valid without a name" do
     Province.new(:code => 11).should_not be_valid
@@ -18,13 +20,20 @@ describe Province do
   end
 
   it "name should be unique" do
-    Province.new(:name => "Damascus", :code => 11)
-    Province.new(:name => "Damascus", :code => 12).should_not be_valid
+    Province.create(:name => "Damascus", :code => 11)
+    Province.create(:name => "Damascus", :code => 12).should_not be_valid
   end
 
   it "code should be unique" do
-    Province.new(:name => "Damascus", :code => 11)
-    Province.new(:name => "Aleppo", :code => 11).should_not be_valid
+    Province.create(:name => "Damascus", :code => 11)
+    Province.create(:name => "Aleppo", :code => 11).should_not be_valid
   end
+
+  after(:all) do
+    Province.all.each do |p|
+      p.destroy!
+    end
+  end
+
 
 end
