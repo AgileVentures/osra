@@ -21,6 +21,8 @@ gem 'coffee-rails', '~> 4.0.0'
 # ActiveAdmin
 gem 'activeadmin', github: 'gregbell/active_admin'
 
+gem 'sequenced'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
