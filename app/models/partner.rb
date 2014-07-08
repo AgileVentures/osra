@@ -10,6 +10,8 @@ class Partner < ActiveRecord::Base
   belongs_to :province
   belongs_to :status
 
+  acts_as_sequenced scope: :province_id
+
   validate :validate_date_not_in_future
 
   private
@@ -21,14 +23,6 @@ class Partner < ActiveRecord::Base
 
   def generate_osra_num
 
-    province_partners = Province.find(province_id).partners
-
-    unless province_partners.empty?
-      seq = province_partners.last.osra_num[2..-1].to_i + 1
-    else
-      seq = 1
-    end
-
-    self.osra_num = province.code.to_s + "%03d" % seq
+    self.osra_num = province.code.to_s + "%03d" % sequential_id
   end
 end
