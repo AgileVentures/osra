@@ -41,4 +41,3 @@ config/secrets.yml
 ## RubyMine project files
 .idea
 /.idea/*
-.ruby-version
