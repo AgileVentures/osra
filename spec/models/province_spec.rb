@@ -19,12 +19,12 @@ describe Province do
 
   it "name should be unique" do
     Province.create(:name => "Damascus", :code => 11)
-    expect(Province.create(:name => "Damascus", :code => 12)).to be_invalid
+    expect(Province.new(:name => "Damascus", :code => 12)).to be_invalid
   end
 
   it "code should be unique" do
     Province.create(:name => "Damascus", :code => 11)
-    expect(Province.create(:name => "Aleppo", :code => 11)).to be_invalid
+    expect(Province.new(:name => "Aleppo", :code => 11)).to be_invalid
   end
 
   after(:all) do
