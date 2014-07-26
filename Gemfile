@@ -5,7 +5,7 @@ ruby '2.1.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
-# Use sqlite3 as the database for Active Record
+# Use PostgreSQL as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
@@ -21,6 +21,7 @@ gem 'coffee-rails', '~> 4.0.0'
 # ActiveAdmin
 gem 'activeadmin', github: 'gregbell/active_admin'
 
+gem 'sequenced'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
