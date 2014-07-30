@@ -22,7 +22,6 @@ class Partner < ActiveRecord::Base
   end
 
   def generate_osra_num
-
     self.osra_num = province.code.to_s + "%03d" % sequential_id
   end
 end
