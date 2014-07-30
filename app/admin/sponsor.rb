@@ -14,6 +14,28 @@ ActiveAdmin.register Sponsor do
   #  permitted
   # end
 
+  index do
+    column :id, sortable: :id do |sponsor|
+      link_to sponsor.id, admin_sponsor_path(sponsor)
+    end
+    column :country
+    column :status
+    column :sponsorship_start_date
+  end
+
+  show do |sponsor|
+    attributes_table do
+      row :status
+      row :country
+      row :address
+      row :email
+      row :contact1
+      row :contact2
+      row :additional_info
+      row :sponsorship_start_date
+    end
+  end
+
   form do |f|
     f.inputs do
       f.input :name
