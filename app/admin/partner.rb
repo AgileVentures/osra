@@ -14,6 +14,17 @@ ActiveAdmin.register Partner do
   #  permitted
   # end
 
+  show do |partner|
+    attributes_table do
+      row :osra_num
+      row :status
+      row :province
+      row :region
+      row :contact_details
+      row :partnership_start_date
+    end
+  end
+
 
   permit_params :name, :region, :contact_details, :province_id, :status_id, :partnership_start_date
 end
