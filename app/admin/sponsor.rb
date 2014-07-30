@@ -19,7 +19,7 @@ ActiveAdmin.register Sponsor do
       link_to sponsor.id, admin_sponsor_path(sponsor)
     end
     column :country
-    column :status
+    column :status, sortable: :status_id
     column :sponsorship_start_date
   end
 
