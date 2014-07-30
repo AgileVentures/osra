@@ -25,6 +25,14 @@ ActiveAdmin.register Partner do
     end
   end
 
+  index do 
+    column :osra_num, sortable: :osra_num do |partner|
+      link_to partner.osra_num, admin_partner_path(partner)
+    end
+    column :status, sortable: :status
+    column :province, sortable: :province
+    column :partnership_start_date, sortable: :partnership_start_date 
+  end
 
   permit_params :name, :region, :contact_details, :province_id, :status_id, :partnership_start_date
 end
