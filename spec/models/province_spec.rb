@@ -27,7 +27,7 @@ describe Province do
     expect(Province.new(:name => "Aleppo", :code => 11)).to be_invalid
   end
 
-  after(:all) do
+  after(:each) do
     Province.all.each do |p|
       p.destroy!
     end

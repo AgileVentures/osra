@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Partner do
 
-  before(:all) do
+  before(:each) do
     @province1 = Province.create(:name => "Hama", :code => 14)
     @province2 = Province.create(:name => "Homs", :code => 13)
     @status = Status.create(name: "Under Revision", code: 4)
@@ -61,7 +61,7 @@ describe Partner do
     expect(partner.osra_num[2..-1]).to eq '001'
   end
 
-  after(:all) do
+  after(:each) do
     Province.all.each do |p|
       p.destroy!
     end

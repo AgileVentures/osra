@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe Sponsor do
 
-  before(:all) do
+  before(:each) do
     @status = Status.create(name: "Under Revision", code: 4)
   end
 
