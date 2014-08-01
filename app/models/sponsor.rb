@@ -5,8 +5,8 @@ class Sponsor < ActiveRecord::Base
   include DateValidator
   before_create :set_defaults, :generate_osra_num
 
-  validates_presence_of (:name)
-  validates_presence_of (:country)
+  validates :name, presence: true
+  validates :country, presence: true
 
   belongs_to :status
 

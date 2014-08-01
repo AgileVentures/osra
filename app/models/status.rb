@@ -1,9 +1,8 @@
 class Status < ActiveRecord::Base
-  validates_uniqueness_of :name
-  validates_uniqueness_of :code
 
-  validates_presence_of :name
-  validates_presence_of :code
+  validates :name, presence: true, uniqueness: true
+  validates :code, presence: true, uniqueness: true
 
   has_many :partners
+  
 end
