@@ -16,10 +16,10 @@ describe Sponsor do
   end
 
   it "should have a valid name and country" do
-  	expect(Sponsor.new(name: 'sponsor1', country: 'syria')).to be_valid
+    expect(Sponsor.new(name: 'sponsor1', country: 'syria')).to be_valid
   end
 
-  it 'should default status "Under Revision" unless specified' do
+  it 'should set default status "Under Revision" unless specified' do
     sponsor = Sponsor.create(name: 'sponsor1', country: 'syria')
     expect(sponsor.status).to eq Status.find_by_name('Under Revision')
   end
