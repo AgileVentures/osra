@@ -43,6 +43,9 @@ end
 # Use debugger
 gem 'debugger', group: [:development, :test]
 
+# Needed for Heroku
+gem 'rails_12factor', group: :production
+
 group :test do
   gem "capybara"
   gem "cucumber-rails", :require => false
