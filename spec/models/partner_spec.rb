@@ -2,12 +2,10 @@ require 'spec_helper'
 
 describe Partner do
 
-  before(:all) do
-
+  before(:each) do
     @province1 = Province.create(:name => "Hama", :code => 14)
     @province2 = Province.create(:name => "Homs", :code => 13)
     @status = Status.create(name: "Under Revision", code: 4)
-
   end
 
   it "should not be valid without a name" do
@@ -22,14 +20,14 @@ describe Partner do
     expect(Partner.new(:name => "Partner One", :province => @province1)).to be_valid
   end
 
-  it 'should default status "Under Revision" unless specified' do
+  it 'should default status to "Under Revision" unless specified' do
     partner = Partner.create(:name => "Partner One", :province => @province1)
     expect(partner.status).to eq Status.find_by_name('Under Revision')
   end
 
   it 'should set the custom status when specified' do
     status = Status.create(name: "Active", code: 1)
-    partner = Partner.create(:name => "Partner One", :province => @province1, :status => status)
+    partner = Partner.new(:name => "Partner One", :province => @province1, :status => status)
     expect(partner.status).to eq status
   end
 
@@ -39,7 +37,7 @@ describe Partner do
   end
 
   it 'partnership start date should be set to a custom date when specified' do
-    partner = Partner.create(:name => 'Partner One',:province => @province1, :partnership_start_date => Date.yesterday )
+    partner = Partner.new(:name => 'Partner One',:province => @province1, :partnership_start_date => Date.yesterday )
     expect(partner.partnership_start_date).to eq Date.yesterday
   end
 
@@ -63,7 +61,7 @@ describe Partner do
     expect(partner.osra_num[2..-1]).to eq '001'
   end
 
-  after(:all) do
+  after(:each) do
     Province.all.each do |p|
       p.destroy!
     end

@@ -4,8 +4,8 @@ class Partner < ActiveRecord::Base
   include DateValidator
   before_create :set_defaults, :generate_osra_num
 
-  validates_presence_of (:name)
-  validates_presence_of (:province)
+  validates :name, presence: true, uniqueness: true
+  validates :province, presence: true
 
   belongs_to :province
   belongs_to :status
@@ -22,7 +22,6 @@ class Partner < ActiveRecord::Base
   end
 
   def generate_osra_num
-
     self.osra_num = province.code.to_s + "%03d" % sequential_id
   end
 end
