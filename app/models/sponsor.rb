@@ -7,8 +7,11 @@ class Sponsor < ActiveRecord::Base
 
   validates :name, presence: true
   validates :country, presence: true
+  validates :sponsor_type, presence: true
 
   belongs_to :status
+
+  belongs_to :sponsor_type
 
   validate :validate_date_not_in_future
 

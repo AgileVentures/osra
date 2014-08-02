@@ -1,4 +1,4 @@
-# Creating Default Provinces
+# Creating Provinces
 Province.create(name: "Damascus & Rif Dimashq", code: 11)
 Province.create(name: "Aleppo", code: 12)
 Province.create(name: "Homs", code: 13)
@@ -14,8 +14,12 @@ Province.create(name: "Al-Suwayada", code: 22)
 Province.create(name: "Al-Quneitera", code: 23)
 Province.create(name: "Outside Syria", code: 29)
 
-# Creating Default Status
+# Creating Statuses
 Status.create(name: "Active", code: 1)
 Status.create(name: "Inactive", code: 2)
 Status.create(name: "On Hold", code: 3)
 Status.create(name: "Under Revision", code: 4)
+
+# Creating Sponsor Types
+SponsorType.create(name: 'Individual', code: 1)
+SponsorType.create(name: 'Organization', code: 2)
