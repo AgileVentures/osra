@@ -21,11 +21,11 @@ describe Sponsor do
   end
 
   it "should have a valid name, country and type" do
-    expect(Sponsor.new(name: 'sponsor1', country: 'syria', sponsor_type: @type)).to be_valid
+    expect(Sponsor.new(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')).to be_valid
   end
 
   it 'should set default status "Under Revision" unless specified' do
-    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type)
+    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')
     expect(sponsor.status).to eq Status.find_by_name('Under Revision')
   end
 
@@ -36,7 +36,7 @@ describe Sponsor do
   end
 
   it 'sponsorship start date should default to today date' do
-    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type)
+    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')
     expect(sponsor.sponsorship_start_date).to eq Date.today
   end
 
