@@ -31,7 +31,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-# Use ActiveModel has_securse_password
+# Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use unicorn as the app server
