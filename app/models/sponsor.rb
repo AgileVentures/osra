@@ -7,13 +7,17 @@ class Sponsor < ActiveRecord::Base
 
   validates :name, presence: true
   validates :country, presence: true
+  validates :sponsor_type, presence: true
+  validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
 
   belongs_to :status
+
+  belongs_to :sponsor_type
 
   validate :validate_date_not_in_future
 
   def set_defaults
-    self.status ||= Status.find_by_name("Under Revision")
+    self.status ||= Status.find_by_name('Under Revision')
     self.sponsorship_start_date ||= Date.today
   end
 

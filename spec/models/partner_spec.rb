@@ -61,10 +61,4 @@ describe Partner do
     expect(partner.osra_num[2..-1]).to eq '001'
   end
 
-  after(:each) do
-    Province.all.each do |p|
-      p.destroy!
-    end
-  end
-
 end

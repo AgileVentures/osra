@@ -40,9 +40,6 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
-# Use debugger
-gem 'debugger', group: [:development, :test]
-
 # Needed for Heroku
 gem 'rails_12factor', group: :production
 
