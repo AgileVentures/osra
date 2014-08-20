@@ -33,7 +33,7 @@ describe Partner do
 
   it 'partnership start date should default to today date' do
     partner = Partner.create(:name => 'Partner One',:province => @province1 )
-    expect(partner.partnership_start_date).to eq Date.today
+    expect(partner.partnership_start_date).to eq Date.current
   end
 
   it 'partnership start date should be set to a custom date when specified' do
