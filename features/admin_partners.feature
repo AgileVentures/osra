@@ -1,7 +1,7 @@
 Feature:
   As a developer
-  So that I may share or retrieve knowledge between the AgileVentures group
-  I would like to be able to create, read and update special documents in the guides section
+  So that I may maintain the information about osra partners
+  I would like to be able to create, read and update partners in the admin section
 
   Background:
 ###############################################################
