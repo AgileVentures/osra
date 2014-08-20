@@ -1,5 +1,5 @@
 Feature:
-  As a developer
+  As a site admin for osra
   So that I may maintain the information about osra partners
   I would like to be able to create, read and update partners in the admin section
 
