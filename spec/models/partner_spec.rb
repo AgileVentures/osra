@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Partner do
+describe Partner, type: :model do
 
   before(:each) do
     @province1 = Province.create(:name => "Hama", :code => 14)

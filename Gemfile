@@ -47,7 +47,10 @@ group :test do
   gem "capybara"
   gem "cucumber-rails", :require => false
   gem "database_cleaner"
-  gem "rspec-rails"
+end
+
+group :development, :test do
+  gem 'rspec-rails'
 end
 
 gem "devise"

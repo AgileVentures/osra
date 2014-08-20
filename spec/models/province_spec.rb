@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Province do
+describe Province, type: :model do
   it "should not be valid without a name" do
     expect(Province.new(:code => 11)).to be_invalid
   end

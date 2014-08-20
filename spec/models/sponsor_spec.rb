@@ -1,7 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-
-describe Sponsor do
+describe Sponsor, type: :model do
 
   before(:each) do
     Status.create(name: "Under Revision", code: 4)
