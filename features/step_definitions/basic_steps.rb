@@ -33,17 +33,17 @@ end
 
 Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   unless negative
-    page.should have_text string
+    expect(page).to have_text string
   else
-    page.should_not have_text string
+    expect(page).not_to have_text string
   end
 end
 
 Then /^I should( not)? see the "([^"]*)" link$/ do |negative, button|
   unless negative
-    expect(page.has_link? button).to be_true
+    expect(page).to have_link button
   else
-    expect(page.has_link? button).to be_false
+    expect(page).not_to have_link button
   end
 end
 

@@ -8,7 +8,7 @@ Feature:
       | name          | region      | province                   | province_code |
       | Partner1      | Region1     | Damascus & Rif Dimashq     | 11            |
       | Partner2      | Region2     | Aleppo                     | 12            |
-      | Partner3      | Reion3      | Homs                       | 13            |
+      | Partner3      | Region3     | Homs                       | 13            |
 
   Scenario: There should be a link to the partners page on the navbar
     Given I am a new, authenticated user
