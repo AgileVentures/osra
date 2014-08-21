@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe SponsorType, type: :model do
-  let(:sponsor_type) { FactoryGirl.build_stubbed(:sponsor_type) }
+  let(:sponsor_type) { build_stubbed(:sponsor_type) }
 
   subject { sponsor_type }
 
@@ -19,12 +19,12 @@ describe SponsorType, type: :model do
     end
 
     context 'when name is not unique' do
-      before { FactoryGirl.create(:sponsor_type, name: sponsor_type.name) }
+      before { create(:sponsor_type, name: sponsor_type.name) }
       it { should_not be_valid }
       end
 
     context 'when code is not unique' do
-      before { FactoryGirl.create(:sponsor_type, code: sponsor_type.code) }
+      before { create(:sponsor_type, code: sponsor_type.code) }
       it { should_not be_valid }
     end
   end
