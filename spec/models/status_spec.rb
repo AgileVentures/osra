@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Status do
+describe Status, type: :model do
   it "should not be valid without a name" do
     expect(Status.new(:code => 1)).to be_invalid
   end

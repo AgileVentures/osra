@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe 'visiting the homepage' do
+describe 'visiting the homepage', type: :request do
   before do
     get_via_redirect '/'
   end
