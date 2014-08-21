@@ -4,12 +4,6 @@ Feature:
   I would like to be able to create, read and update partners in the admin section
 
   Background:
-###############################################################
-#  need to fix the province situation here and clarify what makes a valid province
-#  if the province code is already tied to a specific province prior to the creation 
-#  of osra project should this not be seeded into the database?
-#  does active record need to be ready only?
-##############################################################
     Given the following partners exist:
       | name          | region      | province                   | province_code |
       | Partner1      | Region1     | Damascus & Rif Dimashq     | 11            |
