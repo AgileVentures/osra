@@ -42,3 +42,6 @@ config/secrets.yml
 .idea
 /.idea/*
 .ruby-version
+# emacs and vim backup files
+*.swp
+*~
