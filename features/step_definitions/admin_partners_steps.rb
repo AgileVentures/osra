@@ -10,7 +10,7 @@ Given(/^the following partners exist:$/) do |table|
 end
 
 Then(/^I should see "Partners" linking to the admin partners page$/) do
-  expect(page.has_link?("Partners", href: "#{admin_partners_path}")).to be_true
+  expect(page).to have_link("Partners", href: "#{admin_partners_path}")
 end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for partner "([^"]*)"$/) do |page, partner_name|
