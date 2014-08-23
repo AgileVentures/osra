@@ -18,7 +18,7 @@ class Sponsor < ActiveRecord::Base
 
   def set_defaults
     self.status ||= Status.find_by_name('Under Revision')
-    self.sponsorship_start_date ||= Date.today
+    self.sponsorship_start_date ||= Date.current
   end
 
   def generate_osra_num
