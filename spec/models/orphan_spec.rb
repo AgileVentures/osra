@@ -110,4 +110,14 @@ describe Orphan, type: :model do
     expect(@orphan.errors[:minor_siblings_count].size).to eq(1)
   end
 
+  it "should have a valid original address" do
+    expect(@orphan).to be_invalid
+    expect(@orphan.errors[:original_address].size).to eq(1)
+  end
+
+  it "should have a valid current address" do
+    expect(@orphan).to be_invalid
+    expect(@orphan.errors[:current_address].size).to eq(1)
+  end
+
 end

@@ -13,9 +13,11 @@ class Orphan < ActiveRecord::Base
   validates :contact_number, presence: true
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }
   validates :minor_siblings_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :original_address, presence: true
+  validates :current_address, presence: true
 
-  belongs_to :address
-
+  belongs_to :original_address, class_name: 'Address'
+  belongs_to :current_address, class_name: 'Address'
 
   def father_date_of_death_is_date?
     unless father_date_of_death.is_a?(Date)
