@@ -36,7 +36,7 @@ describe Sponsor, type: :model do
 
   it 'sponsorship start date should default to today date' do
     sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')
-    expect(sponsor.sponsorship_start_date).to eq Date.today
+    expect(sponsor.sponsorship_start_date).to eq Date.current
   end
 
   it 'sponsorship start date should be set to a custom date when specified' do
