@@ -1,8 +1,5 @@
-require 'date_validator'
-
 class Sponsor < ActiveRecord::Base
 
-  include DateValidator
   after_initialize :set_defaults
   before_create :generate_osra_num
 
@@ -10,7 +7,7 @@ class Sponsor < ActiveRecord::Base
   validates :country, presence: true
   validates :sponsor_type, presence: true
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
-  validate :validate_date_not_in_future
+  validates :start_date, date_not_in_future: true
 
   belongs_to :status
   belongs_to :sponsor_type

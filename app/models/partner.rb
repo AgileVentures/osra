@@ -1,13 +1,10 @@
-require 'date_validator'
-
 class Partner < ActiveRecord::Base
-  include DateValidator
   after_initialize :set_defaults
   before_create :generate_osra_num
 
   validates :name, presence: true, uniqueness: true
   validates :province, presence: true
-  validate :validate_date_not_in_future
+  validates :start_date, date_not_in_future: true
 
   belongs_to :province
   belongs_to :status
