@@ -85,6 +85,11 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
     gherkin (2.12.2)
@@ -220,6 +225,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   devise
+  factory_girl_rails
   haml (>= 3.0.0)
   jbuilder (~> 1.2)
   jquery-rails

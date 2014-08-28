@@ -53,6 +53,8 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+gem 'factory_girl_rails', group: [:development, :test]
+
 gem "devise"
 gem "jquery-rails"
 gem "haml", ">= 3.0.0"
