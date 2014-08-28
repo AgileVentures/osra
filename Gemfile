@@ -47,6 +47,7 @@ group :test do
   gem "capybara"
   gem "cucumber-rails", :require => false
   gem "database_cleaner"
+  gem 'shoulda-matchers', require: false # one-line tests for common Rails validations
 end
 
 group :development, :test do
