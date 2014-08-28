@@ -13,10 +13,15 @@ ActiveAdmin.register Partner do
   #  permitted << :other if resource.something?
   #  permitted
   # end
+  actions :all, :except => [:destroy]
+
 
   index do 
     column :osra_num, sortable: :osra_num do |partner|
       link_to partner.osra_num, admin_partner_path(partner)
+    end
+    column :name, sortable: :name do |partner|
+      link_to partner.name, admin_partner_path(partner)
     end
     column :status, sortable: :status_id
     column :province, sortable: :province_id
