@@ -19,16 +19,6 @@ class CreateOrphans < ActiveRecord::Migration
       t.string :guardian_name
       t.string :guardian_relationship
       t.integer :guardian_id
-      #:original_address_gov, type: Integer
-      #t.string :original_address_city
-      #t.string :original_address_neighborhood
-      #:original_address_street
-      #:original_address_details
-      #:current_address_gov, type: Integer
-      #:current_address_city
-      #:current_address_neighborhood
-      #:current_address_street
-      #:current_address_details
       t.string :contact_number
       t.string :alt_contact_number
       t.boolean :sponsored_by_another_org
@@ -36,7 +26,6 @@ class CreateOrphans < ActiveRecord::Migration
       t.integer :minor_siblings_count
       t.integer :sponsored_minor_siblings_count
       t.string :comments
-      #:status
 
       t.timestamps
     end

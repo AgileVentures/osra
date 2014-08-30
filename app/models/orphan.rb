@@ -19,7 +19,8 @@ class Orphan < ActiveRecord::Base
   belongs_to :original_address, class_name: 'Address'
   belongs_to :current_address, class_name: 'Address'
 
-  # to be replaced when PR #16 gets merged
+  # to be replaced when PR #17 gets merged
+  # https://github.com/NikitaAvvakumov/osra/commit/19dbbd87126ce628f2ebd310cbe7cfd6bbc35dd3#commitcomment-7538464
   def validate_dates
     if !father_date_of_death.is_a?(Date)
       errors.add(:father_date_of_death,'should be a date')
