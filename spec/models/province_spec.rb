@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Province, type: :model do
+
   it "should not be valid without a name" do
     expect(Province.new(:code => 11)).to be_invalid
   end
@@ -10,9 +11,9 @@ describe Province, type: :model do
   end
 
   it "should accept provinces with names and valid codes" do
- #   DatabaseCleaner.clean
+    #   DatabaseCleaner.clean
     Province.destroy_all
-    [11,12,13,14,15,16,17,18,19,29].each do |c|
+    [11, 12, 13, 14, 15, 16, 17, 18, 19, 29].each do |c|
       expect(Province.new(:name => "Damascus#{c}", :code => c)).to be_valid
     end
   end

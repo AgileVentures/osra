@@ -1,6 +1,6 @@
 class Orphan < ActiveRecord::Base
 
-  validate :father_date_of_death_is_date?
+  validate :validate_dates
 
   validates :name, presence: true
   validates :father_name, presence: true
@@ -19,9 +19,17 @@ class Orphan < ActiveRecord::Base
   belongs_to :original_address, class_name: 'Address'
   belongs_to :current_address, class_name: 'Address'
 
-  def father_date_of_death_is_date?
-    unless father_date_of_death.is_a?(Date)
+  # to be replaced when PR #16 gets merged
+  def validate_dates
+    if !father_date_of_death.is_a?(Date)
       errors.add(:father_date_of_death,'should be a date')
+    elsif father_date_of_death >= Date.today
+      errors.add(:father_date_of_death,'cannot be in the future')
+    end
+    if !date_of_birth.is_a?(Date)
+      errors.add(:date_of_birth,'should be a date')
+    elsif date_of_birth >= Date.today
+      errors.add(:date_of_birth,'cannot be in the future')
     end
   end
 
