@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20140823112615) do
     t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "original_address_id"
+    t.integer  "orignal_address_id"
     t.integer  "current_address_id"
   end
 
