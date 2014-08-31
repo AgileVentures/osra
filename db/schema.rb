@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140806141514) do
+ActiveRecord::Schema.define(version: 20140823112615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,16 @@ ActiveRecord::Schema.define(version: 20140806141514) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
+  create_table "addresses", force: true do |t|
+    t.integer  "province_id"
+    t.string   "city"
+    t.string   "neighborhood"
+    t.string   "street"
+    t.string   "details"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -48,6 +58,37 @@ ActiveRecord::Schema.define(version: 20140806141514) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "orphans", force: true do |t|
+    t.string   "name"
+    t.string   "father_name"
+    t.boolean  "father_is_martyr"
+    t.string   "father_occupation"
+    t.string   "father_place_of_death"
+    t.string   "father_cause_of_death"
+    t.date     "father_date_of_death"
+    t.string   "mother_name"
+    t.boolean  "mother_alive"
+    t.date     "date_of_birth"
+    t.string   "gender"
+    t.string   "health_status"
+    t.string   "schooling_status"
+    t.boolean  "goes_to_school"
+    t.string   "guardian_name"
+    t.string   "guardian_relationship"
+    t.integer  "guardian_id"
+    t.string   "contact_number"
+    t.string   "alt_contact_number"
+    t.boolean  "sponsored_by_another_org"
+    t.string   "another_org_sponsorship_details"
+    t.integer  "minor_siblings_count"
+    t.integer  "sponsored_minor_siblings_count"
+    t.string   "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "original_address_id"
+    t.integer  "current_address_id"
+  end
 
   create_table "partners", force: true do |t|
     t.string   "name"
