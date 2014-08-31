@@ -4,6 +4,9 @@ ActiveAdmin.register AdminUser do
   index do
     selectable_column
     id_column
+    column :email, sortable: :email do |user|
+      link_to user.email, admin_admin_user_path(user)
+    end
     column :email
     column :current_sign_in_at
     column :sign_in_count
