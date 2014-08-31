@@ -8,16 +8,12 @@ describe DateNotInFutureValidator do
 
   it 'passes when the date attribute is in the past' do
     test_model.date_attr = 4.days.ago
-    test_model.valid?
     expect(test_model).to be_valid
-    expect(test_model.errors[:date_attr].size).to eq 0
   end
 
   it 'fails when the date attribute is in the future' do
     test_model.date_attr = 4.days.from_now
-    test_model.valid?
     expect(test_model).not_to be_valid
-    expect(test_model.errors[:date_attr].size).to eq 1
   end
 
   it 'returns the default message when custom is not specified' do
@@ -33,7 +29,6 @@ describe DateNotInFutureValidator do
     it 'returns the custom message when provided' do
       test_model.date_attr = 4.days.from_now
       test_model.valid?
-
       expect(test_model.errors[:date_attr]).to eq [custom_message]
     end
   end
@@ -41,21 +36,7 @@ end
 
 def date_attr_validator_class(options)
   Class.new do
-    extend ActiveModel::Naming
-    include ActiveModel::Conversion
     include ActiveModel::Validations
-
-    def new_record?
-      true
-    end
-
-    def persisted?
-      false
-    end
-
-    def self.name
-      'Validator'
-    end
 
     attr_accessor :date_attr
 
