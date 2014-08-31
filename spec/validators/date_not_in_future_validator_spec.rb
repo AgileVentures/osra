@@ -9,12 +9,14 @@ describe DateNotInFutureValidator do
   it 'passes when the date attribute is in the past' do
     test_model.date_attr = 4.days.ago
     test_model.valid?
+    expect(test_model).to be_valid
     expect(test_model.errors[:date_attr].size).to eq 0
   end
 
   it 'fails when the date attribute is in the future' do
     test_model.date_attr = 4.days.from_now
     test_model.valid?
+    expect(test_model).not_to be_valid
     expect(test_model.errors[:date_attr].size).to eq 1
   end
 
