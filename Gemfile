@@ -24,6 +24,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'awesome_print' # Well Formatted output in console
   gem 'pry-byebug' # a version of pry and debugger compatible with Ruby >2.0.0
   gem 'hirb' # formats ActiveRecord objects into table format in the console
   gem 'pry-rails' # integrate pry with rails console

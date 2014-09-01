@@ -47,6 +47,7 @@ GEM
     arbre (1.0.2)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
+    awesome_print (1.2.0)
     bcrypt (3.1.7)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -250,6 +251,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin!
+  awesome_print
   better_errors
   binding_of_caller
   capybara
