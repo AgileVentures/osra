@@ -3,7 +3,7 @@ class DateNotInFutureValidator < ActiveModel::EachValidator
     if !valid_date?(value)
       record.errors[attribute] << ('is not a valid date')
     elsif value.future?
-      record.errors[attribute] << (options[:message] || 'is not valid (cannot be in the future)')
+      record.errors[attribute] << 'is not valid (cannot be in the future)'
     end
   end
 
