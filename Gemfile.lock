@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/gregbell/active_admin.git
+  remote: git://github.com/activeadmin/activeadmin.git
   revision: 4a4401b5b390ae7e4fce42d7fa0fb6be038496fd
   specs:
     activeadmin (1.0.0.pre)
@@ -49,9 +49,10 @@ GEM
     arel (5.0.1.20140414130214)
     awesome_print (1.2.0)
     bcrypt (3.1.7)
-    better_errors (1.1.0)
+    better_errors (2.0.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bourbon (3.2.3)
@@ -147,7 +148,7 @@ GEM
     polyamorous (1.1.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
-    pry (0.10.0)
+    pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
