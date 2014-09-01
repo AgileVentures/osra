@@ -24,6 +24,11 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'pry-byebug' # a version of pry and debugger compatible with Ruby >2.0.0
+  gem 'hirb' # formats ActiveRecord objects into table format in the console
+  gem 'pry-rails' # integrate pry with rails console
+  gem 'better_errors' # nice output of rails errors in browser
+  gem 'binding_of_caller'  #online console and debugging in browser
 end
 
 group :production do
