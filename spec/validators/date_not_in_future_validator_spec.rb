@@ -6,6 +6,22 @@ describe DateNotInFutureValidator do
 
   subject { test_model }
 
+  it 'passes when attribute is a valid date' do
+    test_model.date_attr = Date.today
+    expect(test_model).to be_valid
+  end
+
+  it 'fails when attribute is not a date' do
+    test_model.date_attr = 'fake_date'
+    expect(test_model).to_not be_valid
+  end
+
+  it 'returns appropriate message when attribute is not a date' do
+    test_model.date_attr = 'fake_date'
+    expect(test_model).to_not be_valid
+    expect(test_model.errors[:date_attr]).to eq ['is not a valid date']
+  end
+
   it 'passes when the date attribute is in the past' do
     test_model.date_attr = 4.days.ago
     expect(test_model).to be_valid
