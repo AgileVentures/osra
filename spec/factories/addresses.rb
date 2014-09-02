@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :address do
-    province { Province.first }
+    province
     city { Faker::Address.city }
     neighborhood { Faker::Address.street_name }
     street { Faker::Address.street_address }
