@@ -70,3 +70,7 @@ When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, :with => value
 end
 
+# only needed if we use webkit capybara driver
+Then(/^I click ok on the confirmation box$/) do
+  page.driver.accept_js_confirms!
+end

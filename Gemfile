@@ -15,9 +15,11 @@ gem 'devise' # Authentication solution
 gem 'jquery-rails'
 
 group :test do
-  gem 'capybara'
-  gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem "capybara"
+  gem "cucumber-rails", :require => false
+  gem "capybara-webkit"
+  gem "poltergeist"
+  gem "database_cleaner"
   gem 'shoulda-matchers', require: false # one-line tests for common Rails validations
 end
 

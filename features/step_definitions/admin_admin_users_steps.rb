@@ -28,8 +28,4 @@ Then(/^I click on the Delete link for admin user "(.*?)"$/) do |user_email|
   end
 end
 
-# only needed if we use webkit capybara driver
-Then(/^I click ok on the confirmation box$/) do
-  page.driver.accept_js_confirms!
-end
 
