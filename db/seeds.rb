@@ -24,7 +24,7 @@ Status.create(name: "Under Revision", code: 4)
 SponsorType.create(name: 'Individual', code: 1)
 SponsorType.create(name: 'Organization', code: 2)
 
-# Creating Statuses
+# Creating Branches
 Branch.create(name: "Riyadh", code: 1)
 Branch.create(name: "Jeddah", code: 2)
 Branch.create(name: "Dammam", code: 3)
