@@ -21,7 +21,7 @@ ActiveAdmin.register Sponsor do
     column :sponsor_type
     column :country
     column :status, sortable: :status_id
-    column :sponsorship_start_date
+    column :start_date
   end
 
   show do |sponsor|
@@ -35,7 +35,7 @@ ActiveAdmin.register Sponsor do
       row :contact1
       row :contact2
       row :additional_info
-      row :sponsorship_start_date
+      row :start_date
     end
   end
 
@@ -50,12 +50,12 @@ ActiveAdmin.register Sponsor do
       f.input :contact1
       f.input :contact2
       f.input :additional_info
-      f.input :sponsorship_start_date, as: :datepicker
+      f.input :start_date, as: :datepicker
       f.input :status
     end
     f.actions
   end
 
-  permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :sponsorship_start_date, :status_id, :sponsor_type_id
+  permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id
 
 end

@@ -25,7 +25,7 @@ ActiveAdmin.register Partner do
     end
     column :status, sortable: :status_id
     column :province, sortable: :province_id
-    column :partnership_start_date, sortable: :partnership_start_date 
+    column :start_date, sortable: :start_date 
   end
 
   show do |partner|
@@ -35,7 +35,7 @@ ActiveAdmin.register Partner do
       row :province
       row :region
       row :contact_details
-      row :partnership_start_date
+      row :start_date
     end
   end
 
@@ -48,11 +48,11 @@ ActiveAdmin.register Partner do
       f.input :province
       f.input :region
       f.input :contact_details
-      f.input :partnership_start_date, as: :datepicker
+      f.input :start_date, as: :datepicker
       f.input :status
     end
     f.actions
   end
 
-  permit_params :name, :region, :contact_details, :province_id, :status_id, :partnership_start_date
+  permit_params :name, :region, :contact_details, :province_id, :status_id, :start_date
 end
