@@ -55,6 +55,7 @@ Feature:
     Given I am on the "Admin Admin Users" page for admin user "admin1@example.com"
     Then I should see the "Delete" link
     And I click on the Delete link for admin user "admin1@example.com"
+    #phantomjs automatically accepts the confirmation box
     #And I click ok on the confirmation box
     Then I should be on the "Admin Admin Users" page 
     And I should not see "admin1@example.com"
