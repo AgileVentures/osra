@@ -39,7 +39,7 @@ describe DateNotInFutureValidator do
     expect(subject).not_to be_valid
   end
 
-  it 'returns the default message when custom is not specified' do
+  it 'returns appropriate message when date is in future' do
     subject.date_attr = 4.days.from_now
     subject.valid?
     expect(subject.errors[:date_attr]).to eq ['is not valid (cannot be in the future)']
