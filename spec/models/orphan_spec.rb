@@ -56,4 +56,14 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :current_address }
 
+  it 'date of birth should not be in future' do
+    orphan = FactoryGirl.build(:orphan, date_of_birth: 4.days.from_now)
+    expect(orphan).to_not be_valid
+  end
+
+  it 'fathers date of death should not be in future' do
+    orphan = FactoryGirl.build(:orphan, father_date_of_death: 4.days.from_now)
+    expect(orphan).to_not be_valid
+  end
+
 end

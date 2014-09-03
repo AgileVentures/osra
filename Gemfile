@@ -23,6 +23,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'faker'
   gem 'factory_girl_rails'
   gem 'awesome_print' # Well Formatted output in console
   gem 'pry-byebug' # a version of pry and debugger compatible with Ruby >2.0.0
