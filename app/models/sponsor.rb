@@ -10,6 +10,7 @@ class Sponsor < ActiveRecord::Base
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
   validates :start_date, date_not_in_future: true
 
+  belongs_to :branch
   belongs_to :status
   belongs_to :sponsor_type
 
