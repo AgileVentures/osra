@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Address, :type => :model do
+describe Address, type: :model do
 
   it 'should have a valid factory' do
     expect(build_stubbed :address).to be_valid
