@@ -28,7 +28,7 @@ describe Partner, type: :model do
         let(:active_status) { build_stubbed :status, name: 'Active' }
 
         it 'defaults status to "Under Revision"' do
-          expect((Partner.new).status).to eq under_revision_status
+          expect(Partner.new.status).to eq under_revision_status
         end
 
         it 'sets non-default status if provided' do
