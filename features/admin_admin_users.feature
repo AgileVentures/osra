@@ -26,6 +26,18 @@ Feature:
     When I click the "admin1@example.com" link 
     Then I should be on the "Admin Admin Users Show" page for admin user "admin1@example.com"
 
+  Scenario: Should be able to add an admin user from the admin user index page
+    Given I am on the "Admin Admin Users" page
+    And I click the "New Admin User" button
+    Then I should be on the "Admin Admin User New" page
+    And I fill in "Email" with "administrator1@example.com"
+    And I fill in "admin_user_password" with "12345678"
+    And I fill in "admin_user_password_confirmation" with "12345678"
+    And I click the "Create Admin user" button
+    Then I should be on the "Admin Admin Users Show" page for admin user "administrator1@example.com"
+    And I should see "Admin user was successfully created"
+    And I should see "administrator1@example.com"
+
   Scenario: Should be able to edit an admin user from the admin user show page
     Given I am on the "Admin Admin Users Show" page for admin user "admin1@example.com"
     And I click the "Edit Admin User" button

@@ -24,6 +24,8 @@ def path_to(page_name, id = '')
       edit_admin_partner_path(id)
     when 'admin admin users' then
       admin_admin_users_path
+    when 'admin admin user new' then
+      new_admin_admin_user_path
     when 'admin admin users show' then
       admin_admin_user_path(id)
     when 'admin admin users edit' then
