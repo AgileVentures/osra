@@ -15,11 +15,11 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for partner "([^"]*)"$/) do |page, partner_name|
   partner = Partner.find_by name: partner_name
-  visit path_to(page, partner.id)
+  visit path_to_admin_role(page, partner.id)
 end
 
 Then(/^I should be on the "(.*?)" page for partner "(.*?)"$/) do |page_name, partner_name|
   partner = Partner.find_by name: partner_name
-  expect(current_path).to eq path_to(page_name, partner.id)
+  expect(current_path).to eq path_to_admin_role(page_name, partner.id)
 end
 

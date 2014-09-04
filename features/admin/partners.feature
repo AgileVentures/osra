@@ -17,30 +17,30 @@ Feature:
 
   Scenario: There should be a list of partners on the admin index page
     Given I am a new, authenticated user
-    And I am on the "Admin Partners" page
+    And I am on the "Partners" page for the "Admin" role
     Then I should see "Partner1"
     And I should see "Partner2"
     And I should see "Partner3"
 
   Scenario: Should be able to visit an partner from the partner index page
     Given I am a new, authenticated user
-    And I am on the "Admin Partners" page
+    And I am on the "Partners" page for the "Admin" role
     When I click the "Partner1" link 
-    Then I should be on the "Admin Partners Show" page for partner "Partner1"
+    Then I should be on the "Show Partners" page for partner "Partner1"
 
   Scenario: Should be able to edit a partner from the partner show page
     Given I am a new, authenticated user
-    And I am on the "Admin Partners Show" page for partner "Partner1"
+    And I am on the "Show Partners" page for partner "Partner1"
     And I click the "Edit Partner" button
-    Then I should be on the "Admin Partners Edit" page for partner "Partner1"
+    Then I should be on the "Edit Partners" page for partner "Partner1"
     And I fill in "Region" with "New Region"
     And I click the "Update Partner" button
-    Then I should be on the "Admin Partners Show" page for partner "Partner1"
+    Then I should be on the "Show Partners" page for partner "Partner1"
     And I should see "Partner was successfully updated"
     And I should see "New Region"
 
   Scenario: Should not be able to delete a partner from the partner show page
     Given I am a new, authenticated user
-    And I am on the "Admin Partners Show" page for partner "Partner1"
+    And I am on the "Show Partners" page for partner "Partner1"
     Then I should not see the "Delete Partner" link
 

@@ -10,12 +10,12 @@ end
 
 Then(/^I should be on the "(.*?)" page for admin user "(.*?)"$/) do |page_name, user_email|
   admin_user = AdminUser.find_by email: user_email
-  expect(current_path).to eq path_to(page_name, admin_user.id)
+  expect(current_path).to eq path_to_admin_role(page_name, admin_user.id)
 end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for admin user "([^"]*)"$/) do |page, user_email|
   user = AdminUser.find_by email: user_email
-  visit path_to(page, user.id)
+  visit path_to_admin_role(page, user.id)
 end
 
 
