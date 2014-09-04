@@ -1,6 +1,7 @@
 class Sponsor < ActiveRecord::Base
+  include Initializer
 
-  after_initialize :set_defaults
+  after_initialize :set_status, :set_start_date
   before_create :generate_osra_num
 
   validates :name, presence: true
@@ -12,10 +13,7 @@ class Sponsor < ActiveRecord::Base
   belongs_to :status
   belongs_to :sponsor_type
 
-  def set_defaults
-    self.status ||= Status.find_by_name('Under Revision')
-    self.start_date ||= Date.current
-  end
+private
 
   def generate_osra_num
   end
