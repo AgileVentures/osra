@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :province do
     sequence(:name) { |n| "Province #{n}" }
-    sequence(:code, 0) { |n| Province::PROVINCE_CODES[n] }
+    sequence(:code, Province::PROVINCE_CODES.to_enum)
   end
 end
