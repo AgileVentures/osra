@@ -19,12 +19,18 @@ When(/^I (?:go to|am on) the "([^"]*)" page for admin user "([^"]*)"$/) do |page
 end
 
 
-Then(/^I click on the Delete link for admin user "(.*?)"$/) do |user_email|
+Then(/^I accept the Delete link for admin user "(.*?)"$/) do |user_email|
   user = AdminUser.find_by email: user_email
   scoped_css_id = "#admin_user_#{user.id}"
   within(scoped_css_id) do
-    click_on "Delete"
+    if Capybara.current_driver == :webkit
+      page.accept_confirm do
+        click_on "Delete"
+      end
+    elsif Capybara.current_driver == :poltergeist
+      click_on "Delete"
+    else
+      raise "You need to write a path for javascript driver #{Capybara.current_driver}"
+    end
   end
 end
-
-

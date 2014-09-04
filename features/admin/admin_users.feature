@@ -50,13 +50,12 @@ Feature:
     And I should see "Admin user was successfully updated"
     And I should see "administrator1@example.com"
 
+  #@webkit
   @javascript
   Scenario: Should be able to delete an admin user from the admin user show page
     Given I am on the "Admin Admin Users" page for admin user "admin1@example.com"
     Then I should see the "Delete" link
-    And I click on the Delete link for admin user "admin1@example.com"
-    #phantomjs automatically accepts the confirmation box
-    #And I click ok on the confirmation box
+    And I accept the Delete link for admin user "admin1@example.com"
     Then I should be on the "Admin Admin Users" page 
     And I should not see "admin1@example.com"
 
