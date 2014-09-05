@@ -16,26 +16,26 @@ describe Initializer do
     let(:active_status) { build_stubbed :status }
 
     it 'sets status to default if it is blank' do
-      test_model.set_status
+      test_model.default_status_to_under_revision
       expect(test_model.status).to eq under_revision_status
     end
 
     it 'does not change status if it is already set' do
       test_model.status = active_status
-      test_model.set_status
+      test_model.default_status_to_under_revision
       expect(test_model.status).to eq active_status
     end
   end
 
   describe 'set_start_date' do
     it 'sets start_date to default if it is blank' do
-      test_model.set_start_date
+      test_model.default_start_date_to_today
       expect(test_model.start_date).to eq Date.current
     end
 
     it 'does not change start_date if it is already set' do
       test_model.start_date = Date.yesterday
-      test_model.set_start_date
+      test_model.default_start_date_to_today
       expect(test_model.start_date).to eq Date.yesterday
     end
   end

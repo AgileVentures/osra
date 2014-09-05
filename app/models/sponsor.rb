@@ -1,7 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
 
-  after_initialize :set_status, :set_start_date
+  after_initialize :default_status_to_under_revision, :default_start_date_to_today
   before_create :generate_osra_num
 
   validates :name, presence: true
