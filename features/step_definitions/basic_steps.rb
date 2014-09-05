@@ -13,34 +13,44 @@ Given /^I am a new, authenticated user$/ do
   click_button "Login"
 end
 
-def path_to(page_name, id = '')
+def path_to_admin_role(page_name, id = '')
   name = page_name.downcase
   case name
-    when 'admin partners' then
+    when 'partners' then
       admin_partners_path
-    when 'admin partners show' then
+    when 'show partners' then
       admin_partner_path(id)
-    when 'admin partners edit' then
+    when 'edit partners' then
       edit_admin_partner_path(id)
-    when 'admin admin users' then
+    when 'admin users' then
       admin_admin_users_path
-    when 'admin admin user new' then
+    when 'new admin user' then
       new_admin_admin_user_path
-    when 'admin admin users show' then
+    when 'show admin users' then
       admin_admin_user_path(id)
-    when 'admin admin users edit' then
+    when 'edit admin users' then
       edit_admin_admin_user_path(id)
     else
       raise('path to specified is not listed in #path_to')
   end
 end
 
-When(/^I (?:go to|am on) the "([^"]*)" page$/) do |page|
-  visit path_to(page)
+When(/^I (?:go to|am on) the "([^"]*)" page for the "([^"]*)" role$/) do  |page, role|
+  case role.downcase
+  when "admin"
+    visit path_to_admin_role(page)
+  else
+    raise "role not covered in this method"
+  end
 end
 
-Then(/^I should be on the "(.*?)" page$/) do |page_name|
-  expect(current_path).to eq path_to(page_name)
+Then(/^I should be on the "(.*?)" page for the "([^"]*)" role$/) do |page_name, role|
+  case role.downcase
+  when "admin"
+    expect(current_path).to eq path_to_admin_role(page_name)
+  else 
+    raise "role not covered in this method"
+  end
 end
 
 Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
@@ -72,7 +82,3 @@ When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, :with => value
 end
 
-# only needed if we use webkit capybara driver
-Then(/^I click ok on the confirmation box$/) do
-  page.driver.accept_js_confirms!
-end

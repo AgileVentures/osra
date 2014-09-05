@@ -19,6 +19,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'capybara-webkit'
   gem 'poltergeist'
+  gem 'headless' # gem that allows capybara-webkit to run without calling xvfb directly
   gem 'database_cleaner'
   gem 'shoulda-matchers', require: false # one-line tests for common Rails validations
 end
