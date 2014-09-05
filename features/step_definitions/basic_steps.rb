@@ -18,6 +18,8 @@ def path_to_admin_role(page_name, id = '')
   case name
     when 'partners' then
       admin_partners_path
+    when 'new partners' then
+      new_admin_partner_path
     when 'show partners' then
       admin_partner_path(id)
     when 'edit partners' then
@@ -80,5 +82,9 @@ end
 
 When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, :with => value
+end
+
+Given(/^I select "(.*?)" from the drop down box for "(.*?)"$/) do |choice, name|
+  page.select(choice, from: name)
 end
 

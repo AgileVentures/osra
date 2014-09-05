@@ -28,6 +28,17 @@ Feature:
     When I click the "Partner1" link 
     Then I should be on the "Show Partners" page for partner "Partner1"
 
+  Scenario: Should be able to add a partner from the partner index page
+    Given I am a new, authenticated user
+    And I am on the "New Partners" page for the "Admin" role
+    And I fill in "Name" with "Partner4"
+    And I select "Aleppo" from the drop down box for "Province"
+    And I fill in "Region" with "Region1"
+    And I click the "Create Partner" button
+    Then I should be on the "Show Partners" page for partner "Partner4"
+    And I should see "Partner was successfully created"
+    And I should see "Partner4"
+
   Scenario: Should be able to edit a partner from the partner show page
     Given I am a new, authenticated user
     And I am on the "Show Partners" page for partner "Partner1"
