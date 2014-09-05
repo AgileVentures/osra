@@ -44,7 +44,7 @@ end
 ```
 ### Testing denying the javascript popup
 ```
-page.accept_confirm do
+page.dismiss_confirm do
   click_on "Delete"
 end
 ```
