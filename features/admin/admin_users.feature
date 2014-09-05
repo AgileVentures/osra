@@ -58,3 +58,11 @@ Feature:
     Then I should be on the "Admin Users" page for the "Admin" role 
     And I should not see "admin1@example.com"
 
+  @webkit
+  Scenario: Should be able to cancel deleting an admin user from the admin user show page
+    Given I am on the "Admin Users" page for admin user "admin1@example.com"
+    Then I should see the "Delete" link
+    And I do not accept the Delete link for admin user "admin1@example.com"
+    Then I should be on the "Admin Users" page for the "Admin" role 
+    And I should see "admin1@example.com"
+
