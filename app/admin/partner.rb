@@ -13,7 +13,7 @@ ActiveAdmin.register Partner do
   #  permitted << :other if resource.something?
   #  permitted
   # end
-  actions :all, :except => [:destroy]
+  actions :all, except: [:destroy]
 
 
   index do 

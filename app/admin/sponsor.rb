@@ -13,7 +13,7 @@ ActiveAdmin.register Sponsor do
   #  permitted << :other if resource.something?
   #  permitted
   # end
-  actions :all, :except => [:destroy]
+  actions :all, except: [:destroy]
 
   index do
     column :id, sortable: :id do |sponsor|
