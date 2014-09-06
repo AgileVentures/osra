@@ -19,7 +19,9 @@ describe Partner, type: :model do
 
   it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
   it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
-  it { is_expected.not_to allow_value(7, 'yes', true).for :start_date }
+  [7, 'yes', true].each do |bad_date_value|
+    it { is_expected.to_not allow_value(bad_date_value).for :start_date }
+  end
 
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
