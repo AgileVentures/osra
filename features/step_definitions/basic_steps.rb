@@ -24,6 +24,14 @@ def path_to_admin_role(page_name, id = '')
       admin_partner_path(id)
     when 'edit partners' then
       edit_admin_partner_path(id)
+     when 'sponsors' then
+      admin_sponsors_path
+    when 'new sponsors' then
+      new_admin_sponsor_path
+    when 'show sponsors' then
+      admin_sponsor_path(id)
+    when 'edit sponsors' then
+      edit_admin_sponsor_path(id)
     when 'admin users' then
       admin_admin_users_path
     when 'new admin user' then

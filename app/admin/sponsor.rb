@@ -13,10 +13,14 @@ ActiveAdmin.register Sponsor do
   #  permitted << :other if resource.something?
   #  permitted
   # end
+  actions :all, :except => [:destroy]
 
   index do
     column :id, sortable: :id do |sponsor|
       link_to sponsor.id, admin_sponsor_path(sponsor)
+    end
+    column :id, sortable: :id do |sponsor|
+      link_to sponsor.name, admin_sponsor_path(sponsor)
     end
     column :sponsor_type
     column :country
