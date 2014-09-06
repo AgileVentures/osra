@@ -66,3 +66,7 @@ Feature:
     Then I should be on the "Admin Users" page for the "Admin" role 
     And I should see "admin1@example.com"
 
+  Scenario: I should also see a delete link on the index page
+    Given I am on the "Admin Users" page for the "Admin" role
+    Then I should see the "Delete" link
+
