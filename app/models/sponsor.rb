@@ -13,7 +13,7 @@ class Sponsor < ActiveRecord::Base
   belongs_to :status
   belongs_to :sponsor_type
 
-private
+  private
 
   def generate_osra_num
   end
