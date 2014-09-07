@@ -10,7 +10,7 @@ Feature:
       | Sponsor2      | Canada      | Female    | Organisation    | 2                 |
       | Sponsor3      | Estonia     | Male      | Individual      | 1                 |
 
-  Scenario: There should be a link to the sponsors page on the navbar
+  Scenario: There should be a link to the sponsors index page on the navbar
     Given I am a new, authenticated user
     And I am on the admin dashboard page
     Then I should see "Sponsors" linking to the admin sponsors page
