@@ -2,51 +2,55 @@ require 'rails_helper'
 
 describe Sponsor, type: :model do
 
-  before(:each) do
-    Status.create(name: "Under Revision", code: 4)
-    @type = SponsorType.create(name: 'Individual', code: 1)
+  it 'should have a valid factory' do
+    expect(build_stubbed :sponsor).to be_valid
   end
 
-  it "should not be valid without a name" do
-    expect(Sponsor.new(country: 'syria', sponsor_type: @type)).to be_invalid
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :country }
+  it { is_expected.to validate_presence_of :sponsor_type }
+
+  it { is_expected.to ensure_inclusion_of(:gender).in_array %w(Male Female) }
+
+  it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
+  it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
+  [7, 'yes', true].each do |bad_date_value|
+    it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
 
-  it "should not be valid without a country" do
-    expect(Sponsor.new(name: 'sponsor1', sponsor_type: @type)).to be_invalid
-  end
+  it { is_expected.to belong_to :status }
+  it { is_expected.to belong_to :sponsor_type }
 
-  it "should not be valid without a type" do
-    expect(Sponsor.new(name: 'sponsor1', country: 'syria')).to be_invalid
-  end
+  describe 'callbacks' do
+    describe 'after_initialize #set_defaults' do
+      describe 'status' do
+        let!(:under_revision_status) { create :status, name: 'Under Revision' }
+        let(:active_status) { build_stubbed :status, name: 'Active' }
 
-  it "should have a valid name, country and type" do
-    expect(Sponsor.new(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')).to be_valid
-  end
+        it 'defaults status to "Under Revision"' do
+          expect((Partner.new).status).to eq under_revision_status
+        end
 
-  it 'should set default status "Under Revision" unless specified' do
-    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')
-    expect(sponsor.status).to eq Status.find_by_name('Under Revision')
-  end
+        it 'sets non-default status if provided' do
+          options = { status: active_status }
+          expect(Partner.new(options).status).to eq active_status
+        end
+      end
 
-  it 'should set the custom status when specified' do
-    status = Status.create(name: "Active", code: 1)
-    sponsor = Sponsor.new(name: 'sponsor1', country: 'syria', status: status, sponsor_type: @type)
-    expect(sponsor.status).to eq status
-  end
+      describe 'start_date' do
+        it 'defaults start_date to current date' do
+          expect(Partner.new.start_date).to eq Date.current
+        end
 
-  it 'sponsorship start date should default to today date' do
-    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, gender: 'Male')
-    expect(sponsor.start_date).to eq Date.current
-  end
+        it 'sets non-default start_date if provided' do
+          options = { start_date: Date.yesterday }
+          expect(Partner.new(options).start_date).to eq Date.yesterday
+        end
+      end
+    end
 
-  it 'sponsorship start date should be set to a custom date when specified' do
-    sponsor = Sponsor.create(name: 'sponsor1', country: 'syria', sponsor_type: @type, start_date: Date.yesterday)
-    expect(sponsor.start_date).to eq Date.yesterday
+    describe 'before_create #generate_osra_num' do
+      # not yet implemented in the model
+    end
   end
-
-  it 'sponsorship start date should not be in the future' do
-    sponsor = Sponsor.new(name: 'sponsor1', country: 'syria', :start_date => Date.tomorrow)
-    expect(sponsor).to be_invalid
-  end
-
 end
