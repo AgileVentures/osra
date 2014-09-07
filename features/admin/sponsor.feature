@@ -15,7 +15,7 @@ Feature:
     Given I am on the admin dashboard page
     Then I should see "Sponsors" linking to the admin sponsors page
 
-  Scenario: There should be a list of sponsors on the sponsorsindex page
+  Scenario: There should be a list of sponsors on the sponsors index page
     Given I am on the "Sponsors" page for the "Admin" role
     Then I should see "Sponsor1"
     And I should see "Sponsor2"
