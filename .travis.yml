@@ -5,10 +5,8 @@ before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 before_script:
-- bundle exec rake db:create:all
-- bundle exec rake db:migrate
-- bundle exec rake db:seed
-- bundle exec rake db:test:prepare
+- bundle exec rake db:create
+- bundle exec rake db:schema:load
 script:
 - bundle exec rake spec
 - bundle exec cucumber

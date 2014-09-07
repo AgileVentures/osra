@@ -23,3 +23,10 @@ Status.create(name: "Under Revision", code: 4)
 # Creating Sponsor Types
 SponsorType.create(name: 'Individual', code: 1)
 SponsorType.create(name: 'Organization', code: 2)
+
+# Creating Branches
+Branch.create(name: "Riyadh", code: 1)
+Branch.create(name: "Jeddah", code: 2)
+Branch.create(name: "Dammam", code: 3)
+Branch.create(name: "Dubai", code: 11)
+Branch.create(name: "London", code: 21)
