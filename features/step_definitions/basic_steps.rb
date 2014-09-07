@@ -18,27 +18,27 @@ def path_to_admin_role(page_name, id = '')
   case name
     when 'partners' then
       admin_partners_path
-    when 'new partners' then
+    when 'new partner' then
       new_admin_partner_path
-    when 'show partners' then
+    when 'show partner' then
       admin_partner_path(id)
-    when 'edit partners' then
+    when 'edit partner' then
       edit_admin_partner_path(id)
      when 'sponsors' then
       admin_sponsors_path
-    when 'new sponsors' then
+    when 'new sponsor' then
       new_admin_sponsor_path
-    when 'show sponsors' then
+    when 'show sponsor' then
       admin_sponsor_path(id)
-    when 'edit sponsors' then
+    when 'edit sponsor' then
       edit_admin_sponsor_path(id)
     when 'admin users' then
       admin_admin_users_path
     when 'new admin user' then
       new_admin_admin_user_path
-    when 'show admin users' then
+    when 'show admin user' then
       admin_admin_user_path(id)
-    when 'edit admin users' then
+    when 'edit admin user' then
       edit_admin_admin_user_path(id)
     else
       raise('path to specified is not listed in #path_to')

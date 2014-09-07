@@ -24,31 +24,31 @@ Feature:
   Scenario: Should be able to visit a sponsor from the sponsor index page
     Given I am on the "Sponsors" page for the "Admin" role
     When I click the "Sponsor1" link 
-    Then I should be on the "Show Sponsors" page for sponsor "Sponsor1"
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
-    Given I am on the "New Sponsors" page for the "Admin" role
+    Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Country" with "UK"
     And I select "Male" from the drop down box for "Gender"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
-    Then I should be on the "Show Sponsors" page for sponsor "Sponsor4"
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor4"
 
   Scenario: Should be able to edit a sponsor from the sponsor show page
-    Given I am on the "Show Sponsors" page for sponsor "Sponsor1"
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     And I click the "Edit Sponsor" button
-    Then I should be on the "Edit Sponsors" page for sponsor "Sponsor1"
+    Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
     And I fill in "Country" with "Canada"
     And I click the "Update Sponsor" button
-    Then I should be on the "Show Sponsors" page for sponsor "Sponsor1"
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
-    Given I am on the "Show Sponsors" page for sponsor "Sponsor1"
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
 
 
