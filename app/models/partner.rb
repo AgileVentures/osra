@@ -1,5 +1,7 @@
 class Partner < ActiveRecord::Base
-  after_initialize :set_defaults
+  include Initializer
+
+  after_initialize :default_status_to_under_revision, :default_start_date_to_today
   before_create :generate_osra_num
 
   validates :name, presence: true, uniqueness: true
@@ -12,11 +14,6 @@ class Partner < ActiveRecord::Base
   acts_as_sequenced scope: :province_id
 
   private
-
-  def set_defaults
-    self.status ||= Status.find_by_name("Under Revision")
-    self.start_date ||= Date.current
-  end
 
   def generate_osra_num
     self.osra_num = province.code.to_s + "%03d" % sequential_id
