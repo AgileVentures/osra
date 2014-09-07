@@ -46,11 +46,11 @@ def path_to_admin_role(page_name, id = '')
       admin_orphan_path(id)
     when 'edit orphans'
       edit_admin_orphan_path(id)
-    when 'admin organizations' then
+    when 'organizations' then
       admin_organizations_path
-    when 'admin organization show' then
+    when 'show organization' then
       admin_organization_path(id)
-    when 'admin organization edit' then
+    when 'edit organization' then
       edit_admin_organization_path(id)
     else
       raise('path to specified is not listed in #path_to')

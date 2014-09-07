@@ -41,9 +41,7 @@ ActiveAdmin.register Organization do
 
   form do |f|
     f.inputs do
-      if !f.object.new_record?
-        f.input :code, :input_html => { :readonly => true }
-      end
+      f.input :code
       f.input :name
       f.input :country, :as => :string
       f.input :region
