@@ -21,7 +21,7 @@ Feature:
     And I should see "Sponsor2"
     And I should see "Sponsor3"
 
-  Scenario: Should be able to visit an sponsor from the sponsor index page
+  Scenario: Should be able to visit a sponsor from the sponsor index page
     Given I am on the "Sponsors" page for the "Admin" role
     When I click the "Sponsor1" link 
     Then I should be on the "Show Sponsors" page for sponsor "Sponsor1"
