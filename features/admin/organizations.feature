@@ -17,30 +17,30 @@ Feature:
 
     Scenario: There should be a list of organizations on the admin index page
     Given I am a new, authenticated user
-    And I am on the "admin organizations" page
+    And I am on the "Organizations" page for the "Admin" role
     Then I should see "Org1"
     And I should see "Org2"
     And I should see "Org3"
 
   Scenario: Should be able to visit an organization from the organizations index page
     Given I am a new, authenticated user
-    And I am on the "admin organizations" page
+    And I am on the "Organizations" page for the "Admin" role
     When I click the "Org1" link 
-    Then I should be on the "admin organization show" page for organization "Org1"
+    Then I should be on the "Show Organization" page for organization "Org1"
 
   Scenario: Should be able to edit an organization from the organization show page
     Given I am a new, authenticated user
-    And I am on the "admin organization show" page for organization "Org1"
+    And I am on the "Show Organization" page for organization "Org1"
     And I click the "Edit Organization" button
-    Then I should be on the "admin organization edit" page for organization "Org1"
+    Then I should be on the "Edit Organization" page for organization "Org1"
     And I fill in "Region" with "New Region"
     And I click the "Update Organization" button
-    Then I should be on the "admin organization show" page for organization "Org1"
+    Then I should be on the "Show Organization" page for organization "Org1"
     And I should see "Organization was successfully updated"
     And I should see "New Region"
 
   Scenario: Should not be able to delete an organization from the organization show page
     Given I am a new, authenticated user
-    And I am on the "admin organization show" page for organization "Org1"
+    And I am on the "Show Organization" page for organization "Org1"
     Then I should not see the "Delete Organization" link
 

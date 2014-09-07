@@ -14,12 +14,12 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for organization "([^"]*)"$/) do |page, org_name|
   org = Organization.find_by name: org_name
-  visit path_to(page, org.id)
+  visit path_to_admin_role(page, org.id)
 end
 
 Then(/^I should be on the "(.*?)" page for organization "(.*?)"$/) do |page, org_name|
   org = Organization.find_by name: org_name
-  expect(current_path).to eq path_to(page, org.id)
+  expect(current_path).to eq path_to_admin_role(page, org.id)
 end
 
 Then(/^I should see "Organizations" linking to the admin organizations page$/) do
