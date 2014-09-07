@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20140919081847) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +68,14 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+  create_table "orphan_lists", force: true do |t|
+    t.string   "osra_num"
+    t.integer  "partner_id"
+    t.integer  "orphan_count"
+    t.binary   "file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "organizations", force: true do |t|
     t.integer  "code"
@@ -89,6 +98,7 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.integer "code"
     t.string  "name"
   end
+  add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
 
   create_table "orphans", force: true do |t|
     t.string   "name"
