@@ -13,6 +13,9 @@ class Orphan < ActiveRecord::Base
   validates :original_address, presence: true
   validates :current_address, presence: true
 
-  belongs_to :original_address, class_name: 'Address'
-  belongs_to :current_address, class_name: 'Address'
+  has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
+  has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
+
+  accepts_nested_attributes_for :current_address, allow_destroy: true
+  accepts_nested_attributes_for :original_address, allow_destroy: true
 end
