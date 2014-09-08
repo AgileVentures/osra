@@ -13,6 +13,9 @@ ActiveAdmin.register Orphan do
   #   permitted << :other if resource.something?
   #   permitted
   # end
+
+  actions :all, except: [:destroy]
+
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
                 :father_date_of_death, :mother_name, :mother_alive,
@@ -54,7 +57,7 @@ ActiveAdmin.register Orphan do
       f.input :contact_number
       f.input :alt_contact_number
     end
-    f.inputs 'Original Adress' do
+    f.inputs 'Original Address' do
       f.semantic_fields_for :original_address do |r|
         r.inputs :city
         r.inputs :province
@@ -63,7 +66,7 @@ ActiveAdmin.register Orphan do
         r.inputs :details
       end
     end
-    f.inputs 'Current Adress' do
+    f.inputs 'Current Address' do
       f.semantic_fields_for :current_address do |r|
         r.inputs :city
         r.inputs :province
@@ -89,15 +92,22 @@ ActiveAdmin.register Orphan do
         row :gender
         row :health_status
         row :schooling_status
-        row :goes_to_school
+        row :goes_to_school do
+          orphan.goes_to_school ? 'Yes' : 'No'
+        end
+        row :orphan_status
       end
     end
 
     panel 'Parents Details' do
       attributes_table_for orphan do
         row :mother_name
-        row :mother_alive
-        row :father_is_martyr
+        row :mother_alive do
+          orphan.mother_alive ? 'Yes' : 'No'
+        end
+        row :father_is_martyr do
+          orphan.father_is_martyr ? 'Yes' : 'No'
+        end
         row :father_occupation
         row :father_place_of_death
         row :father_cause_of_death
@@ -137,7 +147,9 @@ ActiveAdmin.register Orphan do
 
     panel 'Additional Details' do
       attributes_table_for orphan do
-        row :sponsored_by_another_org
+        row :sponsored_by_another_org do
+          orphan.sponsored_by_another_org ? 'Yes' : 'No'
+        end
         row :another_org_sponsorship_details
         row :minor_siblings_count
         row :sponsored_minor_siblings_count
