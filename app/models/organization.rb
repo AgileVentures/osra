@@ -1,7 +1,8 @@
 class Organization < ActiveRecord::Base
-  after_initialize :set_defaults
+  include Initializer
+  after_initialize :default_status_to_under_revision, :default_start_date_to_today
 
-  validates :code, presence: true, length: { is: 2 }
+  validates :code, presence: true, uniqueness: true, numericality: {only_integer: true}, inclusion: 0..99 
   validates :name, presence: true, uniqueness: true
   validates :country, presence: true
   validates :status_id, presence: true

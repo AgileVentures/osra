@@ -1,34 +1,31 @@
 require 'rails_helper'
 
-RSpec.describe Organization, :type => :model do
+describe Organization, :type => :model do
 
   let(:status) {FactoryGirl.build_stubbed(:status)}
   let(:params) { {code: 11, name: 'Org1', country: 'UK', region: 'Europe', status: status, start_date: '03/03/14' } }
 
-  context 'returns errors when invalid information passed' do
-    it 'is invalid if no org name is specified' do
-      expect(Organization.new(params.merge(name: ''))).to be_invalid
-    end
+  it 'has a valid factory' do
+    expect(build_stubbed :organization).to be_valid
+  end
 
-    it 'is invalid if no status' do
-      expect(Organization.new(params.merge(status: nil))).to be_invalid
-    end
+  context 'makes the right validations' do
 
-    it 'is invalid if no country' do
-      expect(Organization.new(params.merge(country: ''))).to be_invalid
-    end
+    it { is_expected.to validate_presence_of :code }
+    it { is_expected.to validate_uniqueness_of :code }
+    it { is_expected.to validate_numericality_of :code }
 
-    it 'is invalid if no organization code' do
-      expect(Organization.new(params.merge(code: ''))).to be_invalid
-    end
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_uniqueness_of :name }
 
-    it 'is invalid if single digit integer is passed' do
-      expect(Organization.new(params.merge(code: 1))).to be_invalid
-    end
+    it { is_expected.to validate_presence_of :country }
+    it { is_expected.to validate_presence_of :status_id  }
+    it { is_expected.to belong_to :status }
 
-    it 'should not allow start_date to be in the future' do
-      org = Organization.new(params.merge(start_date: Date.tomorrow))
-      expect(org).to be_invalid
+    it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
+    it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
+    [7, 'yes', false].each do |bad_date_value|
+      it { is_expected.not_to allow_value(bad_date_value).for :start_date }
     end
   end
 
@@ -53,13 +50,8 @@ RSpec.describe Organization, :type => :model do
       expect(org.start_date).to eq Date.current
     end
 
-    it 'sets the date to yesterday when such date is passed' do
-      org = Organization.new(params.merge(start_date: Date.yesterday))
-      expect(org.start_date).to eq Date.yesterday
-    end
-
     it 'has code number according to specified' do
-      org = Organization.new(params.merge(code: 11))
+      org = Organization.new(params)
       expect(org.code).to eq 11
     end
   end
