@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.string   "osra_num"
     t.integer  "partner_id"
     t.integer  "orphan_count"
-    t.binary   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequential_id"

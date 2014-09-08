@@ -4,7 +4,6 @@ class CreateOrphanLists < ActiveRecord::Migration
       t.string :osra_num
       t.belongs_to :partner, index: true
       t.integer :orphan_count
-      t.binary :file
 
       t.timestamps
     end
