@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140908032518) do
+ActiveRecord::Schema.define(version: 20140908035646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,11 @@ ActiveRecord::Schema.define(version: 20140908032518) do
     t.datetime "updated_at"
   end
 
+  create_table "orphan_statuses", force: true do |t|
+    t.integer "code"
+    t.string  "name"
+  end
+
   create_table "orphans", force: true do |t|
     t.string   "name"
     t.string   "father_name"
@@ -95,7 +100,10 @@ ActiveRecord::Schema.define(version: 20140908032518) do
     t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "orphan_status_id"
   end
+
+  add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
 
   create_table "partners", force: true do |t|
     t.string   "name"
