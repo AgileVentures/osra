@@ -21,7 +21,7 @@ Feature:
     And I should see "Partner2"
     And I should see "Partner3"
 
-  Scenario: Should be able to visit an partner from the partner index page
+  Scenario: Should be able to visit a partner from the partner index page
     Given I am on the "Partners" page for the "Admin" role
     When I click the "Partner1" link 
     Then I should be on the "Show Partner" page for partner "Partner1"
