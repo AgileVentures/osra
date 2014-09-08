@@ -26,6 +26,22 @@ Feature:
     And I click the "Org1" link 
     Then I should be on the "Show Organization" page for organization "Org1"
 
+  Scenario: Should be able to create an organization from the organizations index page
+    When I am on the "Organizations" page for the "Admin" role
+    And I click the "New Organization" button
+    Then I should be on the "New Organization" page for the "Admin" role
+    When I fill in new organization form:
+      | Field      | Text       |
+      | Code       | 55         |
+      | Name       | Sampleorg  |
+      | Country    | UK         |
+      | Region     | Europe     |
+      | Start date | 2014-09-08 |
+
+    And I click the "Create Organization" button
+    Then I should be on the "Show Organization" page for organization "Sampleorg"
+    And I should see "Organization was successfully created."
+
   Scenario: Should be able to edit an organization from the organization show page
     When I am on the "Show Organization" page for organization "Org1"
     And I click the "Edit Organization" button

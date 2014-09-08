@@ -9,11 +9,4 @@ class Organization < ActiveRecord::Base
   validates :start_date, date_not_in_future: true
 
   belongs_to :status
-
-  private
-
-  def set_defaults
-    self.status ||= Status.find_by_name("Under Revision")
-    self.start_date ||= Date.current
-  end
 end
