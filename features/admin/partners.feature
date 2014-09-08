@@ -21,6 +21,15 @@ Feature:
     And I should see "Partner2"
     And I should see "Partner3"
 
+  Scenario: I should see the generated osra numbers on the admin index page
+    Given I am on the "Partners" page for the "Admin" role
+    Then I should see the following codes for partners:
+      | name       | expected_code  |
+      | Partner1   | 11001          |
+      | Partner2   | 12001          |
+      | Partner3   | 13001          |
+
+
   Scenario: Should be able to visit a partner from the partner index page
     Given I am on the "Partners" page for the "Admin" role
     When I click the "Partner1" link 
