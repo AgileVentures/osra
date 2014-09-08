@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Organization, :type => :model do
 
-  let(:status) {FactoryGirl.build_stubbed(:status)}
-  let(:params) { {code: 11, name: 'Org1', country: 'UK', region: 'Europe', status: status, start_date: '03/03/14' } }
+  let(:status) { FactoryGirl.build_stubbed(:status) }
+  let(:params) { { code: 11, name: 'Org1', country: 'UK', region: 'Europe', status: status, start_date: Date.current - 1.year } }
 
   it 'has a valid factory' do
     expect(build_stubbed :organization).to be_valid
@@ -30,7 +30,7 @@ describe Organization, :type => :model do
   end
 
   context 'sets appropriate values for organization fields' do
-    it 'defaults to status "Under Revision" unless specified' do
+    it 'defaults to status "Under Revision" when not specified' do
       org = Organization.create((params.merge(status: nil)))
       expect(org.status).to eq Status.find_by_name('Under Revision')
     end
@@ -40,19 +40,14 @@ describe Organization, :type => :model do
       expect(org.status).to eq status
     end
 
-    it 'sets region when specified' do
-      org = Organization.new(params.merge(region: 'Europe'))
-      expect(org.region).to eq 'Europe'
-    end
-
     it 'defaults to current date if such not set' do
       org = Organization.new(params.merge(start_date: ''))
       expect(org.start_date).to eq Date.current
     end
-
-    it 'has code number according to specified' do
-      org = Organization.new(params)
-      expect(org.code).to eq 11
+    
+    it 'does not get overriden by default_start_date_to_today' do
+      org = Organization.create(params)
+      expect(org.start_date).to eq Date.current - 1.year 
     end
   end
 end
