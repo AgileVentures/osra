@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.binary   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequential_id"
   end
 
   create_table "organizations", force: true do |t|
