@@ -19,7 +19,7 @@ ActiveAdmin.register Sponsor do
     column :id, sortable: :id do |sponsor|
       link_to sponsor.id, admin_sponsor_path(sponsor)
     end
-    column :id, sortable: :id do |sponsor|
+    column :name, sortable: :name do |sponsor|
       link_to sponsor.name, admin_sponsor_path(sponsor)
     end
     column :sponsor_type

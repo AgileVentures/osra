@@ -5,10 +5,20 @@ Feature:
 
   Background:
     Given the following sponsors exist:
-      | name          | country     | gender    | sponsor_type    | sponsor_type_code |
-      | Sponsor1      | UK          | Male      | Individual      | 1                 |
-      | Sponsor2      | Canada      | Female    | Organisation    | 2                 |
-      | Sponsor3      | Estonia     | Male      | Individual      | 1                 |
+      | name              | Sponsor1           | Sponsor2            | Sponsor3            |
+      | country           | UK                 | Canada              | Estonia             |
+      | gender            | Male               | Female              | Male                |
+      | sponsor_type      | Individual         | Organisation        | Individual          |
+      | sponsor_type_code | 1                  | 2                   | 1                   |  
+      | address           | Address1           | Address2            | Address3            |
+      | email             | email1@example.com | email2@example.com  | email3@example.com  |
+      | contact1          | cd1                | cs2                 | cs3                 |
+      | contact2          | cd21               | cd22                | cd32                |
+      | additional_info   | additional1        | additional2         | addtional3          |
+      | start_date        | 2013-09-25         | 2013-09-25          | 2013-09-25          |
+      | status            | Under Revision     | Under Revision      | Under Revision      |
+      | status_code       | 01                 | 01                  | 01                  |
+
     And I am a new, authenticated user
 
   Scenario: There should be a link to the sponsors index page on the navbar
@@ -36,6 +46,33 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor4"
+
+  Scenario: I should see the required fields on the index page
+    Given I am on the "Sponsors" page for the "Admin" role
+    Then I should see the following fields on the page:
+    |  field             | value                  |
+    |  name              | Sponsor1               |
+    |  country           | UK                     |
+    |  gender            | Active                 |
+    |  sponsor_type      | Individual             |
+    |  status            | Under Revision         |
+    |  start_date        | September 25, 2013     |
+
+  Scenario: I should see the required fields on the partner show page
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
+    Then I should see the following fields on the page:
+    |  field             | value                  |
+    |  name              | Sponsor1               |
+    |  country           | UK                     |
+    |  gender            | Active                 |
+    |  sponsor_type      | Individual             |
+    |  address           | Address1               |
+    |  email             | email1@example.com     |
+    |  contact1          | cd1                    |
+    |  contact2          | cd21                   |
+    |  additional_info   | additional1            |
+    |  status            | Under Revision         |
+    |  start_date        | September 25, 2013     |
 
   Scenario: Should be able to edit a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"

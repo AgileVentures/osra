@@ -1,9 +1,16 @@
 Given(/^the following sponsors exist:$/) do |table|
+  table = table.transpose
   table.hashes.each do |hash|
     sponsor_type = SponsorType.find_or_create_by!(name: hash[:sponsor_type],
                                                   code: hash[:sponsor_type_code])
+    status= Status.find_or_create_by!(name: hash[:status],
+                                      code: hash[:status_code])
     sponsor = Sponsor.new(name: hash[:name], country: hash[:country], 
-                          gender: hash[:gender], sponsor_type: sponsor_type) 
+                          gender: hash[:gender], sponsor_type: sponsor_type,
+                          address: hash[:address], email: hash[:email],
+                          contact1: hash[:contact1], contact2: hash[:contact2],
+                          additional_info: hash[:additional_info],
+                          start_date: hash[:start_date], status: status) 
     sponsor.save!
   end
 end

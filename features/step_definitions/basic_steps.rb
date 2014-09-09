@@ -96,3 +96,8 @@ Given(/^I select "(.*?)" from the drop down box for "(.*?)"$/) do |choice, name|
   page.select(choice, from: name)
 end
 
+Then(/^I should see the following fields on the page:$/) do |table|
+  table.hashes.each do |hash|
+    expect(page).to have_content(hash[:value])
+  end  
+end

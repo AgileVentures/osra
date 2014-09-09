@@ -35,9 +35,4 @@ Then(/^I should see the following codes for partners:$/) do |table|
   end
 end
 
-Then(/^I should see the following fields on the page:$/) do |table|
-  table.hashes.each do |hash|
-    expect(page).to have_content(hash[:value])
-  end  
-end
 
