@@ -5,10 +5,10 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name          | region      | province                   | province_code |
-      | Partner1      | Region1     | Damascus & Rif Dimashq     | 11            |
-      | Partner2      | Region2     | Aleppo                     | 12            |
-      | Partner3      | Region3     | Homs                       | 13            |
+      | name          | region      | province                   | province_code | contact_details | start_date |
+      | Partner1      | Region1     | Damascus & Rif Dimashq     | 11            | 12345           | 2013-09-25 |
+      | Partner2      | Region2     | Aleppo                     | 12            | 23456           | 2013-09-25 |
+      | Partner3      | Region3     | Homs                       | 13            | 34567           | 2013-09-25 |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the partners page on the navbar
@@ -29,6 +29,26 @@ Feature:
       | Partner2   | 12001          |
       | Partner3   | 13001          |
 
+  Scenario: I should see the required fields on the index page
+    Given I am on the "Partners" page for the "Admin" role
+    Then I should see the following fields on the page:
+    |  field      | value                  |
+    |  osra_num   | 11001                  |
+    |  name       | Partner1               |
+    |  status     | Active                 |
+    |  province   | Damascus & Rif Dimashq |
+    |  start_date | September 25, 2013     |
+
+  Scenario: I should see the required fields on the partner show page
+    Given I am on the "Show Partner" page for partner "Partner1"
+    Then I should see the following fields on the page:
+    |  field           | value                  |
+    |  osra_num        | 11001                  |
+    |  name            | Partner1               |
+    |  status          | Active                 |
+    |  province        | Damascus & Rif Dimashq |
+    |  contact_details | 12345                  |
+    |  start_date      | September 25, 2013     |
 
   Scenario: Should be able to visit a partner from the partner index page
     Given I am on the "Partners" page for the "Admin" role

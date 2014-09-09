@@ -4,6 +4,8 @@ Given(/^the following partners exist:$/) do |table|
                                            code: hash[:province_code]) 
     partner = Partner.new(name: hash[:name], 
                           region: hash[:region], 
+                          start_date: hash[:start_date],
+                          contact_details: hash[:contact_details],
                           province: province)
     partner.save!
   end
@@ -32,3 +34,10 @@ Then(/^I should see the following codes for partners:$/) do |table|
     end
   end
 end
+
+Then(/^I should see the following fields on the page:$/) do |table|
+  table.hashes.each do |hash|
+    expect(page).to have_content(hash[:value])
+  end  
+end
+
