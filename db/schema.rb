@@ -75,6 +75,10 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequential_id"
+    t.string   "spreadsheet_file_name"
+    t.string   "spreadsheet_content_type"
+    t.integer  "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
   end
 
   create_table "organizations", force: true do |t|
@@ -193,6 +197,12 @@ ActiveRecord::Schema.define(version: 20140919081847) do
 
   add_index "sponsorships", ["orphan_id"], name: "index_sponsorships_on_orphan_id", using: :btree
   add_index "sponsorships", ["sponsor_id"], name: "index_sponsorships_on_sponsor_id", using: :btree
+
+  create_table "spreadsheets", force: true do |t|
+    t.integer "orphan_list_id"
+    t.string  "style"
+    t.binary  "file_contents"
+  end
 
   create_table "statuses", force: true do |t|
     t.integer "code"

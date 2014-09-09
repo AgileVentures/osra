@@ -11,7 +11,7 @@ ActiveAdmin.register OrphanList do
     end
     column :orphan_count
     column do |orphan_list|
-      link_to 'Download', download_admin_orphan_list_path(orphan_list)
+      link_to 'Download', orphan_list.spreadsheet.url
     end
   end
 
@@ -24,26 +24,16 @@ ActiveAdmin.register OrphanList do
     f.inputs do
       f.input :partner
       f.input :orphan_count, as: :number
-      f.input :file, as: :file
+      f.input :spreadsheet, as: :file
     end
     f.actions
   end
 
-  member_action :download, method: :get do
-    @orphan_list = OrphanList.find(params[:id])
-    send_data(@orphan_list.file,
-              type: 'application/vnd.ms-excel',
-              filename: "#{@orphan_list.osra_num}.xls")
-  end
-
   controller do
     def create
-      file = params[:orphan_list].delete(:file)
-      @orphan_list = OrphanList.new(orphan_list_params) do |orphan_list|
-        orphan_list.file = file.read if file && is_spreadsheet?(file)
-      end
+      @orphan_list = OrphanList.new(orphan_list_params)
       if @orphan_list.save
-        redirect_to admin_orphan_list_path(@orphan_list), notice: 'Orphan List was successfully created.'
+        redirect_to admin_orphan_lists_path, notice: 'Orphan List was successfully created.'
       else
         render action: :new
       end
@@ -51,13 +41,8 @@ ActiveAdmin.register OrphanList do
 
     private
 
-    def is_spreadsheet?(file)
-      ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].
-        include? file.content_type
-    end
-
     def orphan_list_params
-      params.require(:orphan_list).permit(:partner_id, :orphan_count)
+      params.require(:orphan_list).permit(:partner_id, :orphan_count, :spreadsheet)
     end
   end
 
