@@ -4,6 +4,8 @@ Given(/^the following partners exist:$/) do |table|
                                            code: hash[:province_code]) 
     partner = Partner.new(name: hash[:name], 
                           region: hash[:region], 
+                          start_date: hash[:start_date],
+                          contact_details: hash[:contact_details],
                           province: province)
     partner.save!
   end
@@ -22,4 +24,15 @@ Then(/^I should be on the "(.*?)" page for partner "(.*?)"$/) do |page_name, par
   partner = Partner.find_by name: partner_name
   expect(current_path).to eq path_to_admin_role(page_name, partner.id)
 end
+
+Then(/^I should see the following codes for partners:$/) do |table|
+  table.hashes.each do |hash|
+    partner = Partner.find_by_name hash[:name]
+    expect(partner.osra_num).to eq(hash[:expected_code])
+    within "#partner_#{partner.id} .col-osra_num" do
+      expect(page).to have_content(hash[:expected_code])
+    end
+  end
+end
+
 
