@@ -13,6 +13,7 @@ class Orphan < ActiveRecord::Base
   validates :original_address, presence: true
   validates :current_address, presence: true
   validates :orphan_status, presence: true
+  validate :orphans_dob_within_gestation_of_fathers_death
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
@@ -25,4 +26,26 @@ class Orphan < ActiveRecord::Base
   def full_name
     [name, father_name].join(' ')
   end
+
+  def orphans_dob_within_gestation_of_fathers_death
+    # the longest recorded gestation period is 375 days the second longest 317 days
+    # http://www.newhealthguide.org/Longest-Pregnancy.html
+    min_gestation_offset = -317
+    gestation_offset = days_between(father_date_of_death, date_of_birth)
+    return unless gestation_offset
+    if gestation_offset < min_gestation_offset
+      errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
+    end
+  end
+ 
+  private
+
+  def days_between start_date, end_date
+    begin 
+      Date.parse(start_date.to_s) - Date.parse(end_date.to_s)
+    rescue ArgumentError
+      return false
+    end
+  end
+
 end
