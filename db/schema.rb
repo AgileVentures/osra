@@ -101,8 +101,6 @@ ActiveRecord::Schema.define(version: 20140912082520) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "orphan_status_id"
-    t.integer  "sequential_id"
-    t.integer  "osra_id"
   end
 
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
