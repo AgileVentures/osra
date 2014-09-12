@@ -13,6 +13,8 @@ class Sponsor < ActiveRecord::Base
   belongs_to :branch
   belongs_to :status
   belongs_to :sponsor_type
+  has_many :sponsorships
+  has_many :orphans, through: :sponsorships
 
   private
 

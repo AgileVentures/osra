@@ -16,7 +16,9 @@ class Orphan < ActiveRecord::Base
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
-
+  has_many :sponsorships
+  has_many :sponsors, through: :sponsorships
+  
   belongs_to :orphan_status
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
