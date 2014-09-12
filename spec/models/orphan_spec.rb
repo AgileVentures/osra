@@ -43,5 +43,5 @@ describe Orphan, type: :model do
   it { is_expected.to have_one(:current_address).class_name 'Address' }
 
   it { is_expected.to validate_presence_of :orphan_status }
-  it { is_expected.to have_many :sponsors }
+  it { is_expected.to have_many(:sponsors).through :sponsorships }
 end

@@ -34,6 +34,7 @@ group :development, :test do
   gem 'pry-rails' # integrate pry with rails console
   gem 'better_errors' # nice output of rails errors in browser
   gem 'binding_of_caller'  #online console and debugging in browser
+  gem 'launchy' # open capybara-generated pages in browser
 end
 
 group :production do

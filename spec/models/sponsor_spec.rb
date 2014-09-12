@@ -20,7 +20,7 @@ describe Sponsor, type: :model do
 
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
-  it { is_expected.to have_many :orphans }
+  it { is_expected.to have_many(:orphans).through :sponsorships }
 
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
