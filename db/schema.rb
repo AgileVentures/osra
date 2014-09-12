@@ -13,7 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140922195538) do
 
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -192,9 +191,17 @@ ActiveRecord::Schema.define(version: 20140922195538) do
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
   add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
 
+  create_table "sponsorship_statuses", force: true do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sponsorships", force: true do |t|
     t.integer  "sponsor_id"
     t.integer  "orphan_id"
+    t.integer  "sponsorship_status_id"
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
@@ -209,6 +216,7 @@ ActiveRecord::Schema.define(version: 20140922195538) do
     t.string  "style"
     t.binary  "file_contents"
   end
+  add_index "sponsorships", ["sponsorship_status_id"], name: "index_sponsorships_on_sponsorship_status_id", using: :btree
 
   create_table "statuses", force: true do |t|
     t.integer "code"
