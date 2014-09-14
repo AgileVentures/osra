@@ -28,21 +28,18 @@ class Orphan < ActiveRecord::Base
   end
 
   def orphans_dob_within_gestation_of_fathers_death
-    # the longest recorded gestation period is 375 days the second longest 317 days
-    # http://www.newhealthguide.org/Longest-Pregnancy.html
-    min_gestation_offset = -317
-    gestation_offset = days_between(father_date_of_death, date_of_birth)
-    return unless gestation_offset
-    if gestation_offset < min_gestation_offset
+    # gestation is considered vaild if within 1 year of a fathers death
+    return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
+    if (father_date_of_death + 1.year) < date_of_birth
       errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
     end
   end
  
   private
 
-  def days_between start_date, end_date
+  def valid_date? date
     begin 
-      Date.parse(start_date.to_s) - Date.parse(end_date.to_s)
+      Date.parse(date.to_s)
     rescue ArgumentError
       return false
     end
