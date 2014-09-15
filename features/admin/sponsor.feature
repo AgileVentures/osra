@@ -58,7 +58,7 @@ Feature:
     |  status            | Under Revision         |
     |  start_date        | September 25, 2013     |
 
-  Scenario: I should see the required fields on the partner show page
+  Scenario: I should see the required fields on the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see the following fields on the page:
     |  field             | value                  |
