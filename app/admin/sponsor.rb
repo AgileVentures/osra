@@ -41,6 +41,15 @@ ActiveAdmin.register Sponsor do
       row :additional_info
       row :start_date
     end
+    if sponsor.orphans.any?
+      h3 'Sponsored Orphans'
+      ul
+      sponsor.orphans.each do |orphan|
+        li orphan.name
+      end
+    else
+      h3 'No sponsored orphans'
+    end
   end
 
   form do |f|
@@ -60,6 +69,10 @@ ActiveAdmin.register Sponsor do
       f.input :status
     end
     f.actions
+  end
+
+  action_item only: :show do
+    link_to 'Link to Orphan', '#'
   end
 
   permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
