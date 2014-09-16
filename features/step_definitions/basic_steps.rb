@@ -40,6 +40,14 @@ def path_to_admin_role(page_name, id = '')
       admin_admin_user_path(id)
     when 'edit admin user' then
       edit_admin_admin_user_path(id)
+    when 'organizations' then
+      admin_organizations_path
+    when 'show organization' then
+      admin_organization_path(id)
+    when 'edit organization' then
+      edit_admin_organization_path(id)
+    when 'new organization' then
+      new_admin_organization_path
     else
       raise('path to specified is not listed in #path_to')
   end
