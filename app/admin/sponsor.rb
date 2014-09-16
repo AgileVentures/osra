@@ -41,14 +41,16 @@ ActiveAdmin.register Sponsor do
       row :additional_info
       row :start_date
     end
-    if sponsor.orphans.any?
-      h3 'Sponsored Orphans'
-      ul
-      sponsor.orphans.each do |orphan|
-        li orphan.name
+
+    panel 'Sponsored Orphans' do
+      table_for sponsor.orphans do
+        column :name
+        column :date_of_birth
+        column :gender
+        column '' do |orphan|
+          link_to 'End sponsorship', '#'
+        end
       end
-    else
-      h3 'No sponsored orphans'
     end
   end
 
