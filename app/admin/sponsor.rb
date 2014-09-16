@@ -44,7 +44,9 @@ ActiveAdmin.register Sponsor do
 
     panel 'Sponsored Orphans' do
       table_for sponsor.orphans do
-        column :name
+        column 'Name' do |orphan|
+          link_to orphan.name, '#'
+        end
         column :date_of_birth
         column :gender
         column '' do |orphan|
