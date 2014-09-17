@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140903040419) do
+ActiveRecord::Schema.define(version: 20140908035646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 20140903040419) do
     t.string   "details"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "orphan_original_address_id"
+    t.integer  "orphan_current_address_id"
   end
 
   create_table "admin_users", force: true do |t|
@@ -66,6 +68,11 @@ ActiveRecord::Schema.define(version: 20140903040419) do
     t.datetime "updated_at"
   end
 
+  create_table "orphan_statuses", force: true do |t|
+    t.integer "code"
+    t.string  "name"
+  end
+
   create_table "orphans", force: true do |t|
     t.string   "name"
     t.string   "father_name"
@@ -83,7 +90,7 @@ ActiveRecord::Schema.define(version: 20140903040419) do
     t.boolean  "goes_to_school"
     t.string   "guardian_name"
     t.string   "guardian_relationship"
-    t.integer  "guardian_id"
+    t.integer  "guardian_id_num"
     t.string   "contact_number"
     t.string   "alt_contact_number"
     t.boolean  "sponsored_by_another_org"
@@ -93,9 +100,10 @@ ActiveRecord::Schema.define(version: 20140903040419) do
     t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "original_address_id"
-    t.integer  "current_address_id"
+    t.integer  "orphan_status_id"
   end
+
+  add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
 
   create_table "partners", force: true do |t|
     t.string   "name"

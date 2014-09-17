@@ -12,7 +12,17 @@ class Orphan < ActiveRecord::Base
   validates :minor_siblings_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :original_address, presence: true
   validates :current_address, presence: true
+  validates :orphan_status, presence: true
 
-  belongs_to :original_address, class_name: 'Address'
-  belongs_to :current_address, class_name: 'Address'
+  has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
+  has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
+
+  belongs_to :orphan_status
+
+  accepts_nested_attributes_for :current_address, allow_destroy: true
+  accepts_nested_attributes_for :original_address, allow_destroy: true
+
+  def full_name
+    [name, father_name].join(' ')
+  end
 end

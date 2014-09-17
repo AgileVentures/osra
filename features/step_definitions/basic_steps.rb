@@ -5,7 +5,7 @@ end
 Given /^I am a new, authenticated user$/ do
   email = 'testing@man.net'
   password = 'secretpass'
-  AdminUser.new(:email => email, :password => password, :password_confirmation => password).save!
+  AdminUser.new(email: email, password: password, password_confirmation: password).save!
 
   visit new_admin_user_session_path
   fill_in "admin_user_email", :with => email
@@ -40,6 +40,12 @@ def path_to_admin_role(page_name, id = '')
       admin_admin_user_path(id)
     when 'edit admin user' then
       edit_admin_admin_user_path(id)
+    when 'orphans'
+      admin_orphans_path
+    when 'show orphans'
+      admin_orphan_path(id)
+    when 'edit orphans'
+      edit_admin_orphan_path(id)
     else
       raise('path to specified is not listed in #path_to')
   end
@@ -54,7 +60,7 @@ When(/^I (?:go to|am on) the "([^"]*)" page for the "([^"]*)" role$/) do  |page,
   end
 end
 
-Then(/^I should be on the "(.*?)" page for the "([^"]*)" role$/) do |page_name, role|
+Then(/^I should be on the "([^"]*)" page for the "([^"]*)" role$/) do |page_name, role|
   case role.downcase
   when "admin"
     expect(current_path).to eq path_to_admin_role(page_name)
@@ -79,7 +85,6 @@ Then /^I should( not)? see the "([^"]*)" link$/ do |negative, button|
   end
 end
 
-
 When(/^I click the "([^"]*)" link$/) do |link|
   click_link link
 end
@@ -89,10 +94,10 @@ When(/^I click the "([^"]*)" button$/) do |button|
 end
 
 When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
-  fill_in field, :with => value
+  fill_in field, with: value
 end
 
-Given(/^I select "(.*?)" from the drop down box for "(.*?)"$/) do |choice, name|
+Given(/^I select "([^"]*)" from the drop down box for "([^"]*)"$/) do |choice, name|
   page.select(choice, from: name)
 end
 
@@ -100,4 +105,24 @@ Then(/^I should see the following fields on the page:$/) do |table|
   table.hashes.each do |hash|
     expect(page).to have_content(hash[:value])
   end  
+end
+
+Then(/^I (un)?check the "([^"]*)" checkbox$/) do |negative,checkbox|
+  negative ? uncheck(checkbox) : check(checkbox)
+end
+
+Then(/^I should see "([^"]*)" set to "([^"]*)"$/) do |label, value|
+  expect(find('tr', text: /\A#{label}/)).to have_content(value)
+end
+
+Then(/^I should see "([^"]*)" in panel "([^"]*)" set to "([^"]*)"$/) do |label, panel, value|
+  expect(find('.panel', text: panel).find('tr', text: label)).to have_content(value)
+end
+
+And(/^I fill in "([^"]*)" in panel "([^"]*)" with "([^"]*)"$/) do |field, panel, value|
+  find('fieldset', text: panel).fill_in field, with: value
+end
+
+Given(/^I select "([^"]*)" from the drop down box for "([^"]*)" in panel "([^"]*)"$/) do |choice, name, panel|
+  find('fieldset', text: panel).select(choice, from: name)
 end

@@ -13,5 +13,6 @@ FactoryGirl.define do
     minor_siblings_count 3
     association :original_address, factory: :address
     association :current_address, factory: :address
+    orphan_status
   end
 end
