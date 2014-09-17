@@ -5,7 +5,6 @@ Given(/^the following organizations exist:$/) do |table|
     organization = Organization.new(name: hash[:name], 
                           code: hash[:code], 
                           country: hash[:country],
-                          region: hash[:region],
                           start_date: hash[:start_date],
                           status: status)
     organization.save!
@@ -28,7 +27,7 @@ Then(/^I should be on the "(.*?)" page for organization "(.*?)"$/) do |page, org
   expect(current_path).to eq path_to_admin_role(page, org.id)
 end
 
-Then(/^I should see "Organizations" linking to the admin organizations page$/) do
-  expect(page).to have_link("Organizations", href: "#{admin_organizations_path}")
+Then(/^I should not see "Organizations" linking to the admin organizations page$/) do
+  expect(page).to_not have_link("Organizations", href: "#{admin_organizations_path}")
 end
 

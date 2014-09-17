@@ -1,4 +1,6 @@
 ActiveAdmin.register Organization do
+  
+  menu false
 
   actions :all, :except => [:destroy]
 
@@ -10,7 +12,6 @@ ActiveAdmin.register Organization do
       link_to org.name, admin_organization_path(org)
     end
     column :country, sortable: :country
-    column :region, sortable: :region
     column :start_date, sortable: :start_date 
     column :status, sortable: :status_id
   end
@@ -20,7 +21,6 @@ ActiveAdmin.register Organization do
       row :code
       row :name
       row :country
-      row :region
       row :start_date
       row :status
     end
@@ -31,7 +31,6 @@ ActiveAdmin.register Organization do
       f.input :code
       f.input :name
       f.input :country, :as => :string
-      f.input :region
       f.input :start_date, as: :datepicker
       f.input :status 
     end

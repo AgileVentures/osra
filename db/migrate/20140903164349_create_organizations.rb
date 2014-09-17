@@ -4,7 +4,6 @@ class CreateOrganizations < ActiveRecord::Migration
       t.integer :code
       t.string :name
       t.string :country
-      t.string :region
       t.date :start_date
       t.integer :status_id
 
