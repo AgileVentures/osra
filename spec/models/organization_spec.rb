@@ -13,7 +13,9 @@ describe Organization, type: :model do
 
     it { is_expected.to validate_presence_of :code }
     it { is_expected.to validate_uniqueness_of :code }
-    it { is_expected.to validate_numericality_of :code }
+    it { is_expected.to validate_numericality_of(:code).
+       only_integer.is_greater_than_or_equal_to(0).is_less_than_or_equal_to(99).
+       with_message("must be a whole number between 0 and 99") }
 
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_uniqueness_of :name }
@@ -24,9 +26,11 @@ describe Organization, type: :model do
 
     it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
     it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
+
     [7, 'yes', false].each do |bad_date_value|
       it { is_expected.not_to allow_value(bad_date_value).for :start_date }
     end
+
   end
 
   context 'sets appropriate values for organization fields' do
