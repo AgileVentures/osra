@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :sponsorship_status do
     sequence(:code)
-    name 'Sponsorship Status'
+    sequence(:name) { |n| "SponsorshipStatus#{n}" }
   end
 end

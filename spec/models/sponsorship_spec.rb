@@ -9,6 +9,8 @@ describe Sponsorship, type: :model do
   it { is_expected.to validate_presence_of :sponsor }
   it { is_expected.to validate_presence_of :orphan }
   it { is_expected.to validate_presence_of :sponsorship_status }
+  it { is_expected.to belong_to :sponsor }
+  it { is_expected.to belong_to :orphan }
   it { is_expected.to belong_to :sponsorship_status }
 
   describe 'callbacks' do
