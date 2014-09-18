@@ -6,8 +6,8 @@ Feature:
   Background:
     Given the following orphans exist:
       | name     | father   | status      | code | death_date | mother   | birth_date | contact   | o_city  | o_province | o_code | o_hood  | c_city  | c_province | c_code | c_hood  |
-      | Orphan 1 | Father 1 | Sponsored   |   1  | 2011-03-15 | Mother 1 | 2014-01-01 | Contact 1 | OCity 1 | Aleppo     | 12     | OHood 1 | CCity 1 | Homs       | 13     | CHood 1 |
-      | Orphan 2 | Father 2 | Unsponsored |   2  | 2011-03-15 | Mother 2 | 2014-01-01 | Contact 2 | OCity 2 | Hama       | 14     | OHood 2 | CCity 2 | Latakia    | 15     | CHood 1 |
+      | Orphan 1 | Father 1 | Sponsored   |   1  | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | 12     | OHood 1 | CCity 1 | Homs       | 13     | CHood 1 |
+      | Orphan 2 | Father 2 | Unsponsored |   2  | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | 14     | OHood 2 | CCity 2 | Latakia    | 15     | CHood 1 |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the orphans page on the navbar
