@@ -13,6 +13,7 @@ class Orphan < ActiveRecord::Base
   validates :original_address, presence: true
   validates :current_address, presence: true
   validates :orphan_status, presence: true
+  validate :orphans_dob_within_1yr_of_fathers_death
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
@@ -27,4 +28,23 @@ class Orphan < ActiveRecord::Base
   def full_name
     [name, father_name].join(' ')
   end
+
+  def orphans_dob_within_1yr_of_fathers_death
+    # gestation is considered vaild if within 1 year of a fathers death
+    return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
+    if (father_date_of_death + 1.year) < date_of_birth
+      errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
+    end
+  end
+ 
+  private
+
+  def valid_date? date
+    begin 
+      Date.parse(date.to_s)
+    rescue ArgumentError
+      return false
+    end
+  end
+
 end
