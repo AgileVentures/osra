@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Organization, :type => :model do
+describe Organization, type: :model do
 
   let(:status) { FactoryGirl.build_stubbed(:status) }
   let(:params) { { code: 11, name: 'Org1', country: 'UK', status: status, start_date: Date.current - 1.year } }

@@ -37,5 +37,5 @@ ActiveAdmin.register Organization do
     f.actions
   end
 
-  permit_params :name, :region, :country, :code, :status_id, :start_date
+  permit_params :name, :country, :code, :status_id, :start_date
 end
