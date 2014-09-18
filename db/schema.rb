@@ -68,6 +68,16 @@ ActiveRecord::Schema.define(version: 20140912082520) do
     t.datetime "updated_at"
   end
 
+  create_table "organizations", force: true do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.string   "country"
+    t.date     "start_date"
+    t.integer  "status_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orphan_statuses", force: true do |t|
     t.integer "code"
     t.string  "name"
