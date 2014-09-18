@@ -7,11 +7,20 @@ Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
 end
 
 Given(/^a sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |sponsor_name, orphan_name|
+  FactoryGirl.create(:sponsorship_status, name: 'Active')
   sponsor = Sponsor.find_by_name sponsor_name
   orphan = Orphan.find_by_name orphan_name
-  sponsor.sponsorships.create!(orphan_id: orphan.id, sponsorship_status: FactoryGirl.build_stubbed(:sponsorship_status))
+  sponsor.sponsorships.create!(orphan_id: orphan.id)
 end
 
 Then(/^show me the page$/) do
   save_and_open_page
+end
+
+Given /^PENDING/ do
+  pending
+end
+
+When(/I click the "([^"]*)" button for orphan "([^"]*)"/) do |button, orphan|
+
 end

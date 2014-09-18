@@ -12,4 +12,6 @@ class Sponsorship < ActiveRecord::Base
   belongs_to :sponsor
   belongs_to :orphan
   belongs_to :sponsorship_status
+
+  scope :active, -> { joins(:sponsorship_status).where('sponsorship_statuses.name = ?', 'Active') }
 end
