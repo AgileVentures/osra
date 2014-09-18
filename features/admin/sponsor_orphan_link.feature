@@ -16,17 +16,19 @@ Feature:
     And I should see "Orphan One"
 
   Scenario: Pairing a sponsor with an orphan
+    Given PENDING: WIP
     Given I am on the "Show Sponsor" page for sponsor "New Sponsor"
     And I click the "Link to Orphan" button
     Then I should be on the "Link to Orphan" page for sponsor "New Sponsor"
     And I should see "Orphan One"
     And I should see "Orphan Two"
-    When I click the "Sponsor this orphan" button for "Orphan One"
+    When I click the "Sponsor this orphan" button for orphan "Orphan One"
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully created"
     And I should see "Orphan One"
 
   Scenario: Ending a sponsorship
+    Given PENDING: WIP
     Given a sponsorship link exists between sponsor "New Sponsor" and orphan "Orphan One"
     And I am on the "Show Sponsor" page for sponsor "New Sponsor"
     When I click the "End Sponsorship" button for orphan "Orphan One"
