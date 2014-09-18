@@ -2,7 +2,7 @@ class Sponsorship < ActiveRecord::Base
 
   include Initializer
 
-  after_initialize :default_start_date_to_today
+  after_initialize :default_start_date_to_today, :set_sponsorship_status_to_active
 
   validates :sponsor, presence: true
   validates :orphan, presence: true

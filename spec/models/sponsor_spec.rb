@@ -29,23 +29,23 @@ describe Sponsor, type: :model do
         let(:active_status) { build_stubbed :status, name: 'Active' }
 
         it 'defaults status to "Under Revision"' do
-          expect((Partner.new).status).to eq under_revision_status
+          expect((Sponsor.new).status).to eq under_revision_status
         end
 
         it 'sets non-default status if provided' do
           options = { status: active_status }
-          expect(Partner.new(options).status).to eq active_status
+          expect(Sponsor.new(options).status).to eq active_status
         end
       end
 
       describe 'start_date' do
         it 'defaults start_date to current date' do
-          expect(Partner.new.start_date).to eq Date.current
+          expect(Sponsor.new.start_date).to eq Date.current
         end
 
         it 'sets non-default start_date if provided' do
           options = { start_date: Date.yesterday }
-          expect(Partner.new(options).start_date).to eq Date.yesterday
+          expect(Sponsor.new(options).start_date).to eq Date.yesterday
         end
       end
     end

@@ -34,3 +34,6 @@ Branch.create(name: 'Jeddah', code: 2)
 Branch.create(name: 'Dammam', code: 3)
 Branch.create(name: 'Dubai', code: 11)
 Branch.create(name: 'London', code: 21)
+
+SponsorshipStatus.create(name: 'Active', code: 1)
+SponsorshipStatus.create(name: 'Inactive', code: 2)
