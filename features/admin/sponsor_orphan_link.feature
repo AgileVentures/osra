@@ -16,7 +16,6 @@ Feature:
     And I should see "Orphan One"
 
   Scenario: Pairing a sponsor with an orphan
-    Given PENDING: WIP
     Given I am on the "Show Sponsor" page for sponsor "New Sponsor"
     And I click the "Link to Orphan" button
     Then I should be on the "Link to Orphan" page for sponsor "New Sponsor"
