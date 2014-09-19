@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912123613) do
+ActiveRecord::Schema.define(version: 20140919074857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,13 +163,6 @@ ActiveRecord::Schema.define(version: 20140912123613) do
   add_index "sponsors", ["branch_id"], name: "index_sponsors_on_branch_id", using: :btree
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
   add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
-
-  create_table "sponsorship_statuses", force: true do |t|
-    t.integer  "code"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "sponsorships", force: true do |t|
     t.integer  "sponsor_id"
