@@ -2,6 +2,11 @@ Given(/^a sponsor "([^"]*)" exists$/) do |sponsor_name|
   FactoryGirl.create :sponsor, name: sponsor_name
 end
 
+Given(/^the sponsor "([^"]*)" has attribute (.*) "([^"]*)"$/) do |sponsor_name, attr, value|
+  sponsor = Sponsor.find_by_name(sponsor_name)
+  sponsor.update_attribute(attr, value)
+end
+
 Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
   FactoryGirl.create :orphan, name: orphan_name
 end
@@ -21,5 +26,5 @@ Given /^PENDING/ do
 end
 
 When(/I click the "([^"]*)" button for orphan "([^"]*)"/) do |button, orphan|
-
+  within('tr#orphan_1') { click_link }
 end
