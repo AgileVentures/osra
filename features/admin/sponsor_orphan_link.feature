@@ -12,7 +12,7 @@ Feature:
   Scenario: Viewing existing sponsorship links between sponsor and orphans
     Given a sponsorship link exists between sponsor "New Sponsor" and orphan "Orphan One"
     And I am on the "Show Sponsor" page for sponsor "New Sponsor"
-    Then I should see "Sponsored Orphans"
+    Then I should see "1 Sponsored Orphan"
     And I should see "Orphan One"
 
   Scenario: Pairing a sponsor with an orphan
