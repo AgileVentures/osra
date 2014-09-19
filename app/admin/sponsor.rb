@@ -29,10 +29,10 @@ ActiveAdmin.register Sponsor do
       row :start_date
     end
 
-    panel 'Sponsored Orphans' do
+    panel "#{pluralize(sponsor.orphans.count, 'Sponsored Orphan')}" do
       table_for sponsor.orphans do
         column 'Name' do |orphan|
-          link_to orphan.name, '#'
+          link_to orphan.name, admin_orphan_path(orphan)
         end
         column :date_of_birth
         column :gender
