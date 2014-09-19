@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919074857) do
+ActiveRecord::Schema.define(version: 20140919081847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,13 @@ ActiveRecord::Schema.define(version: 20140919074857) do
     t.datetime "updated_at"
   end
 
+  create_table "orphan_sponsorship_statuses", force: true do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orphan_statuses", force: true do |t|
     t.integer "code"
     t.string  "name"
@@ -111,6 +118,7 @@ ActiveRecord::Schema.define(version: 20140919074857) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "orphan_status_id"
+    t.integer  "orphan_sponsorship_status_id"
   end
 
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
@@ -167,7 +175,6 @@ ActiveRecord::Schema.define(version: 20140919074857) do
   create_table "sponsorships", force: true do |t|
     t.integer  "sponsor_id"
     t.integer  "orphan_id"
-    t.integer  "sponsorship_status_id"
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
@@ -176,7 +183,6 @@ ActiveRecord::Schema.define(version: 20140919074857) do
 
   add_index "sponsorships", ["orphan_id"], name: "index_sponsorships_on_orphan_id", using: :btree
   add_index "sponsorships", ["sponsor_id"], name: "index_sponsorships_on_sponsor_id", using: :btree
-  add_index "sponsorships", ["sponsorship_status_id"], name: "index_sponsorships_on_sponsorship_status_id", using: :btree
 
   create_table "statuses", force: true do |t|
     t.integer "code"
