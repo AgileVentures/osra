@@ -3,7 +3,7 @@ class OrphanList < ActiveRecord::Base
 
   before_create :generate_osra_num
 
-  acts_as_sequenced scope: :partner_id
+  acts_as_sequenced
   has_attached_file :spreadsheet
 
   validates :partner, presence: true
