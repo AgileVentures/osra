@@ -33,15 +33,13 @@ ActiveAdmin.register OrphanList do
   controller do
     def create
       @partner = Partner.find(params[:partner_id])
-      @orphan_list = OrphanList.new(orphan_list_params)
-      @orphan_list.partner = @partner
+      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
       @orphan_list.orphan_count = 0
 
       if @orphan_list.save
         redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'
       else
-        # What would be a better way to provide error details to the user?
-        redirect_to new_admin_partner_orphan_list_path(@partner), alert: "An error was encountered while trying to upload an Orphan List. #{@orphan_list.errors.full_messages}"
+        render action: :new
       end
     end
 
