@@ -5,14 +5,20 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name          | region      | province                   | province_code | contact_details | start_date |
-      | Partner1      | Region1     | Damascus & Rif Dimashq     | 11            | 12345           | 2013-09-25 |
+      | name     | region   | status   | status_code | province | province_code | contact_details | start_date |
+      | Partner1 | Region1  | Active   | 1           |Homs      | 13            | 12345           | 2013-09-25 |
+      | Partner2 | Region2  | Inactive | 2           |Hama      | 14            | 98765           | 2012-09-25 |
+
     And I am a new, authenticated user
 
   Scenario: There should not be a link to the orphan lists page on the navbar
     Given I am on the admin dashboard page
     Then I should not see the "Orphan Lists" link
 
-  Scenario: I should see a button for uploading an orphan list on the partner show page
+  Scenario: I should see a button for uploading an orphan list for an active partner
     Given I am on the "Show Partner" page for partner "Partner1"
     Then I should see the "Upload Orphan List" link
+
+  Scenario: I should not see a button for uploading an orphan list for an inactive partner
+    Given I am on the "Show Partner" page for partner "Partner2"
+    Then I should not see the "Upload Orphan List" link
