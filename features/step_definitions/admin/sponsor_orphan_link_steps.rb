@@ -25,6 +25,15 @@ Given /^PENDING/ do
   pending
 end
 
-When(/I click the "([^"]*)" button for orphan "([^"]*)"/) do |button, orphan|
-  within('tr#orphan_1') { click_link }
+When(/I click the "([^"]*)" link for orphan "([^"]*)"/) do |link, orphan|
+  # Brittle & not flexible!
+  case orphan
+    when 'First Orphan' then
+      tr_id = 'tr#orphan_1'
+    when 'Second Orphan' then
+      tr_id = 'tr#orphan_2'
+    else
+      raise 'Orphan not listed'
+  end
+  within(tr_id) { click_link link }
 end

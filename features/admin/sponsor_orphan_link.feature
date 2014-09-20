@@ -11,10 +11,10 @@ Feature:
     And I am a new, authenticated user
 
   Scenario: Viewing existing sponsorship links between sponsor and orphans
-    Given a sponsorship link exists between sponsor "New Sponsor" and orphan "Orphan One"
+    Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "New Sponsor"
     Then I should see "1 Sponsored Orphan"
-    And I should see "Orphan One"
+    And I should see "First Orphan"
 
   Scenario: Pairing a sponsor with an orphan
     Given I am on the "Show Sponsor" page for sponsor "New Sponsor"
@@ -24,16 +24,16 @@ Feature:
     And I should see "Prefer male orphans from Homs"
     And I should see "First Orphan"
     And I should see "Second Orphan"
-    When I click the "Sponsor this orphan" button for orphan "First Orphan"
+    When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully created"
     And I should see "Orphan One"
 
   Scenario: Ending a sponsorship
     Given PENDING: WIP
-    Given a sponsorship link exists between sponsor "New Sponsor" and orphan "Orphan One"
+    Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "New Sponsor"
-    When I click the "End Sponsorship" button for orphan "Orphan One"
+    When I click the "End Sponsorship" button for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully terminated"
-    And I should not see "Orphan One"
+    And I should not see "First Orphan"
