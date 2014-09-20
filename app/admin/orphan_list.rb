@@ -37,7 +37,7 @@ ActiveAdmin.register OrphanList do
       @orphan_list.orphan_count = 0
 
       if @orphan_list.save
-        redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'
+        redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported."
       else
         render action: :new
       end
