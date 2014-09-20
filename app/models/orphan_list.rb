@@ -6,7 +6,9 @@ class OrphanList < ActiveRecord::Base
   acts_as_sequenced scope: :partner_id
   has_attached_file :spreadsheet
 
-  validates_presence_of :partner, :orphan_count
+  validates :partner, presence: true
+  validates :orphan_count, presence: true
+
   validates_attachment :spreadsheet, presence: true,
     content_type: { content_type: ACCEPTED_FORMATS },
     file_name: { matches: [/xls\Z/, /xlsx\Z/] }
