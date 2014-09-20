@@ -27,7 +27,7 @@ Feature:
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully created"
-    And I should see "Orphan One"
+    And I should see "First Orphan"
 
   Scenario: Ending a sponsorship
     Given PENDING: WIP
