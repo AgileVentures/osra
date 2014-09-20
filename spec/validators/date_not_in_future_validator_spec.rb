@@ -14,7 +14,7 @@ describe DateNotInFutureValidator do
   subject { test_model.new }
 
   it 'passes when attribute is a valid date' do
-    subject.date_attr = Date.today
+    subject.date_attr = Date.current
     expect(subject).to be_valid
   end
 
