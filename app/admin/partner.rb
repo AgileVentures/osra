@@ -1,20 +1,6 @@
 ActiveAdmin.register Partner do
 
-  
-  # See permitted parameters documentation:
-  # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #  permitted = [:permitted, :attributes]
-  #  permitted << :other if resource.something?
-  #  permitted
-  # end
   actions :all, except: [:destroy]
-
 
   index do 
     column :osra_num, sortable: :osra_num do |partner|
@@ -36,6 +22,9 @@ ActiveAdmin.register Partner do
       row :region
       row :contact_details
       row :start_date
+      row 'Orphan Lists' do
+        link_to("Click here for all orphan lists", admin_partner_orphan_lists_path(partner))
+      end
     end
   end
 
@@ -52,6 +41,10 @@ ActiveAdmin.register Partner do
       f.input :status
     end
     f.actions
+  end
+
+  action_item :only => :show do
+    link_to('Upload Orphan List', new_admin_partner_orphan_list_path(partner))
   end
 
   permit_params :name, :region, :contact_details, :province_id, :status_id, :start_date

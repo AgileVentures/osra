@@ -1,5 +1,7 @@
 ActiveAdmin.register OrphanList do
+
   actions :index, :new, :create
+  belongs_to :partner
 
   index do
     column :osra_num
@@ -21,9 +23,8 @@ ActiveAdmin.register OrphanList do
   filter :orphan_count
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
-      f.input :partner
-      f.input :orphan_count, as: :number
       f.input :spreadsheet, as: :file
     end
     f.actions
@@ -31,11 +32,16 @@ ActiveAdmin.register OrphanList do
 
   controller do
     def create
+      @partner = Partner.find(params[:partner_id])
       @orphan_list = OrphanList.new(orphan_list_params)
+      @orphan_list.partner = @partner
+      @orphan_list.orphan_count = 0
+
       if @orphan_list.save
-        redirect_to admin_orphan_lists_path, notice: 'Orphan List was successfully created.'
+        redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'
       else
-        render action: :new
+        # What would be a better way to provide error details to the user?
+        redirect_to new_admin_partner_orphan_list_path(@partner), alert: "An error was encountered while trying to upload an Orphan List. #{@orphan_list.errors.full_messages}"
       end
     end
 

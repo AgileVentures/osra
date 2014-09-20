@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "organizations", force: true do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.string   "country"
+    t.date     "start_date"
+    t.integer  "status_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orphan_lists", force: true do |t|
     t.string   "osra_num"
     t.integer  "partner_id"
@@ -81,15 +92,7 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.datetime "spreadsheet_updated_at"
   end
 
-  create_table "organizations", force: true do |t|
-    t.integer  "code"
-    t.string   "name"
-    t.string   "country"
-    t.date     "start_date"
-    t.integer  "status_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
 
   create_table "orphan_sponsorship_statuses", force: true do |t|
     t.integer  "code"
@@ -102,7 +105,6 @@ ActiveRecord::Schema.define(version: 20140919081847) do
     t.integer "code"
     t.string  "name"
   end
-  add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
 
   create_table "orphans", force: true do |t|
     t.string   "name"
