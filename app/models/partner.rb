@@ -15,7 +15,7 @@ class Partner < ActiveRecord::Base
   acts_as_sequenced scope: :province_id
 
   def active?
-    status.name == 'Active'
+    status && status.name == 'Active'
   end
 
   private
