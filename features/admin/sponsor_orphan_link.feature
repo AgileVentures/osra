@@ -30,10 +30,9 @@ Feature:
     And I should see "First Orphan"
 
   Scenario: Ending a sponsorship
-    Given PENDING: WIP
     Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "New Sponsor"
-    When I click the "End Sponsorship" button for orphan "First Orphan"
+    When I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully terminated"
     And I should not see "First Orphan"
