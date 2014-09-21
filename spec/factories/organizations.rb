@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :organization do
     sequence(:code)
-    sequence(:name) { |n| "Organization #{n}" }
-    country "United Kingdom"
-    start_date "2014-09-03"
+    name { Faker::Company.name }
+    country { Faker::Address.country }
+    start_date { 6.months.ago }
     status
   end
 end
