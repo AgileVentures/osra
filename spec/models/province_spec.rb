@@ -7,9 +7,7 @@ describe Province, type: :model do
   end
 
   it 'should be able to call the factory many times' do
-    13.times { build_stubbed :province }
-    expect(build_stubbed(:province).code).to eq 29
-    expect(build_stubbed(:province).code).to eq 11
+    expect { 25.times { build_stubbed :province } }.not_to raise_error
   end
 
   it { is_expected.to validate_presence_of :name }
