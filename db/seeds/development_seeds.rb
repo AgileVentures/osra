@@ -19,19 +19,9 @@ FactoryGirl.create :partner,
                    province: Province.find_by_name('Homs')
 FactoryGirl.create :partner,
                    province: Province.find_by_name('Aleppo')
-FactoryGirl.create :address,
-                   province: Province.find_by_name('Homs')
-FactoryGirl.create :address,
-                   province: Province.find_by_name('Aleppo')
 FactoryGirl.create :orphan,
-                   original_address: Address.find(1),
-                   current_address: Address.find(2),
                    orphan_status: OrphanStatus.find_by_name('Sponsored')
 FactoryGirl.create :orphan,
-                   original_address: Address.find(1),
-                   current_address: Address.find(2),
                    orphan_status: OrphanStatus.find_by_name('Unsponsored')
 FactoryGirl.create :orphan,
-                   original_address: Address.find(1),
-                   current_address: Address.find(2),
                    orphan_status: OrphanStatus.find_by_name('Unsponsored')
