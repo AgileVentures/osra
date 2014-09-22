@@ -18,6 +18,8 @@ class Sponsor < ActiveRecord::Base
   has_many :sponsorships
   has_many :orphans, through: :sponsorships
 
+  acts_as_sequenced scope: [:organization_id, :branch_id]
+
   private
   
   def belongs_to_one_branch_or_organization
@@ -32,6 +34,15 @@ class Sponsor < ActiveRecord::Base
   end
 
   def generate_osra_num
+    self.osra_num = "#{osra_num_prefix}%04d" % sequential_id
+  end
+
+  def osra_num_prefix
+    if branch.present?
+      "5%02d" % branch.code
+    else
+      "8%02d" % organization.code
+    end
   end
 
 end
