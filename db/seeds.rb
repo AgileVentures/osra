@@ -38,6 +38,7 @@ Branch.create(name: 'London', code: 21)
 OrphanSponsorshipStatus.create(name: 'Unsponsored',          code: 1)
 OrphanSponsorshipStatus.create(name: 'Sponsored',            code: 2)
 OrphanSponsorshipStatus.create(name: 'Previously Sponsored', code: 3)
+OrphanSponsorshipStatus.create(name: 'On Hold',              code: 4)
 
 if Rails.env.development?
   require "#{Rails.root}/db/seeds/development_seeds.rb"
