@@ -21,6 +21,7 @@ class Orphan < ActiveRecord::Base
   has_many :sponsors, through: :sponsorships
   
   belongs_to :orphan_status
+  belongs_to :orphan_sponsorship_status
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
