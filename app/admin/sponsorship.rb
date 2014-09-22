@@ -29,8 +29,7 @@ ActiveAdmin.register Sponsorship do
     def create
       orphan = Orphan.find(params[:orphan_id])
       sponsor = Sponsor.find(params[:sponsor_id])
-      Sponsorship.create(sponsor: sponsor, orphan: orphan)
-      #orphan.set_status_to_sponsored
+      Sponsorship.new(sponsor: sponsor, orphan: orphan).save!
       flash[:success] = 'Sponsorship link was successfully created'
       redirect_to admin_sponsor_path(sponsor)
     end
