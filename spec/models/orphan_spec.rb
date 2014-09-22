@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Orphan, type: :model do
 
   it 'should have a valid factory' do
+    create :orphan_status, name: 'Active'
     expect(build_stubbed :orphan).to be_valid
   end
 
@@ -44,4 +45,70 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :orphan_status }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
+
+  describe 'initializers, methods & scopes' do
+    let!(:active_status) { create(:orphan_status, name: 'Active') }
+    let!(:unsponsored_status) { create(:orphan_sponsorship_status, name: 'Unsponsored') }
+
+    describe 'initializers' do
+
+      it 'defaults orphan_status to Active' do
+        expect(Orphan.new.orphan_status).to eq active_status
+      end
+
+      it 'defaults orphan_sponsorship_status to Unsponsored' do
+        expect(Orphan.new.orphan_sponsorship_status).to eq unsponsored_status
+      end
+    end
+
+    describe 'methods & scopes' do
+      let!(:sponsored_status) { create :orphan_sponsorship_status, name: 'Sponsored' }
+      let!(:inactive_status) { create :orphan_status, name: 'Inactive' }
+
+      address = FactoryGirl.create :address
+      orphan_hash = { original_address: address, current_address: address }
+
+      let!(:active_unsponsored_orphan) do
+        orphan_hash.merge! orphan_status: active_status, orphan_sponsorship_status: unsponsored_status
+        create :orphan, orphan_hash
+      end
+      let!(:inactive_unsponsored_orphan) do
+        orphan_hash.merge! orphan_status: inactive_status, orphan_sponsorship_status: unsponsored_status
+        create :orphan, orphan_hash
+      end
+      let!(:active_sponsored_orphan) do
+        orphan_hash.merge! orphan_status: active_status, orphan_sponsorship_status: sponsored_status
+        create :orphan, orphan_hash
+      end
+
+      describe 'methods' do
+        it '#set_status_to_sponsored' do
+          orphan = active_unsponsored_orphan
+          orphan.set_status_to_sponsored
+          expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
+        end
+
+        it '#set_status_to_unsponsored' do
+          orphan = active_sponsored_orphan
+          orphan.set_status_to_unsponsored
+          expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
+        end
+      end
+
+      describe 'scopes' do
+
+        it '.active should correctly select active orphans only' do
+          expect(Orphan.active.to_a).to eq [active_sponsored_orphan, active_unsponsored_orphan]
+        end
+
+        it '.unsponsored should correctly select unsponsored orphans only' do
+          expect(Orphan.unsponsored.to_a).to eq [active_unsponsored_orphan, inactive_unsponsored_orphan]
+        end
+
+        it '.active.unsponsored should correctly return active unsponsored orphans only' do
+          expect(Orphan.active.unsponsored.to_a).to eq [active_unsponsored_orphan]
+        end
+      end
+    end
+  end
 end

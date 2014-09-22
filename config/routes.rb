@@ -7,6 +7,7 @@ Osra::Application.routes.draw do
   post '/admin/sponsors/:sponsor_id/sponsorships/:orphan_id',
        to: 'admin/sponsorships#create',
        as: :admin_sponsorship_create
+
   delete '/admin/sponsors/:sponsor_id/sponsorships/:orphan_id',
          to: 'admin/sponsorships#destroy',
          as: :admin_sponsorship_destroy

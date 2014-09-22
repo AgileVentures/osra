@@ -6,6 +6,7 @@ Feature:
   Background:
     Given a sponsor "New Sponsor" exists
     And the sponsor "New Sponsor" has attribute additional_info "Prefer male orphans from Homs"
+    And required orphan statuses exist
     And an orphan "First Orphan" exists
     And an orphan "Second Orphan" exists
     And I am a new, authenticated user
@@ -28,6 +29,12 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully created"
     And I should see "First Orphan"
+    When I click the "Link to Orphan" button
+    And I click the "Sponsor this orphan" link for orphan "Second Orphan"
+    Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
+    And I should see "Sponsorship link was successfully created"
+    And I should see "First Orphan"
+    And I should see "Second Orphan"
 
   Scenario: Ending a sponsorship
     Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
@@ -36,3 +43,8 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
     And I should see "Sponsorship link was successfully terminated"
     And I should not see "First Orphan"
+
+  Scenario: A sponsor cannot create two sponsorship links with the same orphan
+    Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
+    When I am on the "Link to Orphan" page for sponsor "New Sponsor"
+    Then I should not see "First Orphan" 

@@ -21,8 +21,10 @@ Status.create(name: 'On Hold', code: 3)
 Status.create(name: 'Under Revision', code: 4)
 
 # Creating Orphan Statuses
-OrphanStatus.create(name: 'Sponsored', code: 1)
-OrphanStatus.create(name: 'Unsponsored', code: 2)
+OrphanStatus.create(name: 'Active', code: 1)
+OrphanStatus.create(name: 'Inactive', code: 2)
+OrphanStatus.create(name: 'On Hold', code: 3)
+OrphanStatus.create(name: 'Under Revision', code: 4)
 
 # Creating Sponsor Types
 SponsorType.create(name: 'Individual', code: 1)

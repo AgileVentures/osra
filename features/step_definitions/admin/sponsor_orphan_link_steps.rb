@@ -7,8 +7,16 @@ Given(/^the sponsor "([^"]*)" has attribute (.*) "([^"]*)"$/) do |sponsor_name, 
   sponsor.update_attribute(attr, value)
 end
 
+Given(/^required orphan statuses exist$/) do
+  FactoryGirl.create :orphan_status, name: 'Active'
+  FactoryGirl.create :orphan_status, name: 'Inactive'
+  FactoryGirl.create :orphan_sponsorship_status, name: 'Sponsored'
+  FactoryGirl.create :orphan_sponsorship_status, name: 'Unsponsored'
+end
+
 Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
-  FactoryGirl.create :orphan, name: orphan_name
+  address = FactoryGirl.create :address
+  FactoryGirl.create :orphan, name: orphan_name, original_address: address, current_address: address
 end
 
 Given(/^a sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |sponsor_name, orphan_name|

@@ -1,15 +1,15 @@
 ActiveAdmin.register Sponsorship do
-  actions :all, except: [:index, :edit, :update, :show]
+  actions :new # still creates default routes for :create & :destroy - ??
   belongs_to :sponsor
 
-  form do |f|
-    panel "#{sponsorship.sponsor.name}" do
-      h3 sponsorship.sponsor.name
-      para sponsorship.sponsor.additional_info
+  form do
+    panel "#{sponsorship.sponsor_name}" do
+      h3 sponsorship.sponsor_name
+      para sponsorship.sponsor_additional_info
     end
 
     panel 'Orphans' do
-      table_for Orphan.all do
+      table_for Orphan.active.unsponsored do
         column :id
         column 'Name' do |_orphan|
           link_to _orphan.name, admin_orphan_path(_orphan)
@@ -18,7 +18,7 @@ ActiveAdmin.register Sponsorship do
         column :mother_alive
         column 'Establish sponsorship' do |_orphan|
           link_to 'Sponsor this orphan',
-                  admin_sponsorship_create_path(sponsor_id: sponsorship.sponsor.id, orphan_id: _orphan.id),
+                  admin_sponsorship_create_path(sponsor_id: sponsorship.sponsor_id, orphan_id: _orphan.id),
                   method: :post
         end
       end
@@ -30,6 +30,7 @@ ActiveAdmin.register Sponsorship do
       orphan = Orphan.find(params[:orphan_id])
       sponsor = Sponsor.find(params[:sponsor_id])
       Sponsorship.create(sponsor: sponsor, orphan: orphan)
+      #orphan.set_status_to_sponsored
       flash[:success] = 'Sponsorship link was successfully created'
       redirect_to admin_sponsor_path(sponsor)
     end
