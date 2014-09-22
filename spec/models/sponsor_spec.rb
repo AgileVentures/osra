@@ -18,9 +18,37 @@ describe Sponsor, type: :model do
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
 
+  it { is_expected.to belong_to :branch }
+  it { is_expected.to belong_to :organization }
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
+
+  describe 'branch or organization affiliation' do
+    describe 'must be affiliated to 1 branch or 1 organization' do
+      let(:sponsor) {build_stubbed(:sponsor, :organization_id => nil, :branch_id => nil)}
+      let(:organization) {build_stubbed(:organization)}
+      let(:branch) {build_stubbed(:branch)}
+      it 'cannot be unaffiliated' do
+        expect(sponsor).to_not allow_value(nil).for :organization
+        expect(sponsor).to_not allow_value(nil).for :branch
+      end
+      it 'cannot be affiliated to a branch and an organisation' do
+        sponsor.branch = branch
+        sponsor.organization = organization
+        expect(sponsor).to_not allow_value(organization).for :organization
+        expect(sponsor).to_not allow_value(branch).for :branch
+      end
+      it 'is valid when affiliated with a branch' do
+        sponsor.organization = organization
+        expect(sponsor).to allow_value(organization).for :organization
+      end
+      it 'is valid when affiliated with an organization' do
+        sponsor.branch = branch
+        expect(sponsor).to allow_value(branch).for :branch
+      end
+    end
+  end
 
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do

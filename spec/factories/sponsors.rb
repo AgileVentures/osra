@@ -4,5 +4,6 @@ FactoryGirl.define do
     country { Faker::Address.country }
     gender { %w(Male Female).sample }
     sponsor_type
+    branch
   end
 end

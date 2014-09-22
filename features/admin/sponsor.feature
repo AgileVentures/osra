@@ -9,7 +9,9 @@ Feature:
       | country           | UK                 | Canada              | Estonia             |
       | gender            | Male               | Female              | Male                |
       | sponsor_type      | Individual         | Organisation        | Individual          |
-      | sponsor_type_code | 1                  | 2                   | 1                   |  
+      | sponsor_type_code | 1                  | 2                   | 1                   |
+      | branch            | Jeddah             | Jeddah              | Jeddah              |
+      | branch_code       | 2                  | 2                   | 2                   |
       | address           | Address1           | Address2            | Address3            |
       | email             | email1@example.com | email2@example.com  | email3@example.com  |
       | contact1          | cd1                | cs2                 | cs3                 |
@@ -33,7 +35,7 @@ Feature:
 
   Scenario: Should be able to visit a sponsor from the sponsor index page
     Given I am on the "Sponsors" page for the "Admin" role
-    When I click the "Sponsor1" link 
+    When I click the "Sponsor1" link
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
@@ -41,6 +43,7 @@ Feature:
     And I fill in "Name" with "Sponsor4"
     And I fill in "Country" with "UK"
     And I select "Male" from the drop down box for "Gender"
+    And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
