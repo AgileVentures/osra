@@ -1,10 +1,12 @@
 ActiveAdmin.register Sponsorship do
+  menu if: proc { false }
   actions :new # still creates default routes for :create & :destroy - ??
   belongs_to :sponsor
 
   form do
-    panel "#{sponsorship.sponsor_name}" do
+    panel 'Sponsor' do
       h3 sponsorship.sponsor_name
+      para link_to 'Return to Sponsor page', admin_sponsor_path(sponsorship.sponsor)
       para sponsorship.sponsor_additional_info
     end
 

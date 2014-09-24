@@ -48,3 +48,8 @@ Feature:
     Given a sponsorship link exists between sponsor "New Sponsor" and orphan "First Orphan"
     When I am on the "Link to Orphan" page for sponsor "New Sponsor"
     Then I should not see "First Orphan" 
+
+  Scenario: Cancelling sponsorship creation
+    When I am on the "Link to Orphan" page for sponsor "New Sponsor"
+    And I click the "Return to Sponsor page" link
+    Then I should be on the "Show Sponsor" page for sponsor "New Sponsor"
