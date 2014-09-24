@@ -78,8 +78,8 @@ describe Sponsor, type: :model do
   end
 
   describe 'before_create #generate_osra_num' do
-    let(:branch) { build :branch }
-    let(:organization) { build :organization }
+    let(:branch) { build_stubbed :branch }
+    let(:organization) { build_stubbed :organization }
     let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
 
     it 'sets osra_num' do
