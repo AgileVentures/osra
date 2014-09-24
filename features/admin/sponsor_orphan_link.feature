@@ -17,7 +17,7 @@ Feature:
     Then I should see "1 Sponsored Orphan"
     And I should see "First Orphan"
 
-  Scenario: Pairing a sponsor with an orphan
+  Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "New Sponsor"
     And I click the "Link to Orphan" button
     Then I should be on the "Link to Orphan" page for sponsor "New Sponsor"

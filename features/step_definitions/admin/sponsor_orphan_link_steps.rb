@@ -15,8 +15,7 @@ Given(/^required orphan statuses exist$/) do
 end
 
 Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
-  address = FactoryGirl.create :address
-  FactoryGirl.create :orphan, name: orphan_name, original_address: address, current_address: address
+  FactoryGirl.create :orphan, name: orphan_name
 end
 
 Given(/^a sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |sponsor_name, orphan_name|
