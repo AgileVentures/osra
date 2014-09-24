@@ -69,23 +69,20 @@ describe Orphan, type: :model do
       let!(:inactive_status) { create :orphan_status,
                                       name: 'Inactive' }
 
-      address = FactoryGirl.create :address
-      orphan_hash = { original_address: address, current_address: address }
-
       let!(:active_unsponsored_orphan) do
-        orphan_hash.merge! orphan_status: active_status,
-                           orphan_sponsorship_status: unsponsored_status
-        create :orphan, orphan_hash
+        create :orphan,
+               orphan_status: active_status,
+               orphan_sponsorship_status: unsponsored_status
       end
       let!(:inactive_unsponsored_orphan) do
-        orphan_hash.merge! orphan_status: inactive_status,
-                           orphan_sponsorship_status: unsponsored_status
-        create :orphan, orphan_hash
+        create :orphan,
+               orphan_status: inactive_status,
+               orphan_sponsorship_status: unsponsored_status
       end
       let!(:active_sponsored_orphan) do
-        orphan_hash.merge! orphan_status: active_status,
-                           orphan_sponsorship_status: sponsored_status
-        create :orphan, orphan_hash
+        create :orphan,
+               orphan_status: active_status,
+               orphan_sponsorship_status: sponsored_status
       end
 
       describe 'methods' do
