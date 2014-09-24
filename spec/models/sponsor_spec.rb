@@ -88,10 +88,10 @@ describe Sponsor, type: :model do
     describe 'when recruited by osra' do
       it 'sets the first digit to 5' do
         sponsor.save!
-        expect(sponsor.osra_num[0...1]).to eq "5"
+        expect(sponsor.osra_num[0]).to eq "5"
       end
 
-      it 'sets the second and third digit to the branch code' do
+      it 'sets the second and third digits to the branch code' do
         branch = build_stubbed(:branch)
         sponsor.branch = branch
         sponsor.save!
@@ -106,10 +106,10 @@ describe Sponsor, type: :model do
         sponsor.branch = nil
         sponsor.save!
         sponsor
-        expect(sponsor.osra_num[0...1]).to eq "8"
+        expect(sponsor.osra_num[0]).to eq "8"
       end
 
-      it 'sets the second and third digit to the organization code' do
+      it 'sets the second and third digits to the organization code' do
         organization = build_stubbed(:organization)
         sponsor.organization = organization
         sponsor.branch = nil
