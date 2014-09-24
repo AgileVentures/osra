@@ -78,47 +78,48 @@ describe Sponsor, type: :model do
   end
 
   describe 'before_create #generate_osra_num' do
-    let(:sponsor) { build :sponsor }
+    let(:branch) { build :branch }
+    let(:organization) { build :organization }
+    let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
 
     it 'sets osra_num' do
+      sponsor.branch = branch
       sponsor.save!
       expect(sponsor.osra_num).not_to be_nil
     end
 
-    describe 'when recruited by osra' do
-      it 'sets the first digit to 5' do
+    describe 'when recruited by osra branch' do
+      before(:each) do
+        sponsor.branch = branch
         sponsor.save!
+      end
+
+      it 'sets the first digit to 5' do
         expect(sponsor.osra_num[0]).to eq "5"
       end
 
       it 'sets the second and third digits to the branch code' do
-        branch = build_stubbed(:branch)
-        sponsor.branch = branch
-        sponsor.save!
         expect(sponsor.osra_num[1...3]).to eq "%02d" % branch.code
       end
     end
 
     describe 'when recruited by a sister organization' do
-      it 'sets the first digit to an 8 ' do
-        organization = build_stubbed(:organization)
+      before(:each) do
         sponsor.organization = organization
-        sponsor.branch = nil
         sponsor.save!
-        sponsor
+      end
+
+      it 'sets the first digit to an 8 ' do
         expect(sponsor.osra_num[0]).to eq "8"
       end
 
       it 'sets the second and third digits to the organization code' do
-        organization = build_stubbed(:organization)
-        sponsor.organization = organization
-        sponsor.branch = nil
-        sponsor.save!
         expect(sponsor.osra_num[1...3]).to eq "%02d" % organization.code
       end
     end
 
     it 'sets the last 4 digits of osra_num to sequential_id' do
+      sponsor.branch = branch
       sponsor.sequential_id = 999
       sponsor.save!
       expect(sponsor.osra_num[3..-1]).to eq '0999'
