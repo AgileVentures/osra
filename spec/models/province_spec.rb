@@ -14,5 +14,5 @@ describe Province, type: :model do
   it { is_expected.to validate_uniqueness_of :name }
   it { is_expected.to validate_presence_of :code }
   it { is_expected.to validate_uniqueness_of :code }
-  it { is_expected.to ensure_inclusion_of(:code).in_array Province::PROVINCE_CODES }
+  it { is_expected.to validate_inclusion_of(:code).in_array Province::PROVINCE_CODES }
 end
