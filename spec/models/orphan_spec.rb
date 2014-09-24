@@ -27,7 +27,7 @@ describe Orphan, type: :model do
   end
 
   it { is_expected.to validate_presence_of :gender }
-  it { is_expected.to ensure_inclusion_of(:gender).in_array %w(Male Female) }
+  it { is_expected.to validate_inclusion_of(:gender).in_array %w(Male Female) }
 
   it { is_expected.to validate_presence_of :contact_number }
 
