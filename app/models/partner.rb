@@ -10,8 +10,13 @@ class Partner < ActiveRecord::Base
 
   belongs_to :province
   belongs_to :status
+  has_many :orphan_lists
 
   acts_as_sequenced scope: :province_id
+
+  def active?
+    status && status.name == 'Active'
+  end
 
   private
 

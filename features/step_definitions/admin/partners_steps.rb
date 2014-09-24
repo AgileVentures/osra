@@ -1,12 +1,14 @@
 Given(/^the following partners exist:$/) do |table|
   table.hashes.each do |hash|
+    status = Status.find_or_create_by(name: hash[:status], code: hash[:status_code])
     province = Province.find_or_create_by!(name: hash[:province],
                                            code: hash[:province_code]) 
     partner = Partner.new(name: hash[:name], 
                           region: hash[:region], 
                           start_date: hash[:start_date],
                           contact_details: hash[:contact_details],
-                          province: province)
+                          province: province,
+                          status: status)
     partner.save!
   end
 end
