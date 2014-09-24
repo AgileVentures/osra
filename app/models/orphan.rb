@@ -1,7 +1,8 @@
 class Orphan < ActiveRecord::Base
 
   include Initializer
-  after_initialize :default_status_to_active, :default_sponsorship_status_to_unsponsored
+  after_initialize :default_status_to_active,
+                   :default_sponsorship_status_to_unsponsored
 
   validates :name, presence: true
   validates :father_name, presence: true
@@ -53,9 +54,11 @@ class Orphan < ActiveRecord::Base
   end
 
   scope :active,
-        -> { Orphan.joins(:orphan_status).where(orphan_statuses: { name: 'Active' }) }
+        -> { Orphan.joins(:orphan_status).
+            where(orphan_statuses: { name: 'Active' }) }
   scope :unsponsored,
-        -> { Orphan.joins(:orphan_sponsorship_status).where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+        -> { Orphan.joins(:orphan_sponsorship_status).
+            where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
  
   private
 

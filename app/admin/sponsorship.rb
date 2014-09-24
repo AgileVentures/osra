@@ -18,7 +18,8 @@ ActiveAdmin.register Sponsorship do
         column :mother_alive
         column 'Establish sponsorship' do |_orphan|
           link_to 'Sponsor this orphan',
-                  admin_sponsorship_create_path(sponsor_id: sponsorship.sponsor_id, orphan_id: _orphan.id),
+                  admin_sponsorship_create_path(sponsor_id: sponsorship.sponsor_id,
+                                                orphan_id: _orphan.id),
                   method: :post
         end
       end
@@ -37,7 +38,8 @@ ActiveAdmin.register Sponsorship do
     def destroy
       orphan = Orphan.find(params[:id])
       sponsor = Sponsor.find(params[:sponsor_id])
-      sponsorship = Sponsorship.where(sponsor_id: sponsor.id).where(orphan_id: orphan.id).first
+      sponsorship = Sponsorship.where(sponsor_id: sponsor.id).
+          where(orphan_id: orphan.id).first
       sponsorship.destroy
       flash[:success] = 'Sponsorship link was successfully terminated'
       redirect_to admin_sponsor_path(sponsor)

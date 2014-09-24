@@ -29,7 +29,7 @@ ActiveAdmin.register Sponsor do
       row :start_date
     end
 
-    panel "#{pluralize(sponsor.orphans.count, 'Sponsored Orphan')}" do
+    panel "#{ pluralize(sponsor.orphans.count, 'Sponsored Orphan') }" do
       table_for sponsor.orphans do
         column 'Name' do |orphan|
           link_to orphan.name, admin_orphan_path(orphan)
@@ -38,7 +38,8 @@ ActiveAdmin.register Sponsor do
         column :gender
         column '' do |orphan|
           link_to 'End sponsorship',
-                  admin_sponsorship_destroy_path(sponsor_id: sponsor.id, orphan_id: orphan.id),
+                  admin_sponsorship_destroy_path(sponsor_id: sponsor.id,
+                                                 orphan_id: orphan.id),
                   method: :delete
         end
       end
