@@ -29,15 +29,13 @@ describe Sponsor, type: :model do
       let(:sponsor) { build_stubbed(:sponsor, :organization_id => nil, :branch_id => nil) }
       let(:organization) { build_stubbed(:organization) }
       let(:branch) { build_stubbed(:branch) }
+
       it 'cannot be unaffiliated' do
-        expect(sponsor).to_not allow_value(nil).for :organization
-        expect(sponsor).to_not allow_value(nil).for :branch
+        expect(sponsor).not_to be_valid
       end
       it 'cannot be affiliated to a branch and an organisation' do
-        sponsor.branch = branch
-        sponsor.organization = organization
-        expect(sponsor).to_not allow_value(organization).for :organization
-        expect(sponsor).to_not allow_value(branch).for :branch
+        sponsor.branch = branch;sponsor.organization = organization
+        expect(sponsor).not_to be_valid
       end
       it 'is valid when affiliated with a branch but not an organization' do
         sponsor.organization = organization
