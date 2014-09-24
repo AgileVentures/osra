@@ -23,13 +23,9 @@ class Sponsor < ActiveRecord::Base
   private
   
   def belongs_to_one_branch_or_organization
-    if branch.blank? && organization.blank?
-      errors.add(:organization, "must belong to a branch or an organization")
-      errors.add(:branch, "must belong to a branch or an organization")
-    end
-    if branch.present? && organization.present?
-      errors.add(:organization, "cannot belong to both a branch and an organization")
-      errors.add(:branch, "cannot belong to both a branch and an organization")
+    unless branch.blank? ^ organization.blank?
+      errors.add(:organization, "must belong to a branch or an organization, but not both")
+      errors.add(:branch, "must belong to a branch or an organization, but not both")
     end
   end
 
