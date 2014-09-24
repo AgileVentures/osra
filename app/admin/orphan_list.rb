@@ -33,6 +33,7 @@ ActiveAdmin.register OrphanList do
   controller do
     def create
       @partner = Partner.find(params[:partner_id])
+
       @orphan_list = @partner.orphan_lists.build(orphan_list_params)
       @orphan_list.orphan_count = 0
 
@@ -46,9 +47,8 @@ ActiveAdmin.register OrphanList do
     private
 
     def orphan_list_params
-      params.require(:orphan_list).permit(:partner_id, :orphan_count, :spreadsheet)
+      params.require(:orphan_list).permit(:spreadsheet)
     end
   end
 
-  permit_params :partner_id, :orphan_count, :file
 end
