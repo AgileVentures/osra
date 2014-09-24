@@ -26,9 +26,9 @@ describe Sponsor, type: :model do
 
   describe 'branch or organization affiliation' do
     describe 'must be affiliated to 1 branch or 1 organization' do
-      let(:sponsor) {build_stubbed(:sponsor, :organization_id => nil, :branch_id => nil)}
-      let(:organization) {build_stubbed(:organization)}
-      let(:branch) {build_stubbed(:branch)}
+      let(:sponsor) { build_stubbed(:sponsor, :organization_id => nil, :branch_id => nil) }
+      let(:organization) { build_stubbed(:organization) }
+      let(:branch) { build_stubbed(:branch) }
       it 'cannot be unaffiliated' do
         expect(sponsor).to_not allow_value(nil).for :organization
         expect(sponsor).to_not allow_value(nil).for :branch
