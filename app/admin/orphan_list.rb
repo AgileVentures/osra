@@ -26,17 +26,10 @@ ActiveAdmin.register OrphanList do
 
   form do |f|
     f.semantic_errors *f.object.errors.keys
-    if params[:display_form]
       f.inputs do
         f.input :spreadsheet, as: :file
       end
       f.actions
-    else
-      # Is there a better way to handle this case? Maybe set a flash message and redirect to partner show view?
-      f.actions name: 'Partner is not Active' do
-        f.action :cancel, label: 'Back'
-      end
-    end
   end
 
   controller do
@@ -54,7 +47,8 @@ ActiveAdmin.register OrphanList do
     end
 
     def new
-      params[:display_form] = Partner.find(params[:partner_id]).active?
+      redirect_to admin_partner_path(params[:partner_id]),
+                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless get_partner.active?
       new!
     end
 
