@@ -28,6 +28,11 @@ Feature:
     And I click the "Click here for all orphan lists" link
     Then I should not see the "New Orphan List" link
 
+  Scenario: I should not see a link for creating a new orphan list
+    Given I am on the "Show Partner" page for partner "Partner1"
+    And I click the "Click here for all orphan lists" link
+    Then I should not see the "Create one" link
+
   Scenario: I should see the new orphan list form for an active partner
     Given I visit the new orphan list page for partner "Partner1"
     Then I should see "Spreadsheet"

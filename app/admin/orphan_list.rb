@@ -3,6 +3,8 @@ ActiveAdmin.register OrphanList do
   actions :index, :new, :create
   belongs_to :partner
 
+  config.clear_action_items!
+
   index do
     column :osra_num
     column :partner, sortable: :partner_id do |orphan_list|
@@ -24,10 +26,18 @@ ActiveAdmin.register OrphanList do
 
   form do |f|
     f.semantic_errors *f.object.errors.keys
-    f.inputs do
-      f.input :spreadsheet, as: :file
+    @partner = Partner.find(params[:partner_id])
+    if @partner.active?
+      f.inputs do
+        f.input :spreadsheet, as: :file
+      end
+      f.actions
+    else
+      # Is there a better way to handle this case? Maybe set a flash message and redirect to partner show view?
+      f.actions name: 'Partner is not Active' do
+        f.action :cancel, label: 'Back'
+      end
     end
-    f.actions
   end
 
   controller do
@@ -44,11 +54,19 @@ ActiveAdmin.register OrphanList do
       end
     end
 
+    # Workaround to prevent displaying the "Create one" link when the resource collection is empty
+    # https://github.com/activeadmin/activeadmin/blob/9cfc45330e5ad31977b3ac7b2ccc1f8d6146c73f/lib/active_admin/views/pages/index.rb#L52
+    def index
+      params[:q] = true
+      index! do |f|
+        f.html
+      end
+    end
+
     private
 
     def orphan_list_params
       params.require(:orphan_list).permit(:spreadsheet)
     end
   end
-
 end

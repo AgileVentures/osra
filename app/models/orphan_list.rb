@@ -8,12 +8,19 @@ class OrphanList < ActiveRecord::Base
 
   validates :partner, presence: true
   validates :orphan_count, presence: true
+  validate :partner_is_active
 
   validates_attachment :spreadsheet, presence: true,
-    content_type: { content_type: ACCEPTED_FORMATS },
-    file_name: { matches: [/xls\Z/, /xlsx\Z/] }
+                       content_type: { content_type: ACCEPTED_FORMATS },
+                       file_name: { matches: [/xls\Z/, /xlsx\Z/] }
 
   belongs_to :partner
+
+  def partner_is_active
+    unless partner && partner.active?
+      errors.add(:partner, 'is not active')
+    end
+  end
 
   private
 
