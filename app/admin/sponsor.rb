@@ -49,6 +49,8 @@ ActiveAdmin.register Sponsor do
       f.input :country, as: :string
       f.input :gender, as: :select, collection: %w(Male Female)
       f.input :sponsor_type
+      f.input :organization
+      f.input :branch
       f.input :address
       f.input :email
       f.input :contact1
@@ -60,6 +62,6 @@ ActiveAdmin.register Sponsor do
     f.actions
   end
 
-  permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id
+  permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
 
 end
