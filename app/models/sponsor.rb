@@ -36,8 +36,11 @@ class Sponsor < ActiveRecord::Base
   def osra_num_prefix
     if branch.present?
       "5%02d" % branch.code
-    else
+    elsif organization.present?
       "8%02d" % organization.code
+    else
+      errors[:base] << "must belong to a branch or an organization, but not both"
+      raise ActiveRecord::RecordInvalid.new(self)
     end
   end
 
