@@ -26,8 +26,7 @@ ActiveAdmin.register OrphanList do
 
   form do |f|
     f.semantic_errors *f.object.errors.keys
-    @partner = Partner.find(params[:partner_id])
-    if @partner.active?
+    if params[:display_form]
       f.inputs do
         f.input :spreadsheet, as: :file
       end
@@ -52,6 +51,11 @@ ActiveAdmin.register OrphanList do
       else
         render action: :new
       end
+    end
+
+    def new
+      params[:display_form] = Partner.find(params[:partner_id]).active?
+      new!
     end
 
     # Workaround to prevent displaying the "Create one" link when the resource collection is empty
