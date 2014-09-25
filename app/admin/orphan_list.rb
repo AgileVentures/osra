@@ -57,10 +57,7 @@ ActiveAdmin.register OrphanList do
     # Workaround to prevent displaying the "Create one" link when the resource collection is empty
     # https://github.com/activeadmin/activeadmin/blob/9cfc45330e5ad31977b3ac7b2ccc1f8d6146c73f/lib/active_admin/views/pages/index.rb#L52
     def index
-      params[:q] = true
-      index! do |f|
-        f.html
-      end
+      params[:q] = true if collection.empty?
     end
 
     private
