@@ -39,11 +39,11 @@ describe Sponsor, type: :model do
       end
       it 'is valid when affiliated with a branch but not an organization' do
         sponsor.organization = organization
-        expect(sponsor).to allow_value(organization).for :organization
+        expect(sponsor).to be_valid
       end
       it 'is valid when affiliated with an organization but not a branch' do
         sponsor.branch = branch
-        expect(sponsor).to allow_value(branch).for :branch
+        expect(sponsor).to be_valid
       end
     end
   end
