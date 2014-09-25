@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 describe OrphanList, type: :model do
+
+  it 'should have a valid factory' do
+    orphan_list = build_stubbed :orphan_list
+    orphan_list.partner.status = Status.find_or_create_by(name: 'Active', code: 1)
+    expect(orphan_list).to be_valid
+  end
+
   it { is_expected.to validate_presence_of :partner }
   it { is_expected.to validate_presence_of :orphan_count }
   it { is_expected.to validate_presence_of :spreadsheet }
