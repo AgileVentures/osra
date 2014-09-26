@@ -3,8 +3,8 @@ ActiveAdmin.register Sponsor do
   actions :all, except: [:destroy]
 
   index do
-    column :id, sortable: :id do |sponsor|
-      link_to sponsor.id, admin_sponsor_path(sponsor)
+    column :osra_num, sortable: :osra_num do |sponsor|
+      link_to sponsor.osra_num, admin_sponsor_path(sponsor)
     end
     column :name, sortable: :name do |sponsor|
       link_to sponsor.name, admin_sponsor_path(sponsor)
