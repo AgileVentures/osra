@@ -1,4 +1,9 @@
 class Orphan < ActiveRecord::Base
+
+  include Initializer
+  after_initialize :default_status_to_active,
+                   :default_sponsorship_status_to_unsponsored
+
   validates :name, presence: true
   validates :father_name, presence: true
   validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
@@ -37,6 +42,23 @@ class Orphan < ActiveRecord::Base
       errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
     end
   end
+
+  def set_status_to_sponsored
+    sponsored_status = OrphanSponsorshipStatus.find_by_name('Sponsored')
+    self.update!(orphan_sponsorship_status: sponsored_status)
+  end
+
+  def set_status_to_unsponsored
+    unsponsored_status = OrphanSponsorshipStatus.find_by_name('Unsponsored')
+    self.update!(orphan_sponsorship_status: unsponsored_status)
+  end
+
+  scope :active,
+        -> { Orphan.joins(:orphan_status).
+            where(orphan_statuses: { name: 'Active' }) }
+  scope :unsponsored,
+        -> { Orphan.joins(:orphan_sponsorship_status).
+            where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
  
   private
 

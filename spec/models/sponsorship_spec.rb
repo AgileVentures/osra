@@ -24,5 +24,14 @@ describe Sponsorship, type: :model do
         end
       end
     end
+
+    describe 'before_create #set_active_true' do
+      before { create :orphan_status, name: 'Active' }
+      let(:sponsorship) { build :sponsorship }
+      it 'sets the .active attribute to true' do
+        sponsorship.save!
+        expect(sponsorship.reload.active).to eq true
+      end
+    end
   end
 end
