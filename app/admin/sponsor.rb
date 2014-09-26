@@ -17,9 +17,11 @@ ActiveAdmin.register Sponsor do
 
   show do |sponsor|
     attributes_table do
+      row :osra_num
       row :status
       row :sponsor_type
       row :country
+      row :affiliate
       row :gender
       row :address
       row :email
