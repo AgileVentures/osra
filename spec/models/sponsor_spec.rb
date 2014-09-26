@@ -37,13 +37,21 @@ describe Sponsor, type: :model do
         sponsor.branch = branch;sponsor.organization = organization
         expect(sponsor).not_to be_valid
       end
-      it 'is valid when affiliated with a branch but not an organization' do
+      it 'is valid when affiliated with an organization but not a branch' do
         sponsor.organization = organization
         expect(sponsor).to be_valid
       end
-      it 'is valid when affiliated with an organization but not a branch' do
+      it 'returns the organization name as affiliate when linked to an organization' do
+        sponsor.organization = organization
+        expect(sponsor.affiliate).to eq organization.name
+      end
+      it 'is valid when affiliated with a branch but not an organization' do
         sponsor.branch = branch
         expect(sponsor).to be_valid
+      end
+      it 'returns the branch name as affiliate when linked to a branch' do
+        sponsor.branch = branch
+        expect(sponsor.affiliate).to eq branch.name
       end
     end
   end
