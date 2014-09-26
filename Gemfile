@@ -13,8 +13,7 @@ gem 'sequenced' # Sequential IDs in Models
 gem 'jbuilder', '~> 1.2'
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
-gem 'trim_blobs'
-gem 'paperclip_database'
+gem 'paperclip'
 
 group :test do
   gem 'capybara'
