@@ -78,6 +78,21 @@ ActiveRecord::Schema.define(version: 20140925133202) do
     t.datetime "updated_at"
   end
 
+  create_table "orphan_lists", force: true do |t|
+    t.string   "osra_num"
+    t.integer  "partner_id"
+    t.integer  "orphan_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "sequential_id"
+    t.string   "spreadsheet_file_name"
+    t.string   "spreadsheet_content_type"
+    t.integer  "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
+  end
+
+  add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
+
   create_table "orphan_sponsorship_statuses", force: true do |t|
     t.integer  "code"
     t.string   "name"
@@ -166,9 +181,13 @@ ActiveRecord::Schema.define(version: 20140925133202) do
     t.integer  "sponsor_type_id"
     t.string   "gender"
     t.integer  "branch_id"
+    t.integer  "organization_id"
+    t.string   "osra_num"
+    t.integer  "sequential_id"
   end
 
   add_index "sponsors", ["branch_id"], name: "index_sponsors_on_branch_id", using: :btree
+  add_index "sponsors", ["organization_id"], name: "index_sponsors_on_organization_id", using: :btree
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
   add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
 
@@ -179,11 +198,19 @@ ActiveRecord::Schema.define(version: 20140925133202) do
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",     default: true, null: false
   end
 
+  add_index "sponsorships", ["active"], name: "index_sponsorships_on_active", using: :btree
   add_index "sponsorships", ["orphan_id"], name: "index_sponsorships_on_orphan_id", using: :btree
   add_index "sponsorships", ["sponsor_id", "orphan_id"], name: "index_sponsorships_on_sponsor_id_and_orphan_id", unique: true, using: :btree
   add_index "sponsorships", ["sponsor_id"], name: "index_sponsorships_on_sponsor_id", using: :btree
+
+  create_table "spreadsheets", force: true do |t|
+    t.integer "orphan_list_id"
+    t.string  "style"
+    t.binary  "file_contents"
+  end
 
   create_table "statuses", force: true do |t|
     t.integer "code"

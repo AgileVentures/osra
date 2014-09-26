@@ -12,9 +12,11 @@ FactoryGirl.create :organization,
 FactoryGirl.create :organization,
                    status: Status.find_by_name('Inactive')
 FactoryGirl.create :sponsor,
-                   sponsor_type: SponsorType.find_by_name('Individual')
+                   sponsor_type: SponsorType.find_by_name('Individual'),
+                   branch: Branch.find_by_name('Riyadh')
 FactoryGirl.create :sponsor,
-                   sponsor_type: SponsorType.find_by_name('Organization')
+                   sponsor_type: SponsorType.find_by_name('Organization'),
+                   branch: Branch.find_by_name('Jeddah')
 FactoryGirl.create :partner,
                    province: Province.find_by_name('Homs')
 FactoryGirl.create :partner,
