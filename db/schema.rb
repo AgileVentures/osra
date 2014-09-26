@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925133202) do
+ActiveRecord::Schema.define(version: 20140926195523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,9 +71,6 @@ ActiveRecord::Schema.define(version: 20140925133202) do
   create_table "organizations", force: true do |t|
     t.integer  "code"
     t.string   "name"
-    t.string   "country"
-    t.date     "start_date"
-    t.integer  "status_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -169,27 +166,26 @@ ActiveRecord::Schema.define(version: 20140925133202) do
   create_table "sponsors", force: true do |t|
     t.string   "name"
     t.string   "address"
-    t.string   "country"
     t.string   "email"
     t.string   "contact1"
     t.string   "contact2"
     t.string   "additional_info"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "status_id"
-    t.date     "start_date"
     t.integer  "sponsor_type_id"
     t.string   "gender"
     t.integer  "branch_id"
     t.integer  "organization_id"
     t.string   "osra_num"
     t.integer  "sequential_id"
+    t.string   "country"
+    t.date     "start_date"
+    t.integer  "status_id"
   end
 
   add_index "sponsors", ["branch_id"], name: "index_sponsors_on_branch_id", using: :btree
   add_index "sponsors", ["organization_id"], name: "index_sponsors_on_organization_id", using: :btree
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
-  add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
 
   create_table "sponsorships", force: true do |t|
     t.integer  "sponsor_id"
