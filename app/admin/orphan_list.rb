@@ -46,7 +46,7 @@ ActiveAdmin.register OrphanList do
 
     def new
       redirect_to admin_partner_path(partner),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless get_partner.active?
+                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless partner.active?
       new!
     end
 
