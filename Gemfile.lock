@@ -49,6 +49,11 @@ GEM
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
     awesome_print (1.2.0)
+    aws-sdk (1.53.0)
+      aws-sdk-v1 (= 1.53.0)
+    aws-sdk-v1 (1.53.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bcrypt (3.1.7)
     better_errors (2.0.0)
       coderay (>= 1.0.0)
@@ -279,6 +284,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   awesome_print
+  aws-sdk
   better_errors
   binding_of_caller
   capybara

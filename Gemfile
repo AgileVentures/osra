@@ -14,6 +14,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
+gem 'aws-sdk'
 
 group :test do
   gem 'capybara'
