@@ -21,11 +21,7 @@ class Sponsor < ActiveRecord::Base
   acts_as_sequenced scope: [:organization_id, :branch_id]
 
   def affiliate
-    if branch.present?
-      branch.name
-    else
-      organization.name
-    end
+    branch.present? ? branch.name : organization.name
   end
 
   private
