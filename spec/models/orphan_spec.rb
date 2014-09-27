@@ -46,6 +46,21 @@ describe Orphan, type: :model do
   it { is_expected.to validate_presence_of :orphan_status }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
+  context "check orphan dob is within 1 year of fathers death" do
+    let!(:active_status) { create :orphan_status, name: 'Active' }
+    let(:orphan) { create :orphan, :father_date_of_death => Date.current - 1.year - 1.day }
+
+    it "is valid when orphan is born a year after fathers death" do
+      orphan.date_of_birth = Date.current - 1.day
+      expect(orphan).to be_valid 
+    end
+
+    it "is valid when orphan is born more than a year after fathers death" do
+      orphan.date_of_birth = Date.current
+      expect(orphan).not_to be_valid 
+    end
+  end
+
   describe 'initializers, methods & scopes' do
     let!(:active_status) { create :orphan_status,
                                   name: 'Active' }
