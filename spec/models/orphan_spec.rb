@@ -51,13 +51,13 @@ describe Orphan, type: :model do
     let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
 
     it "is valid when orphan is born a year after fathers death" do
-      orphan.date_of_birth = 1.year.ago
-      expect(orphan).to be_valid 
+      orphan.date_of_birth = 1.day.ago
+      expect(orphan).to be_valid
     end
 
-    it "is valid when orphan is born more than a year after fathers death" do
+    it "is not valid when orphan is born more than a year after fathers death" do
       orphan.date_of_birth = Date.current
-      expect(orphan).not_to be_valid 
+      expect(orphan).not_to be_valid
     end
   end
 
