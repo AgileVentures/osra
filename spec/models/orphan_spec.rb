@@ -48,10 +48,10 @@ describe Orphan, type: :model do
 
   context "check orphan dob is within 1 year of fathers death" do
     let!(:active_status) { create :orphan_status, name: 'Active' }
-    let(:orphan) { create :orphan, :father_date_of_death => Date.current - 1.year - 1.day }
+    let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
 
     it "is valid when orphan is born a year after fathers death" do
-      orphan.date_of_birth = Date.current - 1.day
+      orphan.date_of_birth = 1.year.ago
       expect(orphan).to be_valid 
     end
 
