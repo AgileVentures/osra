@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe Organization, type: :model do
 
-  let(:params) { { code: 11, name: 'Org1' } }
-
   it 'has a valid factory' do
     expect(build_stubbed :organization).to be_valid
   end
