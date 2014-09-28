@@ -11,6 +11,14 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
+module Paperclip
+  class MediaTypeSpoofDetector
+    def spoofed?
+      false
+    end
+  end
+end
+
 module Osra
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

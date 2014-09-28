@@ -59,12 +59,6 @@ Feature:
     Then I click the "Create Orphan list" button
     Then I should see "is invalid"
 
-  Scenario: I should not be able to upload an orphan list file with an invalid mime type
-    Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "fake_excel_file.png.xls" file
-    Then I click the "Create Orphan list" button
-    Then I should see "has an extension that does not match its contents"
-
   Scenario: I should be able to see the uploaded orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "empty.xlsx" file
