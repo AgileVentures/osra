@@ -43,13 +43,13 @@ Feature:
 
   Scenario: I should be able to upload a valid .xlsx orphan list file
     Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "empty.xlsx" file
+    And I upload the "empty_xlsx.xlsx" file
     Then I click the "Create Orphan list" button
     Then I should see "was successfully imported"
 
   Scenario: I should be able to upload a valid .xls orphan list file
     Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "empty.xls" file
+    And I upload the "empty_xls.xls" file
     Then I click the "Create Orphan list" button
     Then I should see "was successfully imported"
 
@@ -61,7 +61,7 @@ Feature:
 
   Scenario: I should be able to see the uploaded orphan list file
     Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "empty.xlsx" file
+    And I upload the "empty_xlsx.xlsx" file
     Then I click the "Create Orphan list" button
     Then I click the "Click here for all orphan lists" link
-    Then I should see "empty.xlsx"
+    Then I should see "empty_xlsx.xlsx"
