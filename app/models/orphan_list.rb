@@ -1,5 +1,6 @@
 class OrphanList < ActiveRecord::Base
-  ACCEPTED_FORMATS = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+  ACCEPTED_FORMATS = ['application/octet-stream', 'application/vnd.ms-excel',
+                      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
 
   before_create :generate_osra_num
 
