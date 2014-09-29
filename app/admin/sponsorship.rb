@@ -37,12 +37,10 @@ ActiveAdmin.register Sponsorship do
       redirect_to admin_sponsor_path(sponsor)
     end
 
-    def destroy
-      orphan = Orphan.find(params[:id])
-      sponsor = Sponsor.find(params[:sponsor_id])
-      sponsorship = Sponsorship.where(sponsor_id: sponsor.id).
-          where(orphan_id: orphan.id).first
-      sponsorship.destroy!
+    def inactivate
+      sponsorship = Sponsorship.find(params[:id])
+      sponsor = sponsorship.sponsor
+      sponsorship.inactivate
       flash[:success] = 'Sponsorship link was successfully terminated'
       redirect_to admin_sponsor_path(sponsor)
     end

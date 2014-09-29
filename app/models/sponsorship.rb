@@ -14,6 +14,13 @@ class Sponsorship < ActiveRecord::Base
   belongs_to :orphan
 
   delegate :name, :additional_info, :id, to: :sponsor, prefix: true
+  delegate :date_of_birth, :gender, to: :orphan, prefix: true
+
+  def inactivate
+    self.active = false
+    self.save!
+    set_orphan_status_to_unsponsored
+  end
 
   private
 

@@ -8,7 +8,7 @@ Osra::Application.routes.draw do
        to: 'admin/sponsorships#create',
        as: :admin_sponsorship_create
 
-  delete '/admin/sponsors/:sponsor_id/sponsorships/:orphan_id',
-         to: 'admin/sponsorships#destroy',
-         as: :admin_sponsorship_destroy
+  get '/admin/sponsorships/:id/inactivate',
+      to: 'admin/sponsorships#inactivate',
+      as: :admin_sponsorship_inactivate
 end
