@@ -38,9 +38,9 @@ ActiveAdmin.register Sponsor do
         column :gender
         column '' do |orphan|
           link_to 'End sponsorship',
-                  admin_sponsorship_destroy_path(sponsor_id: sponsor.id,
-                                                 orphan_id: orphan.id),
-                  method: :delete
+                  make_inactive_admin_sponsor_sponsorships_path(sponsor_id: sponsor.id,
+                                                                orphan_id: orphan.id),
+                  method: :put
         end
       end
     end
