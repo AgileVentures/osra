@@ -8,7 +8,7 @@ Osra::Application.routes.draw do
        to: 'admin/sponsorships#create',
        as: :admin_sponsorship_create
 
-  get '/admin/sponsorships/:id/inactivate',
+  put '/admin/sponsorships/:id/inactivate',
       to: 'admin/sponsorships#inactivate',
       as: :admin_sponsorship_inactivate
 end
