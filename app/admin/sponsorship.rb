@@ -1,6 +1,6 @@
 ActiveAdmin.register Sponsorship do
   menu if: proc { false }
-  actions :new # still creates default routes for :create & :destroy - ??
+  actions :new, :create
   belongs_to :sponsor
 
   form do
@@ -20,12 +20,22 @@ ActiveAdmin.register Sponsorship do
         column :mother_alive
         column 'Establish sponsorship' do |_orphan|
           link_to 'Sponsor this orphan',
-                  admin_sponsorship_create_path(sponsor_id: sponsorship.sponsor_id,
+                  admin_sponsor_sponsorships_path(sponsor_id: sponsorship.sponsor_id,
                                                 orphan_id: _orphan.id),
                   method: :post
         end
       end
     end
+  end
+
+  collection_action :make_inactive, method: :put do
+    orphan = Orphan.find(params[:orphan_id])
+    sponsor = Sponsor.find(params[:sponsor_id])
+    sponsorship = Sponsorship.where(sponsor_id: sponsor.id).
+      where(orphan_id: orphan.id).first
+    sponsorship.destroy!
+    flash[:success] = 'Sponsorship link was successfully terminated'
+    redirect_to admin_sponsor_path(sponsor)
   end
 
   controller do
@@ -34,16 +44,6 @@ ActiveAdmin.register Sponsorship do
       sponsor = Sponsor.find(params[:sponsor_id])
       Sponsorship.new(sponsor: sponsor, orphan: orphan).save!
       flash[:success] = 'Sponsorship link was successfully created'
-      redirect_to admin_sponsor_path(sponsor)
-    end
-
-    def destroy
-      orphan = Orphan.find(params[:id])
-      sponsor = Sponsor.find(params[:sponsor_id])
-      sponsorship = Sponsorship.where(sponsor_id: sponsor.id).
-          where(orphan_id: orphan.id).first
-      sponsorship.destroy!
-      flash[:success] = 'Sponsorship link was successfully terminated'
       redirect_to admin_sponsor_path(sponsor)
     end
   end
