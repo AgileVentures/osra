@@ -31,9 +31,7 @@ ActiveAdmin.register Sponsorship do
   collection_action :make_inactive, method: :put do
     orphan = Orphan.find(params[:orphan_id])
     sponsor = Sponsor.find(params[:sponsor_id])
-    sponsorship = Sponsorship.where(sponsor_id: sponsor.id).
-      where(orphan_id: orphan.id).first
-    sponsorship.destroy!
+    sponsorship = Sponsorship.where(sponsor_id: sponsor.id, orphan_id: orphan.id).destroy_all
     flash[:success] = 'Sponsorship link was successfully terminated'
     redirect_to admin_sponsor_path(sponsor)
   end
@@ -42,7 +40,7 @@ ActiveAdmin.register Sponsorship do
     def create
       orphan = Orphan.find(params[:orphan_id])
       sponsor = Sponsor.find(params[:sponsor_id])
-      Sponsorship.new(sponsor: sponsor, orphan: orphan).save!
+      Sponsorship.create!(sponsor: sponsor, orphan: orphan)
       flash[:success] = 'Sponsorship link was successfully created'
       redirect_to admin_sponsor_path(sponsor)
     end
