@@ -19,8 +19,6 @@ class Sponsorship < ActiveRecord::Base
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   def inactivate
-    # self.active = false
-    # self.save!
     update_attribute(:active, false)
     set_orphan_status_to_unsponsored
   end
