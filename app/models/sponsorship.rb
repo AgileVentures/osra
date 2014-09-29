@@ -9,6 +9,8 @@ class Sponsorship < ActiveRecord::Base
   validates :sponsor, presence: true
   validates :orphan, presence: true
   validates :start_date, date_not_in_future: true
+  validates :sponsor, uniqueness: { scope: [:orphan, :active],
+                                       message: 'already actively sponsors this orphan' }
 
   belongs_to :sponsor
   belongs_to :orphan
@@ -17,8 +19,9 @@ class Sponsorship < ActiveRecord::Base
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   def inactivate
-    self.active = false
-    self.save!
+    # self.active = false
+    # self.save!
+    update_attribute(:active, false)
     set_orphan_status_to_unsponsored
   end
 
