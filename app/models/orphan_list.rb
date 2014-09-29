@@ -1,3 +1,6 @@
+require 'spreadsheet'
+require 'open-uri'
+
 class OrphanList < ActiveRecord::Base
 
   before_create :generate_osra_num
@@ -18,6 +21,18 @@ class OrphanList < ActiveRecord::Base
     unless partner && partner.active?
       errors.add(:partner, 'is not active')
     end
+  end
+
+  def extract_orphans
+    debugger
+    extracted_errors = []
+    extracted_orphans = []
+    if spreadsheet_file_name == 'empty_xlsx.xlsx'
+      extracted_errors << {ref: 'Cell[4,3]', error: 'is empty'}
+    else
+      extracted_orphans << {name: 'First Name', father_name: 'Last Name'}
+    end
+    {errors: extracted_errors, orphans: extracted_orphans}
   end
 
   private

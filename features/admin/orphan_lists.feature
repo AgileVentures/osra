@@ -41,27 +41,46 @@ Feature:
     Given I visit the new orphan list page for partner "Partner2"
     Then I should not see "Spreadsheet"
 
+#  Scenario: I should be able to upload a valid .xlsx orphan list file
+#    Given I visit the new orphan list page for partner "Partner1"
+#    And I upload the "empty_xlsx.xlsx" file
+#    Then I click the "Create Orphan list" button
+#    Then I should see "was successfully imported"
+#
+#  Scenario: I should be able to upload a valid .xls orphan list file
+#    Given I visit the new orphan list page for partner "Partner1"
+#    And I upload the "empty_xls.xls" file
+#    Then I click the "Create Orphan list" button
+#    Then I should see "was successfully imported"
+#
+#  Scenario: I should not be able to upload an orphan list file with an invalid extension
+#    Given I visit the new orphan list page for partner "Partner1"
+#    And I upload the "not_an_excel_file.txt" file
+#    Then I click the "Create Orphan list" button
+#    Then I should see "is invalid"
+#
+#  Scenario: I should be able to see the uploaded orphan list file
+#    Given I visit the new orphan list page for partner "Partner1"
+#    And I upload the "empty_xlsx.xlsx" file
+#    Then I click the "Create Orphan list" button
+#    Then I click the "Click here for all orphan lists" link
+#    Then I should see "empty_xlsx.xlsx"
+
   Scenario: I should be able to upload a valid .xlsx orphan list file
     Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "empty_xlsx.xlsx" file
-    Then I click the "Create Orphan list" button
-    Then I should see "was successfully imported"
+    And I upload the "one_orphan_xlsx.xlsx" file
+    Then I click the "Upload Orphan list" button
+    Then I should see "Orphan list is valid"
 
-  Scenario: I should be able to upload a valid .xls orphan list file
-    Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "empty_xls.xls" file
-    Then I click the "Create Orphan list" button
-    Then I should see "was successfully imported"
-
-  Scenario: I should not be able to upload an orphan list file with an invalid extension
-    Given I visit the new orphan list page for partner "Partner1"
-    And I upload the "not_an_excel_file.txt" file
-    Then I click the "Create Orphan list" button
-    Then I should see "is invalid"
-
-  Scenario: I should be able to see the uploaded orphan list file
+  Scenario: I should not be able to upload an invalid .xlsx orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "empty_xlsx.xlsx" file
+    Then I click the "Upload Orphan list" button
+    Then I should see "Orphan list is invalid"
+
+  Scenario: I should be able to import a valid .xlsx orphan list file
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "one_orphan_xlsx.xlsx" file
+    Then I click the "Upload Orphan list" button
     Then I click the "Create Orphan list" button
-    Then I click the "Click here for all orphan lists" link
-    Then I should see "empty_xlsx.xlsx"
+    Then I should see "was successfully imported"

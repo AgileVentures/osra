@@ -15,6 +15,9 @@ gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'trim_blobs'
+gem 'paperclip_database'
+gem 'spreadsheet'
 
 group :test do
   gem 'capybara'

@@ -33,10 +33,39 @@ ActiveAdmin.register OrphanList do
     f.actions
   end
 
+  collection_action :upload do
+  end
+
+  collection_action :parse, method: :post do
+  end
+
+  collection_action :import, method: :post do
+  end
+
   controller do
+
+    def upload
+      inactive_partner_check
+      @partner = partner
+      render action: :upload, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build}
+    end
+
+    def parse
+      inactive_partner_check
+      @partner = partner
+      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
+      result = @orphan_list.extract_orphans
+      render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
+    end
+
+    def import
+      @partner = partner
+      redirect_to admin_partner_path(@partner), notice: "Orphan List (XXX) was successfully imported."
+    end
+
     def create
 
-      @partner = get_partner
+      @partner = partner
 
       @orphan_list = @partner.orphan_lists.build(orphan_list_params)
       @orphan_list.orphan_count = 0
@@ -49,8 +78,7 @@ ActiveAdmin.register OrphanList do
     end
 
     def new
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless get_partner.active?
+      inactive_partner_check
       new!
     end
 
@@ -62,7 +90,12 @@ ActiveAdmin.register OrphanList do
 
     private
 
-    def get_partner
+    def inactive_partner_check
+      redirect_to admin_partner_path(params[:partner_id]),
+                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless partner.active?
+    end
+
+    def partner
       Partner.find(params[:partner_id])
     end
 

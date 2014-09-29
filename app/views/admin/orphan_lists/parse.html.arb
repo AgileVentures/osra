@@ -1,0 +1,29 @@
+list_valid = result[:errors].empty?
+div do
+  if list_valid
+    h3 "Orphan list is valid"
+    table_for result[:orphans] do
+      column :name
+      column :father_name
+    end
+  else
+    h3 "Orphan list is invalid"
+    table_for result[:errors] do
+      column :ref
+      column :error
+    end
+  end
+end
+
+div do
+  active_admin_form_for [partner, orphan_list],
+                        url: import_admin_partner_orphan_lists_path(partner) do |f|
+    if list_valid
+      f.actions
+    else
+      f.actions do
+        f.action :cancel
+      end
+    end
+  end
+end
