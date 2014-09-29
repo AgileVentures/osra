@@ -56,14 +56,12 @@ Feature:
     And I click the "Return to Sponsor page" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
 
-    Scenario: A sponsor should be able to sponsor an orphan previously sponsored by him/her
-      Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-      And I am on the "Show Sponsor" page for sponsor "First Sponsor"
-      Then I should see "First Orphan" within "Previously Sponsored Orphans"
-      When I click the "Link to Orphan" button
-      Then I should see "First Orphan"
-      When I click the "Sponsor this orphan" link for orphan "First Orphan"
-      Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
-      And I should see "Sponsorship link was successfully created"
-      And I should see "First Orphan" within "Currently Sponsored Orphans"
-      And I should see "First Orphan" within "Previously Sponsored Orphans"
+  Scenario: A sponsor should be able to re-sponsor an orphan
+    Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    Then I should see "First Orphan"
+    When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I should see "Sponsorship link was successfully created"
+    And I should see "First Orphan" within "Currently Sponsored Orphans"
+    And I should see "First Orphan" within "Previously Sponsored Orphans"
