@@ -143,5 +143,5 @@ Given(/^I visit the new orphan list page for partner "([^"]*)"$/) do |partner|
 end
 
 And(/^I upload the "([^"]*)" file$/) do |file|
-  attach_file 'orphan_list_spreadsheet', "spec/fixtures/files/#{file}"
+  attach_file 'orphan_list_spreadsheet', "spec/fixtures/#{file}"
 end
