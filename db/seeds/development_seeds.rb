@@ -20,3 +20,4 @@ FactoryGirl.create :partner,
 3.times {
   FactoryGirl.create :orphan,
                      orphan_status: OrphanStatus.find_by_name('Active')
+}
