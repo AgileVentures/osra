@@ -5,10 +5,10 @@ Feature:
 
   Background:
     Given the following organizations exist:
-      | code | name | country | start_date | status   | status_code |
-      | 11   | Org1 | UK      | 01/03/2014 | Active   | 1           |
-      | 12   | Org2 | USA     | 02/03/2014 | Inactive | 2           |
-      | 13   | Org3 | Canada  | 25/03/2014 | On Hold  | 3           |
+      | code | name |
+      | 11   | Org1 |
+      | 12   | Org2 |
+      | 13   | Org3 |
     And I am a new, authenticated user
 
   Scenario: There should not be a link to the organizations page on the navbar
@@ -34,8 +34,6 @@ Feature:
       | Field      | Text       |
       | Code       | 55         |
       | Name       | Sampleorg  |
-      | Country    | UK         |
-      | Start date | 2014-09-08 |
 
     And I click the "Create Organization" button
     Then I should be on the "Show Organization" page for organization "Sampleorg"
@@ -45,11 +43,11 @@ Feature:
     When I am on the "Show Organization" page for organization "Org1"
     And I click the "Edit Organization" button
     Then I should be on the "Edit Organization" page for organization "Org1"
-    And I fill in "Country" with "France"
+    And I fill in "Name" with "Org1 Edited"
     And I click the "Update Organization" button
-    Then I should be on the "Show Organization" page for organization "Org1"
+    Then I should be on the "Show Organization" page for organization "Org1 Edited"
     And I should see "Organization was successfully updated"
-    And I should see "France"
+    And I should see "Org1 Edited"
 
   Scenario: Should not be able to delete an organization from the organization show page
     When I am on the "Show Organization" page for organization "Org1"

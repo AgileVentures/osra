@@ -11,18 +11,12 @@ ActiveAdmin.register Organization do
     column :name, sortable: :name do |org|
       link_to org.name, admin_organization_path(org)
     end
-    column :country, sortable: :country
-    column :start_date, sortable: :start_date 
-    column :status, sortable: :status_id
   end
 
   show do |org|
     attributes_table do
       row :code
       row :name
-      row :country
-      row :start_date
-      row :status
     end
   end
 
@@ -30,12 +24,9 @@ ActiveAdmin.register Organization do
     f.inputs do
       f.input :code
       f.input :name
-      f.input :country, :as => :string
-      f.input :start_date, as: :datepicker
-      f.input :status 
     end
     f.actions
   end
 
-  permit_params :name, :country, :code, :status_id, :start_date
+  permit_params :name, :code
 end
