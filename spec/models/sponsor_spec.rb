@@ -26,24 +26,41 @@ describe Sponsor, type: :model do
 
   describe 'branch or organization affiliation' do
     describe 'must be affiliated to 1 branch or 1 organization' do
-      let(:sponsor) { build_stubbed(:sponsor, :organization_id => nil, :branch_id => nil) }
+      subject(:sponsor) { build_stubbed(:sponsor) }
       let(:organization) { build_stubbed(:organization) }
       let(:branch) { build_stubbed(:branch) }
 
       it 'cannot be unaffiliated' do
+        sponsor.organization, sponsor.branch = nil
         expect(sponsor).not_to be_valid
       end
       it 'cannot be affiliated to a branch and an organisation' do
-        sponsor.branch = branch;sponsor.organization = organization
+        sponsor.branch = branch
+        sponsor.organization = organization
         expect(sponsor).not_to be_valid
       end
-      it 'is valid when affiliated with a branch but not an organization' do
-        sponsor.organization = organization
-        expect(sponsor).to be_valid
+      context 'when affiliated with a branch but not an organization' do
+        before do
+          sponsor.branch = branch
+          sponsor.organization = nil
+        end
+
+        it { is_expected.to be_valid }
+        it 'returns branch name as affiliate' do
+          expect(sponsor.affiliate).to eq branch.name
+        end
       end
-      it 'is valid when affiliated with an organization but not a branch' do
-        sponsor.branch = branch
-        expect(sponsor).to be_valid
+
+      context 'when affiliated with an organization but not a branch' do
+        before do
+          sponsor.branch = nil
+          sponsor.organization = organization
+        end
+
+        it { is_expected.to be_valid }
+        it 'returns branch name as affiliate' do
+          expect(sponsor.affiliate).to eq organization.name
+        end
       end
     end
   end
