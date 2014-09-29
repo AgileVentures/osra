@@ -7,10 +7,6 @@ User.create(email: 'user1@example.com',
 User.create(email: 'user2@example.com',
             password: 'password',
             password_confirmation: 'password')
-FactoryGirl.create :organization,
-                   status: Status.find_by_name('Active')
-FactoryGirl.create :organization,
-                   status: Status.find_by_name('Inactive')
 FactoryGirl.create :sponsor,
                    sponsor_type: SponsorType.find_by_name('Individual'),
                    branch: Branch.find_by_name('Riyadh')
@@ -21,4 +17,6 @@ FactoryGirl.create :partner,
                    province: Province.find_by_name('Homs')
 FactoryGirl.create :partner,
                    province: Province.find_by_name('Aleppo')
-3.times { FactoryGirl.create :orphan }
+3.times {
+  FactoryGirl.create :orphan,
+                     orphan_status: OrphanStatus.find_by_name('Active')
