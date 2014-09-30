@@ -19,12 +19,12 @@ class Sponsorship < ActiveRecord::Base
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   def inactivate
-    update_attribute(:active, false)
+    update_attributes!(active: false)
     set_orphan_status_to_unsponsored
   end
 
-  scope :active, -> { where(active: true) }
-  scope :inactive, -> { where(active: false) }
+  scope :all_active, -> { where(active: true) }
+  scope :all_inactive, -> { where(active: false) }
 
   private
 

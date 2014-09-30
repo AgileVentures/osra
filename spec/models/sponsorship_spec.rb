@@ -44,7 +44,7 @@ describe Sponsorship, type: :model do
   end
 
   describe 'methods' do
-    it '.inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
+    it '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
       create :orphan_sponsorship_status, name: 'Unsponsored'
       sponsorship = create :sponsorship
       sponsorship.inactivate
@@ -58,12 +58,12 @@ describe Sponsorship, type: :model do
     let(:inactive_sponsorship) { create :sponsorship }
     before(:each) { inactive_sponsorship.inactivate }
 
-    it '.active should return active sponsorships' do
-      expect(Sponsorship.active.to_a).to eq [active_sponsorship]
+    it '.all_active should return active sponsorships' do
+      expect(Sponsorship.all_active.to_a).to eq [active_sponsorship]
     end
 
-    it '.inactive should return inactive sponsorships' do
-      expect(Sponsorship.inactive.to_a).to eq [inactive_sponsorship]
+    it '.all_inactive should return inactive sponsorships' do
+      expect(Sponsorship.all_inactive.to_a).to eq [inactive_sponsorship]
     end
   end
 end

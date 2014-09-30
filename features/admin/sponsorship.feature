@@ -46,10 +46,13 @@ Feature:
     And I should not see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "First Orphan" within "Previously Sponsored Orphans"
 
-  Scenario: Currently sponsored orphans should not be eligible for new sponsorships
+  Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    When I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    Then I should not see "First Orphan"
     When I am on the "Link to Orphan" page for sponsor "Second Sponsor"
-    Then I should not see "First Orphan" 
+    Then I should not see "First Orphan"
+
 
   Scenario: Cancelling sponsorship creation
     When I am on the "Link to Orphan" page for sponsor "First Sponsor"
