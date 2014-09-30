@@ -34,7 +34,11 @@ ActiveAdmin.register Partner do
         f.input :osra_num, :input_html => { :readonly => true }
       end
       f.input :name
-      f.input :province
+      if f.object.new_record?
+        f.input :province
+      else
+        f.input :province, :input_html => { :disabled => true }
+      end
       f.input :region
       f.input :contact_details
       f.input :start_date, as: :datepicker
