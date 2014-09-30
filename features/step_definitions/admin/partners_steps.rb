@@ -37,4 +37,10 @@ Then(/^I should see the following codes for partners:$/) do |table|
   end
 end
 
+Then(/^I should not be able to change "Province"$/) do
+  expect(find('#partner_province_id')['disabled']).to eq 'disabled'
+  end
 
+Then(/^I should not be able to change "OSRA num"$/) do
+  expect(find('#partner_osra_num')['readonly']).to eq 'readonly'
+end
