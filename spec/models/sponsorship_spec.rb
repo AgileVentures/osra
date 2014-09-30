@@ -13,20 +13,11 @@ describe Sponsorship, type: :model do
   it { is_expected.to belong_to :sponsor }
   it { is_expected.to belong_to :orphan }
 
-  describe 'uniqueness validation' do
-    let(:sponsor) { create :sponsor }
-    let(:orphan) { create :orphan }
-    subject(:sponsorship) { build :sponsorship, sponsor: sponsor, orphan: orphan }
-
-    context 'when an active sponsorship between sponsor & orphan already exists' do
-      before { sponsorship.dup.save! }
-      it { is_expected.not_to be_valid }
-    end
-
-    context 'when an inactive sponsorship between sponsor & orphan exists' do
-      before { create(:sponsorship, sponsorship.attributes).inactivate }
-      it { is_expected.to be_valid }
-    end
+  it 'prevents sponsorship of actively sponsored orphans' do
+    create :sponsorship
+    expect(subject).to validate_uniqueness_of(:orphan).
+                       scoped_to(:active).
+                       with_message('is already actively sponsored')
   end
 
   describe 'callbacks' do

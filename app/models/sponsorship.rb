@@ -9,8 +9,8 @@ class Sponsorship < ActiveRecord::Base
   validates :sponsor, presence: true
   validates :orphan, presence: true
   validates :start_date, date_not_in_future: true
-  validates :sponsor, uniqueness: { scope: [:orphan, :active],
-                                       message: 'already actively sponsors this orphan' }
+  validates :orphan, uniqueness: { scope: :active,
+                                       message: 'is already actively sponsored' }
 
   belongs_to :sponsor
   belongs_to :orphan
