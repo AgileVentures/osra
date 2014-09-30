@@ -160,11 +160,11 @@ describe Sponsor, type: :model do
       inactive_sponsorship.save!
     end
 
-    it '.active_sponsorships should work' do
+    it ".active_sponsorships should return sponsor's active sponsorships" do
       expect(sponsor.active_sponsorships.to_a).to eq [active_sponsorship]
     end
 
-    it '.inactive_sponsorships should work' do
+    it ".inactive_sponsorships should return sponsor's inactive sponsorships" do
       expect(sponsor.inactive_sponsorships.to_a).to eq [inactive_sponsorship]
     end
   end

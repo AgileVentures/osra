@@ -26,7 +26,7 @@ class Sponsor < ActiveRecord::Base
 
   def active_sponsorships
     sponsorships.where('active = ?', true)
-    end
+  end
 
   def inactive_sponsorships
     sponsorships.where('active = ?', false)

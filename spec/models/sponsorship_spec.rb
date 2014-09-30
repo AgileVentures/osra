@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe Sponsorship, type: :model do
 
+  before(:each) { create :orphan_status, name: 'Active' }
+
   it 'should have a valid factory' do
     expect(build_stubbed :sponsorship).to be_valid
   end
@@ -12,7 +14,6 @@ describe Sponsorship, type: :model do
   it { is_expected.to belong_to :orphan }
 
   describe 'uniqueness validation' do
-    before { create :orphan_status, name: 'Active' }
     let(:sponsor) { create :sponsor }
     let(:orphan) { create :orphan }
     subject(:sponsorship) { build :sponsorship, sponsor: sponsor, orphan: orphan }
@@ -43,7 +44,6 @@ describe Sponsorship, type: :model do
     end
 
     describe 'before_create #set_active_true' do
-      before { create :orphan_status, name: 'Active' }
       let(:sponsorship) { build :sponsorship }
       it 'sets the .active attribute to true' do
         sponsorship.save!
@@ -54,7 +54,6 @@ describe Sponsorship, type: :model do
 
   describe 'methods' do
     it '.inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
-      create :orphan_status, name: 'Active'
       create :orphan_sponsorship_status, name: 'Unsponsored'
       sponsorship = create :sponsorship
       sponsorship.inactivate

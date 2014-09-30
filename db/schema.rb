@@ -71,9 +71,6 @@ ActiveRecord::Schema.define(version: 20140929091006) do
   create_table "organizations", force: true do |t|
     t.integer  "code"
     t.string   "name"
-    t.string   "country"
-    t.date     "start_date"
-    t.integer  "status_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -203,7 +200,6 @@ ActiveRecord::Schema.define(version: 20140929091006) do
 
   add_index "sponsorships", ["active"], name: "index_sponsorships_on_active", using: :btree
   add_index "sponsorships", ["orphan_id"], name: "index_sponsorships_on_orphan_id", using: :btree
-  add_index "sponsorships", ["sponsor_id", "orphan_id"], name: "index_sponsorships_on_sponsor_id_and_orphan_id", unique: true, using: :btree
   add_index "sponsorships", ["sponsor_id"], name: "index_sponsorships_on_sponsor_id", using: :btree
 
   create_table "spreadsheets", force: true do |t|
