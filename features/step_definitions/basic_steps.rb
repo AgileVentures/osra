@@ -24,7 +24,7 @@ def path_to_admin_role(page_name, id = '')
       admin_partner_path(id)
     when 'edit partner' then
       edit_admin_partner_path(id)
-     when 'sponsors' then
+    when 'sponsors' then
       admin_sponsors_path
     when 'new sponsor' then
       new_admin_sponsor_path
@@ -63,19 +63,19 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for the "([^"]*)" role$/) do  |page, role|
   case role.downcase
-  when "admin"
-    visit path_to_admin_role(page)
-  else
-    raise "role not covered in this method"
+    when "admin"
+      visit path_to_admin_role(page)
+    else
+      raise "role not covered in this method"
   end
 end
 
 Then(/^I should be on the "([^"]*)" page for the "([^"]*)" role$/) do |page_name, role|
   case role.downcase
-  when "admin"
-    expect(current_path).to eq path_to_admin_role(page_name)
-  else 
-    raise "role not covered in this method"
+    when "admin"
+      expect(current_path).to eq path_to_admin_role(page_name)
+    else
+      raise "role not covered in this method"
   end
 end
 
@@ -114,7 +114,7 @@ end
 Then(/^I should see the following fields on the page:$/) do |table|
   table.hashes.each do |hash|
     expect(page).to have_content(hash[:value])
-  end  
+  end
 end
 
 Then(/^I (un)?check the "([^"]*)" checkbox$/) do |negative,checkbox|
@@ -140,4 +140,8 @@ end
 Given(/^I visit the new orphan list page for partner "([^"]*)"$/) do |partner|
   partner_id = Partner.find_by_name(partner).id
   visit new_admin_partner_orphan_list_path(partner_id)
+end
+
+And(/^I upload the "([^"]*)" file$/) do |file|
+  attach_file 'orphan_list_spreadsheet', "spec/fixtures/#{file}"
 end

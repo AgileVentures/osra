@@ -7,6 +7,7 @@ ActiveAdmin.register OrphanList do
 
   index do
     column :osra_num
+    column :spreadsheet_file_name
     column :partner, sortable: :partner_id do |orphan_list|
       link_to orphan_list.partner.name, admin_partner_path(orphan_list.partner)
     end
@@ -26,21 +27,22 @@ ActiveAdmin.register OrphanList do
 
   form do |f|
     f.semantic_errors *f.object.errors.keys
-      f.inputs do
-        f.input :spreadsheet, as: :file
-      end
-      f.actions
+    f.inputs do
+      f.input :spreadsheet, as: :file
+    end
+    f.actions
   end
 
   controller do
     def create
 
-      p = get_partner
-      orphan_list = p.orphan_lists.build(orphan_list_params)
-      orphan_list.orphan_count = 0
+      @partner = get_partner
 
-      if orphan_list.save
-        redirect_to admin_partner_path(p), notice: "Orphan List (#{orphan_list.osra_num}) was successfully imported."
+      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
+      @orphan_list.orphan_count = 0
+
+      if @orphan_list.save
+        redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported."
       else
         render action: :new
       end

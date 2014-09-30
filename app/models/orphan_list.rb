@@ -1,5 +1,4 @@
 class OrphanList < ActiveRecord::Base
-  ACCEPTED_FORMATS = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
 
   before_create :generate_osra_num
 
@@ -11,7 +10,6 @@ class OrphanList < ActiveRecord::Base
   validate :partner_is_active
 
   validates_attachment :spreadsheet, presence: true,
-                       content_type: { content_type: ACCEPTED_FORMATS },
                        file_name: { matches: [/xls\Z/, /xlsx\Z/] }
 
   belongs_to :partner
