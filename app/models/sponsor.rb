@@ -24,14 +24,6 @@ class Sponsor < ActiveRecord::Base
     branch.present? ? branch.name : organization.name
   end
 
-  def active_sponsorships
-    sponsorships.where('active = ?', true)
-  end
-
-  def inactive_sponsorships
-    sponsorships.where('active = ?', false)
-  end
-
   private
   
   def belongs_to_one_branch_or_organization

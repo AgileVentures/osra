@@ -31,9 +31,9 @@ ActiveAdmin.register Sponsor do
       row :start_date
     end
 
-    panel "#{ pluralize(sponsor.active_sponsorships.count,
+    panel "#{ pluralize(sponsor.sponsorships.active.count,
                         'Currently Sponsored Orphan') }", id: 'active' do
-      table_for sponsor.active_sponsorships do
+      table_for sponsor.sponsorships.active do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender
@@ -45,9 +45,9 @@ ActiveAdmin.register Sponsor do
       end
     end
 
-    panel "#{ pluralize(sponsor.inactive_sponsorships.count,
+    panel "#{ pluralize(sponsor.sponsorships.inactive.count,
                        'Previously Sponsored Orphan') }", id: 'inactive' do
-      table_for sponsor.inactive_sponsorships do
+      table_for sponsor.sponsorships.inactive do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender

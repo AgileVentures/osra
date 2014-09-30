@@ -142,30 +142,4 @@ describe Sponsor, type: :model do
       expect(sponsor.osra_num[3..-1]).to eq '0999'
     end
   end
-
-  describe 'methods' do
-    let(:sponsor) { build_stubbed :sponsor }
-    let!(:active_status) { create :orphan_status, name: 'Active' }
-    let(:active_orphan) { create :orphan }
-    let(:inactive_orphan) { create :orphan }
-    let!(:active_sponsorship) { create :sponsorship,
-                                             sponsor: sponsor,
-                                             orphan: active_orphan }
-    let!(:inactive_sponsorship) { create :sponsorship,
-                                               sponsor: sponsor,
-                                               orphan: inactive_orphan }
-
-    before(:each) do
-      inactive_sponsorship.active = false
-      inactive_sponsorship.save!
-    end
-
-    it ".active_sponsorships should return sponsor's active sponsorships" do
-      expect(sponsor.active_sponsorships.to_a).to eq [active_sponsorship]
-    end
-
-    it ".inactive_sponsorships should return sponsor's inactive sponsorships" do
-      expect(sponsor.inactive_sponsorships.to_a).to eq [inactive_sponsorship]
-    end
-  end
 end

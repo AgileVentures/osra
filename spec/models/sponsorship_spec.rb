@@ -52,4 +52,18 @@ describe Sponsorship, type: :model do
       expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Unsponsored'
     end
   end
+
+  describe 'scopes' do
+    let!(:active_sponsorship) { create :sponsorship }
+    let(:inactive_sponsorship) { create :sponsorship }
+    before(:each) { inactive_sponsorship.inactivate }
+
+    it '.active should return active sponsorships' do
+      expect(Sponsorship.active.to_a).to eq [active_sponsorship]
+    end
+
+    it '.inactive should return inactive sponsorships' do
+      expect(Sponsorship.inactive.to_a).to eq [inactive_sponsorship]
+    end
+  end
 end

@@ -23,6 +23,9 @@ class Sponsorship < ActiveRecord::Base
     set_orphan_status_to_unsponsored
   end
 
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+
   private
 
     def set_orphan_status_to_sponsored
