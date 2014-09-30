@@ -1,5 +1,4 @@
 require 'spreadsheet'
-require 'open-uri'
 
 class OrphanList < ActiveRecord::Base
 
@@ -13,7 +12,7 @@ class OrphanList < ActiveRecord::Base
   validate :partner_is_active
 
   validates_attachment :spreadsheet, presence: true,
-                       file_name: { matches: [/xls\Z/, /xlsx\Z/] }
+                       file_name: {matches: [/xls\Z/, /xlsx\Z/]}
 
   belongs_to :partner
 
@@ -23,16 +22,21 @@ class OrphanList < ActiveRecord::Base
     end
   end
 
-  def extract_orphans
-    debugger
-    extracted_errors = []
-    extracted_orphans = []
+  def extract_orphans file
+    #  sheet = Spreadsheet.open(file.path)
+    #  workbook = RubyXL::Parser.parse(file.path)
+    file.original_filename =~ /[.]([^.]+)\z/
+    doc = Roo::Spreadsheet.open file.path, extension: $1.to_s
+    binding.pry
+
+    @extracted_errors = []
+    @extracted_orphans = []
     if spreadsheet_file_name == 'empty_xlsx.xlsx'
-      extracted_errors << {ref: 'Cell[4,3]', error: 'is empty'}
+      @extracted_errors << {ref: 'Cell[4,3]', error: 'is empty'}
     else
-      extracted_orphans << {name: 'First Name', father_name: 'Last Name'}
+      @extracted_orphans << {name: 'First Name', father_name: 'Last Name'}
     end
-    {errors: extracted_errors, orphans: extracted_orphans}
+    {errors: @extracted_errors, orphans: @extracted_orphans}
   end
 
   private
