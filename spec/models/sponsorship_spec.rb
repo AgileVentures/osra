@@ -3,9 +3,11 @@ require 'rails_helper'
 describe Sponsorship, type: :model do
 
   before(:each) { create :orphan_status, name: 'Active' }
+  before(:each) { create :orphan_sponsorship_status, name: 'Unsponsored' }
+  before(:each) { create :status, name: 'Active' }
 
   it 'should have a valid factory' do
-    expect(build_stubbed :sponsorship).to be_valid
+    expect(build :sponsorship).to be_valid
   end
 
   it { is_expected.to validate_presence_of :sponsor }
@@ -18,6 +20,25 @@ describe Sponsorship, type: :model do
     expect(subject).to validate_uniqueness_of(:orphan).
                        scoped_to(:active).
                        with_message('is already actively sponsored')
+  end
+
+  describe 'validations' do
+    let(:inactive_status) do
+      Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
+    end
+    let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
+    let(:inactive_orphan_status) do
+      OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
+    end
+    let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
+
+    it 'disallows creation of new sponsorships with ineligible sponsors' do
+      expect(build_stubbed :sponsorship, sponsor: ineligible_sponsor).not_to be_valid
+    end
+
+    it 'disallows creation of new sponsorships with ineligible orphans' do
+      expect(build_stubbed :sponsorship, orphan: ineligible_orphan).not_to be_valid
+    end
   end
 
   describe 'callbacks' do
