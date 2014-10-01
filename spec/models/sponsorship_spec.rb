@@ -5,11 +5,19 @@ describe Sponsorship, type: :model do
   before(:each) { create :orphan_status, name: 'Active' }
   before(:each) { create :orphan_sponsorship_status, name: 'Unsponsored' }
   before(:each) { create :status, name: 'Active' }
+  subject { build :sponsorship }
 
   it 'should have a valid factory' do
     expect(build :sponsorship).to be_valid
   end
 
+  it 'what' do
+    puts subject.inspect
+    puts subject.orphan.inspect
+    puts subject.sponsor.inspect
+    puts subject.orphan.eligible_for_sponsorship
+    puts subject.sponsor.eligible_for_sponsorship
+  end
   it { is_expected.to validate_presence_of :sponsor }
   it { is_expected.to validate_presence_of :orphan }
   it { is_expected.to belong_to :sponsor }
