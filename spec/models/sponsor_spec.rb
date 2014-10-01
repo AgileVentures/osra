@@ -24,6 +24,12 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
 
+  describe "#requested_orphan_count" do
+    it "should have the #requested_orphan_count attribute" do
+      expect(build_stubbed :sponsor).to respond_to(:requested_orphan_count)
+    end
+  end
+
   describe 'branch or organization affiliation' do
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
