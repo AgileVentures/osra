@@ -60,7 +60,7 @@ class Orphan < ActiveRecord::Base
         -> { Orphan.joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
 
-  def eligible_for_sponsorship
+  def eligible_for_sponsorship?
     Orphan.active.unsponsored.include? self
   end
 

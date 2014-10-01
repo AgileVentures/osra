@@ -147,7 +147,7 @@ describe Sponsor, type: :model do
     let(:active_sponsor) { build_stubbed :sponsor }
     let(:on_hold_sponsor) { build_stubbed :sponsor, status: on_hold_status}
 
-    specify '#eligible_for_sponsorship should return true for eligible sponsors' do
+    specify '#eligible_for_sponsorship? should return true for eligible sponsors' do
       expect(active_sponsor.eligible_for_sponsorship?).to eq true
       expect(on_hold_sponsor.eligible_for_sponsorship?).to eq false
     end

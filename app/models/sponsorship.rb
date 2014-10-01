@@ -43,13 +43,13 @@ class Sponsorship < ActiveRecord::Base
     end
 
     def sponsor_is_eligible_for_new_sponsorship
-      unless sponsor && sponsor.eligible_for_sponsorship
+      unless sponsor && sponsor.eligible_for_sponsorship?
         errors[:sponsor] << 'is ineligible for a new sponsorship'
       end
     end
 
     def orphan_is_eligible_for_new_sponsorship
-      unless orphan && orphan.eligible_for_sponsorship
+      unless orphan && orphan.eligible_for_sponsorship?
         errors[:orphan] << 'is ineligible for a new sponsorship'
       end
     end
