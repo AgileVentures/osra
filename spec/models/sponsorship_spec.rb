@@ -2,22 +2,16 @@ require 'rails_helper'
 
 describe Sponsorship, type: :model do
 
-  before(:each) { create :orphan_status, name: 'Active' }
-  before(:each) { create :orphan_sponsorship_status, name: 'Unsponsored' }
-  before(:each) { create :status, name: 'Active' }
-  subject { build :sponsorship }
+  before(:each) do
+    create :orphan_status, name: 'Active'
+    create :orphan_sponsorship_status, name: 'Unsponsored'
+    create :status, name: 'Active'
+  end
 
   it 'should have a valid factory' do
     expect(build :sponsorship).to be_valid
   end
 
-  it 'what' do
-    puts subject.inspect
-    puts subject.orphan.inspect
-    puts subject.sponsor.inspect
-    puts subject.orphan.eligible_for_sponsorship
-    puts subject.sponsor.eligible_for_sponsorship
-  end
   it { is_expected.to validate_presence_of :sponsor }
   it { is_expected.to validate_presence_of :orphan }
   it { is_expected.to belong_to :sponsor }
@@ -41,11 +35,11 @@ describe Sponsorship, type: :model do
     let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
 
     it 'disallows creation of new sponsorships with ineligible sponsors' do
-      expect(build_stubbed :sponsorship, sponsor: ineligible_sponsor).not_to be_valid
+      expect{ create :sponsorship, sponsor: ineligible_sponsor }.to raise_error ActiveRecord::RecordInvalid
     end
 
     it 'disallows creation of new sponsorships with ineligible orphans' do
-      expect(build_stubbed :sponsorship, orphan: ineligible_orphan).not_to be_valid
+      expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
     end
   end
 
@@ -74,7 +68,6 @@ describe Sponsorship, type: :model do
 
   describe 'methods' do
     it '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
-      create :orphan_sponsorship_status, name: 'Unsponsored'
       sponsorship = create :sponsorship
       sponsorship.inactivate
       expect(sponsorship.reload.active).to eq false
