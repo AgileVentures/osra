@@ -42,6 +42,7 @@ Feature:
   Scenario: Should be able to add a sponsor from the sponsor index page
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
+    And I fill in "Requested orphan count" with "22"
     And I fill in "Country" with "UK"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"

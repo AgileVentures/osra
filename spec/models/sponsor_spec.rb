@@ -7,6 +7,7 @@ describe Sponsor, type: :model do
   end
 
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :sponsor_type }
 
@@ -18,17 +19,14 @@ describe Sponsor, type: :model do
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
 
+  it { is_expected.to validate_numericality_of(:requested_orphan_count).
+     only_integer.is_greater_than(0) }
+
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
-
-  describe "#requested_orphan_count" do
-    it "should have the #requested_orphan_count attribute" do
-      expect(build_stubbed :sponsor).to respond_to(:requested_orphan_count)
-    end
-  end
 
   describe 'branch or organization affiliation' do
     describe 'must be affiliated to 1 branch or 1 organization' do
