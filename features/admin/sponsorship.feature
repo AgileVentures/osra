@@ -17,6 +17,11 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "1 Currently Sponsored Orphan"
     And I should see "First Orphan"
+    
+  Scenario: Sponsorships can only be created for active sponsors
+    Given the status of sponsor "First Sponsor" is "Inactive"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    Then I should not see the "Link to Orphan" link
 
   Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
@@ -52,7 +57,6 @@ Feature:
     Then I should not see "First Orphan"
     When I am on the "Link to Orphan" page for sponsor "Second Sponsor"
     Then I should not see "First Orphan"
-
 
   Scenario: Cancelling sponsorship creation
     When I am on the "Link to Orphan" page for sponsor "First Sponsor"
