@@ -9,6 +9,7 @@ Given(/^the following sponsors exist:$/) do |table|
                                       code: hash[:status_code])
     sponsor = Sponsor.new(name: hash[:name], country: hash[:country],
                           gender: hash[:gender], sponsor_type: sponsor_type,
+                          requested_orphan_count: hash[:requested_orphan_count],
                           address: hash[:address], email: hash[:email],
                           contact1: hash[:contact1], contact2: hash[:contact2],
                           additional_info: hash[:additional_info], branch: branch,
