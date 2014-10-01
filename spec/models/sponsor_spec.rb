@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Sponsor, type: :model do
+  let!(:active_status) { create :status, name: 'Active' }
+  let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
@@ -68,8 +70,8 @@ describe Sponsor, type: :model do
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do
-        let!(:active_status) { create :status, name: 'Active' }
-        let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
+        # let!(:active_status) { create :status, name: 'Active' }
+        # let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
         it 'defaults status to "Under Revision"' do
           expect((Sponsor.new).status).to eq active_status
@@ -140,6 +142,16 @@ describe Sponsor, type: :model do
       sponsor.sequential_id = 999
       sponsor.save!
       expect(sponsor.osra_num[3..-1]).to eq '0999'
+    end
+  end
+
+  describe 'methods' do
+    let(:active_sponsor) { build_stubbed :sponsor }
+    let(:on_hold_sponsor) { build_stubbed :sponsor, status: on_hold_status}
+
+    it '#eligible_for_sponsorship should return true for eligible sponsors' do
+      expect(active_sponsor.eligible_for_sponsorship).to eq true
+      expect(on_hold_sponsor.eligible_for_sponsorship).to eq false
     end
   end
 end
