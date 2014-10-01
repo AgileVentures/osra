@@ -17,7 +17,4 @@ FactoryGirl.create :partner,
                    province: Province.find_by_name('Homs')
 FactoryGirl.create :partner,
                    province: Province.find_by_name('Aleppo')
-3.times {
-  FactoryGirl.create :orphan,
-                     orphan_status: OrphanStatus.find_by_name('Active')
-}
+3.times { FactoryGirl.create :orphan }
