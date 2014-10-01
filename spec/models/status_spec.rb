@@ -15,9 +15,9 @@ describe Status, type: :model do
     let(:active_status) { build_stubbed :status, name: 'Active' }
     let(:inactive_status) { build_stubbed :status, name: 'Inactive' }
 
-    it "#active should return true if name == 'Active'" do
-      expect(active_status.active).to eq true
-      expect(inactive_status.active).to eq false
+    specify "#active should return true if name == 'Active'" do
+      expect(active_status.active?).to eq true
+      expect(inactive_status.active?).to eq false
     end
   end
 end

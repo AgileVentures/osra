@@ -7,7 +7,7 @@ class Status < ActiveRecord::Base
   has_many :partners
   has_many :sponsors
 
-  def active
+  def active?
     self.name == 'Active'
   end
 end

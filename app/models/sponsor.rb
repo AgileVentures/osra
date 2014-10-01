@@ -24,8 +24,8 @@ class Sponsor < ActiveRecord::Base
     branch.present? ? branch.name : organization.name
   end
 
-  def eligible_for_sponsorship
-    self.status.active
+  def eligible_for_sponsorship?
+    self.status.active?
   end
 
   private
