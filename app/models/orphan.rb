@@ -1,7 +1,7 @@
 class Orphan < ActiveRecord::Base
 
   include Initializer
-  after_initialize :default_status_to_active,
+  after_initialize :default_orphan_status_to_active,
                    :default_sponsorship_status_to_unsponsored
 
   validates :name, presence: true

@@ -18,7 +18,7 @@ Feature:
       | contact2          | cd21               | cd22                | cd32                |
       | additional_info   | additional1        | additional2         | addtional3          |
       | start_date        | 2013-09-25         | 2013-09-25          | 2013-09-25          |
-      | status            | Under Revision     | Under Revision      | Under Revision      |
+      | status            | Active             | Active              | Active              |
       | status_code       | 01                 | 01                  | 01                  |
 
     And I am a new, authenticated user
@@ -58,7 +58,7 @@ Feature:
     |  country           | UK                     |
     |  gender            | Active                 |
     |  sponsor_type      | Individual             |
-    |  status            | Under Revision         |
+    |  status            | Active                 |
     |  start_date        | September 25, 2013     |
 
   Scenario: I should see the required fields on the sponsor show page
@@ -74,7 +74,7 @@ Feature:
     |  contact1          | cd1                    |
     |  contact2          | cd21                   |
     |  additional_info   | additional1            |
-    |  status            | Under Revision         |
+    |  status            | Active                 |
     |  start_date        | September 25, 2013     |
 
   Scenario: Should be able to edit a sponsor from the sponsor show page

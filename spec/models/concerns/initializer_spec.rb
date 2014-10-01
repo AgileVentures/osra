@@ -12,18 +12,18 @@ describe Initializer do
   subject(:test_model) { test_class.new }
 
   describe 'set_status' do
-    let!(:under_revision_status) { create :status, name: 'Under Revision' }
-    let(:active_status) { build_stubbed :status }
+    let!(:active_status) { create :status, name: 'Active' }
+    let(:on_hold_status) { build_stubbed :status }
 
     it 'sets status to default if it is blank' do
-      test_model.default_status_to_under_revision
-      expect(test_model.status).to eq under_revision_status
+      test_model.default_status_to_active
+      expect(test_model.status).to eq active_status
     end
 
     it 'does not change status if it is already set' do
-      test_model.status = active_status
-      test_model.default_status_to_under_revision
-      expect(test_model.status).to eq active_status
+      test_model.status = on_hold_status
+      test_model.default_status_to_active
+      expect(test_model.status).to eq on_hold_status
     end
   end
 
