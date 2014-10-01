@@ -1,8 +1,8 @@
 class Orphan < ActiveRecord::Base
 
   include Initializer
-  after_initialize :default_status_active,
-                   :default_status_unsponsored
+  after_initialize :default_orphan_status_active,
+                   :default_sponsorship_status_unsponsored
 
   validates :name, presence: true
   validates :father_name, presence: true
@@ -62,11 +62,11 @@ class Orphan < ActiveRecord::Base
  
   private
 
-  def default_status_unsponsored
+  def default_sponsorship_status_unsponsored
     self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'
   end
 
-  def default_status_active
+  def default_orphan_status_active
      self.orphan_status ||= OrphanStatus.find_by_name 'Active'
   end
 
