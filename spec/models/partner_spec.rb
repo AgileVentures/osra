@@ -26,16 +26,16 @@ describe Partner, type: :model do
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do
-        let!(:under_revision_status) { create :status, name: 'Under Revision' }
-        let(:active_status) { build_stubbed :status, name: 'Active' }
+        let!(:active_status) { create :status, name: 'Active' }
+        let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
-        it 'defaults status to "Under Revision"' do
-          expect(Partner.new.status).to eq under_revision_status
+        it 'defaults status to "Active"' do
+          expect(Partner.new.status).to eq active_status
         end
 
         it 'sets non-default status if provided' do
-          options = { status: active_status }
-          expect(Partner.new(options).status).to eq active_status
+          options = { status: on_hold_status }
+          expect(Partner.new(options).status).to eq on_hold_status
         end
       end
 

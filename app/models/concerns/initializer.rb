@@ -1,14 +1,14 @@
 module Initializer
 
-  def default_status_to_under_revision
-    self.status ||= Status.find_by_name 'Under Revision'
+  def default_status_to_active
+    self.status ||= Status.find_by_name 'Active'
   end
 
   def default_start_date_to_today
     self.start_date ||= Date.current
   end
 
-  def default_status_to_active
+  def default_orphan_status_to_active
     self.orphan_status ||= OrphanStatus.find_by_name 'Active'
   end
 

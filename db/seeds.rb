@@ -18,7 +18,6 @@ Province.create(name: 'Outside Syria', code: 29)
 Status.create(name: 'Active', code: 1)
 Status.create(name: 'Inactive', code: 2)
 Status.create(name: 'On Hold', code: 3)
-Status.create(name: 'Under Revision', code: 4)
 
 # Creating Orphan Statuses
 OrphanStatus.create(name: 'Active', code: 1)
