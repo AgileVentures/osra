@@ -78,7 +78,7 @@ ActiveAdmin.register Sponsor do
   end
 
   action_item only: :show do
-    link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor)
+    link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.status.active
   end
 
   permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
