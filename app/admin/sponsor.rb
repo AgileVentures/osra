@@ -31,18 +31,28 @@ ActiveAdmin.register Sponsor do
       row :start_date
     end
 
-    panel "#{ pluralize(sponsor.orphans.count, 'Sponsored Orphan') }" do
-      table_for sponsor.orphans do
-        column 'Name' do |orphan|
-          link_to orphan.name, admin_orphan_path(orphan)
-        end
-        column :date_of_birth
-        column :gender
-        column '' do |orphan|
+    panel "#{ pluralize(sponsor.sponsorships.all_active.count,
+                        'Currently Sponsored Orphan') }", id: 'active' do
+      table_for sponsor.sponsorships.all_active do
+        column :orphan
+        column :orphan_date_of_birth
+        column :orphan_gender
+        column '' do |_sponsorship|
           link_to 'End sponsorship',
-                  admin_sponsorship_destroy_path(sponsor_id: sponsor.id,
-                                                 orphan_id: orphan.id),
-                  method: :delete
+                  inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id),
+                  method: :put
+        end
+      end
+    end
+
+    panel "#{ pluralize(sponsor.sponsorships.all_inactive.count,
+                       'Previously Sponsored Orphan') }", id: 'inactive' do
+      table_for sponsor.sponsorships.all_inactive do
+        column :orphan
+        column :orphan_date_of_birth
+        column :orphan_gender
+        column 'Sponsorship ended' do |_sponsorship|
+          _sponsorship.updated_at
         end
       end
     end

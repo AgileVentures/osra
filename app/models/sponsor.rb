@@ -25,7 +25,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   private
-
+  
   def belongs_to_one_branch_or_organization
     unless branch.blank? ^ organization.blank?
       errors.add(:organization, "must belong to a branch or an organization, but not both")
