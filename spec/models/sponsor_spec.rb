@@ -70,8 +70,6 @@ describe Sponsor, type: :model do
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do
-        # let!(:active_status) { create :status, name: 'Active' }
-        # let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
         it 'defaults status to "Under Revision"' do
           expect((Sponsor.new).status).to eq active_status

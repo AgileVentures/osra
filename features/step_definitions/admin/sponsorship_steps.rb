@@ -58,10 +58,6 @@ Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name
 end
 
 Given(/^the status of sponsor "([^"]*)" is "([^"]*)"$/) do |sponsor_name, status|
-  if Status.find_by_name(status)
-    sponsor_status = Status.find_by_name(status).first
-  else
-    sponsor_status = FactoryGirl.create(:status, name: status)
-  end
+  sponsor_status = Status.find_by_name(status) || FactoryGirl.create(:status, name: status)
   Sponsor.find_by_name(sponsor_name).update! status: sponsor_status
 end
