@@ -30,6 +30,29 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
 
+  describe '.request_fulfilled' do
+    let(:sponsor ) {build(:sponsor)}
+
+    it 'should default to  request unfulfilled'  do
+      sponsor.save!
+      expect(sponsor.request_fulfilled?).to be false
+    end
+
+    it 'should make request unfulfilled on create always'  do
+      sponsor.request_fulfilled = true
+      sponsor.save!
+      expect(sponsor.request_fulfilled?).to be false
+    end
+
+    it 'should allow exisitng records to have request_fulfilled' do
+      sponsor.save!
+      sponsor.request_fulfilled = true
+      sponsor.save!
+      sponsor.reload
+      expect(sponsor.request_fulfilled?).to be true
+    end
+  end
+
   describe 'branch or organization affiliation' do
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }

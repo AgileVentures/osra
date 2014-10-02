@@ -2,10 +2,10 @@ class Sponsor < ActiveRecord::Base
   include Initializer
 
   after_initialize :default_status_to_active, :default_start_date_to_today
-  before_create :generate_osra_num
+  before_create :generate_osra_num, :set_request_unfulfilled
 
   validates :name, presence: true
-  validates :requested_orphan_count, presence: true, 
+  validates :requested_orphan_count, presence: true,
             numericality: {only_integer: true, greater_than: 0}
   validates :country, presence: true
   validates :sponsor_type, presence: true
@@ -52,6 +52,11 @@ class Sponsor < ActiveRecord::Base
       errors[:base] << "must belong to a branch or an organization, but not both"
       raise ActiveRecord::RecordInvalid.new(self)
     end
+  end
+
+  def set_request_unfulfilled
+    self.request_fulfilled = false
+    true
   end
 
 end
