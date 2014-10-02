@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 describe Orphan, type: :model do
+  let!(:active_orphan_status) { create :orphan_status, name: 'Active' }
+  let!(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
+  let!(:active_status) { create :status, name: 'Active' }
+  let!(:sponsored_status) { create :orphan_sponsorship_status, name: 'Sponsored' }
+  let!(:unsponsored_status) { create :orphan_sponsorship_status, name: 'Unsponsored' }
 
   it 'should have a valid factory' do
-    create :orphan_status, name: 'Active'
     expect(build_stubbed :orphan).to be_valid
   end
 
@@ -49,7 +53,6 @@ describe Orphan, type: :model do
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
   describe '#orphans_dob_within_1yr_of_fathers_death' do
-    before { create :orphan_status, name: 'Active' }
     let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
 
     it "is valid when orphan is born a year after fathers death" do
@@ -64,15 +67,10 @@ describe Orphan, type: :model do
   end
 
   describe 'initializers, methods & scopes' do
-    let!(:active_status) { create :orphan_status,
-                                  name: 'Active' }
-    let!(:unsponsored_status) { create :orphan_sponsorship_status,
-                                       name: 'Unsponsored' }
-
     describe 'initializers' do
 
       it 'defaults orphan_status to Active' do
-        expect(Orphan.new.orphan_status).to eq active_status
+        expect(Orphan.new.orphan_status).to eq active_orphan_status
       end
 
       it 'defaults orphan_sponsorship_status to Unsponsored' do
@@ -85,24 +83,19 @@ describe Orphan, type: :model do
     end
 
     describe 'methods & scopes' do
-      let!(:sponsored_status) { create :orphan_sponsorship_status,
-                                       name: 'Sponsored' }
-      let!(:inactive_status) { create :orphan_status,
-                                      name: 'Inactive' }
-
       let!(:active_unsponsored_orphan) do
         create :orphan,
-               orphan_status: active_status,
+               orphan_status: active_orphan_status,
                orphan_sponsorship_status: unsponsored_status
       end
       let!(:inactive_unsponsored_orphan) do
         create :orphan,
-               orphan_status: inactive_status,
+               orphan_status: inactive_orphan_status,
                orphan_sponsorship_status: unsponsored_status
       end
       let!(:active_sponsored_orphan) do
         create :orphan,
-               orphan_status: active_status,
+               orphan_status: active_orphan_status,
                orphan_sponsorship_status: sponsored_status
       end
 
