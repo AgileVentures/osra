@@ -42,7 +42,7 @@ Given(/^the following orphans exist:$/) do |table|
 end
 
 Then(/^I should see "Orphans" linking to the admin orphans page$/) do
-  expect(page).to have_link("Partners", href: "#{admin_partners_path}")
+  expect(page).to have_link('Orphans', href: "#{admin_orphans_path}")
 end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for orphan "([^"]*)"$/) do |page, orphan_name|
