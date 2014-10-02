@@ -8,6 +8,7 @@ class Sponsor < ActiveRecord::Base
   validates :requested_orphan_count, presence: true,
             numericality: {only_integer: true, greater_than: 0}
   validates :country, presence: true
+  validates :request_fulfilled, inclusion: {in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
   validates :start_date, date_not_in_future: true

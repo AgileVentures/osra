@@ -41,6 +41,7 @@ describe Sponsor, type: :model do
     it 'should make request unfulfilled on create always'  do
       sponsor.request_fulfilled = true
       sponsor.save!
+      sponsor.reload
       expect(sponsor.request_fulfilled?).to be false
     end
 

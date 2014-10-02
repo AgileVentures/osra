@@ -10,6 +10,7 @@ ActiveAdmin.register Sponsor do
       link_to sponsor.name, admin_sponsor_path(sponsor)
     end
     column :sponsor_type
+    column :request_fulfilled
     column :country
     column :status, sortable: :status_id
     column :start_date
@@ -21,6 +22,9 @@ ActiveAdmin.register Sponsor do
       row :status
       row :sponsor_type
       row :requested_orphan_count
+      row :request_fulfilled do
+        sponsor.request_fulfilled? ? 'Yes' : 'No'
+      end
       row :country
       row :affiliate
       row :gender
@@ -68,6 +72,7 @@ ActiveAdmin.register Sponsor do
       f.input :organization
       f.input :branch
       f.input :requested_orphan_count
+      f.input :request_fulfilled unless f.object.new_record?
       f.input :address
       f.input :email
       f.input :contact1
@@ -83,6 +88,6 @@ ActiveAdmin.register Sponsor do
     link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.eligible_for_sponsorship?
   end
 
-  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
+  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled
 
 end
