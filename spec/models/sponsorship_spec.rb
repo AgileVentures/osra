@@ -4,12 +4,13 @@ describe Sponsorship, type: :model do
 
   before(:each) do
     create :orphan_status, name: 'Active'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
     create :status, name: 'Active'
+    create :orphan_sponsorship_status, name: 'Unsponsored'
+    create :orphan_sponsorship_status, name: 'Sponsored'
   end
 
   it 'should have a valid factory' do
-    expect(build :sponsorship).to be_valid
+    expect(build_stubbed :sponsorship).to be_valid
   end
 
   it { is_expected.to validate_presence_of :sponsor }
@@ -22,25 +23,6 @@ describe Sponsorship, type: :model do
     expect(subject).to validate_uniqueness_of(:orphan).
                        scoped_to(:active).
                        with_message('is already actively sponsored')
-  end
-
-  describe 'validations' do
-    let(:inactive_status) do
-      Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
-    end
-    let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
-    let(:inactive_orphan_status) do
-      OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
-    end
-    let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
-
-    it 'disallows creation of new sponsorships with ineligible sponsors' do
-      expect{ create :sponsorship, sponsor: ineligible_sponsor }.to raise_error ActiveRecord::RecordInvalid
-    end
-
-    it 'disallows creation of new sponsorships with ineligible orphans' do
-      expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
-    end
   end
 
   describe 'callbacks' do
@@ -68,6 +50,7 @@ describe Sponsorship, type: :model do
 
   describe 'methods' do
     it '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
+      create :orphan_sponsorship_status, name: 'Unsponsored'
       sponsorship = create :sponsorship
       sponsorship.inactivate
       expect(sponsorship.reload.active).to eq false

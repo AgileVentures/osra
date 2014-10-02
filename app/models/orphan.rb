@@ -5,6 +5,8 @@ class Orphan < ActiveRecord::Base
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
 
+  #before_create :generate_osra_num
+
   validates :name, presence: true
   validates :father_name, presence: true
   validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
@@ -20,6 +22,8 @@ class Orphan < ActiveRecord::Base
   validates :current_address, presence: true
   validates :orphan_status, presence: true
   validates :priority, presence: true, inclusion: { in: %w(Normal High) }
+  validates :orphan_sponsorship_status, presence: true
+  validates :orphan_list, presence: true
   validate :orphans_dob_within_1yr_of_fathers_death
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
@@ -29,6 +33,7 @@ class Orphan < ActiveRecord::Base
   
   belongs_to :orphan_status
   belongs_to :orphan_sponsorship_status
+  belongs_to :orphan_list
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
@@ -88,5 +93,8 @@ class Orphan < ActiveRecord::Base
 
   def default_priority_to_normal
     self.priority ||= 'Normal'
+  end
+  def generate_osra_num
+    self.osra_num = "#{province_code}%05d" % sequential_id
   end
 end

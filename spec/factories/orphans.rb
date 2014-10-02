@@ -13,5 +13,6 @@ FactoryGirl.define do
     minor_siblings_count { (0..5).to_a.sample }
     association :original_address, factory: :address
     association :current_address, factory: :address
+    orphan_list
   end
 end
