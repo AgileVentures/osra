@@ -55,5 +55,5 @@ describe OrphanImporter do
     Province.delete_all
     OrphanStatus.delete_all
   end
-  
+
 end

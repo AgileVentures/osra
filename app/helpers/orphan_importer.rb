@@ -37,7 +37,11 @@ module OrphanImporter
     @extracted_orphans = []
 
     @config = Settings.import
-    @config.first_row.upto(@doc.last_row) { |record| extract record }
+    if (@doc.last_row||0) < 4
+      add_validation_error('Import file','Does not contain any orphan records')
+    else
+      @config.first_row.upto(@doc.last_row) { |record| extract record }
+    end
     {errors: @extracted_errors, orphans: @extracted_orphans}
   end
 
