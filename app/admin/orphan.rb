@@ -20,12 +20,14 @@ ActiveAdmin.register Orphan do
     f.inputs 'Orphan Deatils' do
       f.input :name
       f.input :date_of_birth, as: :datepicker
-      f.input :gender, as: :select, collection: %w(Male Female)
+      f.input :gender, as: :select,
+              collection: %w(Male Female), include_blank: false
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
-      f.input :orphan_status
-      f.input :priority
+      f.input :orphan_status, include_blank: false
+      f.input :priority, as: :select,
+              collection: %w(Normal High), include_blank: false
     end
     f.inputs 'Parents Details' do
       f.input :father_name
@@ -83,6 +85,7 @@ ActiveAdmin.register Orphan do
           orphan.goes_to_school ? 'Yes' : 'No'
         end
         row :orphan_status
+        row :priority
       end
     end
 
