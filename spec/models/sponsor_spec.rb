@@ -9,6 +9,7 @@ describe Sponsor, type: :model do
   end
 
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :sponsor_type }
 
@@ -19,6 +20,9 @@ describe Sponsor, type: :model do
   [7, 'yes', true].each do |bad_date_value|
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
+
+  it { is_expected.to validate_numericality_of(:requested_orphan_count).
+     only_integer.is_greater_than(0) }
 
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }

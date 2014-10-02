@@ -20,6 +20,7 @@ ActiveAdmin.register Sponsor do
       row :osra_num
       row :status
       row :sponsor_type
+      row :requested_orphan_count
       row :country
       row :affiliate
       row :gender
@@ -66,6 +67,7 @@ ActiveAdmin.register Sponsor do
       f.input :sponsor_type
       f.input :organization
       f.input :branch
+      f.input :requested_orphan_count
       f.input :address
       f.input :email
       f.input :contact1
@@ -81,6 +83,6 @@ ActiveAdmin.register Sponsor do
     link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.eligible_for_sponsorship?
   end
 
-  permit_params :name, :country, :gender, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
+  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id
 
 end
