@@ -5,7 +5,7 @@ Feature:
 
   Background:
     Given the following orphans exist:
-      | name     | father   | status      | code | death_date | mother   | birth_date | contact   | o_city  | o_province | o_code | o_hood  | c_city  | c_province | c_code | c_hood  |
+      | name     | father   | spon_status | code | death_date | mother   | birth_date | contact   | o_city  | o_province | o_code | o_hood  | c_city  | c_province | c_code | c_hood  |
       | Orphan 1 | Father 1 | Sponsored   |   1  | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | 12     | OHood 1 | CCity 1 | Homs       | 13     | CHood 1 |
       | Orphan 2 | Father 2 | Unsponsored |   2  | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | 14     | OHood 2 | CCity 2 | Latakia    | 15     | CHood 1 |
     And I am a new, authenticated user
@@ -17,6 +17,10 @@ Feature:
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role
     Then I should see "Orphan 1 Father 1"
+    And I should see "Orphan 1 Father 1" set to "Active"
+    And I should see "Orphan 1 Father 1" set to "January 01, 2012"
+    And I should see "Orphan 1 Father 1" set to "No"
+    And I should see "Orphan 1 Father 1" set to "Female"
     And I should see "Orphan 2 Father 2"
 
   Scenario: Should be able to visit an orphan from the orphan index page
@@ -52,7 +56,7 @@ Feature:
     And I fill in "Minor siblings count" with "5"
     And I fill in "Sponsored minor siblings count" with "3"
     And I fill in "Comments" with "Other Comments"
-    And I select "Unsponsored" from the drop down box for "Orphan status"
+    And I select "Inactive" from the drop down box for "Orphan status"
     And I fill in "City" in panel "Original Address" with "Another Original City"
     And I fill in "Neighborhood" in panel "Original Address" with "Another Original Neighborhood"
     And I fill in "Street" in panel "Original Address" with "Another Original Street"
@@ -89,7 +93,7 @@ Feature:
     And I should see "Minor Siblings Count" set to "5"
     And I should see "Sponsored Minor Siblings Count" set to "3"
     And I should see "Comments" set to "Other Comments"
-    And I should see "Orphan Status" set to "Unsponsored"
+    And I should see "Orphan Status" set to "Inactive"
     And I should see "City" in panel "Original Address" set to "Another Original City"
     And I should see "Neighborhood" in panel "Original Address" set to "Another Original Neighborhood"
     And I should see "Street" in panel "Original Address" set to "Another Original Street"

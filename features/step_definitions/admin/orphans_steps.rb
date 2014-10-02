@@ -1,6 +1,8 @@
 Given(/^the following orphans exist:$/) do |table|
   table.hashes.each do |hash|
-    status = OrphanStatus.find_or_create_by!(name: hash[:status], code: hash[:code])
+    FactoryGirl.create(:orphan_status, name: 'Active') unless OrphanStatus.find_by_name('Active')
+    FactoryGirl.create(:orphan_status, name: 'Inactive') unless OrphanStatus.find_by_name('Inactive')
+    spon_status = OrphanSponsorshipStatus.find_or_create_by!(name: hash[:spon_status], code: hash[:code])
     original_province = Province.find_or_create_by!(name: hash[:o_province],
                                            code: hash[:o_code])
     current_province = Province.find_or_create_by!(name: hash[:c_province],
@@ -12,7 +14,7 @@ Given(/^the following orphans exist:$/) do |table|
 
     orphan = Orphan.new(name: hash[:name],
                         father_name: hash[:father],
-                        orphan_status: status,
+                        orphan_sponsorship_status: spon_status,
                         father_date_of_death: hash[:death_date], mother_name: hash[:mother],
                         date_of_birth: hash[:birth_date],
                         contact_number: hash[:contact],
