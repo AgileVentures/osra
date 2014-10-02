@@ -57,3 +57,10 @@ Then(/^I should be on the "(.*?)" page for orphan "(.*?)"$/) do |page_name, orph
   expect(current_path).to eq path_to_admin_role(page_name, orphan.id)
 end
 
+And(/^I should see "([^"]*)" for "([^"]*)" set to "([^"]*)"$/) do |attr, orphan_name, value|
+  orphan = Orphan.find_by_name(orphan_name)
+  tr_id = ("#{orphan.class.name} #{orphan.id}").parameterize('_')
+  col_class = attr.parameterize('_')
+  field = within("tr##{tr_id}") { find("td.col-#{col_class}") }
+  expect(field.text).to eq value
+end

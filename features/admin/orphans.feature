@@ -17,10 +17,10 @@ Feature:
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role
     Then I should see "Orphan 1 Father 1"
-    And I should see "Orphan 1 Father 1" set to "Active"
-    And I should see "Orphan 1 Father 1" set to "January 01, 2012"
-    And I should see "Orphan 1 Father 1" set to "No"
-    And I should see "Orphan 1 Father 1" set to "Female"
+    And I should see "Orphan Status" for "Orphan 1" set to "Active"
+    And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
+    And I should see "Mother Alive" for "Orphan 1" set to "No"
+    And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Orphan 2 Father 2"
 
   Scenario: Should be able to visit an orphan from the orphan index page
