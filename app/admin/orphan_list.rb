@@ -1,3 +1,5 @@
+include OrphanImporter
+
 ActiveAdmin.register OrphanList do
 
   actions :index, :new, :create
@@ -54,7 +56,7 @@ ActiveAdmin.register OrphanList do
       inactive_partner_check
       @partner = partner
       @orphan_list = @partner.orphan_lists.build(orphan_list_params)
-      result = @orphan_list.extract_orphans params['orphan_list']['spreadsheet']
+      result = extract_orphans params['orphan_list']['spreadsheet']
       render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
     end
 
@@ -102,5 +104,7 @@ ActiveAdmin.register OrphanList do
     def orphan_list_params
       params.require(:orphan_list).permit(:spreadsheet)
     end
+
+
   end
 end
