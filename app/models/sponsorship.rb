@@ -11,6 +11,8 @@ class Sponsorship < ActiveRecord::Base
   validates :start_date, date_not_in_future: true
   validates :orphan, uniqueness: { scope: :active,
                                        message: 'is already actively sponsored' }
+  validate :sponsor_is_eligible_for_new_sponsorship, on: :create
+  validate :orphan_is_eligible_for_new_sponsorship, on: :create
 
   belongs_to :sponsor
   belongs_to :orphan
@@ -38,5 +40,17 @@ class Sponsorship < ActiveRecord::Base
 
     def set_active_to_true
       self.active = true
+    end
+
+    def sponsor_is_eligible_for_new_sponsorship
+      unless sponsor && sponsor.eligible_for_sponsorship?
+        errors[:sponsor] << 'is ineligible for a new sponsorship'
+      end
+    end
+
+    def orphan_is_eligible_for_new_sponsorship
+      unless orphan && orphan.eligible_for_sponsorship?
+        errors[:orphan] << 'is ineligible for a new sponsorship'
+      end
     end
 end
