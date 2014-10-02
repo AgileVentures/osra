@@ -21,6 +21,7 @@ Feature:
     And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
     And I should see "Mother Alive" for "Orphan 1" set to "No"
     And I should see "Gender" for "Orphan 1" set to "Female"
+    And I should see "Priority" for "Orphan 1" set to "Normal"
     And I should see "Orphan 2 Father 2"
 
   Scenario: Should be able to visit an orphan from the orphan index page
@@ -57,6 +58,7 @@ Feature:
     And I fill in "Sponsored minor siblings count" with "3"
     And I fill in "Comments" with "Other Comments"
     And I select "Inactive" from the drop down box for "Orphan status"
+    And I select "High" from the drop down box for "Priority"
     And I fill in "City" in panel "Original Address" with "Another Original City"
     And I fill in "Neighborhood" in panel "Original Address" with "Another Original Neighborhood"
     And I fill in "Street" in panel "Original Address" with "Another Original Street"
@@ -94,6 +96,7 @@ Feature:
     And I should see "Sponsored Minor Siblings Count" set to "3"
     And I should see "Comments" set to "Other Comments"
     And I should see "Orphan Status" set to "Inactive"
+    And I should see "Priority" set to "High"
     And I should see "City" in panel "Original Address" set to "Another Original City"
     And I should see "Neighborhood" in panel "Original Address" set to "Another Original Neighborhood"
     And I should see "Street" in panel "Original Address" set to "Another Original Street"

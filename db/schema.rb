@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20141002212339) do
     t.datetime "updated_at"
     t.integer  "orphan_status_id"
     t.integer  "orphan_sponsorship_status_id"
+    t.string   "priority"
   end
 
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree

@@ -10,7 +10,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id,
+                :comments, :orphan_status_id, :priority,
                 original_address_attributes: [:city,
                                               :province_id, :neighborhood, :street, :details],
                 current_address_attributes: [:city,
@@ -25,6 +25,7 @@ ActiveAdmin.register Orphan do
       f.input :schooling_status
       f.input :goes_to_school
       f.input :orphan_status
+      f.input :priority
     end
     f.inputs 'Parents Details' do
       f.input :father_name
@@ -153,6 +154,7 @@ ActiveAdmin.register Orphan do
     column :date_of_birth
     column :gender
     column :mother_alive
+    column :priority
   end
 
   controller do

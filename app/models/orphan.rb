@@ -59,6 +59,8 @@ class Orphan < ActiveRecord::Base
   scope :unsponsored,
         -> { Orphan.joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+  scope :high_priority, -> { where(priority: 'High') }
+ 
 
   def eligible_for_sponsorship?
     Orphan.active.unsponsored.include? self
