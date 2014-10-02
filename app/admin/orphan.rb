@@ -157,7 +157,9 @@ ActiveAdmin.register Orphan do
     column :date_of_birth
     column :gender
     column :mother_alive
-    column :priority
+    column :priority do |orphan|
+      status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+    end
   end
 
   controller do
