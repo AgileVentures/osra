@@ -51,5 +51,9 @@ describe OrphanImporter do
     end
   end
 
-
+  after(:all) do
+    Province.delete_all
+    OrphanStatus.delete_all
+  end
+  
 end
