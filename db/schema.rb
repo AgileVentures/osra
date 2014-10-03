@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003113959) do
+ActiveRecord::Schema.define(version: 20141003155447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,15 +131,16 @@ ActiveRecord::Schema.define(version: 20141003113959) do
     t.datetime "updated_at"
     t.integer  "orphan_status_id"
     t.integer  "orphan_sponsorship_status_id"
+    t.string   "priority"
     t.integer  "sequential_id"
     t.string   "osra_num"
     t.integer  "orphan_list_id"
-    t.string   "priority"
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
+  add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
 
   create_table "partners", force: true do |t|
     t.string   "name"
