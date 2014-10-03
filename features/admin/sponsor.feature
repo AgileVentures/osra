@@ -47,6 +47,7 @@ Feature:
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
+    And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
     And I should see "Sponsor was successfully created"
@@ -62,6 +63,7 @@ Feature:
     |  sponsor_type      | Individual             |
     |  status            | Active                 |
     |  start_date        | September 25, 2013     |
+    |  request_fulfilled | No                     |
 
   Scenario: I should see the required fields on the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -79,16 +81,19 @@ Feature:
     |  additional_info         | additional1            |
     |  status                  | Active                 |
     |  start_date              | September 25, 2013     |
+    |  request_fulfilled       | No                     |
 
   Scenario: Should be able to edit a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     And I click the "Edit Sponsor" button
     Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
     And I fill in "Country" with "Canada"
+    And I check the "Request fulfilled" checkbox
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
+    And I should see "Yes"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
