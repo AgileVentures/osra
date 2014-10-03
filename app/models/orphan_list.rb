@@ -14,7 +14,6 @@ class OrphanList < ActiveRecord::Base
 
   belongs_to :partner
   has_many :orphans
-  # delegate :province_code, to: :partner, prefix: true
 
   def partner_is_active
     unless partner && partner.active?

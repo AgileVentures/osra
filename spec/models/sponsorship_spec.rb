@@ -25,6 +25,25 @@ describe Sponsorship, type: :model do
                        with_message('is already actively sponsored')
   end
 
+  describe 'validations' do
+    let(:inactive_status) do
+      Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
+    end
+    let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
+    let(:inactive_orphan_status) do
+      OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
+    end
+    let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
+
+    it 'disallows creation of new sponsorships with ineligible sponsors' do
+      expect{ create :sponsorship, sponsor: ineligible_sponsor }.to raise_error ActiveRecord::RecordInvalid
+    end
+
+    it 'disallows creation of new sponsorships with ineligible orphans' do
+      expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
+    end
+  end
+
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'start_date' do

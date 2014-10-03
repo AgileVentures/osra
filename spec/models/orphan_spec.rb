@@ -128,20 +128,26 @@ describe Orphan, type: :model do
                orphan_status: active_orphan_status,
                orphan_sponsorship_status: sponsored_status
       end
-
       let!(:high_priority_orphan) { create :orphan, priority: 'High' }
 
       describe 'methods' do
-        it '#set_status_to_sponsored' do
+        specify '#set_status_to_sponsored does what it says' do
           orphan = active_unsponsored_orphan
           orphan.set_status_to_sponsored
           expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
         end
 
-        it '#set_status_to_unsponsored' do
+        specify '#set_status_to_unsponsored does what it says' do
           orphan = active_sponsored_orphan
           orphan.set_status_to_unsponsored
           expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
+        end
+
+        specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do
+          expect(active_unsponsored_orphan.eligible_for_sponsorship?).to eq true
+          expect(high_priority_orphan.eligible_for_sponsorship?).to eq true
+          expect(inactive_unsponsored_orphan.eligible_for_sponsorship?).to eq false
+          expect(active_sponsored_orphan.eligible_for_sponsorship?).to eq false
         end
       end
 
