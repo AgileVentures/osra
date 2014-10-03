@@ -89,6 +89,27 @@ describe Orphan, type: :model do
       it 'defaults priority to Normal' do
         expect(Orphan.new.priority).to eq 'Normal'
       end
+
+      describe 'before_create #generate_osra_num' do
+        let(:orphan) { build :orphan }
+
+        it 'generates osra_num on create' do
+          orphan.save!
+          expect(orphan.osra_num).not_to be_nil
+        end
+
+        it 'sets the first 2 digits of osra_num to the province code of partner' do
+          expect(orphan).to receive(:partner_province_code).and_return(77)
+          orphan.save!
+          expect(orphan.osra_num[0..1]).to eq '77'
+        end
+
+        it 'sets the last 5 digits of osra_num to sequential_id padded by zeroes' do
+          orphan.sequential_id = 333
+          orphan.save!
+          expect(orphan.osra_num[2..-1]).to eq '00333'
+        end
+      end
     end
 
     describe 'methods & scopes' do

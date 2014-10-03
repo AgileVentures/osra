@@ -5,7 +5,7 @@ class Orphan < ActiveRecord::Base
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
 
-  #before_create :generate_osra_num
+  before_create :generate_osra_num
 
   validates :name, presence: true
   validates :father_name, presence: true
@@ -71,6 +71,8 @@ class Orphan < ActiveRecord::Base
             where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
   scope :high_priority, -> { where(priority: 'High') }
  
+
+  acts_as_sequenced
 
   def eligible_for_sponsorship?
     Orphan.active.unsponsored.include? self
