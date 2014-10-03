@@ -44,6 +44,8 @@ describe Orphan, type: :model do
   it { is_expected.to have_one(:current_address).class_name 'Address' }
 
   it { is_expected.to validate_presence_of :orphan_status }
+  it { is_expected.to validate_presence_of :priority }
+  it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
   describe '#orphans_dob_within_1yr_of_fathers_death' do
@@ -76,6 +78,10 @@ describe Orphan, type: :model do
       it 'defaults orphan_sponsorship_status to Unsponsored' do
         expect(Orphan.new.orphan_sponsorship_status).to eq unsponsored_status
       end
+
+      it 'defaults priority to Normal' do
+        expect(Orphan.new.priority).to eq 'Normal'
+      end
     end
 
     describe 'methods & scopes' do
@@ -100,6 +106,8 @@ describe Orphan, type: :model do
                orphan_sponsorship_status: sponsored_status
       end
 
+      let!(:high_priority_orphan) { create :orphan, priority: 'High' }
+
       describe 'methods' do
         specify '#set_status_to_sponsored' do
           orphan = active_unsponsored_orphan
@@ -122,16 +130,25 @@ describe Orphan, type: :model do
 
       describe 'scopes' do
 
-        it '.active should correctly select active orphans only' do
-          expect(Orphan.active.to_a).to eq [active_sponsored_orphan, active_unsponsored_orphan]
+        specify '.active should correctly select active orphans only' do
+          expect(Orphan.active.to_a).to match_array [active_sponsored_orphan,
+                                            active_unsponsored_orphan,
+                                            high_priority_orphan]
         end
 
-        it '.unsponsored should correctly select unsponsored orphans only' do
-          expect(Orphan.unsponsored.to_a).to eq [active_unsponsored_orphan, inactive_unsponsored_orphan]
+        specify '.unsponsored should correctly select unsponsored orphans only' do
+          expect(Orphan.unsponsored.to_a).to match_array [active_unsponsored_orphan,
+                                                 inactive_unsponsored_orphan,
+                                                 high_priority_orphan]
         end
 
-        it '.active.unsponsored should correctly return active unsponsored orphans only' do
-          expect(Orphan.active.unsponsored.to_a).to eq [active_unsponsored_orphan]
+        specify '.active.unsponsored should correctly return active unsponsored orphans only' do
+          expect(Orphan.active.unsponsored.to_a).to match_array [active_unsponsored_orphan,
+                                                        high_priority_orphan]
+        end
+
+        specify '.high_priority should correctly return high-priority orphans' do
+          expect(Orphan.high_priority.to_a).to eq [high_priority_orphan]
         end
       end
     end

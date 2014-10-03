@@ -10,7 +10,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id,
+                :comments, :orphan_status_id, :priority,
                 original_address_attributes: [:city,
                                               :province_id, :neighborhood, :street, :details],
                 current_address_attributes: [:city,
@@ -20,11 +20,14 @@ ActiveAdmin.register Orphan do
     f.inputs 'Orphan Deatils' do
       f.input :name
       f.input :date_of_birth, as: :datepicker
-      f.input :gender, as: :select, collection: %w(Male Female)
+      f.input :gender, as: :select,
+              collection: %w(Male Female), include_blank: false
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
-      f.input :orphan_status
+      f.input :orphan_status, include_blank: false
+      f.input :priority, as: :select,
+              collection: %w(Normal High), include_blank: false
     end
     f.inputs 'Parents Details' do
       f.input :father_name
@@ -82,6 +85,7 @@ ActiveAdmin.register Orphan do
           orphan.goes_to_school ? 'Yes' : 'No'
         end
         row :orphan_status
+        row :priority
       end
     end
 
@@ -153,6 +157,9 @@ ActiveAdmin.register Orphan do
     column :date_of_birth
     column :gender
     column :mother_alive
+    column :priority do |orphan|
+      status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+    end
   end
 
   controller do

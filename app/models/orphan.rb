@@ -2,7 +2,8 @@ class Orphan < ActiveRecord::Base
 
   include Initializer
   after_initialize :default_orphan_status_active,
-                   :default_sponsorship_status_unsponsored
+                   :default_sponsorship_status_unsponsored,
+                   :default_priority_to_normal
 
   validates :name, presence: true
   validates :father_name, presence: true
@@ -18,6 +19,7 @@ class Orphan < ActiveRecord::Base
   validates :original_address, presence: true
   validates :current_address, presence: true
   validates :orphan_status, presence: true
+  validates :priority, presence: true, inclusion: { in: %w(Normal High) }
   validate :orphans_dob_within_1yr_of_fathers_death
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
@@ -59,6 +61,8 @@ class Orphan < ActiveRecord::Base
   scope :unsponsored,
         -> { Orphan.joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+  scope :high_priority, -> { where(priority: 'High') }
+ 
 
   def eligible_for_sponsorship?
     Orphan.active.unsponsored.include? self
@@ -82,4 +86,7 @@ class Orphan < ActiveRecord::Base
     end
   end
 
+  def default_priority_to_normal
+    self.priority ||= 'Normal'
+  end
 end
