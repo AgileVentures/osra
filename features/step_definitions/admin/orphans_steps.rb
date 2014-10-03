@@ -1,6 +1,8 @@
 Given(/^the following orphans exist:$/) do |table|
   table.hashes.each do |hash|
-    status = OrphanStatus.find_or_create_by!(name: hash[:status], code: hash[:code])
+    FactoryGirl.create(:orphan_status, name: 'Active') unless OrphanStatus.find_by_name('Active')
+    FactoryGirl.create(:orphan_status, name: 'Inactive') unless OrphanStatus.find_by_name('Inactive')
+    sponsorship_status = OrphanSponsorshipStatus.find_or_create_by!(name: hash[:spon_status], code: hash[:code])
     original_province = Province.find_or_create_by!(name: hash[:o_province],
                                            code: hash[:o_code])
     current_province = Province.find_or_create_by!(name: hash[:c_province],
@@ -12,7 +14,7 @@ Given(/^the following orphans exist:$/) do |table|
 
     orphan = Orphan.new(name: hash[:name],
                         father_name: hash[:father],
-                        orphan_status: status,
+                        orphan_sponsorship_status: sponsorship_status,
                         father_date_of_death: hash[:death_date], mother_name: hash[:mother],
                         date_of_birth: hash[:birth_date],
                         contact_number: hash[:contact],
@@ -55,3 +57,10 @@ Then(/^I should be on the "(.*?)" page for orphan "(.*?)"$/) do |page_name, orph
   expect(current_path).to eq path_to_admin_role(page_name, orphan.id)
 end
 
+And(/^I should see "([^"]*)" for "([^"]*)" set to "([^"]*)"$/) do |attr, orphan_name, value|
+  orphan = Orphan.find_by_name(orphan_name)
+  tr_id = ("#{orphan.class.name} #{orphan.id}").parameterize('_')
+  col_class = attr.parameterize('_')
+  field = within("tr##{tr_id}") { find("td.col-#{col_class}") }
+  expect(field.text).to eq value
+end
