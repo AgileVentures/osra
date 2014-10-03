@@ -38,6 +38,9 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
+  #delegate :partner, to: :orphan_list
+  delegate :partner_province_code, to: :orphan_list
+
   def full_name
     [name, father_name].join(' ')
   end
@@ -95,6 +98,6 @@ class Orphan < ActiveRecord::Base
     self.priority ||= 'Normal'
   end
   def generate_osra_num
-    self.osra_num = "#{province_code}%05d" % sequential_id
+    self.osra_num = "#{partner.province_code}%05d" % sequential_id
   end
 end

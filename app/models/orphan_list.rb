@@ -13,6 +13,7 @@ class OrphanList < ActiveRecord::Base
                        file_name: { matches: [/xls\Z/, /xlsx\Z/] }
 
   belongs_to :partner
+  delegate :province_code, to: :partner, prefix: true
 
   def partner_is_active
     unless partner && partner.active?

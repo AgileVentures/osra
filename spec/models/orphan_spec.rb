@@ -41,15 +41,22 @@ describe Orphan, type: :model do
   it { is_expected.to validate_numericality_of(:minor_siblings_count).only_integer.is_greater_than_or_equal_to(0) }
 
   it { is_expected.to validate_presence_of :original_address }
-
   it { is_expected.to validate_presence_of :current_address }
-
   it { is_expected.to have_one(:original_address).class_name 'Address' }
   it { is_expected.to have_one(:current_address).class_name 'Address' }
+  it { is_expected.to accept_nested_attributes_for :original_address }
+  it { is_expected.to accept_nested_attributes_for :current_address }
 
+  it { is_expected.to belong_to :orphan_status }
+  it { is_expected.to belong_to :orphan_sponsorship_status }
+  it { is_expected.to belong_to :orphan_list }
   it { is_expected.to validate_presence_of :orphan_status }
   it { is_expected.to validate_presence_of :priority }
   it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
+  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
+  it { is_expected.to validate_presence_of :orphan_list }
+
+  it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
   describe '#orphans_dob_within_1yr_of_fathers_death' do
