@@ -23,6 +23,9 @@ describe Partner, type: :model do
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
 
+  it { is_expected.to have_many :orphan_lists }
+  it { is_expected.to have_many(:orphans).through :orphan_lists }
+
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do

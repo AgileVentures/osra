@@ -59,6 +59,8 @@ describe Orphan, type: :model do
   it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
+  it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
+
   describe '#orphans_dob_within_1yr_of_fathers_death' do
     let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
 

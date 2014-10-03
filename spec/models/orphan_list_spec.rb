@@ -11,6 +11,7 @@ describe OrphanList, type: :model do
   it { is_expected.to validate_presence_of :orphan_count }
   it { is_expected.to validate_presence_of :spreadsheet }
   it { is_expected.to belong_to :partner }
+  it { is_expected.to have_many :orphans }
 
   it 'should not belong to a non active partner' do
     expect(build_stubbed :orphan_list, partner: inactive_partner).not_to be_valid
