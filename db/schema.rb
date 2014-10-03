@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20141003113959) do
     t.integer  "sequential_id"
     t.string   "osra_num"
     t.integer  "orphan_list_id"
+    t.string   "priority"
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
