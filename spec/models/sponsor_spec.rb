@@ -31,7 +31,7 @@ describe Sponsor, type: :model do
   it { is_expected.to have_many(:orphans).through :sponsorships }
 
   describe '.request_fulfilled' do
-    let(:sponsor ) {build(:sponsor)}
+    let(:sponsor) { build(:sponsor) }
 
     it 'should default to  request unfulfilled'  do
       sponsor.save!
