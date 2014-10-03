@@ -67,3 +67,8 @@ And(/^I should see "([^"]*)" for "([^"]*)" set to "([^"]*)"$/) do |attr, orphan_
   field = within("tr##{tr_id}") { find("td.col-#{col_class}") }
   expect(field.text).to eq value
 end
+
+Then(/^I should see the OSRA number for "([^"]*)"$/) do |orphan_name|
+  orphan = Orphan.find_by_name orphan_name
+  expect(page).to have_content orphan.osra_num
+end

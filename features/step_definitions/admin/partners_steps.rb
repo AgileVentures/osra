@@ -41,6 +41,6 @@ Then(/^I should not be able to change "Province"$/) do
   expect(find('#partner_province_id')['disabled']).to eq 'disabled'
   end
 
-Then(/^I should not be able to change "OSRA num"$/) do
-  expect(find('#partner_osra_num')['readonly']).to eq 'readonly'
+Then(/^I should not be able to change "OSRA num" for this (partner|orphan|sponsor)$/) do |model|
+  expect(find("##{model}_osra_num")['readonly']).to eq 'readonly'
 end
