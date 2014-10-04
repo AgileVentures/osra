@@ -14,6 +14,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array %w(Male Female) }
+  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
 
   it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
   it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
