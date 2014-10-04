@@ -1,4 +1,3 @@
-
 ActiveAdmin.register OrphanList do
 
   actions :index, :new, :create
@@ -75,9 +74,13 @@ ActiveAdmin.register OrphanList do
       @partner = partner
       @pending_orphan_list = pending_orphan_list
       @orphan_count = @pending_orphan_list.pending_orphans.count
+      @pending_orphan_list.pending_orphans.each do |pending_orphan|
+        (OrphanImporter.to_orphan pending_orphan).save!
+      end
       @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
       @orphan_list.save!
-      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'orphan'.pluralize @orphan_list.orphan_count}"
+
+      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'new orphan'.pluralize @orphan_list.orphan_count}"
     end
 
     def create
