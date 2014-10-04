@@ -1,11 +1,14 @@
 require 'rails_helper'
 
 describe Orphan, type: :model do
+
   let!(:active_orphan_status) { create :orphan_status, name: 'Active' }
   let!(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
-  let!(:active_status) { create :status, name: 'Active' }
   let!(:sponsored_status) { create :orphan_sponsorship_status, name: 'Sponsored' }
   let!(:unsponsored_status) { create :orphan_sponsorship_status, name: 'Unsponsored' }
+  let!(:previously_sponsored_status) { create :orphan_sponsorship_status, name: 'Previously Sponsored' }
+  let!(:on_hold_status) { create :orphan_sponsorship_status, name: 'On Hold' }
+  let!(:active_status) { create :status, name: 'Active' }
 
   it 'should have a valid factory' do
     expect(build_stubbed :orphan).to be_valid
@@ -150,6 +153,11 @@ describe Orphan, type: :model do
                orphan_status: active_orphan_status,
                orphan_sponsorship_status: unsponsored_status
       end
+      let!(:active_previously_sponsored_orphan) do
+        create :orphan,
+               orphan_status: active_orphan_status,
+               orphan_sponsorship_status: previously_sponsored_status
+      end
       let!(:inactive_unsponsored_orphan) do
         create :orphan,
                orphan_status: inactive_orphan_status,
@@ -176,10 +184,10 @@ describe Orphan, type: :model do
           expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
         end
 
-        specify '#set_status_to_unsponsored does what it says' do
+        specify '#set_status_to_previously_sponsored' do
           orphan = active_sponsored_orphan
-          orphan.set_status_to_unsponsored
-          expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
+          orphan.set_status_to_previously_sponsored
+          expect(orphan.reload.orphan_sponsorship_status).to eq previously_sponsored_status
         end
 
         specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do
@@ -195,6 +203,7 @@ describe Orphan, type: :model do
         specify '.active should correctly select active orphans only' do
           expect(Orphan.active.to_a).to match_array [active_sponsored_orphan,
                                             active_unsponsored_orphan,
+                                            active_previously_sponsored_orphan,
                                             high_priority_orphan]
         end
 

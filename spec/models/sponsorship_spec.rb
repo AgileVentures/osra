@@ -4,9 +4,11 @@ describe Sponsorship, type: :model do
 
   before(:each) do
     create :orphan_status, name: 'Active'
-    create :status, name: 'Active'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
     create :orphan_sponsorship_status, name: 'Sponsored'
+    create :orphan_sponsorship_status, name: 'Unsponsored'
+    create :orphan_sponsorship_status, name: 'Previously Sponsored'
+    create :orphan_sponsorship_status, name: 'On Hold'
+    create :status, name: 'Active'
   end
 
   it 'should have a valid factory' do
@@ -72,15 +74,17 @@ describe Sponsorship, type: :model do
       it 'sets the .active attribute to true' do
         sponsorship.save!
         expect(sponsorship.reload.active).to eq true
+        expect(sponsorship.orphan.orphan_sponsorship_status.name).to eq 'Sponsored'
       end
     end
   end
 
   describe 'methods' do
-    specify '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
+    it '#inactivate should set active = false & orphan.orphan_sponsorship_status = Previously Sponsored' do
       sponsorship = create :sponsorship
       sponsorship.inactivate
       expect(sponsorship.reload.active).to eq false
+      expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Previously Sponsored'
       expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Unsponsored'
     end
 

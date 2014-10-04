@@ -59,9 +59,9 @@ class Orphan < ActiveRecord::Base
     self.update!(orphan_sponsorship_status: sponsored_status)
   end
 
-  def set_status_to_unsponsored
-    unsponsored_status = OrphanSponsorshipStatus.find_by_name('Unsponsored')
-    self.update!(orphan_sponsorship_status: unsponsored_status)
+  def set_status_to_previously_sponsored
+    previously_sponsored_status = OrphanSponsorshipStatus.find_by_name('Previously Sponsored')
+    self.update!(orphan_sponsorship_status: previously_sponsored_status)
   end
 
   scope :active,

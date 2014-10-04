@@ -23,7 +23,7 @@ class Sponsorship < ActiveRecord::Base
 
   def inactivate
     update_attributes!(active: false)
-    set_orphan_status_to_unsponsored
+    set_orphan_status_to_previously_sponsored
   end
 
   scope :all_active, -> { where(active: true) }
@@ -35,8 +35,8 @@ class Sponsorship < ActiveRecord::Base
       self.orphan.set_status_to_sponsored
     end
 
-    def set_orphan_status_to_unsponsored
-      self.orphan.set_status_to_unsponsored
+    def set_orphan_status_to_previously_sponsored
+      self.orphan.set_status_to_previously_sponsored
     end
 
     def set_active_to_true
