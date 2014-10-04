@@ -4,7 +4,8 @@ class Orphan < ActiveRecord::Base
   after_initialize :default_orphan_status_active,
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
-  before_update :qualify_for_sponsorship_by_status
+  before_update :qualify_for_sponsorship_by_status,
+                if: Proc.new { |orphan| orphan.orphan_status_id_changed? }
 
   before_create :generate_osra_num
 
@@ -116,12 +117,10 @@ class Orphan < ActiveRecord::Base
   end
 
   def qualify_for_sponsorship_by_status
-    if orphan_status_id_changed?
-      if orphan_status.name == 'Active'
-        reactivate
-      elsif OrphanStatus.find(orphan_status_id_was).name == 'Active'
-        deactivate
-      end
+    if orphan_status.name == 'Active'
+      reactivate
+    elsif OrphanStatus.find(orphan_status_id_was).name == 'Active'
+      deactivate
     end
   end
 
