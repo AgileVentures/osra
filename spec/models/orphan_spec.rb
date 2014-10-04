@@ -212,6 +212,24 @@ describe Orphan, type: :model do
         end
 
         describe '#qualify_for_sponsorship_by_status' do
+
+          describe 'does not erroneously change orphan_sponsorship_status' do
+            specify 'when orphan_status is not changed' do
+              expect(active_unsponsored_orphan).not_to receive(:deactivate)
+              expect(active_unsponsored_orphan).not_to receive(:reactivate)
+              active_unsponsored_orphan.update!(name: 'New Name')
+            end
+
+            specify 'when one disqualifying orphan_status changes to another' do
+              expect(inactive_unsponsored_orphan).not_to receive(:reactivate)
+              inactive_unsponsored_orphan.update!(orphan_status: on_hold_orphan_status)
+              expect(on_hold_sponsored_orphan).not_to receive(:reactivate)
+              on_hold_sponsored_orphan.update!(orphan_status: under_revision_orphan_status)
+              expect(under_revision_unsponsored_orphan).not_to receive(:reactivate)
+              under_revision_unsponsored_orphan.update!(orphan_status: inactive_orphan_status)
+            end
+          end
+
           describe 'correctly disqualifies an orphan for sponsorship' do
             it 'sets sponsorship_status On Hold when status changes from Active' do
               [inactive_orphan_status, on_hold_orphan_status, under_revision_orphan_status].each do |orphan_status|
