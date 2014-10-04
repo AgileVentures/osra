@@ -11,7 +11,7 @@ ActiveAdmin.register Sponsorship do
     end
 
     panel 'Orphans' do
-      table_for Orphan.active.unsponsored do
+      table_for Orphan.active.currently_unsponsored do
         column :id
         column 'Name' do |_orphan|
           link_to _orphan.name, admin_orphan_path(_orphan)
