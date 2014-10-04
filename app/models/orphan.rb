@@ -71,8 +71,7 @@ class Orphan < ActiveRecord::Base
   scope :currently_unsponsored,
         -> { Orphan.joins(:orphan_sponsorship_status).
             where('orphan_sponsorship_statuses.name = ? OR orphan_sponsorship_statuses.name = ?',
-                  'Unsponsored',
-                  'Previously Sponsored') }
+                  'Unsponsored', 'Previously Sponsored') }
   scope :high_priority, -> { where(priority: 'High') }
  
 
@@ -131,6 +130,7 @@ class Orphan < ActiveRecord::Base
   end
 
   def reactivate
+    sponsorships = self.sponsorships
     if sponsorships.empty?
       self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Unsponsored'
     elsif sponsorships.all_active.empty?
