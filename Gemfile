@@ -17,11 +17,8 @@ gem 'paperclip'
 gem 'aws-sdk'
 gem 'trim_blobs'
 gem 'paperclip_database'
-#gem 'spreadsheet'
-#gem 'rubyXL'
 gem 'roo'
 gem 'rails_config'
-
 
 group :test do
   gem 'capybara'
