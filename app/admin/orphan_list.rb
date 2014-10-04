@@ -49,20 +49,31 @@ ActiveAdmin.register OrphanList do
     def upload
       inactive_partner_check
       @partner = partner
-      render action: :upload, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build}
+      render action: :upload, locals: {partner: @partner, pending_orphan_list: PendingOrphanList.new}
     end
 
     def parse
       inactive_partner_check
       @partner = partner
-      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
-      result = extract_orphans params['orphan_list']['spreadsheet']
-      render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
+
+      @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
+      @pending_orphan_list.save!
+      result = extract_orphans params['pending_orphan_list']['spreadsheet'], @pending_orphan_list.id
+      render action: :parse, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, result: result}
+
+
+      # @orphan_list = @partner.orphan_lists.build(pending_orphan_list_params)
+      # result = extract_orphans params['pending_orphan_list']['spreadsheet']
+      # render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
     end
 
     def import
       @partner = partner
-      redirect_to admin_partner_path(@partner), notice: "Orphan List (XXX) was successfully imported."
+      @pending_orphan_list = pending_orphan_list
+      @orphan_count = @pending_orphan_list.pending_orphans.count
+      @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
+      @orphan_list.save!
+      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'orphan'.pluralize @orphan_list.orphan_count}"
     end
 
     def create
@@ -101,10 +112,13 @@ ActiveAdmin.register OrphanList do
       Partner.find(params[:partner_id])
     end
 
-    def orphan_list_params
-      params.require(:orphan_list).permit(:spreadsheet)
+    def pending_orphan_list
+      PendingOrphanList.find(params[:orphan_list][:pending_id])
     end
 
+    def pending_orphan_list_params
+      params.require(:pending_orphan_list).permit(:spreadsheet)
+    end
 
   end
 end

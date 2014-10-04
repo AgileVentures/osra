@@ -16,8 +16,11 @@ div do
 end
 
 div do
-  active_admin_form_for [partner, orphan_list],
+  active_admin_form_for orphan_list,
                         url: import_admin_partner_orphan_lists_path(partner) do |f|
+    f.inputs do
+      f.hidden_field :pending_id, value: pending_orphan_list.id
+    end
     if list_valid
       f.actions
     else

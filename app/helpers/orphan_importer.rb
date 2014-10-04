@@ -22,7 +22,7 @@ module OrphanImporter
     orphan
   end
 
-  def extract_orphans file
+  def doc file
     case file
       when String
         name = file
@@ -32,17 +32,29 @@ module OrphanImporter
         path = file.path
     end
     name =~ /[.]([^.]+)\z/
-    @doc = Roo::Spreadsheet.open path, extension: $1.to_s
-    @extracted_errors = []
-    @extracted_orphans = []
+    Roo::Spreadsheet.open path, extension: $1.to_s
+  end
 
+  def extract_orphans file, pending_list_id
+
+    @import_errors = []
+    @pending_orphans = []
+    @doc = doc file
     @config = Settings.import
     if (@doc.last_row||0) < 4
-      add_validation_error('Import file','Does not contain any orphan records')
+      add_validation_error('Import file', 'Does not contain any orphan records')
     else
       @config.first_row.upto(@doc.last_row) { |record| extract record }
     end
-    {errors: @extracted_errors, orphans: @extracted_orphans}
+    save_pending_orphans pending_list_id if @import_errors.empty?
+    {errors: @import_errors, orphans: @pending_orphans}
+  end
+
+  def save_pending_orphans pending_list_id
+    @pending_orphans.each do |pending_orphan|
+      pending_orphan.pending_orphan_list_id = pending_list_id
+      pending_orphan.save!
+    end
   end
 
   def extract record
@@ -87,17 +99,10 @@ module OrphanImporter
         end
       end
     end
-    if rec_valid
-      orphan = to_orphan(fields)
-      if orphan.valid?
-        @extracted_orphans << orphan
-      else
-        add_validation_error("(Row #{record})", "Errors parsing orphan record: #{orphan.errors.full_messages}")
-      end
-    end
+    @pending_orphans << PendingOrphan.new(fields) if rec_valid
   end
 
   def add_validation_error(ref, error)
-    @extracted_errors << {ref: ref, error: error}
+    @import_errors << {ref: ref, error: error}
   end
 end
