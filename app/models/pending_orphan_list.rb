@@ -5,4 +5,9 @@ class PendingOrphanList < ActiveRecord::Base
                        file_name: {matches: [/xls\Z/, /xlsx\Z/]}
 
   has_many :pending_orphans
+
+  def full_name
+    [name, father_name].join(' ')
+  end
 end
+

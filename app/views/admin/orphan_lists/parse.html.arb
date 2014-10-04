@@ -1,15 +1,19 @@
 div do
   if list_valid
-    h3 "Orphan list is valid"
+    h3 'Orphan list is valid'
+    h4 'The following are the orphans included in the uploaded file:'
     table_for result do
       column :name
       column :father_name
+      column :date_of_birth
+      column :gender
     end
   else
-    h3 "Orphan list is invalid"
+    h3 'Orphan list is invalid'
+    h4 'The following errors were encountered while processing the uploaded file:'
     table_for result do
-      column :ref
-      column :error
+      column 'Location', :ref
+      column 'Error details', :error
     end
   end
 end
