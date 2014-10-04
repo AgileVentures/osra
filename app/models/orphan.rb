@@ -4,6 +4,7 @@ class Orphan < ActiveRecord::Base
   after_initialize :default_orphan_status_active,
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
+  before_update :qualify_for_sponsorship_by_status
 
   before_create :generate_osra_num
 
@@ -67,9 +68,6 @@ class Orphan < ActiveRecord::Base
   scope :active,
         -> { Orphan.joins(:orphan_status).
             where(orphan_statuses: { name: 'Active' }) }
-  # scope :unsponsored,
-  #       -> { Orphan.joins(:orphan_sponsorship_status).
-  #           where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
   scope :currently_unsponsored,
         -> { Orphan.joins(:orphan_sponsorship_status).
             where('orphan_sponsorship_statuses.name = ? OR orphan_sponsorship_statuses.name = ?',
@@ -113,7 +111,26 @@ class Orphan < ActiveRecord::Base
   def default_priority_to_normal
     self.priority ||= 'Normal'
   end
+  
   def generate_osra_num
     self.osra_num = "#{partner_province_code}%05d" % sequential_id
+  end
+
+  def qualify_for_sponsorship_by_status
+    if orphan_status_id_changed?
+      if orphan_status.name == 'Active'
+        reactivate
+      elsif OrphanStatus.find(orphan_status_id_was).name == 'Active'
+        deactivate
+      end
+    end
+  end
+
+  def deactivate
+    self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
+  end
+
+  def reactivate
+    
   end
 end
