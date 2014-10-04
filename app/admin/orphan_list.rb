@@ -1,4 +1,3 @@
-include OrphanImporter
 
 ActiveAdmin.register OrphanList do
 
@@ -57,11 +56,19 @@ ActiveAdmin.register OrphanList do
       @partner = partner
 
       @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
-      @pending_orphan_list.save!
-      result = extract_orphans params['pending_orphan_list']['spreadsheet'], @pending_orphan_list.id
-      render action: :parse, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, result: result}
-
-
+      importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
+      importer.extract_orphans
+      if importer.import_errors.empty?
+        @pending_orphan_list.save!
+        importer.pending_list_id = @pending_orphan_list.id
+        importer.save_pending_orphans
+        list_valid = true
+        result = importer.pending_orphans
+      else
+        list_valid = false
+        result = importer.import_errors
+      end
+      render action: :parse, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid, result: result}
       # @orphan_list = @partner.orphan_lists.build(pending_orphan_list_params)
       # result = extract_orphans params['pending_orphan_list']['spreadsheet']
       # render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
