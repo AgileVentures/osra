@@ -69,9 +69,6 @@ ActiveAdmin.register OrphanList do
         result = importer.import_errors
       end
       render action: :parse, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid, result: result}
-      # @orphan_list = @partner.orphan_lists.build(pending_orphan_list_params)
-      # result = extract_orphans params['pending_orphan_list']['spreadsheet']
-      # render action: :parse, locals: {partner: @partner, orphan_list: @orphan_list, result: result}
     end
 
     def import

@@ -32,8 +32,6 @@ describe OrphanImporter do
 
   describe '.extract_orphans' do
 
-
-
     it 'should parse one valid record and return one orphan hash and no errors' do
       expect(one_orphan_importer.valid?).to eq true
       expect(one_orphan_result.count).to eq 1

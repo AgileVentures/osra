@@ -1,14 +1,13 @@
-list_valid = result[:errors].empty?
 div do
   if list_valid
     h3 "Orphan list is valid"
-    table_for result[:orphans] do
+    table_for result do
       column :name
       column :father_name
     end
   else
     h3 "Orphan list is invalid"
-    table_for result[:errors] do
+    table_for result do
       column :ref
       column :error
     end

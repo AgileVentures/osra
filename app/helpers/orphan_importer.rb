@@ -52,8 +52,6 @@ class OrphanImporter
     end
   end
 
-
-
   def valid?
     @import_errors.empty?
   end
