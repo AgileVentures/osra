@@ -36,8 +36,8 @@ class OrphanImporter
   end
 
   def extract_orphans
-    @doc = doc
-    if (@doc.last_row||0) < 4
+    return import_errors unless valid?
+    if (@doc.last_row||0) < @@config.first_row
       add_validation_error('Import file', 'Does not contain any orphan records')
     else
       @@config.first_row.upto(@doc.last_row) { |record| extract record }
@@ -69,6 +69,8 @@ class OrphanImporter
     end
     name =~ /[.]([^.]+)\z/
     Roo::Spreadsheet.open path, extension: $1.to_s
+  rescue => e
+    add_validation_error('Import file','Is not a valid Excel file. ' + e.to_s)
   end
 
   def extract record
@@ -107,9 +109,9 @@ class OrphanImporter
               rec_valid = false
               add_validation_error('Import configuration', "Invalid data type: #{col.type} defined for field: #{col.field}. Please check import settings.")
           end
-        rescue
+        rescue => e
           rec_valid = false
-          add_validation_error("(#{record},#{col.column})", "Error reading #{col.type} value for field: #{col.field}")
+          add_validation_error("(#{record},#{col.column})", "Error reading #{col.type} value for field: #{col.field}. Exception: #{e.to_s}")
         end
       end
     end

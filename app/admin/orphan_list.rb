@@ -55,6 +55,7 @@ ActiveAdmin.register OrphanList do
       @partner = partner
 
       @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
+      render action: :upload and return unless @pending_orphan_list.valid?
       importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
       importer.extract_orphans
       if importer.import_errors.empty?
