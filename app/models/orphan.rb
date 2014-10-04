@@ -131,6 +131,12 @@ class Orphan < ActiveRecord::Base
   end
 
   def reactivate
-    
+    if sponsorships.empty?
+      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Unsponsored'
+    elsif sponsorships.all_active.empty?
+      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Previously Sponsored'
+    else
+      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
+    end
   end
 end

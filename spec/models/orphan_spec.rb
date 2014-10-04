@@ -223,13 +223,26 @@ describe Orphan, type: :model do
           describe 'correctly re-qualifies an orphan for sponsorship' do
             it 'sets sponsorship_status Unsponsored when status -> Active for previously unsponsored orphan' do
               [inactive_unsponsored_orphan, on_hold_unsponsored_orphan, under_revision_unsponsored_orphan].each do |orphan|
-                orphan.orphan_status = active_orphan_status
-                orphan.save!
+                orphan.update!(orphan_status: active_orphan_status)
                 expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
               end
             end
-            it 'sets sponsorship_status Previously Sponsored when status -> Active for previously sponsored orphan'
-            it 'sets sponsorship_status Sponsored when status -> Active for currently sponsored orphan'
+
+            it 'sets sponsorship_status Previously Sponsored when status -> Active for previously sponsored orphan' do
+              orphan = active_unsponsored_orphan
+              (create :sponsorship, orphan: orphan).inactivate
+              orphan.update!(orphan_status: on_hold_orphan_status)
+              orphan.update!(orphan_status: active_orphan_status)
+              expect(orphan.reload.orphan_sponsorship_status).to eq previously_sponsored_status
+            end
+
+            it 'sets sponsorship_status Sponsored when status -> Active for currently sponsored orphan' do
+              orphan = active_unsponsored_orphan
+              create :sponsorship, orphan: orphan
+              orphan.update!(orphan_status: on_hold_orphan_status)
+              orphan.update!(orphan_status: active_orphan_status)
+              expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
+            end
           end
         end
       end
