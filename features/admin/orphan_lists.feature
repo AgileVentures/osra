@@ -46,38 +46,62 @@ Feature:
   Scenario: I should not be able to upload an orphan list file with an invalid extension
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "fake_excel_file.png.xls" file
-    Then I click the "Upload Orphan list" button
+    Then I click the "Upload" button
     Then I should see "is invalid"
 
   Scenario: I should not be able to upload an orphan list file with no orphan records
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "empty_xls.xls" file
-    Then I click the "Upload Orphan list" button
+    Then I click the "Upload" button
     Then I should see "is invalid"
 
   Scenario: I should be able to see the uploaded orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "one_orphan_xlsx.xlsx" file
-    Then I click the "Upload Orphan list" button
-    Then I click the "Create Orphan list" button
+    Then I click the "Upload" button
+    Then I click the "Import" button
     Then I click the "Click here for all orphan lists" link
     Then I should see "one_orphan_xlsx.xlsx"
+
+  Scenario: I should be able to see the imported orphans
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "one_orphan_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I click the "Import" button
+    Then I go to the "Orphans" page for the "Admin" role
+    Then I should see "الطفل"
 
   Scenario: I should be able to upload a valid .xlsx orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "one_orphan_xlsx.xlsx" file
-    Then I click the "Upload Orphan list" button
+    Then I click the "Upload" button
     Then I should see "is valid"
 
   Scenario: I should not be able to upload an orphan list file with invalid orphan records
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_invalid_orphans_xlsx.xlsx" file
-    Then I click the "Upload Orphan list" button
+    Then I click the "Upload" button
     Then I should see "is invalid"
+    And I should not see "Import"
 
   Scenario: I should be able to import a valid orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_orphans_xlsx.xlsx" file
-    Then I click the "Upload Orphan list" button
-    Then I click the "Create Orphan list" button
+    Then I click the "Upload" button
+    Then I click the "Import" button
     Then I should see "was successfully imported"
+
+  Scenario: I should be able to cancel uploading a valid orphan list
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "three_orphans_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I click the "Cancel" button
+    Then I should be on the "Show Partner" page for partner "Partner1"
+
+  Scenario: I should be able to cancel uploading an invalid orphan list
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "three_invalid_orphans_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I click the "Cancel" button
+    Then I should be on the "Show Partner" page for partner "Partner1"
+
