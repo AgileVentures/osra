@@ -33,14 +33,11 @@ ActiveAdmin.register OrphanList do
     f.actions
   end
 
-  collection_action :upload do
-  end
+  collection_action :upload
 
-  collection_action :parse, method: :post do
-  end
+  collection_action :validate, method: :post
 
-  collection_action :import, method: :post do
-  end
+  collection_action :import, method: :post
 
   controller do
 
@@ -50,7 +47,7 @@ ActiveAdmin.register OrphanList do
       render action: :upload, locals: {partner: @partner, pending_orphan_list: PendingOrphanList.new}
     end
 
-    def parse
+    def validate
       inactive_partner_check
       @partner = partner
 
@@ -68,7 +65,7 @@ ActiveAdmin.register OrphanList do
         list_valid = false
         result = importer.import_errors
       end
-      render action: :parse, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid, result: result}
+      render action: :validate, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid, result: result}
     end
 
     def import
@@ -81,26 +78,7 @@ ActiveAdmin.register OrphanList do
       @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
       @orphan_list.save!
 
-      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'new orphan'.pluralize @orphan_list.orphan_count}"
-    end
-
-    def create
-
-      @partner = partner
-
-      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
-      @orphan_list.orphan_count = 0
-
-      if @orphan_list.save
-        redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported."
-      else
-        render action: :new
-      end
-    end
-
-    def new
-      inactive_partner_check
-      new!
+      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'new orphan'.pluralize @orphan_list.orphan_count}."
     end
 
     # Workaround to prevent displaying the "Create one" link when the resource collection is empty
