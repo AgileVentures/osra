@@ -67,16 +67,21 @@ class Orphan < ActiveRecord::Base
   scope :active,
         -> { Orphan.joins(:orphan_status).
             where(orphan_statuses: { name: 'Active' }) }
-  scope :unsponsored,
+  # scope :unsponsored,
+  #       -> { Orphan.joins(:orphan_sponsorship_status).
+  #           where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+  scope :currently_unsponsored,
         -> { Orphan.joins(:orphan_sponsorship_status).
-            where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+            where('orphan_sponsorship_statuses.name = ? OR orphan_sponsorship_statuses.name = ?',
+                  'Unsponsored',
+                  'Previously Sponsored') }
   scope :high_priority, -> { where(priority: 'High') }
  
 
   acts_as_sequenced
 
   def eligible_for_sponsorship?
-    Orphan.active.unsponsored.include? self
+    Orphan.active.currently_unsponsored.include? self
   end
 
   def less_than_22_yo_when_joined_osra

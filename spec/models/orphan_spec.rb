@@ -158,6 +158,11 @@ describe Orphan, type: :model do
                orphan_status: active_orphan_status,
                orphan_sponsorship_status: previously_sponsored_status
       end
+      let!(:active_on_hold_orphan) do
+        create :orphan,
+               orphan_status: active_orphan_status,
+               orphan_sponsorship_status: on_hold_status
+      end
       let!(:inactive_unsponsored_orphan) do
         create :orphan,
                orphan_status: inactive_orphan_status,
@@ -202,20 +207,23 @@ describe Orphan, type: :model do
 
         specify '.active should correctly select active orphans only' do
           expect(Orphan.active.to_a).to match_array [active_sponsored_orphan,
-                                            active_unsponsored_orphan,
-                                            active_previously_sponsored_orphan,
-                                            high_priority_orphan]
+                                                     active_unsponsored_orphan,
+                                                     active_previously_sponsored_orphan,
+                                                     active_on_hold_orphan,
+                                                     high_priority_orphan]
         end
 
-        specify '.unsponsored should correctly select unsponsored orphans only' do
-          expect(Orphan.unsponsored.to_a).to match_array [active_unsponsored_orphan,
-                                                 inactive_unsponsored_orphan,
-                                                 high_priority_orphan]
+        specify '.currently_unsponsored should correctly select unsponsored orphans only' do
+          expect(Orphan.currently_unsponsored.to_a).to match_array [active_unsponsored_orphan,
+                                                                    inactive_unsponsored_orphan,
+                                                                    active_previously_sponsored_orphan,
+                                                                    high_priority_orphan]
         end
 
-        specify '.active.unsponsored should correctly return active unsponsored orphans only' do
-          expect(Orphan.active.unsponsored.to_a).to match_array [active_unsponsored_orphan,
-                                                        high_priority_orphan]
+        specify '.active.currently_unsponsored should correctly return active unsponsored orphans only' do
+          expect(Orphan.active.currently_unsponsored.to_a).to match_array [active_unsponsored_orphan,
+                                                                 active_previously_sponsored_orphan,
+                                                                 high_priority_orphan]
         end
 
         specify '.high_priority should correctly return high-priority orphans' do
