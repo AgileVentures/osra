@@ -17,6 +17,7 @@ Feature:
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role
     Then I should see "Orphan 1 Father 1"
+    And I should see the OSRA number for "Orphan 1"
     And I should see "Orphan Status" for "Orphan 1" set to "Active"
     And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
     And I should see "Mother Alive" for "Orphan 1" set to "No"
@@ -33,6 +34,7 @@ Feature:
     Given I am on the "Show Orphans" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphans" page for orphan "Orphan 1"
+    And I should not be able to change "OSRA num" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
     And I fill in "Father name" with "Father N"
@@ -72,6 +74,7 @@ Feature:
     And I click the "Update Orphan" button
     Then I should be on the "Show Orphans" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
+    And I should see the OSRA number for "Orphan N"
     And I should see "Orphan N Father N"
     And I should see "Date Of Birth" set to "January 01, 2010"
     And I should see "Goes To School" set to "No"

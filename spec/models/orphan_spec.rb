@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 describe Orphan, type: :model do
+  let!(:active_orphan_status) { create :orphan_status, name: 'Active' }
+  let!(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
+  let!(:active_status) { create :status, name: 'Active' }
+  let!(:sponsored_status) { create :orphan_sponsorship_status, name: 'Sponsored' }
+  let!(:unsponsored_status) { create :orphan_sponsorship_status, name: 'Unsponsored' }
 
   it 'should have a valid factory' do
-    create :orphan_status, name: 'Active'
     expect(build_stubbed :orphan).to be_valid
   end
 
@@ -37,19 +41,27 @@ describe Orphan, type: :model do
   it { is_expected.to validate_numericality_of(:minor_siblings_count).only_integer.is_greater_than_or_equal_to(0) }
 
   it { is_expected.to validate_presence_of :original_address }
-
   it { is_expected.to validate_presence_of :current_address }
-
   it { is_expected.to have_one(:original_address).class_name 'Address' }
   it { is_expected.to have_one(:current_address).class_name 'Address' }
+  it { is_expected.to accept_nested_attributes_for :original_address }
+  it { is_expected.to accept_nested_attributes_for :current_address }
 
+  it { is_expected.to belong_to :orphan_status }
+  it { is_expected.to belong_to :orphan_sponsorship_status }
+  it { is_expected.to belong_to :orphan_list }
   it { is_expected.to validate_presence_of :orphan_status }
   it { is_expected.to validate_presence_of :priority }
   it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
+  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
+  it { is_expected.to validate_presence_of :orphan_list }
+
+  it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
+  it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
+
   describe '#orphans_dob_within_1yr_of_fathers_death' do
-    before { create :orphan_status, name: 'Active' }
     let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
 
     it "is valid when orphan is born a year after fathers death" do
@@ -64,15 +76,10 @@ describe Orphan, type: :model do
   end
 
   describe 'initializers, methods & scopes' do
-    let!(:active_status) { create :orphan_status,
-                                  name: 'Active' }
-    let!(:unsponsored_status) { create :orphan_sponsorship_status,
-                                       name: 'Unsponsored' }
-
     describe 'initializers' do
 
       it 'defaults orphan_status to Active' do
-        expect(Orphan.new.orphan_status).to eq active_status
+        expect(Orphan.new.orphan_status).to eq active_orphan_status
       end
 
       it 'defaults orphan_sponsorship_status to Unsponsored' do
@@ -82,40 +89,55 @@ describe Orphan, type: :model do
       it 'defaults priority to Normal' do
         expect(Orphan.new.priority).to eq 'Normal'
       end
+
+      describe 'before_create #generate_osra_num' do
+        let(:orphan) { build :orphan }
+
+        it 'generates osra_num on create' do
+          orphan.save!
+          expect(orphan.osra_num).not_to be_nil
+        end
+
+        it 'sets the first 2 digits of osra_num to the province code of partner' do
+          expect(orphan).to receive(:partner_province_code).and_return(77)
+          orphan.save!
+          expect(orphan.osra_num[0..1]).to eq '77'
+        end
+
+        it 'sets the last 5 digits of osra_num to sequential_id padded by zeroes' do
+          orphan.sequential_id = 333
+          orphan.save!
+          expect(orphan.osra_num[2..-1]).to eq '00333'
+        end
+      end
     end
 
     describe 'methods & scopes' do
-      let!(:sponsored_status) { create :orphan_sponsorship_status,
-                                       name: 'Sponsored' }
-      let!(:inactive_status) { create :orphan_status,
-                                      name: 'Inactive' }
-
       let!(:active_unsponsored_orphan) do
         create :orphan,
-               orphan_status: active_status,
+               orphan_status: active_orphan_status,
                orphan_sponsorship_status: unsponsored_status
       end
       let!(:inactive_unsponsored_orphan) do
         create :orphan,
-               orphan_status: inactive_status,
+               orphan_status: inactive_orphan_status,
                orphan_sponsorship_status: unsponsored_status
       end
       let!(:active_sponsored_orphan) do
         create :orphan,
-               orphan_status: active_status,
+               orphan_status: active_orphan_status,
                orphan_sponsorship_status: sponsored_status
       end
-
       let!(:high_priority_orphan) { create :orphan, priority: 'High' }
 
       describe 'methods' do
-        specify '#set_status_to_sponsored' do
+        specify '#set_status_to_sponsored does what it says' do
           orphan = active_unsponsored_orphan
           orphan.set_status_to_sponsored
           expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
         end
 
-        specify '#set_status_to_unsponsored' do
+        specify '#set_status_to_unsponsored does what it says' do
           orphan = active_sponsored_orphan
           orphan.set_status_to_unsponsored
           expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
@@ -123,6 +145,7 @@ describe Orphan, type: :model do
 
         specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do
           expect(active_unsponsored_orphan.eligible_for_sponsorship?).to eq true
+          expect(high_priority_orphan.eligible_for_sponsorship?).to eq true
           expect(inactive_unsponsored_orphan.eligible_for_sponsorship?).to eq false
           expect(active_sponsored_orphan.eligible_for_sponsorship?).to eq false
         end

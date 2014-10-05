@@ -2,6 +2,8 @@ Given(/^the following orphans exist:$/) do |table|
   table.hashes.each do |hash|
     FactoryGirl.create(:orphan_status, name: 'Active') unless OrphanStatus.find_by_name('Active')
     FactoryGirl.create(:orphan_status, name: 'Inactive') unless OrphanStatus.find_by_name('Inactive')
+    FactoryGirl.create(:status, name: 'Active') unless Status.find_by_name('Active')
+    orphan_list = FactoryGirl.create :orphan_list
     sponsorship_status = OrphanSponsorshipStatus.find_or_create_by!(name: hash[:spon_status], code: hash[:code])
     original_province = Province.find_or_create_by!(name: hash[:o_province],
                                            code: hash[:o_code])
@@ -37,7 +39,8 @@ Given(/^the following orphans exist:$/) do |table|
                         sponsored_by_another_org: false,
                         another_org_sponsorship_details: 'Some Details',
                         sponsored_minor_siblings_count: 0,
-                        comments: 'Some Comments')
+                        comments: 'Some Comments',
+                        orphan_list: orphan_list)
 
     orphan.save!
   end
@@ -63,4 +66,9 @@ And(/^I should see "([^"]*)" for "([^"]*)" set to "([^"]*)"$/) do |attr, orphan_
   col_class = attr.parameterize('_')
   field = within("tr##{tr_id}") { find("td.col-#{col_class}") }
   expect(field.text).to eq value
+end
+
+Then(/^I should see the OSRA number for "([^"]*)"$/) do |orphan_name|
+  orphan = Orphan.find_by_name orphan_name
+  expect(page).to have_content orphan.osra_num
 end

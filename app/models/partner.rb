@@ -11,6 +11,9 @@ class Partner < ActiveRecord::Base
   belongs_to :province
   belongs_to :status
   has_many :orphan_lists
+  has_many :orphans, through: :orphan_lists
+
+  delegate :code, to: :province, prefix: true
 
   acts_as_sequenced scope: :province_id
 

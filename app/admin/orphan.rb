@@ -17,7 +17,8 @@ ActiveAdmin.register Orphan do
                                              :province_id, :neighborhood, :street, :details]
 
   form do |f|
-    f.inputs 'Orphan Deatils' do
+    f.inputs 'Orphan Details' do
+      f.input :osra_num, :input_html => { :readonly => true }
       f.input :name
       f.input :date_of_birth, as: :datepicker
       f.input :gender, as: :select,
@@ -75,8 +76,9 @@ ActiveAdmin.register Orphan do
   end
 
   show title: :full_name do |orphan|
-    panel 'Orphan Deatils' do
+    panel 'Orphan Details' do
       attributes_table_for orphan do
+        row :osra_num
         row :date_of_birth
         row :gender
         row :health_status
@@ -150,6 +152,9 @@ ActiveAdmin.register Orphan do
   end
 
   index do
+    column 'OSRA No.', sortable: :osra_num do |orphan|
+      link_to orphan.osra_num, admin_orphan_path(orphan)
+    end
     column :full_name, sortable: :full_name do |orphan|
       link_to orphan.full_name, admin_orphan_path(orphan)
     end

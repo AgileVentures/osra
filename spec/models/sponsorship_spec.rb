@@ -4,12 +4,13 @@ describe Sponsorship, type: :model do
 
   before(:each) do
     create :orphan_status, name: 'Active'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
     create :status, name: 'Active'
+    create :orphan_sponsorship_status, name: 'Unsponsored'
+    create :orphan_sponsorship_status, name: 'Sponsored'
   end
 
   it 'should have a valid factory' do
-    expect(build :sponsorship).to be_valid
+    expect(build_stubbed :sponsorship).to be_valid
   end
 
   it { is_expected.to validate_presence_of :sponsor }
