@@ -16,20 +16,13 @@ class OrphanImporter
   def self.to_orphan pending_orphan
     fields = pending_orphan.attributes
     orphan = Orphan.new
-    address = Address.new
-    address.province = Province.find_by_code(fields['original_address_province'])
-    address.city = fields['original_address_city']
-    address.neighborhood = fields['original_address_neighborhood']
-    address.street = fields['original_address_street']
-    address.details = fields['original_address_details']
-    orphan.original_address = address
-    address = Address.new
-    address.province = Province.find_by_code(fields['current_address_province'])
-    address.city = fields['current_address_city']
-    address.neighborhood = fields['current_address_neighborhood']
-    address.street = fields['current_address_street']
-    address.details = fields['current_address_details']
-    orphan.current_address = address
+
+    ['original_address_', 'current_address_'].each do |i|
+      address_fields = fields.select { |k,_| k[i]}.map {|k,v| [(k.gsub i, ''), v]}.to_h
+      address_fields['province'] = Province.find_by_code(address_fields['province'])
+      orphan.send "#{i.chop}=", Address.new(address_fields)
+    end
+
     orphan.attributes = fields.reject { |k, _| k['address'] || k['pending'] }
     orphan.orphan_status = OrphanStatus.find_by_name('Active')
     orphan
