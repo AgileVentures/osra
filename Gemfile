@@ -15,6 +15,7 @@ gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'coveralls', require: false
 
 group :test do
   gem 'capybara'
