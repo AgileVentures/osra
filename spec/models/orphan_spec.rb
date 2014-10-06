@@ -75,6 +75,39 @@ describe Orphan, type: :model do
     end
   end
 
+  describe '#under_22_years_old' do
+    before { create :orphan_status, name: 'Active' }
+    let(:orphan) { build :orphan }
+    context "orphan date of birth for new orphan record" do
+      it "is valid when an orphan's birthday is less than 22 years ago" do
+        orphan.date_of_birth = Date.current - 22.years + 1.day
+        expect(orphan).to be_valid
+      end
+
+      it "is not valid when an orphan's birthday is 22 years ago" do
+        orphan.date_of_birth = Date.current - 22.years
+        expect(orphan).not_to be_valid
+      end
+    end
+
+    context "orphan date of birth for existing orphan record" do
+      before :each do
+        orphan.created_at = Date.current - 5.days
+        orphan.save!
+      end
+
+      it "is valid when birthday is less than 22 years from created date" do
+        orphan.date_of_birth = orphan.created_at.to_date - 22.years + 1.day
+        expect(orphan).to be_valid
+      end
+
+      it "is not valid when birthday is 22 years agoi from created date" do
+        orphan.date_of_birth = orphan.created_at.to_date - 22.years
+        expect(orphan).not_to be_valid
+      end
+    end
+  end
+
   describe 'initializers, methods & scopes' do
     describe 'initializers' do
 
