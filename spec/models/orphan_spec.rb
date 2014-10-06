@@ -212,9 +212,10 @@ describe Orphan, type: :model do
         end
 
         describe '#qualify_for_sponsorship_by_status' do
-
           describe 'does not erroneously change orphan_sponsorship_status' do
+
             specify 'when orphan_status is not changed' do
+              expect(active_unsponsored_orphan).not_to receive(:qualify_for_sponsorship_by_status)
               expect(active_unsponsored_orphan).not_to receive(:deactivate)
               expect(active_unsponsored_orphan).not_to receive(:reactivate)
               active_unsponsored_orphan.update!(name: 'New Name')
@@ -223,14 +224,16 @@ describe Orphan, type: :model do
             specify 'when one disqualifying orphan_status changes to another' do
               expect(inactive_unsponsored_orphan).not_to receive(:reactivate)
               inactive_unsponsored_orphan.update!(orphan_status: on_hold_orphan_status)
+
               expect(on_hold_sponsored_orphan).not_to receive(:reactivate)
               on_hold_sponsored_orphan.update!(orphan_status: under_revision_orphan_status)
+
               expect(under_revision_unsponsored_orphan).not_to receive(:reactivate)
               under_revision_unsponsored_orphan.update!(orphan_status: inactive_orphan_status)
             end
           end
 
-          describe 'correctly disqualifies an orphan for sponsorship' do
+          describe 'correctly disqualifies an orphan from new sponsorships' do
             it 'sets sponsorship_status On Hold when status changes from Active' do
               [inactive_orphan_status, on_hold_orphan_status, under_revision_orphan_status].each do |orphan_status|
                 active_unsponsored_orphan.update!(orphan_status: orphan_status)
@@ -240,28 +243,31 @@ describe Orphan, type: :model do
           end
 
           describe 'correctly re-qualifies an orphan for sponsorship' do
-            it 'sets sponsorship_status Unsponsored when status -> Active for previously unsponsored orphan' do
+            it 'sets sponsorship_status to Unsponsored when status -> Active for previously unsponsored orphan' do
               [inactive_unsponsored_orphan, under_revision_unsponsored_orphan].each do |orphan|
                 expect(orphan).to receive(:sponsorships).and_return []
+
                 orphan.update!(orphan_status: active_orphan_status)
                 expect(orphan.reload.orphan_sponsorship_status).to eq unsponsored_status
               end
             end
 
-            describe 'for orphans with existing sponsorships' do
+            describe 'for orphans with sponsorships' do
               let(:orphan) { on_hold_sponsored_orphan }
               let(:sponsorships) { ['not empty'] }
 
-              it 'sets sponsorship_status Previously Sponsored when status -> Active for previously sponsored orphan' do
+              it 'sets sponsorship_status to Previously Sponsored when status -> Active for previously sponsored orphan' do
                 expect(orphan).to receive(:sponsorships).and_return sponsorships
                 expect(sponsorships).to receive(:all_active).and_return []
+
                 orphan.update!(orphan_status: active_orphan_status)
                 expect(orphan.reload.orphan_sponsorship_status).to eq previously_sponsored_status
               end
 
-              it 'sets sponsorship_status Sponsored when status -> Active for currently sponsored orphan' do
+              it 'sets sponsorship_status to Sponsored when status -> Active for currently sponsored orphan' do
                 expect(orphan).to receive(:sponsorships).and_return sponsorships
                 expect(sponsorships).to receive(:all_active).and_return ['not empty']
+
                 orphan.update!(orphan_status: active_orphan_status)
                 expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
               end
