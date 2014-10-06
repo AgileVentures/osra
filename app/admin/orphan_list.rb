@@ -33,25 +33,52 @@ ActiveAdmin.register OrphanList do
     f.actions
   end
 
+  collection_action :upload
+
+  collection_action :validate, method: :post
+
+  collection_action :import, method: :post
+
   controller do
-    def create
 
-      @partner = get_partner
-
-      @orphan_list = @partner.orphan_lists.build(orphan_list_params)
-      @orphan_list.orphan_count = 0
-
-      if @orphan_list.save
-        redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported."
-      else
-        render action: :new
-      end
+    def upload
+      inactive_partner_check
+      @partner = partner
+      render action: :upload, locals: {partner: @partner, pending_orphan_list: PendingOrphanList.new}
     end
 
-    def new
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless get_partner.active?
-      new!
+    def validate
+      inactive_partner_check
+      @partner = partner
+
+      @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
+      render action: :upload and return unless @pending_orphan_list.valid?
+      importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
+      importer.extract_orphans
+      if importer.import_errors.empty?
+        @pending_orphan_list.save!
+        importer.pending_list_id = @pending_orphan_list.id
+        importer.save_pending_orphans
+        list_valid = true
+        result = importer.pending_orphans
+      else
+        list_valid = false
+        result = importer.import_errors
+      end
+      render action: :validate, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid, result: result}
+    end
+
+    def import
+      @partner = partner
+      @pending_orphan_list = pending_orphan_list
+      @orphan_count = @pending_orphan_list.pending_orphans.count
+      @pending_orphan_list.pending_orphans.each do |pending_orphan|
+        (OrphanImporter.to_orphan pending_orphan).save!
+      end
+      @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
+      @orphan_list.save!
+
+      redirect_to admin_partner_path(@partner), notice: "Orphan List (#{@orphan_list.osra_num}) was successfully imported. Registered #{@orphan_list.orphan_count} #{'new orphan'.pluralize @orphan_list.orphan_count}."
     end
 
     # Workaround to prevent displaying the "Create one" link when the resource collection is empty
@@ -62,12 +89,22 @@ ActiveAdmin.register OrphanList do
 
     private
 
-    def get_partner
+    def inactive_partner_check
+      redirect_to admin_partner_path(params[:partner_id]),
+                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless partner.active?
+    end
+
+    def partner
       Partner.find(params[:partner_id])
     end
 
-    def orphan_list_params
-      params.require(:orphan_list).permit(:spreadsheet)
+    def pending_orphan_list
+      PendingOrphanList.find(params[:orphan_list][:pending_id])
     end
+
+    def pending_orphan_list_params
+      params.require(:pending_orphan_list).permit(:spreadsheet)
+    end
+
   end
 end

@@ -10,7 +10,7 @@ class OrphanList < ActiveRecord::Base
   validate :partner_is_active
 
   validates_attachment :spreadsheet, presence: true,
-                       file_name: { matches: [/xls\Z/, /xlsx\Z/] }
+                       file_name: {matches: [/xls\Z/, /xlsx\Z/]}
 
   belongs_to :partner
   has_many :orphans
