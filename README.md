@@ -6,7 +6,9 @@ OSRA
 
 [![Build Status](https://travis-ci.org/AgileVentures/osra.svg?branch=develop)](https://travis-ci.org/AgileVentures/osra)
 
-[![Coverage Status](https://coveralls.io/repos/AgileVentures/osra/badge.png)](https://coveralls.io/r/AgileVentures/osra)
+[![Coverage Status](https://coveralls.io/repos/AgileVentures/osra/badge.png?branch=develop)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
+
+[![Dependency Status](https://gemnasium.com/AgileVentures/osra.svg)](https://gemnasium.com/AgileVentures/osra)
 
 OSRA is a non-profit organization registered in UK, aiming to sponsor orphans in Syria & insure basic life & education requirements for Syrian children. This projects objective is to build a support system for administration of the information needed to fulfill the organizations goals.
 
