@@ -4,6 +4,8 @@ OSRA
 
 [![Code Climate](https://codeclimate.com/github/AgileVentures/osra/badges/gpa.svg)](https://codeclimate.com/github/AgileVentures/osra)
 
+[![Build Status](https://travis-ci.org/AgileVentures/osra.svg?branch=develop)](https://travis-ci.org/AgileVentures/osra)
+
 OSRA is a non-profit organization registered in UK, aiming to sponsor orphans in Syria & insure basic life & education requirements for Syrian children. This projects objective is to build a support system for administration of the information needed to fulfill the organizations goals.
 
 We are proudly using Agile methods and Ruby on Rails as the framework to deliver well tested and solid software.
