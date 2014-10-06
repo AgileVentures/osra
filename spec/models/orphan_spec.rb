@@ -76,7 +76,6 @@ describe Orphan, type: :model do
   end
 
   describe '#under_22_years_old' do
-    before { create :orphan_status, name: 'Active' }
     let(:orphan) { build :orphan }
     context "orphan date of birth for new orphan record" do
       it "is valid when an orphan's birthday is less than 22 years ago" do
