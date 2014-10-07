@@ -1,5 +1,6 @@
 OSRA
 ====
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/AgileVentures/osra?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [organization]: http://www.agileventures.org/
 
 [![Code Climate](https://codeclimate.com/github/AgileVentures/osra/badges/gpa.svg)](https://codeclimate.com/github/AgileVentures/osra)
