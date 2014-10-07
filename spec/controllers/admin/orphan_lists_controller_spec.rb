@@ -29,17 +29,18 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     context 'when partner is active' do
-      let(:partner) { instance_double(Partner).as_null_object }
+      let(:partner) { FactoryGirl.create :partner }
 
       before(:each) do
-        expect(Partner).to receive(:find).with('1').and_return(partner)
+        expect(Partner).to receive(:find).at_least(:once).with('1').and_return(partner)
         expect(partner).to receive(:active?).and_return true
+        allow(request.env['warden']).to receive(:authenticate).and_return(instance_double AdminUser)
       end
 
-      # it 'calls partner#orphan_lists' do
-      #   expect(InheritedResources::Actions).to receive(:new!)
-      #   get :new, partner_id: 1
-      # end
+      it 'determines that partner is active' do
+        get :new, partner_id: 1
+        expect(response).not_to redirect_to admin_partner_path(1)
+      end
     end
   end
 end
