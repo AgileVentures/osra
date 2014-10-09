@@ -5,7 +5,7 @@ class Orphan < ActiveRecord::Base
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
   before_update :qualify_for_sponsorship_by_status,
-                if: Proc.new { |orphan| orphan.orphan_status_id_changed? }
+                if: :orphan_status_id_changed?
 
   before_create :generate_osra_num
 
@@ -57,22 +57,21 @@ class Orphan < ActiveRecord::Base
   end
 
   def set_status_to_sponsored
-    sponsored_status = OrphanSponsorshipStatus.find_by_name('Sponsored')
-    self.update!(orphan_sponsorship_status: sponsored_status)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name('Sponsored')
+    self.update!(orphan_sponsorship_status: sponsorship_status)
   end
 
   def set_status_to_previously_sponsored
-    previously_sponsored_status = OrphanSponsorshipStatus.find_by_name('Previously Sponsored')
-    self.update!(orphan_sponsorship_status: previously_sponsored_status)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name('Previously Sponsored')
+    self.update!(orphan_sponsorship_status: sponsorship_status)
   end
 
   scope :active,
-        -> { Orphan.joins(:orphan_status).
+        -> { joins(:orphan_status).
             where(orphan_statuses: { name: 'Active' }) }
   scope :currently_unsponsored,
-        -> { Orphan.joins(:orphan_sponsorship_status).
-            where('orphan_sponsorship_statuses.name = ? OR orphan_sponsorship_statuses.name = ?',
-                  'Unsponsored', 'Previously Sponsored') }
+        -> { joins(:orphan_sponsorship_status).
+            where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
  
 
@@ -117,11 +116,19 @@ class Orphan < ActiveRecord::Base
   end
 
   def qualify_for_sponsorship_by_status
-    if orphan_status.name == 'Active'
+    if orphan_status_is_active?
       reactivate
-    elsif OrphanStatus.find(orphan_status_id_was).name == 'Active'
+    elsif orphan_status_was_active?
       deactivate
     end
+  end
+
+  def orphan_status_is_active?
+    orphan_status.name == 'Active'
+  end
+
+  def orphan_status_was_active?
+    OrphanStatus.find(orphan_status_id_was).name == 'Active'
   end
 
   def deactivate
@@ -129,13 +136,25 @@ class Orphan < ActiveRecord::Base
   end
 
   def reactivate
-    sponsorships = self.sponsorships
-    if sponsorships.empty?
+    if unsponsored?
       self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Unsponsored'
-    elsif sponsorships.all_active.empty?
+    elsif previously_sponsored?
       self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Previously Sponsored'
-    else
+    elsif currently_sponsored?
       self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
     end
   end
+
+  def unsponsored?
+    self.sponsorships.empty?
+  end
+
+  def previously_sponsored?
+    self.sponsorships.all_active.empty?
+  end
+
+  def currently_sponsored?
+    self.sponsorships.all_active.present?
+  end
+
 end

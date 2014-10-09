@@ -257,7 +257,7 @@ describe Orphan, type: :model do
               let(:sponsorships) { ['not empty'] }
 
               it 'sets sponsorship_status to Previously Sponsored when status -> Active for previously sponsored orphan' do
-                expect(orphan).to receive(:sponsorships).and_return sponsorships
+                expect(orphan).to receive(:sponsorships).at_least(:once).and_return sponsorships
                 expect(sponsorships).to receive(:all_active).and_return []
 
                 orphan.update!(orphan_status: active_orphan_status)
@@ -265,8 +265,8 @@ describe Orphan, type: :model do
               end
 
               it 'sets sponsorship_status to Sponsored when status -> Active for currently sponsored orphan' do
-                expect(orphan).to receive(:sponsorships).and_return sponsorships
-                expect(sponsorships).to receive(:all_active).and_return ['not empty']
+                expect(orphan).to receive(:sponsorships).at_least(:once).and_return sponsorships
+                expect(sponsorships).to receive(:all_active).at_least(:once).and_return ['not empty']
 
                 orphan.update!(orphan_status: active_orphan_status)
                 expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
