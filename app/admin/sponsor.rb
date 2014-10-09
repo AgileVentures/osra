@@ -70,7 +70,7 @@ ActiveAdmin.register Sponsor do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :country, as: :country, priority_countries: [], except: ['IL'], selected: 'SA'
+      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :gender, as: :select, collection: %w(Male Female)
       f.input :sponsor_type
       f.input :organization

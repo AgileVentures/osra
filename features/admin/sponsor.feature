@@ -43,7 +43,7 @@ Feature:
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
-    And I select "United Kingdom" from the drop down box for "Country"
+    And I select "Spain" from the drop down box for "Country"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
