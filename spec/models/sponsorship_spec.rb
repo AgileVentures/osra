@@ -18,12 +18,12 @@ describe Sponsorship, type: :model do
   it { is_expected.to belong_to :sponsor }
   it { is_expected.to belong_to :orphan }
 
-  it 'prevents sponsorship of actively sponsored orphans' do
-    create :sponsorship
-    expect(subject).to validate_uniqueness_of(:orphan).
-                       scoped_to(:active).
-                       with_message('is already actively sponsored')
-  end
+  # it 'prevents sponsorship of actively sponsored orphans' do
+  #   create :sponsorship
+  #   expect(subject).to validate_uniqueness_of(:orphan).
+  #                      scoped_to(:active).
+  #                      with_message('is already actively sponsored')
+  # end
 
   describe 'validations' do
     let(:inactive_status) do
@@ -41,6 +41,22 @@ describe Sponsorship, type: :model do
 
     it 'disallows creation of new sponsorships with ineligible orphans' do
       expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
+    end
+
+    describe 'disallow concurrent active sponsorships' do
+      let(:orphan) { create :orphan }
+      let(:sponsor) { create :sponsor }
+      let!(:active_sponsorship) { create :sponsorship, sponsor: sponsor, orphan: orphan }
+
+      it 'disallows concurrent active sponsorships' do
+        expect{ create :sponsorship, sponsor: sponsor, orphan: orphan }.to raise_error ActiveRecord::RecordInvalid
+      end
+
+      it 'does not disallow multiple inactive sponsorships' do
+        active_sponsorship.inactivate
+        new_sponsorship = create :sponsorship, sponsor: sponsor, orphan: orphan
+        expect{ new_sponsorship.inactivate }.not_to raise_error
+      end
     end
   end
 

@@ -72,3 +72,11 @@ Feature:
     And I should see "Sponsorship link was successfully created"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "First Orphan" within "Previously Sponsored Orphans"
+
+  Scenario: Verifying bug fix for sponsorship inactivation
+    Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "End sponsorship" link for orphan "First Orphan"
+    Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I should see "Sponsorship link was successfully terminated"
