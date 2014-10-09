@@ -18,13 +18,6 @@ describe Sponsorship, type: :model do
   it { is_expected.to belong_to :sponsor }
   it { is_expected.to belong_to :orphan }
 
-  # it 'prevents sponsorship of actively sponsored orphans' do
-  #   create :sponsorship
-  #   expect(subject).to validate_uniqueness_of(:orphan).
-  #                      scoped_to(:active).
-  #                      with_message('is already actively sponsored')
-  # end
-
   describe 'validations' do
     let(:inactive_status) do
       Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
