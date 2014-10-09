@@ -11,7 +11,9 @@ ActiveAdmin.register Sponsor do
     end
     column :sponsor_type
     column :request_fulfilled
-    column :country
+    column :country do |sponsor|
+      ISO3166::Country.search(sponsor.country)
+    end
     column :status, sortable: :status_id
     column :start_date
   end
@@ -25,7 +27,9 @@ ActiveAdmin.register Sponsor do
       row :request_fulfilled do
         sponsor.request_fulfilled? ? 'Yes' : 'No'
       end
-      row :country
+      row :country do
+        ISO3166::Country.search(sponsor.country)
+      end
       row :affiliate
       row :gender
       row :address
@@ -66,7 +70,7 @@ ActiveAdmin.register Sponsor do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :country, as: :string
+      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :gender, as: :select, collection: %w(Male Female)
       f.input :sponsor_type
       f.input :organization

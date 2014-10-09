@@ -6,7 +6,7 @@ Feature:
   Background:
     Given the following sponsors exist:
       | name                   | Sponsor1           | Sponsor2            | Sponsor3            |
-      | country                | UK                 | Canada              | Estonia             |
+      | country                | GB                 | CA                  | EE                  |
       | gender                 | Male               | Female              | Male                |
       | requested_orphan_count | 15                 | 1                   | 3                   |
       | sponsor_type           | Individual         | Organisation        | Individual          |
@@ -43,7 +43,7 @@ Feature:
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
-    And I fill in "Country" with "UK"
+    And I select "Spain" from the drop down box for "Country"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
@@ -58,7 +58,7 @@ Feature:
     Then I should see the following fields on the page:
     |  field             | value                  |
     |  name              | Sponsor1               |
-    |  country           | UK                     |
+    |  country           | United Kingdom         |
     |  gender            | Active                 |
     |  sponsor_type      | Individual             |
     |  status            | Active                 |
@@ -70,7 +70,7 @@ Feature:
     Then I should see the following fields on the page:
     |  field                   | value                  |
     |  name                    | Sponsor1               |
-    |  country                 | UK                     |
+    |  country                 | United Kingdom         |
     |  gender                  | Active                 |
     |  requested_orphan_count  | 15                     |
     |  sponsor_type            | Individual             |
@@ -87,7 +87,7 @@ Feature:
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     And I click the "Edit Sponsor" button
     Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
-    And I fill in "Country" with "Canada"
+    And I select "Canada" from the drop down box for "Country"
     And I check the "Request fulfilled" checkbox
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -98,5 +98,3 @@ Feature:
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
-
-

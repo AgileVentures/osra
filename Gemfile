@@ -16,6 +16,7 @@ gem 'jquery-rails'
 gem 'paperclip'
 gem 'aws-sdk'
 gem 'coveralls', require: false
+gem 'country_select', github: 'stefanpenner/country_select'
 
 group :test do
   gem 'capybara'
@@ -44,5 +45,3 @@ group :production do
   gem 'rails_12factor'
   gem 'unicorn'
 end
-
-
