@@ -6,7 +6,4 @@ class PendingOrphanList < ActiveRecord::Base
 
   has_many :pending_orphans
 
-  def full_name
-    [name, father_name].join(' ')
-  end
 end
