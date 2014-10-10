@@ -16,6 +16,7 @@ gem 'paperclip'
 gem 'aws-sdk'
 gem 'coveralls', require: false
 gem 'country_select', github: 'stefanpenner/country_select'
+gem 'roo'
 
 group :test do
   gem 'capybara'
