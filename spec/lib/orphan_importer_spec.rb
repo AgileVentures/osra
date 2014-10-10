@@ -13,19 +13,41 @@ describe OrphanImporter do
 
   describe '.extract_orphans' do
 
+    it 'should reject opening a non Excel file with an error' do
+      importer = OrphanImporter.new('spec/fixtures/not_an_excel_file.txt')
+      expect(importer).not_to be_valid
+      expect(importer.import_errors[0][:error]).to include('not a valid Excel file')
+    end
+
+    it 'should open an .xlsx file with no errors' do
+      importer = OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx')
+      expect(importer).to be_valid
+    end
+
+    it 'should open an .xls file with no errors' do
+      importer = OrphanImporter.new('spec/fixtures/empty_xls.xls')
+      expect(importer).to be_valid
+    end
+
+    it 'should reject opening a non Excel file even if it has an Excel extension' do
+      importer = OrphanImporter.new('spec/fixtures/fake_excel_file.png.xls')
+      expect(importer).not_to be_valid
+      expect(importer.import_errors[0][:error]).to include('not a valid Excel file')
+    end
+
     it 'should parse one valid record and return one orphan hash and no errors' do
-      expect(one_orphan_result.count).to eq 1
-      expect(one_orphan_importer.valid?).to eq true
+      #expect(one_orphan_result.count).to eq 1
+      expect(one_orphan_importer).to be_valid
     end
 
     it 'should parse three valid records and return three orphan hashes and no errors' do
-      expect(three_orphans_result.count).to eq 3
-      expect(three_orphans_importer.valid?).to eq true
+      #expect(three_orphans_result.count).to eq 3
+      expect(three_orphans_importer).to be_valid
     end
 
     it 'should parse three invalid records and return errors' do
       expect(three_invalid_orphans_result.empty?).to eq false
-      expect(three_invalid_orphans_importer.valid?).to eq false
+      expect(three_invalid_orphans_importer).not_to be_valid
     end
 
     it 'should return valid pending orphan objects' do
