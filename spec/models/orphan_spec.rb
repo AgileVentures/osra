@@ -95,12 +95,12 @@ describe Orphan, type: :model do
         orphan.save!
       end
 
-      it "is valid when birthday is less than 22 years from created date" do
+      it "is valid when birthday is less than 22 years before created date" do
         orphan.date_of_birth = orphan.created_at.to_date - 22.years + 1.day
         expect(orphan).to be_valid
       end
 
-      it "is not valid when birthday is 22 years agoi from created date" do
+      it "is not valid when birthday is 22 years ago before created date" do
         orphan.date_of_birth = orphan.created_at.to_date - 22.years
         expect(orphan).not_to be_valid
       end
