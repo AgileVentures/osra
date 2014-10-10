@@ -41,6 +41,46 @@ class OrphanImporter
   def extract(record)
     rec_valid = true
     fields = {}
+    @@config.columns.each do |col|
+      val = @doc.cell(record, col.column)
+      if val.nil?
+        if col.mandatory
+          rec_valid = false
+          add_validation_error("(#{record},#{col.column})", "Missing mandatory field: #{col.field}")
+        end
+      else
+        begin
+          case col.type
+            when 'String'
+              fields[col.field] = val
+            when 'Date'
+              fields[col.field] = val.is_a?(Date) ? val : Date.parse(val)
+            when 'Integer'
+              fields[col.field] = val.to_i
+            when /(.+) options\z/i
+              if @@config.options[$1].nil?
+                rec_valid = false
+                add_validation_error('Import configuration', "Option values for #{$1} not defined. Please check import settings.")
+              else
+                option_val = @@config.options[$1].find { |opt| opt[:cell] == val }
+                if option_val.nil?
+                  rec_valid = false
+                  add_validation_error("(#{record},#{col.column})", "Option value: #{val} is not defined for field: #{col.field}")
+                else
+                  fields[col.field] = option_val[:db]
+                end
+              end
+            else
+              rec_valid = false
+              add_validation_error('Import configuration', "Invalid data type: #{col.type} defined for field: #{col.field}. Please check import settings.")
+          end
+        rescue => e
+          rec_valid = false
+          add_validation_error("(#{record},#{col.column})", "Error reading #{col.type} value for field: #{col.field}. Exception: #{e.to_s}")
+        end
+      end
+    end
+    @pending_orphans << fields if rec_valid
   end
 
 end
