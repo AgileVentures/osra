@@ -3,15 +3,17 @@ require 'orphan_importer'
 
 describe OrphanImporter do
 
+  let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
   let (:one_orphan_importer) { OrphanImporter.new('spec/fixtures/one_orphan_xlsx.xlsx') }
   let (:three_orphans_importer) { OrphanImporter.new('spec/fixtures/three_orphans_xlsx.xlsx') }
   let (:three_invalid_orphans_importer) { OrphanImporter.new('spec/fixtures/three_invalid_orphans_xlsx.xlsx') }
 
+  let (:empty_results) { empty_importer.extract_orphans }
   let (:one_orphan_result) { one_orphan_importer.extract_orphans }
   let (:three_orphans_result) { three_orphans_importer.extract_orphans }
   let (:three_invalid_orphans_result) { three_invalid_orphans_importer.extract_orphans }
 
-  describe '.extract_orphans' do
+  describe '.doc' do
 
     it 'should reject opening a non Excel file with an error' do
       importer = OrphanImporter.new('spec/fixtures/not_an_excel_file.txt')
@@ -20,8 +22,7 @@ describe OrphanImporter do
     end
 
     it 'should open an .xlsx file with no errors' do
-      importer = OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx')
-      expect(importer).to be_valid
+      expect(empty_importer).to be_valid
     end
 
     it 'should open an .xls file with no errors' do
@@ -32,7 +33,15 @@ describe OrphanImporter do
     it 'should reject opening a non Excel file even if it has an Excel extension' do
       importer = OrphanImporter.new('spec/fixtures/fake_excel_file.png.xls')
       expect(importer).not_to be_valid
-      expect(importer.import_errors[0][:error]).to include('not a valid Excel file')
+      expect(importer.import_errors[0][:error]).to include 'not a valid Excel file'
+    end
+
+  end
+
+  describe '.extract_orphans' do
+
+    it 'should parse an empty file and return an appropriate error message' do
+      expect(empty_results[0][:error]).to include 'Does not contain any orphan records'
     end
 
     it 'should parse one valid record and return one orphan hash and no errors' do
