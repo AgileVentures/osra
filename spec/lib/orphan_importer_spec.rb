@@ -3,8 +3,7 @@ require 'orphan_importer'
 
 describe OrphanImporter do
 
-  # I don't like this
-  before(:all) {
+  let! (:seeded_values) {
     Province.create(name: 'Damascus & Rif Dimashq', code: 11)
     Province.create(name: 'Aleppo', code: 12)
     Province.create(name: 'Homs', code: 13)
@@ -93,12 +92,6 @@ describe OrphanImporter do
       end
     end
 
-  end
-
-  after(:all) do
-    Province.delete_all
-    OrphanStatus.delete_all
-    OrphanSponsorshipStatus.delete_all
   end
 
 end
