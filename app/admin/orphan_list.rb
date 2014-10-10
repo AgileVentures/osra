@@ -67,10 +67,10 @@ ActiveAdmin.register OrphanList do
     end
 
     def import
-      @partner = partner
-      @pending_orphan_list = pending_orphan_list
+      get_partner
+      get_pending_orphan_list
       @orphan_count = 0
-      @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
+      @orphan_list = @partner.orphan_lists.build(spreadsheet: @pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
       @orphan_list.save!
       @pending_orphan_list.destroy
       redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'

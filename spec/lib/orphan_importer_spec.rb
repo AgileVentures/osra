@@ -9,6 +9,7 @@ describe OrphanImporter do
   let (:three_invalid_orphans_importer) { OrphanImporter.new('spec/fixtures/three_invalid_orphans_xlsx.xlsx') }
 
   let (:empty_results) { empty_importer.extract_orphans }
+
   let (:one_orphan_result) { one_orphan_importer.extract_orphans }
   let (:three_orphans_result) { three_orphans_importer.extract_orphans }
   let (:three_invalid_orphans_result) { three_invalid_orphans_importer.extract_orphans }
@@ -58,6 +59,14 @@ describe OrphanImporter do
       expect(three_invalid_orphans_importer).not_to be_valid
     end
 
+    it 'should return valid pending orphan objects' do
+      [one_orphan_result, three_orphans_result].each do |result|
+        result.each do |orphan|
+          expect(orphan).to be_valid
+        end
+      end
+    end
+
   end
 
   describe '#to_orphan' do
@@ -97,8 +106,8 @@ describe OrphanImporter do
     end
 
     it 'will increase import errors by 1 when called' do
-      expect{one_orphan_importer.send(:add_validation_error, @ref, @error)}.to \
-        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+      expect { one_orphan_importer.send(:add_validation_error, @ref, @error) }.to \
+        change { one_orphan_importer.instance_variable_get(:@import_errors).size }.from(0).to(1)
     end
 
     specify '@import errors will include a hash of the reference and error when called' do
@@ -117,7 +126,7 @@ describe OrphanImporter do
     it 'must return nil if the option is not defined' do
       expect(one_orphan_importer).to receive(:option_defined?).with('boolean').and_return(false)
       expect(one_orphan_importer.send(:process_option, 'record', 'column',
-        'boolean', 'Y')).to be_nil
+                                      'boolean', 'Y')).to be_nil
     end
 
     context "when the yaml db setting is defined" do
@@ -126,17 +135,17 @@ describe OrphanImporter do
         @config_hash = {:db => @return_val}
         expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
         expect(Settings.import).to receive_message_chain(:options,
-          '[]', :find).and_return(@config_hash)
+                                                         '[]', :find).and_return(@config_hash)
       end
 
       it 'should return the yaml db setting' do
         expect(one_orphan_importer.send(:process_option, 'record', 'column',
-          'boolean', 'Y')).to eq(@return_val)
+                                        'boolean', 'Y')).to eq(@return_val)
       end
 
       it 'should not add an error' do
-        expect{one_orphan_importer.send(:process_option, 'record', @column, 'boolean', 'Y')}.not_to \
-          change{one_orphan_importer.instance_variable_get(:@import_errors).size}
+        expect { one_orphan_importer.send(:process_option, 'record', @column, 'boolean', 'Y') }.not_to \
+          change { one_orphan_importer.instance_variable_get(:@import_errors).size }
       end
     end
 
@@ -152,22 +161,22 @@ describe OrphanImporter do
         expect(@column).to receive(:field).and_return(@field_val)
         expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
         expect(Settings.import).to receive_message_chain(:options,
-          '[]', :find).and_return(nil)
+                                                         '[]', :find).and_return(nil)
       end
 
       it 'must return false' do
         expect(one_orphan_importer.send(:process_option, @record, @column,
-          @option, @val)).to be false
+                                        @option, @val)).to be false
       end
 
       it 'must add an error to import errors' do
-        expect{one_orphan_importer.send(:process_option, @record, @column, @option, @val)}.to \
-          change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+        expect { one_orphan_importer.send(:process_option, @record, @column, @option, @val) }.to \
+          change { one_orphan_importer.instance_variable_get(:@import_errors).size }.from(0).to(1)
       end
 
       it 'must record the right column and message' do
         expect(one_orphan_importer).to receive(:add_validation_error).with(
-          "(#{@record},#{@col_val})", "Option value: #{@val} is not defined for field: #{@field_val}")
+                                           "(#{@record},#{@col_val})", "Option value: #{@val} is not defined for field: #{@field_val}")
         one_orphan_importer.send(:process_option, @record, @column, @option, @val)
       end
     end
@@ -185,14 +194,14 @@ describe OrphanImporter do
     end
     it 'should add an error if the column is mandatory' do
       expect(column).to receive(:mandatory).and_return(true)
-      expect{one_orphan_importer.send(:add_error_if_mandatory, 'record', column)}.to \
-        change{@import_errors.size}.from(0).to(1)
+      expect { one_orphan_importer.send(:add_error_if_mandatory, 'record', column) }.to \
+        change { @import_errors.size }.from(0).to(1)
     end
 
     it 'will have no errors if the column is not mandatory' do
       expect(column).to receive(:mandatory).and_return(false)
       one_orphan_importer.send(:add_error_if_mandatory, 'record', column)
-      expect{@import_errors.size}.not_to change{@import_errors.size} 
+      expect { @import_errors.size }.not_to change { @import_errors.size }
     end
   end
 
@@ -213,14 +222,14 @@ describe OrphanImporter do
     it 'will return a String if the column type is a string' do
       expect(column).to receive(:type).and_return("String")
       expect(one_orphan_importer.send(:process_column, record,
-        column, "String Value")).to eq "String Value"
+                                      column, "String Value")).to eq "String Value"
     end
 
     it 'will return a Date if the column type is a date' do
       date = Date.current
       expect(column).to receive(:type).and_return("Date")
       expect(one_orphan_importer.send(:process_column, record,
-        column, "#{date}")).to eq date
+                                      column, "#{date}")).to eq date
     end
 
     it 'will call #process_options if the column type is an options type' do
@@ -232,17 +241,17 @@ describe OrphanImporter do
     it 'will add an error if the column type is a date but no date is given' do
       expect(column).to receive(:type).twice.and_return("Date")
       expect(one_orphan_importer).to receive(:add_validation_error).with(
-        "(#{record},#{column.column})", anything).and_call_original
-      expect{one_orphan_importer.send(:process_column, record, column, "Not a Date")}.to \
-        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+                                         "(#{record},#{column.column})", anything).and_call_original
+      expect { one_orphan_importer.send(:process_column, record, column, "Not a Date") }.to \
+        change { one_orphan_importer.instance_variable_get(:@import_errors).size }.from(0).to(1)
     end
 
     it 'will add an error if the column type is not recognised' do
       expect(column).to receive(:type).twice.and_return("unknown")
       expect(one_orphan_importer).to receive(:add_validation_error).with(
-        "Import configuration", anything).and_call_original
-      expect{one_orphan_importer.send(:process_column, record, column, "unknown")}.to \
-        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+                                         "Import configuration", anything).and_call_original
+      expect { one_orphan_importer.send(:process_column, record, column, "unknown") }.to \
+        change { one_orphan_importer.instance_variable_get(:@import_errors).size }.from(0).to(1)
     end
   end
 
@@ -291,8 +300,8 @@ describe OrphanImporter do
       end
 
       it 'should increase the @pending_orphans size by 1' do
-        expect{one_orphan_importer.send(:extract, 'record')}.to \
-         change{one_orphan_importer.instance_variable_get(:@pending_orphans).size}.from(0).to(1)
+        expect { one_orphan_importer.send(:extract, 'record') }.to \
+         change { one_orphan_importer.instance_variable_get(:@pending_orphans).size }.from(0).to(1)
       end
     end
   end
