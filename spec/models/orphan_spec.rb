@@ -188,16 +188,20 @@ describe Orphan, type: :model do
           expect(orphan.full_name).to eq full_name
         end
 
-        specify '#set_status_to_sponsored' do
-          orphan = active_unsponsored_orphan
-          orphan.set_status_to_sponsored
-          expect(orphan.reload.orphan_sponsorship_status).to eq sponsored_status
-        end
+        describe '#update_sponsorship_status!' do
+          it 'correctly updates to Sponsored, Previously Sponsored & On Hold' do
+            ['Sponsored', 'Previously Sponsored', 'On Hold'].each do |status_name|
+              sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
+              active_unsponsored_orphan.update_sponsorship_status!(status_name)
+              expect(active_unsponsored_orphan.reload.orphan_sponsorship_status).to eq sponsorship_status
+            end
+          end
 
-        specify '#set_status_to_previously_sponsored' do
-          orphan = active_sponsored_orphan
-          orphan.set_status_to_previously_sponsored
-          expect(orphan.reload.orphan_sponsorship_status).to eq previously_sponsored_status
+          it 'correctly updates to Unsponsored' do
+            sponsorship_status = OrphanSponsorshipStatus.find_by_name('Unsponsored')
+            active_sponsored_orphan.update_sponsorship_status!('Unsponsored')
+            expect(active_sponsored_orphan.reload.orphan_sponsorship_status).to eq sponsorship_status
+          end
         end
 
         specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do

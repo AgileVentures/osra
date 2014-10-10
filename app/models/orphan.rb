@@ -56,14 +56,9 @@ class Orphan < ActiveRecord::Base
     end
   end
 
-  def set_status_to_sponsored
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name('Sponsored')
-    self.update!(orphan_sponsorship_status: sponsorship_status)
-  end
-
-  def set_status_to_previously_sponsored
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name('Previously Sponsored')
-    self.update!(orphan_sponsorship_status: sponsorship_status)
+  def update_sponsorship_status!(status_name)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
+    update!(orphan_sponsorship_status: sponsorship_status)
   end
 
   scope :active,
@@ -137,11 +132,11 @@ class Orphan < ActiveRecord::Base
 
   def reactivate
     if unsponsored?
-      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Unsponsored'
+      set_sponsorship_status 'Unsponsored'
     elsif previously_sponsored?
-      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Previously Sponsored'
+      set_sponsorship_status 'Previously Sponsored'
     elsif currently_sponsored?
-      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
+      set_sponsorship_status 'Sponsored'
     end
   end
 
@@ -157,4 +152,8 @@ class Orphan < ActiveRecord::Base
     self.sponsorships.all_active.present?
   end
 
+  def set_sponsorship_status(status_name)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
+    self.orphan_sponsorship_status = sponsorship_status
+  end
 end
