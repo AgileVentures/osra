@@ -3,23 +3,10 @@ require 'orphan_importer'
 
 describe OrphanImporter do
 
-  let! (:seeded_values) {
-    Province.create(name: 'Damascus & Rif Dimashq', code: 11)
-    Province.create(name: 'Aleppo', code: 12)
-    Province.create(name: 'Homs', code: 13)
-    Province.create(name: 'Hama', code: 14)
-    Province.create(name: 'Latakia', code: 15)
-    Province.create(name: 'Deir Al-Zor', code: 16)
-    Province.create(name: 'Daraa', code: 17)
-    Province.create(name: 'Idlib', code: 18)
-    Province.create(name: 'Ar Raqqah', code: 19)
-    Province.create(name: 'Al Ḥasakah', code: 20)
-    Province.create(name: 'Tartous', code: 21)
-    Province.create(name: 'Al-Suwayada', code: 22)
-    Province.create(name: 'Al-Quneitera', code: 23)
-    Province.create(name: 'Outside Syria', code: 29)
-    OrphanStatus.create(name: 'Active', code: 1)
-    OrphanSponsorshipStatus.create(name: 'Unsponsored', code: 1)
+  before(:each) {
+    14.times { create :province }
+    create :orphan_status, name: 'Active'
+    create :orphan_sponsorship_status, name: 'Unsponsored'
   }
 
   let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
