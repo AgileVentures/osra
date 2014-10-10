@@ -1,6 +1,6 @@
 class OrphanImporter
 
-  @@config = Settings.import
+  CONFIG = Settings.import
 
   attr_reader :pending_orphans, :import_errors
 
@@ -21,16 +21,15 @@ class OrphanImporter
     end
 
     orphan.attributes = fields.reject { |k, _| k['address'] || k['pending'] }
-    orphan.orphan_status = OrphanStatus.find_by_name('Active')
     orphan
   end
 
   def extract_orphans
     return import_errors unless valid?
-    if (@doc.last_row||0) < @@config.first_row
+    if (@doc.last_row||0) < CONFIG.first_row
       add_validation_error('Import file', 'Does not contain any orphan records')
     else
-      @@config.first_row.upto(@doc.last_row) { |record| extract record }
+      CONFIG.first_row.upto(@doc.last_row) { |record| extract record }
     end
     valid? ? pending_orphans : import_errors
   end
@@ -55,7 +54,7 @@ class OrphanImporter
   def extract(record)
     rec_valid = true
     fields = {}
-    @@config.columns.each do |col|
+    CONFIG.columns.each do |col|
       val = @doc.cell(record, col.column)
       if val.nil?
         if col.mandatory
@@ -68,15 +67,15 @@ class OrphanImporter
             when 'String'
               fields[col.field] = val
             when 'Date'
-              fields[col.field] = val.is_a?(Date) ? val : Date.parse(val)
+              fields[col.field] = Date.parse(val.to_s)
             when 'Integer'
               fields[col.field] = val.to_i
             when /(.+) options\z/i
-              if @@config.options[$1].nil?
+              if CONFIG.options[$1].nil?
                 rec_valid = false
                 add_validation_error('Import configuration', "Option values for #{$1} not defined. Please check import settings.")
               else
-                option_val = @@config.options[$1].find { |opt| opt[:cell] == val }
+                option_val = CONFIG.options[$1].find { |opt| opt[:cell] == val }
                 if option_val.nil?
                   rec_valid = false
                   add_validation_error("(#{record},#{col.column})", "Option value: #{val} is not defined for field: #{col.field}")
