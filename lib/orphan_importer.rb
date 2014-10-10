@@ -1,5 +1,7 @@
 class OrphanImporter
 
+  @@config = Settings.import
+
   attr_reader :pending_orphans, :import_errors
 
   def initialize(file)
