@@ -25,7 +25,7 @@ class Orphan < ActiveRecord::Base
   validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
   validate :orphans_dob_within_1yr_of_fathers_death
-  validate :less_than_22_years_old
+  validate :less_than_22_yo_when_joined_osra
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
@@ -79,7 +79,7 @@ class Orphan < ActiveRecord::Base
     Orphan.active.unsponsored.include? self
   end
 
-  def less_than_22_years_old
+  def less_than_22_yo_when_joined_osra
     return unless valid_date?(date_of_birth)
     reference_date = self.new_record? ? Date.current : self.created_at.to_date
     if self.date_of_birth + 22.years <= reference_date
