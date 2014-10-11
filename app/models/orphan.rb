@@ -7,6 +7,8 @@ class Orphan < ActiveRecord::Base
   before_update :qualify_for_sponsorship_by_status,
                 if: :orphan_status_id_changed?
 
+  before_validation :set_province_code
+
   before_create :generate_osra_num
 
   validates :name, presence: true
@@ -68,9 +70,8 @@ class Orphan < ActiveRecord::Base
         -> { joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
- 
 
-  acts_as_sequenced
+  acts_as_sequenced scope: :province_code
 
   def eligible_for_sponsorship?
     Orphan.active.currently_unsponsored.include? self
@@ -106,8 +107,13 @@ class Orphan < ActiveRecord::Base
     self.priority ||= 'Normal'
   end
   
+
+  def set_province_code
+    self.province_code = partner_province_code
+  end
+
   def generate_osra_num
-    self.osra_num = "#{partner_province_code}%05d" % sequential_id
+    self.osra_num = "#{province_code}%05d" % sequential_id
   end
 
   def qualify_for_sponsorship_by_status

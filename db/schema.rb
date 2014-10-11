@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110225309) do
+ActiveRecord::Schema.define(version: 20141011110435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20141110225309) do
     t.integer  "sequential_id"
     t.string   "osra_num"
     t.integer  "orphan_list_id"
+    t.integer  "province_code"
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
