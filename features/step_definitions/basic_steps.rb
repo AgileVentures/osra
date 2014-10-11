@@ -136,12 +136,3 @@ end
 Given(/^I select "([^"]*)" from the drop down box for "([^"]*)" in panel "([^"]*)"$/) do |choice, name, panel|
   find('fieldset', text: panel).select(choice, from: name)
 end
-
-Given(/^I visit the new orphan list page for partner "([^"]*)"$/) do |partner|
-  partner_id = Partner.find_by_name(partner).id
-  visit new_admin_partner_orphan_list_path(partner_id)
-end
-
-And(/^I upload the "([^"]*)" file$/) do |file|
-  attach_file 'orphan_list_spreadsheet', "spec/fixtures/#{file}"
-end

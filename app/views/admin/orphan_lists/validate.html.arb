@@ -1,0 +1,22 @@
+div do
+  if list_valid
+    h3 'Orphan list is valid'
+  else
+    h3 'Orphan list is invalid'
+  end
+end
+
+div do
+  active_admin_form_for orphan_list,
+                        url: import_admin_partner_orphan_lists_path(partner) do |f|
+    f.inputs do
+      f.hidden_field :pending_id, value: pending_orphan_list.id
+    end
+
+    f.actions do
+      f.action :submit, label: 'Import' if list_valid
+      f.cancel_link admin_partner_pending_orphan_list_path(partner, pending_orphan_list), method: :delete
+
+    end
+  end
+end
