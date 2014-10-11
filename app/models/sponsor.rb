@@ -47,7 +47,7 @@ class Sponsor < ActiveRecord::Base
   def osra_num_prefix
     if branch.present?
       "5%02d" % branch.code
-    else organization.present?
+    else
       "8%02d" % organization.code
     end
   end
