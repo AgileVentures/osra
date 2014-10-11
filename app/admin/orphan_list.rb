@@ -47,7 +47,8 @@ ActiveAdmin.register OrphanList do
         redirect_to admin_partner_path(params[:partner_id]),
                     alert: "Partner is not Active. Orphan List cannot be uploaded." and return
       end
-      render action: :upload, locals: { partner: @partner, pending_orphan_list: PendingOrphanList.new }
+
+      render action: :upload, locals: {partner: @partner, pending_orphan_list: PendingOrphanList.new}
     end
 
     def validate
@@ -62,18 +63,15 @@ ActiveAdmin.register OrphanList do
 
       # This is just a place holder until the importer code is merged
       list_valid = !(filename.include? 'empty' or filename.include? 'invalid')
-
-      render action: :validate, locals: { partner: @partner, orphan_list: @partner.orphan_lists.build,
-                                          pending_orphan_list: @pending_orphan_list, list_valid: list_valid }
+      render action: :validate, locals: {partner: @partner, orphan_list: @partner.orphan_lists.build, pending_orphan_list: @pending_orphan_list, list_valid: list_valid}
     end
 
     def import
-      get_partner
-      get_pending_orphan_list
+      @partner = partner
+      @pending_orphan_list = pending_orphan_list
       @orphan_count = 0
-      @orphan_list = @partner.orphan_lists.create!(spreadsheet: @pending_orphan_list.spreadsheet,
-                                                 orphan_count: @orphan_count)
-      #@orphan_list.save!
+      @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
+      @orphan_list.save!
       @pending_orphan_list.destroy
       redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'
     end
@@ -97,6 +95,7 @@ ActiveAdmin.register OrphanList do
     def pending_orphan_list_params
       params.require(:pending_orphan_list).permit(:spreadsheet)
     end
+
 
     def get_pending_orphan_list
       @pending_orphan_list = PendingOrphanList.find(params[:orphan_list][:pending_id])
