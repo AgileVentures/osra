@@ -85,7 +85,6 @@ describe Sponsorship, type: :model do
       sponsorship.inactivate
       expect(sponsorship.reload.active).to eq false
       expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Previously Sponsored'
-      expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Unsponsored'
     end
 
     specify '#set_active_to_true should set .active = true' do
