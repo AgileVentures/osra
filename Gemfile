@@ -10,7 +10,6 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
 gem 'activeadmin', github: 'activeadmin'
 gem 'sequenced' # Sequential IDs in Models
-gem 'jbuilder', '~> 1.2'
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
