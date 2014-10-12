@@ -4,6 +4,8 @@ class Orphan < ActiveRecord::Base
   after_initialize :default_orphan_status_active,
                    :default_sponsorship_status_unsponsored,
                    :default_priority_to_normal
+  before_update :qualify_for_sponsorship_by_status,
+                if: :orphan_status_id_changed?
 
   before_create :generate_osra_num
 
@@ -54,29 +56,24 @@ class Orphan < ActiveRecord::Base
     end
   end
 
-  def set_status_to_sponsored
-    sponsored_status = OrphanSponsorshipStatus.find_by_name('Sponsored')
-    self.update!(orphan_sponsorship_status: sponsored_status)
-  end
-
-  def set_status_to_unsponsored
-    unsponsored_status = OrphanSponsorshipStatus.find_by_name('Unsponsored')
-    self.update!(orphan_sponsorship_status: unsponsored_status)
+  def update_sponsorship_status!(status_name)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
+    update!(orphan_sponsorship_status: sponsorship_status)
   end
 
   scope :active,
-        -> { Orphan.joins(:orphan_status).
+        -> { joins(:orphan_status).
             where(orphan_statuses: { name: 'Active' }) }
-  scope :unsponsored,
-        -> { Orphan.joins(:orphan_sponsorship_status).
-            where(orphan_sponsorship_statuses: { name: 'Unsponsored' }) }
+  scope :currently_unsponsored,
+        -> { joins(:orphan_sponsorship_status).
+            where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
  
 
   acts_as_sequenced
 
   def eligible_for_sponsorship?
-    Orphan.active.unsponsored.include? self
+    Orphan.active.currently_unsponsored.include? self
   end
 
   def less_than_22_yo_when_joined_osra
@@ -108,7 +105,55 @@ class Orphan < ActiveRecord::Base
   def default_priority_to_normal
     self.priority ||= 'Normal'
   end
+  
   def generate_osra_num
     self.osra_num = "#{partner_province_code}%05d" % sequential_id
+  end
+
+  def qualify_for_sponsorship_by_status
+    if orphan_status_is_active?
+      reactivate
+    elsif orphan_status_was_active?
+      deactivate
+    end
+  end
+
+  def orphan_status_is_active?
+    orphan_status.name == 'Active'
+  end
+
+  def orphan_status_was_active?
+    OrphanStatus.find(orphan_status_id_was).name == 'Active'
+  end
+
+  def deactivate
+    self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
+  end
+
+  def reactivate
+    if unsponsored?
+      set_sponsorship_status 'Unsponsored'
+    elsif previously_sponsored?
+      set_sponsorship_status 'Previously Sponsored'
+    elsif currently_sponsored?
+      set_sponsorship_status 'Sponsored'
+    end
+  end
+
+  def unsponsored?
+    self.sponsorships.empty?
+  end
+
+  def previously_sponsored?
+    self.sponsorships.all_active.empty?
+  end
+
+  def currently_sponsored?
+    self.sponsorships.all_active.present?
+  end
+
+  def set_sponsorship_status(status_name)
+    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
+    self.orphan_sponsorship_status = sponsorship_status
   end
 end

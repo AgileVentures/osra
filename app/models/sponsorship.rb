@@ -5,7 +5,6 @@ class Sponsorship < ActiveRecord::Base
   after_initialize :default_start_date_to_today
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
-  before_destroy :set_orphan_status_to_unsponsored
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -23,7 +22,7 @@ class Sponsorship < ActiveRecord::Base
 
   def inactivate
     update_attributes!(active: false)
-    set_orphan_status_to_unsponsored
+    set_orphan_status_to_previously_sponsored
   end
 
   scope :all_active, -> { where(active: true) }
@@ -32,11 +31,11 @@ class Sponsorship < ActiveRecord::Base
   private
 
     def set_orphan_status_to_sponsored
-      self.orphan.set_status_to_sponsored
+      self.orphan.update_sponsorship_status! 'Sponsored'
     end
 
-    def set_orphan_status_to_unsponsored
-      self.orphan.set_status_to_unsponsored
+    def set_orphan_status_to_previously_sponsored
+      self.orphan.update_sponsorship_status! 'Previously Sponsored'
     end
 
     def set_active_to_true

@@ -13,6 +13,7 @@ Given(/^required orphan statuses exist$/) do
   FactoryGirl.create :orphan_status, name: 'Inactive'
   FactoryGirl.create :orphan_sponsorship_status, name: 'Sponsored'
   FactoryGirl.create :orphan_sponsorship_status, name: 'Unsponsored'
+  FactoryGirl.create :orphan_sponsorship_status, name: 'Previously Sponsored'
 end
 
 Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
