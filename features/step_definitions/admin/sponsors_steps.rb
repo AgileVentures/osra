@@ -32,3 +32,13 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
 
+Then(/^I should see a "([^"]*)" drop down box in the "Filters" section$/) do |selector|
+  selector_id = "#q_#{selector.parameterize}_id"
+  within('div#filters_sidebar_section') { expect(page).to have_selector selector_id }
+end
+
+Then(/^the "([^"]*)" drop down box should show options: (.*)$/) do |selector, options|
+  selector_id = "#q_#{selector.parameterize}_id"
+  options_array = (['Any'] << options.gsub(/"/, '').split(', ')).flatten
+  # expect(page).to have_select(selector_id, options: options_array)
+end
