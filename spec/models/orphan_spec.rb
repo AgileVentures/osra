@@ -163,6 +163,13 @@ describe Orphan, type: :model do
       let!(:high_priority_orphan) { create :orphan, priority: 'High' }
 
       describe 'methods' do
+
+        specify '#full_name combines name + father_name' do
+          orphan = active_unsponsored_orphan
+          full_name = "#{orphan.name} #{orphan.father_name}"
+          expect(orphan.full_name).to eq full_name
+        end
+
         specify '#set_status_to_sponsored does what it says' do
           orphan = active_unsponsored_orphan
           orphan.set_status_to_sponsored
