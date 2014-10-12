@@ -1,6 +1,6 @@
 ActiveAdmin.register Orphan do
 
-  actions :all, except: [:destroy]
+  actions :all, except: [:new, :destroy]
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
@@ -166,13 +166,4 @@ ActiveAdmin.register Orphan do
       status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
     end
   end
-
-  controller do
-    def new
-      @orphan = Orphan.new
-      @orphan.build_original_address
-      @orphan.build_current_address
-    end
-  end
-
 end
