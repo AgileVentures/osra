@@ -6,7 +6,7 @@ OSRA
 
 [![Build Status](https://travis-ci.org/AgileVentures/osra.svg?branch=develop)](https://travis-ci.org/AgileVentures/osra)
 
-[![Coverage Status](https://coveralls.io/repos/AgileVentures/osra/badge.png?branch=develop)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
+[![Coverage Status](https://img.shields.io/coveralls/AgileVentures/osra.svg)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
 
 [![Dependency Status](https://gemnasium.com/AgileVentures/osra.svg)](https://gemnasium.com/AgileVentures/osra)
 
