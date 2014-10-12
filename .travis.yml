@@ -8,5 +8,4 @@ before_script:
 - bundle exec rake db:create
 - bundle exec rake db:schema:load
 script:
-- bundle exec rake spec
-- bundle exec cucumber
+- bundle exec rake test_with_coveralls
