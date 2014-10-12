@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'Orphans routing', type: :routing do
   specify { expect(get: '/admin/orphans').to be_routable }
   specify { expect(post: '/admin/orphans').to be_routable }
-  specify { expect(get: '/admin/orphans/new').to route_to admin_orphan_path }
   specify { expect(get: '/admin/orphans/1').to be_routable }
   specify { expect(get: '/admin/orphans/1/edit').to be_routable }
   specify { expect(put: '/admin/orphans/1').to be_routable }

@@ -24,6 +24,10 @@ Feature:
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
     And I should see "Orphan 2 Father 2"
+    
+  Scenario: Should not be able to create new orphans directly via the UI
+    When I am on the "Orphans" page for the "Admin" role
+    Then I should not see the "New Orphan" link
 
   Scenario: Should be able to visit an orphan from the orphan index page
     Given I am on the "Orphans" page for the "Admin" role
