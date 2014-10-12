@@ -77,11 +77,17 @@ describe Sponsorship, type: :model do
   end
 
   describe 'methods' do
-    it '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
+    specify '#inactivate should set active = false & orphan.orphan_sponsorship_status = unsponsored' do
       sponsorship = create :sponsorship
       sponsorship.inactivate
       expect(sponsorship.reload.active).to eq false
       expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Unsponsored'
+    end
+
+    specify '#set_active_to_true should set .active = true' do
+      sponsorship = Sponsorship.new(active: false)
+      sponsorship.send(:set_active_to_true)
+      expect(sponsorship.active).to eq true
     end
   end
 
