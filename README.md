@@ -8,6 +8,8 @@ OSRA
 
 [![Coverage Status](https://img.shields.io/coveralls/AgileVentures/osra.svg)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
 
+[![Coverage Status](https://img.shields.io/coveralls/motasem-salem/osra.svg)](https://coveralls.io/r/motasem-salem/osra?branch=coveralls_svg)
+
 [![Dependency Status](https://gemnasium.com/AgileVentures/osra.svg)](https://gemnasium.com/AgileVentures/osra)
 
 OSRA is a non-profit organization registered in UK, aiming to sponsor orphans in Syria & insure basic life & education requirements for Syrian children. This projects objective is to build a support system for administration of the information needed to fulfill the organizations goals.
