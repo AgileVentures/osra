@@ -33,12 +33,14 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
 end
 
 Then(/^I should see a "([^"]*)" drop down box in the "Filters" section$/) do |selector|
-  selector_id = "#q_#{selector.parameterize}_id"
-  within('div#filters_sidebar_section') { expect(page).to have_selector selector_id }
+  selector_id = "q_#{selector.parameterize}_id"
+  within('div#filters_sidebar_section') { expect(page).to have_select selector_id }
 end
 
-Then(/^the "([^"]*)" drop down box should show options: (.*)$/) do |selector, options|
-  selector_id = "#q_#{selector.parameterize}_id"
-  options_array = (['Any'] << options.gsub(/"/, '').split(', ')).flatten
-  # expect(page).to have_select(selector_id, options: options_array)
+Then(/^I should see a "([^"]*)" drop down box in the "Filters" section with options: (.*)$/) do |selector, options|
+  selector_id = "q_#{selector.parameterize}"
+  options_array = options.gsub(/"/, '').split(', ')
+  within('div#filters_sidebar_section') do
+    expect(page).to have_select(selector_id, with_options: options_array)
+  end
 end

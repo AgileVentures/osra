@@ -1,5 +1,8 @@
 ActiveAdmin.register Sponsor do
 
+  preserve_default_filters!
+  filter :gender, as: :select, collection: %w(Male Female)
+
   actions :all, except: [:destroy]
 
   index do

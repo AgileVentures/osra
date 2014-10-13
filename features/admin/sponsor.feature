@@ -101,9 +101,6 @@ Feature:
 
   Scenario: I should be able to filter Sponsors based on gender
     Given I am on the "Sponsors" page for the "Admin" role
-    #Then I should see a "Gender" drop down box in the "Filters" section
-    Then I should see a "Branch" drop down box in the "Filters" section
-    #And the "Gender" drop down box should show options: "Male", "Female"
-    And the "Branch" drop down box should show options: "Riyadh", "Jeddah", "Dammam", "Dubai", "London"
-    When I select Male then I should see only male sponsors
-    And If I select Female then I should see only female sponsors
+    Then I should see a "Gender" drop down box in the "Filters" section with options: "Male", "Female"
+#    When I select Male then I should see only male sponsors
+#    And If I select Female then I should see only female sponsors
