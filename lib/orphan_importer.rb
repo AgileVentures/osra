@@ -48,51 +48,56 @@ class OrphanImporter
 
   def add_validation_error(ref, error)
     @import_errors << { ref: ref, error: error }
+    false
+  end
+
+  def option_defined?(option)
+    return true unless CONFIG.options[option].nil?
+    add_validation_error('Import configuration', "Option values for #{option} not defined. Please check import settings.")
+  end
+
+  def process_option(record, col, option, val)
+    if option_defined? option
+      option_val = CONFIG.options[option].find { |opt| opt[:cell] == val }
+      return option_val[:db] unless option_val.nil?
+      add_validation_error("(#{record},#{col.column})", "Option value: #{val} is not defined for field: #{col.field}")
+    end
+  end
+
+  def add_error_if_mandatory(record, col)
+    if col.mandatory
+      add_validation_error("(#{record},#{col.column})", "Missing mandatory field: #{col.field}")
+    end
+  end
+
+  def process_column(record, col, val)
+    case col.type
+      when 'String'
+        val
+      when 'Date'
+        Date.parse(val.to_s)
+      when 'Integer'
+        val.to_i
+      when /(.+) options\z/i
+        process_option record, col, $1, val
+      else
+        add_validation_error('Import configuration', "Invalid data type: #{col.type} defined for field: #{col.field}. Please check import settings.")
+    end
+  rescue => e
+    add_validation_error("(#{record},#{col.column})", "Error reading #{col.type} value for field: #{col.field}. Exception: #{e.to_s}")
   end
 
   def extract(record)
-    rec_valid = true
     fields = {}
     CONFIG.columns.each do |col|
       val = @doc.cell(record, col.column)
       if val.nil?
-        if col.mandatory
-          rec_valid = false
-          add_validation_error("(#{record},#{col.column})", "Missing mandatory field: #{col.field}")
-        end
+        add_error_if_mandatory record, col
       else
-        begin
-          case col.type
-            when 'String'
-              fields[col.field] = val
-            when 'Date'
-              fields[col.field] = Date.parse(val.to_s)
-            when 'Integer'
-              fields[col.field] = val.to_i
-            when /(.+) options\z/i
-              if CONFIG.options[$1].nil?
-                rec_valid = false
-                add_validation_error('Import configuration', "Option values for #{$1} not defined. Please check import settings.")
-              else
-                option_val = CONFIG.options[$1].find { |opt| opt[:cell] == val }
-                if option_val.nil?
-                  rec_valid = false
-                  add_validation_error("(#{record},#{col.column})", "Option value: #{val} is not defined for field: #{col.field}")
-                else
-                  fields[col.field] = option_val[:db]
-                end
-              end
-            else
-              rec_valid = false
-              add_validation_error('Import configuration', "Invalid data type: #{col.type} defined for field: #{col.field}. Please check import settings.")
-          end
-        rescue => e
-          rec_valid = false
-          add_validation_error("(#{record},#{col.column})", "Error reading #{col.type} value for field: #{col.field}. Exception: #{e.to_s}")
-        end
+        fields[col.field] = process_column record, col, val
       end
     end
-    @pending_orphans << fields if rec_valid
+    @pending_orphans << fields if valid?
   end
 
 end
