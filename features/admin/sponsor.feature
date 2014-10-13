@@ -99,8 +99,3 @@ Feature:
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
 
-  Scenario: I should be able to filter Sponsors based on gender
-    Given I am on the "Sponsors" page for the "Admin" role
-    Then I should see a "Gender" drop down box in the "Filters" section with options: "Male", "Female"
-#    When I select Male then I should see only male sponsors
-#    And If I select Female then I should see only female sponsors
