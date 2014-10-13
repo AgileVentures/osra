@@ -8,14 +8,13 @@ class OrphanImporter
     @pending_orphans = []
     @import_errors = []
     @file = file
-    @doc = doc
   end
 
   def self.to_orphan(fields)
     orphan = Orphan.new
 
     ['original_address_', 'current_address_'].each do |i|
-      address_fields = fields.select { |k,_| k[i]}.map {|k,v| [(k.gsub i, ''), v]}.to_h
+      address_fields = fields.select { |k, _| k[i] }.map { |k, v| [(k.gsub i, ''), v] }.to_h
       address_fields['province'] = Province.find_by_code(address_fields['province'])
       orphan.send "#{i.chop}=", Address.new(address_fields)
     end
@@ -25,12 +24,9 @@ class OrphanImporter
   end
 
   def extract_orphans
+    open_doc
     return import_errors unless valid?
-    if (@doc.last_row||0) < CONFIG.first_row
-      add_validation_error('Import file', 'Does not contain any orphan records')
-    else
-      CONFIG.first_row.upto(@doc.last_row) { |record| extract record }
-    end
+    CONFIG.first_row.upto(@doc.last_row) { |record| extract record }
     valid? ? pending_orphans : import_errors
   end
 
@@ -38,14 +34,17 @@ class OrphanImporter
     @import_errors.empty?
   end
 
-  private
-
-  def doc
+  def open_doc
     @file =~ /[.]([^.]+)\z/
-    Roo::Spreadsheet.open @file, extension: $1.to_s
+    @doc = Roo::Spreadsheet.open @file, extension: $1.to_s
+    if @doc.last_row.nil? || (@doc.last_row < CONFIG.first_row)
+      add_validation_error('Import file', 'Does not contain any orphan records')
+    end
   rescue => e
     add_validation_error('Import file', 'Is not a valid Excel file. ' + e.to_s)
   end
+
+  private
 
   def add_validation_error(ref, error)
     @import_errors << { ref: ref, error: error }
