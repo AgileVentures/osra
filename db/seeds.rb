@@ -36,9 +36,9 @@ OrphanSponsorshipStatus.create(name: 'Sponsored',            code: 2)
 OrphanSponsorshipStatus.create(name: 'Previously Sponsored', code: 3)
 OrphanSponsorshipStatus.create(name: 'On Hold',              code: 4)
 
-Organization.create(name: 'أهل الغربة وقت الكربة', code: 1)
-Organization.create(name: 'حملة بنات الحرمين لنصرة الشعب السوري', code: 2)
-Organization.create(name: 'مجموعة السراج للتنمية والرعاية الصحية', code: 3)
+Organization.create(name: 'أهل الغربة وقت الكربة', code: 51)
+Organization.create(name: 'حملة بنات الحرمين لنصرة الشعب السوري', code: 52)
+Organization.create(name: 'مجموعة السراج للتنمية والرعاية الصحية', code: 53)
 
 if Rails.env.development?
   require "#{Rails.root}/db/seeds/development_seeds.rb"
