@@ -12,8 +12,10 @@ describe Orphan, type: :model do
   let!(:on_hold_sponsorship_status) { create :orphan_sponsorship_status, name: 'On Hold' }
   let!(:active_status) { create :status, name: 'Active' }
 
+  subject { build :orphan }
+
   it 'should have a valid factory' do
-    expect(build_stubbed :orphan).to be_valid
+    expect(subject).to be_valid
   end
 
   it { is_expected.to validate_presence_of :name }
@@ -59,7 +61,13 @@ describe Orphan, type: :model do
   it { is_expected.to validate_presence_of :priority }
   it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
   it { is_expected.to validate_presence_of :orphan_sponsorship_status }
-  it { is_expected.to validate_presence_of :orphan_list }
+
+  it 'validates presence of :orphan_list' do
+    # need to stub out orphan.orphan_list.partner.province association
+    # which gets called before_validation
+    expect(subject).to receive(:partner_province_code).at_least(:once)
+    expect(subject).to validate_presence_of :orphan_list
+  end
 
   it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
@@ -130,6 +138,11 @@ describe Orphan, type: :model do
       describe 'before_create #generate_osra_num' do
         let(:orphan) { build :orphan }
 
+        it 'sets province_code' do
+          orphan.valid?
+          expect(orphan.province_code).to eq orphan.partner_province_code
+        end
+
         it 'generates osra_num on create' do
           orphan.save!
           expect(orphan.osra_num).not_to be_nil
@@ -145,6 +158,24 @@ describe Orphan, type: :model do
           orphan.sequential_id = 333
           orphan.save!
           expect(orphan.osra_num[2..-1]).to eq '00333'
+        end
+
+        describe 'scoping of sequential_id on province code' do
+          let(:orphan1_partner1) { build :orphan }
+          let(:orphan1_partner2) { build :orphan }
+          let(:orphan2_partner1) { build :orphan }
+
+          it 'assigns correct sequential id numbers to orphans from different provinces' do
+            expect(orphan1_partner1).to receive(:partner_province_code).and_return 13
+            expect(orphan2_partner1).to receive(:partner_province_code).and_return 13
+            expect(orphan1_partner2).to receive(:partner_province_code).and_return 22
+            orphan1_partner1.save!
+            orphan2_partner1.save!
+            orphan1_partner2.save!
+            expect(orphan1_partner1.sequential_id).to eq 1
+            expect(orphan2_partner1.sequential_id).to eq 2
+            expect(orphan1_partner2.sequential_id).to eq 1
+          end
         end
       end
     end
