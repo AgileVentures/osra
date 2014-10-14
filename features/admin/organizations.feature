@@ -6,9 +6,9 @@ Feature:
   Background:
     Given the following organizations exist:
       | code | name |
-      | 11   | Org1 |
-      | 12   | Org2 |
-      | 13   | Org3 |
+      | 51   | Org1 |
+      | 52   | Org2 |
+      | 53   | Org3 |
     And I am a new, authenticated user
 
   Scenario: There should not be a link to the organizations page on the navbar
