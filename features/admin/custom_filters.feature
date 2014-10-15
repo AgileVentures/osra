@@ -8,7 +8,9 @@ Feature:
 
   Scenario: I should be able to filter Sponsors based on gender
     Given I am on the "Sponsors" page for the "Admin" role
-    And I have 3 male sponsors and 2 female sponsors
+    And there are 3 male sponsors and 2 female sponsors
     Then I should see a "Gender" drop down box in the "Filters" section with options: "Male", "Female"
-#    When I select Male then I should see only male sponsors
-#    And If I select Female then I should see only female sponsors
+    When I select "Male" from "Gender"
+    Then I should see only male sponsors
+    When I select "Female" from "Gender"
+    Then I should see only female sponsors

@@ -31,22 +31,3 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   sponsor = Sponsor.find_by name: sponsor_name
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
-
-Then(/^I should see a "([^"]*)" drop down box in the "Filters" section$/) do |selector|
-  selector_id = "q_#{selector.parameterize}_id"
-  within('div#filters_sidebar_section') { expect(page).to have_select selector_id }
-end
-
-Then(/^I should see a "([^"]*)" drop down box in the "Filters" section with options: (.*)$/) do |selector, options|
-  selector_id = "q_#{selector.parameterize}"
-  options_array = options.gsub(/"/, '').split(', ')
-  within('div#filters_sidebar_section') do
-    expect(page).to have_select(selector_id, with_options: options_array)
-  end
-end
-
-Given(/^I have (#{A_NUMBER}) male sponsors and (#{A_NUMBER}) female sponsors$/) do |num_male, num_female|
-  FactoryGirl.create_list(:sponsor, num_male, gender: 'Male')
-  FactoryGirl.create_list(:sponsor, num_female, gender: 'Female')
-  expect(Sponsor.all.count).to eq num_male + num_female
-end
