@@ -57,21 +57,19 @@ describe Admin::OrphanListsController, type: :controller do
       before do
         allow(partner).to receive(:active?).and_return true
         allow(pending_orphan_list).to receive :save!
+        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
       end
 
       it 'sets instance variables' do
-        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
         expect(assigns :partner).to eq partner
         expect(assigns :pending_orphan_list).to eq pending_orphan_list
       end
 
       it 'saves pending_orphan_list' do
-        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
         expect(pending_orphan_list).to have_received :save!
       end
 
       it 'renders :validate' do
-        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
         expect(response).to render_template :validate
       end
     end
@@ -82,10 +80,10 @@ describe Admin::OrphanListsController, type: :controller do
       allow(PendingOrphanList).to receive(:find).with('1').and_return pending_orphan_list
       allow(orphan_list).to receive :save!
       allow(pending_orphan_list).to receive :destroy
+      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
     end
 
     it 'sets instance variables' do
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
       expect(assigns :partner).to eq partner
       expect(assigns :pending_orphan_list).to eq pending_orphan_list
       expect(assigns :orphan_count).to eq 0
@@ -93,22 +91,18 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     it 'saves orphan_list' do
-      expect(orphan_list).to receive :save!
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      expect(orphan_list).to have_received :save!
     end
 
     it 'destroys pending_orphan_list' do
-      expect(pending_orphan_list).to receive :destroy
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      expect(pending_orphan_list).to have_received :destroy
     end
 
     it 'sets flash message' do
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
       expect(flash[:notice]).to eq 'Orphan List was successfully imported.'
     end
 
     it 'redirects to partner' do
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
       expect(response).to redirect_to admin_partner_path(partner)
     end
   end
