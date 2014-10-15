@@ -19,58 +19,61 @@ describe Admin::OrphanListsController, type: :controller do
 
   describe 'upload' do
     context 'when partner is inactive' do
-      before { expect(partner).to receive(:active?).and_return false }
-
       it 'redirects to partner if partner not active' do
+        expect(partner).to receive(:active?).and_return false
         get :upload, partner_id: 1
         expect(response).to redirect_to admin_partner_path(1)
       end
     end
 
     context 'when partner is active' do
-      before { expect(partner).to receive(:active?).and_return true }
+      before(:each) do
+        expect(partner).to receive(:active?).and_return true
+        get :upload, partner_id: 1
+      end
 
       it 'sets instance variables' do
-        get :upload, partner_id: 1
         expect(assigns :partner).to eq partner
       end
 
       it 'renders :upload' do
-        get :upload, partner_id: 1
         expect(response).to render_template :upload
       end
     end
   end
 
   describe 'validate' do
-    let(:orphan_list_params) { { :spreadsheet => fixture_file_upload('one_orphan_xls.xls') } }
-
-    before do
-      allow(partner).to receive(:active?).and_return true
-      allow(pending_orphan_list).to receive :save!
+    context 'when partner is inactive' do
+      it 'redirects to partner if partner not active' do
+        expect(partner).to receive(:active?).and_return false
+        post :validate, partner_id: 1
+        expect(response).to redirect_to admin_partner_path(1)
+      end
     end
 
-    it 'redirects to partner if partner not active' do
-      expect(partner).to receive(:active?).and_return false
-      post :validate, partner_id: 1
-      expect(response).to redirect_to admin_partner_path(1)
-    end
+    context 'when partner is active' do
+      let(:orphan_list_params) { { :spreadsheet => fixture_file_upload('one_orphan_xls.xls') } }
 
-    it 'sets instance variables' do
-      expect(pending_orphan_list).to receive(:save!)
-      post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
-      expect(assigns :partner).to eq partner
-      expect(assigns :pending_orphan_list).to eq pending_orphan_list
-    end
+      before do
+        allow(partner).to receive(:active?).and_return true
+        allow(pending_orphan_list).to receive :save!
+      end
 
-    it 'saves pending_orphan_list' do
-      expect(pending_orphan_list).to receive :save!
-      post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
-    end
+      it 'sets instance variables' do
+        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
+        expect(assigns :partner).to eq partner
+        expect(assigns :pending_orphan_list).to eq pending_orphan_list
+      end
 
-    it 'renders :validate' do
-      post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
-      expect(response).to render_template :validate
+      it 'saves pending_orphan_list' do
+        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
+        expect(pending_orphan_list).to have_received :save!
+      end
+
+      it 'renders :validate' do
+        post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
+        expect(response).to render_template :validate
+      end
     end
   end
 
