@@ -31,4 +31,3 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   sponsor = Sponsor.find_by name: sponsor_name
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
-

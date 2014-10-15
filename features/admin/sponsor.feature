@@ -98,3 +98,4 @@ Feature:
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
+
