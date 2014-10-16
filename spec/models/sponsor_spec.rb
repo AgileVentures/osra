@@ -5,7 +5,7 @@ describe Sponsor, type: :model do
   let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
   it 'should have a valid factory' do
-    expect(build :sponsor).to be_valid
+    expect(build_stubbed :sponsor).to be_valid
   end
 
   it { is_expected.to validate_presence_of :name }
