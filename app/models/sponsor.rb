@@ -13,6 +13,7 @@ class Sponsor < ActiveRecord::Base
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
   validates :start_date, date_not_in_future: true
   validate :belongs_to_one_branch_or_organization
+  validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
   belongs_to :branch
   belongs_to :organization
@@ -57,4 +58,15 @@ class Sponsor < ActiveRecord::Base
     true
   end
 
+  def can_be_inactivated
+    unless sponsorships.all_active.empty?
+      errors[:status] << 'Cannot inactivate sponsor with active sponsorships'
+    end
+  end
+
+  def being_inactivated?
+    unless status_id_was.nil?
+      status_id_changed? && (Status.find(status_id_was).name == 'Active')
+    end
+  end
 end

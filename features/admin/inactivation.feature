@@ -15,5 +15,5 @@ Background:
   When I am on the "Edit Sponsor" page for sponsor "First Sponsor"
   And I select "Inactive" from the drop down box for "Status"
   And I click the "Update Sponsor" button
-  Then I should be on the "Edit Sponsor" page for sponsor "First Sponsor"
-  And I should see "cannot inactivate sponsor with active sponsorships"
+#  Then I should be on the "Edit Sponsor" page for sponsor "First Sponsor"
+  And I should see "Cannot inactivate sponsor with active sponsorships"

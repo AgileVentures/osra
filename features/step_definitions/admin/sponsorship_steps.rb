@@ -19,6 +19,8 @@ Given(/^a(n inactive)? sponsorship link exists between sponsor "([^"]*)" and orp
   if inactive
     sponsorship.inactivate
   end
+  puts sponsor.sponsorships.inspect
+  puts sponsor.sponsorships.all_active.empty?
 end
 
 When(/I click the "Sponsor this orphan" link for orphan "([^"]*)"/) do |orphan_name|

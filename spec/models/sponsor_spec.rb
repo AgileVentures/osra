@@ -5,7 +5,7 @@ describe Sponsor, type: :model do
   let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
 
   it 'should have a valid factory' do
-    expect(build_stubbed :sponsor).to be_valid
+    expect(build :sponsor).to be_valid
   end
 
   it { is_expected.to validate_presence_of :name }
@@ -121,7 +121,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'before_update #validate_inactivation' do
-      let(:inactive_status) { build_stubbed :status, name: 'Inactive' }
+      let(:inactive_status) { create :status, name: 'Inactive' }
       let(:sponsor) { create :sponsor }
 
       context 'when sponsor has no active sponsorships' do
@@ -140,7 +140,8 @@ describe Sponsor, type: :model do
         end
 
         specify 's/he cannot be inactivated' do
-          expect{ sponsor.update!(status: inactive_status) }.to raise_exception
+          expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
+          expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
         end
       end
     end
