@@ -41,3 +41,8 @@ config/secrets.yml
 ## RubyMine project files
 .idea
 /.idea/*
+.ruby-version
+.ruby-gemset
+# emacs and vim backup files
+*.swp
+*~
