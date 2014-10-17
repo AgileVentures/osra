@@ -89,6 +89,9 @@ ActiveAdmin.register Orphan do
         end
         row :orphan_status
         row :orphan_sponsorship_status
+        if orphan.currently_sponsored?
+          row :current_sponsor
+        end
         row :priority
       end
     end

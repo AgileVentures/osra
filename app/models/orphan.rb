@@ -85,6 +85,22 @@ class Orphan < ActiveRecord::Base
     end
   end
 
+  def currently_sponsored?
+    self.sponsorships.all_active.present?
+  end
+
+  def current_sponsorship
+    if currently_sponsored?
+      sponsorships.all_active.first
+    end
+  end
+
+  def current_sponsor
+    if currently_sponsored?
+      current_sponsorship.sponsor
+    end
+  end
+
   private
 
   def default_sponsorship_status_unsponsored
@@ -152,10 +168,6 @@ class Orphan < ActiveRecord::Base
 
   def previously_sponsored?
     self.sponsorships.all_active.empty?
-  end
-
-  def currently_sponsored?
-    self.sponsorships.all_active.present?
   end
 
   def set_sponsorship_status(status_name)
