@@ -27,6 +27,7 @@ ActiveAdmin.register Orphan do
       f.input :schooling_status
       f.input :goes_to_school
       f.input :orphan_status, include_blank: false
+      f.input :orphan_sponsorship_status, label: 'Sponsorship Status', input_html: { :disabled => true }
       f.input :priority, as: :select,
               collection: %w(Normal High), include_blank: false
     end
@@ -87,6 +88,7 @@ ActiveAdmin.register Orphan do
           orphan.goes_to_school ? 'Yes' : 'No'
         end
         row :orphan_status
+        row :orphan_sponsorship_status
         row :priority
       end
     end

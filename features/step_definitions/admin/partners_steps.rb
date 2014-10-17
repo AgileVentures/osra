@@ -37,10 +37,19 @@ Then(/^I should see the following codes for partners:$/) do |table|
   end
 end
 
-Then(/^I should not be able to change "Province"$/) do
-  expect(find('#partner_province_id')['disabled']).to eq 'disabled'
+Then(/^I should not be able to change "([^"]*)" for this "([^"]*)"$/) do |field, obj|
+  obj_to_param = obj.parameterize('_')
+  obj_class = obj_to_param.classify.constantize
+  associations = obj_class.reflect_on_all_associations.map{ |assoc| assoc.name.to_s }
+
+  field_to_param = field.parameterize('_')
+  css_selector = "##{obj_to_param}_#{field_to_param}"
+  if associations.include? field_to_param
+    css_selector = "#{css_selector}_id"
   end
 
-Then(/^I should not be able to change "OSRA num" for this (partner|orphan|sponsor)$/) do |model|
-  expect(find("##{model}_osra_num")['readonly']).to eq 'readonly'
+  expect do
+    (find(css_selector)['readonly'].to eq('readonly')) ||
+        (find(css_selector)['disabled'].to eq('disabled'))
+  end
 end
