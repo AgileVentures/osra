@@ -81,22 +81,21 @@ describe OrphanImporter do
   end
 
   describe '#option_defined?' do
-    before :each do
-      @orphan_importer = OrphanImporter.new 'spec/fixtures/not_an_excel_file.txt'
-    end
 
     context "the option exists in the settings file" do
       before :each do
         expect(Settings.import).to receive_message_chain(:options, '[]').and_return(true)
       end
+
       it 'should return true if an option exists' do
-        expect(@orphan_importer.send(:option_defined?, :valid_option)).to be true
+        expect(one_orphan_importer.send(:option_defined?, :valid_option)).to be true
       end
 
       it 'should not register an error if an option exists' do
-        @orphan_importer.send(:option_defined?, :valid_option)
-        expect(@orphan_importer.valid?).to be true
+        one_orphan_importer.send(:option_defined?, :valid_option)
+        expect(one_orphan_importer).to be_valid
       end
+
     end
 
     context "the option does not exist in the settings file" do
@@ -104,12 +103,12 @@ describe OrphanImporter do
         expect(Settings.import).to receive_message_chain(:options, '[]').and_return(nil)
       end
       it 'should return false in an option does not exist' do
-        expect(@orphan_importer.send(:option_defined?, :valid_option)).to be false
+        expect(one_orphan_importer.send(:option_defined?, :valid_option)).to be false
       end
 
       it 'should register an error if an option does not exist' do
-        @orphan_importer.send(:option_defined?, :valid_option)
-        expect(@orphan_importer.valid?).to be false
+        one_orphan_importer.send(:option_defined?, :valid_option)
+        expect(one_orphan_importer).not_to be_valid
       end
     end
   end
