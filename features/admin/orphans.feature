@@ -119,3 +119,8 @@ Feature:
     Given I am on the "Show Orphans" page for orphan "Orphan 1"
     Then I should not see the "Delete Orphan" link
 
+  Scenario: Orphan cannot be older than 22 years of age
+    Given I am on the "Edit Orphans" page for orphan "Orphan 1"
+    And I fill in "Date of birth" with "1950-01-01"
+    And I click the "Update Orphan" button
+    Then I should see "Orphan must be younger than 22 years old."

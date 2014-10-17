@@ -81,7 +81,7 @@ class Orphan < ActiveRecord::Base
     return unless valid_date?(date_of_birth)
     reference_date = self.new_record? ? Date.current : self.created_at.to_date
     if self.date_of_birth + 22.years <= reference_date
-      errors.add :date_of_bith, "Orphan must be younger than 22 years old."
+      errors.add :date_of_birth, "Orphan must be younger than 22 years old."
     end
   end
 
