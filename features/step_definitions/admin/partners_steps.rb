@@ -37,7 +37,7 @@ Then(/^I should see the following codes for partners:$/) do |table|
   end
 end
 
-Then(/^I should not be able to change "([^"]*)" for this "([^"]*)"$/) do |field, obj|
+Then(/^I should not be able to change "([^"]*)" for this ([^"]*)$/) do |field, obj|
   obj_to_param = obj.parameterize('_')
   obj_class = obj_to_param.classify.constantize
   associations = obj_class.reflect_on_all_associations.map{ |assoc| assoc.name.to_s }

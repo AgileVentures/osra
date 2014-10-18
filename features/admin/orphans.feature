@@ -38,8 +38,8 @@ Feature:
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
-    And I should not be able to change "OSRA num" for this "Orphan"
-    And I should not be able to change "Orphan Sponsorship Status" for this "Orphan"
+    And I should not be able to change "OSRA num" for this orphan
+    And I should not be able to change "Orphan Sponsorship Status" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
     And I fill in "Father name" with "Father N"
