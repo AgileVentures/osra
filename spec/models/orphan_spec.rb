@@ -309,6 +309,41 @@ describe Orphan, type: :model do
             end
           end
         end
+
+        describe 'sponsorship methods' do
+          context 'when orphan is unsponsored' do
+            specify '#currently_sponsored? returns false' do
+              expect(active_unsponsored_orphan.currently_sponsored?).to eq false
+            end
+
+            specify '#current_sponsorship returns nil' do
+              expect(active_unsponsored_orphan.current_sponsorship).to be_nil
+            end
+
+            specify '#current_sponsor returns nil' do
+              expect(active_unsponsored_orphan.current_sponsor).to be_nil
+            end
+          end
+
+          context 'when orphan is sponsored' do
+            let(:sponsor) { create :sponsor }
+            let!(:sponsorship) { create :sponsorship,
+                                        orphan:active_unsponsored_orphan,
+                                        sponsor: sponsor }
+
+            specify '#currently_sponsored? returns true' do
+              expect(active_unsponsored_orphan.currently_sponsored?).to eq true
+            end
+
+            specify '#current_sponsorship returns currently active sponsorship' do
+              expect(active_unsponsored_orphan.current_sponsorship).to eq sponsorship
+            end
+
+            specify '#current_sponsor returns current sponsor' do
+              expect(active_unsponsored_orphan.current_sponsor).to eq sponsor
+            end
+          end
+        end
       end
 
       describe 'scopes' do

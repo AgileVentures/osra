@@ -86,7 +86,7 @@ class Orphan < ActiveRecord::Base
   end
 
   def currently_sponsored?
-    self.sponsorships.all_active.present?
+    sponsorships.all_active.present?
   end
 
   def current_sponsorship
