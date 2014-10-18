@@ -67,12 +67,13 @@ describe OrphanImporter do
   end
 
   describe '#to_orphan' do
+    before(:each) { create :status, name: 'Active' }
 
     it 'should return valid orphan objects' do
       [one_orphan_result, three_orphans_result].each do |result|
         result.each do |fields|
           orphan = OrphanImporter.to_orphan fields
-          orphan.orphan_list = build_stubbed :orphan_list
+          orphan.orphan_list = create :orphan_list
           expect(orphan).to be_valid
         end
       end
