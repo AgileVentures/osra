@@ -55,7 +55,7 @@ Given(/^the status of sponsor "([^"]*)" is "([^"]*)"$/) do |sponsor_name, status
   Sponsor.find_by_name(sponsor_name).update! status: sponsor_status
 end
 
-And(/^I should see "First Sponsor" linking to the sponsor's page$/) do
-  sponsor = Sponsor.find_by_name 'First Sponsor'
-  expect(page).to have_link('First Sponsor', href: admin_sponsor_path(sponsor))
+And(/^I should see "([^"]*)" linking to the sponsor's page$/) do |sponsor_name|
+  sponsor = Sponsor.find_by_name sponsor_name
+  expect(page).to have_link(sponsor_name, href: admin_sponsor_path(sponsor))
 end
