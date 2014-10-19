@@ -39,7 +39,7 @@ class OrphanImporter
       when String
         name = @file
         path = @file
-      when ActionDispatch::Http::UploadedFile
+      when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
         name = @file.original_filename
         path = @file.path
     end

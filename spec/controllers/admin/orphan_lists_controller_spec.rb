@@ -7,6 +7,7 @@ describe Admin::OrphanListsController, type: :controller do
   let(:pending_orphan_list) { instance_double PendingOrphanList, spreadsheet: 'sheet' }
   let(:orphan_lists) { double }
   let(:orphan_list) { double }
+  let(:pending_orphans) { double }
 
   before(:each) do
     sign_in instance_double(AdminUser)
@@ -53,11 +54,12 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     context 'when partner is active' do
-      let(:orphan_list_params) { { :spreadsheet => fixture_file_upload('one_orphan_xls.xls') } }
+      let(:orphan_list_params) { {spreadsheet: fixture_file_upload('one_orphan_xls.xls')} }
 
       before do
         allow(partner).to receive(:active?).and_return true
         allow(pending_orphan_list).to receive :save!
+        allow(pending_orphan_list).to receive :pending_orphans=
         post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
       end
 
@@ -79,20 +81,23 @@ describe Admin::OrphanListsController, type: :controller do
   describe 'import' do
     before do
       allow(PendingOrphanList).to receive(:find).with('1').and_return pending_orphan_list
-     # allow(orphan_list).to receive :create!
+      allow(orphan_list).to receive :orphan_count=
+      allow(orphan_list).to receive :save!
       allow(pending_orphan_list).to receive :destroy
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      allow(pending_orphans).to receive :each
+      allow(orphan_list).to receive :osra_num
+      allow(pending_orphan_list).to receive(:pending_orphans).and_return pending_orphans
+      post :import, partner_id: 1, orphan_list: {pending_id: 1}
     end
 
     it 'sets instance variables' do
       expect(assigns :partner).to eq partner
       expect(assigns :pending_orphan_list).to eq pending_orphan_list
-      expect(assigns :orphan_count).to eq 0
       expect(assigns :orphan_list).to eq orphan_list
     end
 
     it 'saves orphan_list' do
-      expect(orphan_lists).to have_received :create!
+      expect(orphan_list).to (have_received :save!).twice
     end
 
     it 'destroys pending_orphan_list' do
@@ -100,7 +105,7 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     it 'sets flash message' do
-      expect(flash[:notice]).to eq 'Orphan List was successfully imported.'
+      expect(flash[:notice]).to include('was successfully imported.')
     end
 
     it 'redirects to partner' do
