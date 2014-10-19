@@ -42,9 +42,9 @@ def path_to_admin_role(page_name, id = '')
       edit_admin_admin_user_path(id)
     when 'orphans'
       admin_orphans_path
-    when 'show orphans'
+    when 'show orphan'
       admin_orphan_path(id)
-    when 'edit orphans'
+    when 'edit orphan'
       edit_admin_orphan_path(id)
     when 'organizations' then
       admin_organizations_path
