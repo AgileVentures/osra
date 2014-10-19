@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name     | region   | status   | status_code | province | province_code | contact_details | start_date |
-      | Partner1 | Region1  | Active   | 1           |Homs      | 13            | 12345           | 2013-09-25 |
-      | Partner2 | Region2  | Inactive | 2           |Hama      | 14            | 98765           | 2012-09-25 |
+      | name     | region  | status   | status_code | province | province_code | contact_details | start_date |
+      | Partner1 | Region1 | Active   | 1           | Homs     | 13            | 12345           | 2013-09-25 |
+      | Partner2 | Region2 | Inactive | 2           | Hama     | 14            | 98765           | 2012-09-25 |
 
     And I am a new, authenticated user
 
@@ -113,3 +113,11 @@ Feature:
     Then I click the "Upload" button
     Then I click the "Cancel" button
     Then I should be on the "Show Partner" page for partner "Partner1"
+
+  Scenario: I should be able to see the imported orphans
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "three_orphans_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I click the "Import" button
+    Then I go to the "Orphans" page for the "Admin" role
+    Then I should see "الطفل الثاني"
