@@ -10,16 +10,16 @@ class OrphanImporter
     @file = file
   end
 
-  def self.to_orphan(fields)
+  def self.to_orphan(pending_orphan)
     orphan = Orphan.new
-
+    fields = pending_orphan.attributes
     ['original_address_', 'current_address_'].each do |i|
       address_fields = fields.select { |k, _| k[i] }.map { |k, v| [(k.gsub i, ''), v] }.to_h
       address_fields['province'] = Province.find_by_code(address_fields['province'])
       orphan.send "#{i.chop}=", Address.new(address_fields)
     end
 
-    orphan.attributes = fields.reject { |k, _| k['address'] || k['pending'] }
+    orphan.attributes = fields.reject { |k, _| k['address'] || k['pending'] || k['id'] }
     orphan
   end
 
@@ -97,7 +97,7 @@ class OrphanImporter
         fields[col.field] = process_column record, col, val
       end
     end
-    @pending_orphans << fields if valid?
+    @pending_orphans << PendingOrphan.new(fields) if valid?
   end
 
 end
