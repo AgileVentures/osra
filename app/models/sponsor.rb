@@ -11,6 +11,7 @@ class Sponsor < ActiveRecord::Base
   validates :request_fulfilled, inclusion: {in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
+  validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
 
@@ -34,21 +35,26 @@ class Sponsor < ActiveRecord::Base
   private
 
   def date_not_beyond_first_of_next_month
-    begin
-      Date.parse(start_date.to_s)
       next_month = Date.current + 1.month
       first_of_next_month = Date.new next_month.year, next_month.month, 1
-      unless self.start_date <= first_of_next_month
+      if (valid_date? start_date)  && (start_date > first_of_next_month)
         errors.add(:start_date, "must not be beyond the first of next month")
-        false
-      else
-        true
       end
+  end  
+
+  def ensure_valid_date
+    unless valid_date? start_date
+      errors.add(:start_date, "is not a valid date")
+    end
+  end
+
+  def valid_date? test_date
+    begin
+      Date.parse(test_date.to_s)
     rescue ArgumentError
-      errors.add(:start_date, 'is not a valid date')
       false
     end
-  end  
+  end
 
   def belongs_to_one_branch_or_organization
     unless branch.blank? ^ organization.blank?
