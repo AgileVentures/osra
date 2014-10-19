@@ -116,3 +116,11 @@ Feature:
     Then I click the "Upload" button
     Then I click the "Cancel" button
     Then I should be on the "Show Partner" page for partner "Partner1"
+
+  Scenario: I should be able to see the imported orphans
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "three_orphans_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I click the "Import" button
+    Then I go to the "Orphans" page for the "Admin" role
+    Then I should see "الطفل الثاني"
