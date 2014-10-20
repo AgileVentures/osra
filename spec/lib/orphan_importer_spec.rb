@@ -180,6 +180,48 @@ describe OrphanImporter do
     end
   end
 
+  describe '#process_column' do
+    before :each do
+      @record = 'record'
+      @column = Struct.new(:data_type) do
+        def type; return data_type; end;
+        def column; return 'column'; end;
+        def field; return 'field'; end;
+      end
+    end
+
+    it 'will return an Integer if the column type is an integer' do
+      expect(one_orphan_importer.send(:process_column, @record, 
+        @column.new("Integer"), "8")).to eq 8 
+    end
+
+    it 'will return an String if the column type is a string' do
+      expect(one_orphan_importer.send(:process_column, @record, 
+        @column.new("String"), "String Value")).to eq "String Value" 
+    end
+
+    it 'will return an Date if the column type is a date' do
+      date = Date.current
+      expect(one_orphan_importer.send(:process_column, @record, 
+        @column.new("Date"), "#{date}")).to eq date
+    end
+
+    it 'will delegate to #process_options if the column type is an options type' do
+      expect(one_orphan_importer).to receive(:process_option)
+      one_orphan_importer.send(:process_column, @record, @column.new("custom options"), "Custom Value") 
+    end
+
+    it 'will add an error if the column type is a date but no date is given' do
+      expect{one_orphan_importer.send(:process_column, @record, @column.new("Date"), "Not a Date")}.to \
+        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+    end
+
+    it 'will add an error if the column type is not recognised' do
+      expect{one_orphan_importer.send(:process_column, @record, @column.new("Unknown"), "unknown")}.to \
+        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+    end
+  end
+
   describe '#option_defined?' do
 
     context "the option exists in the settings file" do
