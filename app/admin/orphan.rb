@@ -93,6 +93,7 @@ ActiveAdmin.register Orphan do
 
     panel 'Parents Details' do
       attributes_table_for orphan do
+        row :father_name
         row :mother_name
         row :mother_alive do
           orphan.mother_alive ? 'Yes' : 'No'
@@ -158,12 +159,12 @@ ActiveAdmin.register Orphan do
     column :full_name, sortable: :full_name do |orphan|
       link_to orphan.full_name, admin_orphan_path(orphan)
     end
-    column :orphan_status, sortable: :orphan_status_id
     column :date_of_birth
     column :gender
-    column :mother_alive
+    column :orphan_status, sortable: :orphan_status_id
     column :priority do |orphan|
       status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
     end
+    column :mother_alive
   end
 end

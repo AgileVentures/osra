@@ -10,18 +10,18 @@ ActiveAdmin.register Partner do
       link_to partner.name, admin_partner_path(partner)
     end
     column :status, sortable: :status_id
-    column :province, sortable: :province_id
     column :start_date, sortable: :start_date 
+    column :province, sortable: :province_id
   end
 
   show do |partner|
     attributes_table do
       row :osra_num
       row :status
+      row :start_date
       row :province
       row :region
       row :contact_details
-      row :start_date
       row 'Orphan Lists' do
         link_to("Click here for all orphan lists", admin_partner_orphan_lists_path(partner))
       end
@@ -34,6 +34,8 @@ ActiveAdmin.register Partner do
         f.input :osra_num, :input_html => { :readonly => true }
       end
       f.input :name
+      f.input :status
+      f.input :start_date, as: :datepicker
       if f.object.new_record?
         f.input :province
       else
@@ -41,8 +43,6 @@ ActiveAdmin.register Partner do
       end
       f.input :region
       f.input :contact_details
-      f.input :start_date, as: :datepicker
-      f.input :status
     end
     f.actions
   end
