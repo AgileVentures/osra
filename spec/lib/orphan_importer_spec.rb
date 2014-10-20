@@ -116,6 +116,70 @@ describe OrphanImporter do
     end
   end
 
+  describe '#process_option' do
+    it 'must check the option is defined' do
+      expect(one_orphan_importer).to receive(:option_defined?)
+      one_orphan_importer.send(:process_option, 'record', 'column', 'boolean', 'Y')
+    end
+
+    it 'must return nil if the option is not defined' do
+      expect(one_orphan_importer).to receive(:option_defined?).and_return(false)
+      expect(one_orphan_importer.send(:process_option, 'record', 'column', 
+        'boolean', 'Y')).to be_nil
+    end
+
+    it 'should return the yaml db setting if one is defined' do
+      return_val = 'result'
+      config_hash = {:db => return_val}
+      expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
+      expect(Settings.import).to receive_message_chain(:options, 
+        '[]', :find).and_return(config_hash)
+      expect(one_orphan_importer.send(:process_option, 'record', 'column', 
+        'boolean', 'Y')).to eq(return_val)
+    end
+
+    context 'when the yaml db setting is not defined' do
+      before :each do
+        @column = 'column'
+        expect(@column).to receive(:column).and_return('column')
+        expect(@column).to receive(:field).and_return('field')
+        expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
+        expect(Settings.import).to receive_message_chain(:options, 
+          '[]', :find).and_return(nil)
+      end
+
+      it 'must return false' do
+        expect(one_orphan_importer.send(:process_option, 'record', @column, 
+          'boolean', 'Y')).to be false
+      end
+ 
+      it 'must add an error to import errors' do
+        expect{one_orphan_importer.send(:process_option, 'record', @column, 'boolean', 'Y')}.to \
+          change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+      end
+    end 
+  end
+
+  describe '#add_error_if_mandatory' do
+    before :each do
+      @column = Struct.new(:bool) do
+        def mandatory; return bool; end;
+        def column; return 'column'; end;
+        def field; return 'field'; end;
+      end
+    end
+   
+    it 'should add an error if the column is mandatory' do
+      expect{one_orphan_importer.send(:add_error_if_mandatory, 'record', @column.new(true))}.to \
+        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+    end
+
+    it 'will have no errors if the column is not mandatory' do
+      one_orphan_importer.send(:add_error_if_mandatory, 'record', @column.new(false))
+      expect(one_orphan_importer.instance_variable_get(:@import_errors).size).to eq(0)
+    end
+  end
+
   describe '#option_defined?' do
 
     context "the option exists in the settings file" do
