@@ -81,6 +81,18 @@ describe OrphanImporter do
 
   end
 
+  describe '#valid?' do
+    it 'will return true if there are no import errors' do
+      one_orphan_importer.instance_variable_set(:@import_errors, [])
+      expect(one_orphan_importer.valid?).to be true 
+    end
+
+    it 'will return false if there are import errors' do
+      one_orphan_importer.instance_variable_set(:@import_errors, ["has errors"])
+      expect(one_orphan_importer.valid?).to be false 
+    end
+  end
+
   describe '#option_defined?' do
 
     context "the option exists in the settings file" do
