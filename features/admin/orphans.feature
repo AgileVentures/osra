@@ -23,6 +23,7 @@ Feature:
     And I should see "Mother Alive" for "Orphan 1" set to "No"
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
+    And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
     And I should see "Orphan 2 Father 2"
     
   Scenario: Should not be able to create new orphans directly via the UI

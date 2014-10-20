@@ -90,15 +90,11 @@ class Orphan < ActiveRecord::Base
   end
 
   def current_sponsorship
-    if currently_sponsored?
-      sponsorships.all_active.first
-    end
+    sponsorships.all_active.first if currently_sponsored?
   end
 
   def current_sponsor
-    if currently_sponsored?
-      current_sponsorship.sponsor
-    end
+    current_sponsorship.sponsor if currently_sponsored?
   end
 
   private

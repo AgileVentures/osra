@@ -89,9 +89,7 @@ ActiveAdmin.register Orphan do
         end
         row :orphan_status
         row :orphan_sponsorship_status
-        if orphan.currently_sponsored?
-          row :current_sponsor
-        end
+        row :current_sponsor if orphan.currently_sponsored?
         row :priority
       end
     end
@@ -171,5 +169,8 @@ ActiveAdmin.register Orphan do
       status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
     end
     column :mother_alive
+    column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
+      orphan.orphan_sponsorship_status.name
+    end
   end
 end
