@@ -93,6 +93,29 @@ describe OrphanImporter do
     end
   end
 
+  describe '#add_validation_error' do
+    before :each do
+      @ref = 'ref'
+      @error = 'error'
+      @hash = {:ref => @ref, :error => @error}
+    end
+
+    it 'must return false' do
+      expect(one_orphan_importer.send(:add_validation_error, @ref, @error)).to be false
+    end
+
+    it 'will increase import errors by 1 when called' do
+      expect{one_orphan_importer.send(:add_validation_error, @ref, @error)}.to \
+        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+    end
+
+    it 'import errors will have a hash of the reference and error when called' do
+      one_orphan_importer.send(:add_validation_error, @ref, @error)
+      expect(one_orphan_importer.instance_variable_get(:@import_errors)).to \
+        include(@hash)
+    end
+  end
+
   describe '#option_defined?' do
 
     context "the option exists in the settings file" do
