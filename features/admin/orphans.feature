@@ -23,6 +23,7 @@ Feature:
     And I should see "Mother Alive" for "Orphan 1" set to "No"
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
+    And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
     And I should see "Orphan 2 Father 2"
     
   Scenario: Should not be able to create new orphans directly via the UI
@@ -39,6 +40,7 @@ Feature:
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
     And I should not be able to change "OSRA num" for this orphan
+    And I should not be able to change "Orphan Sponsorship Status" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
     And I fill in "Father name" with "Father N"

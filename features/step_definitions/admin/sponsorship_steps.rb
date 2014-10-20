@@ -54,3 +54,8 @@ Given(/^the status of sponsor "([^"]*)" is "([^"]*)"$/) do |sponsor_name, status
   sponsor_status = Status.find_by_name(status) || FactoryGirl.create(:status, name: status)
   Sponsor.find_by_name(sponsor_name).update! status: sponsor_status
 end
+
+And(/^I should see "([^"]*)" linking to the sponsor's page$/) do |sponsor_name|
+  sponsor = Sponsor.find_by_name sponsor_name
+  expect(page).to have_link(sponsor_name, href: admin_sponsor_path(sponsor))
+end
