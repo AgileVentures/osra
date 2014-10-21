@@ -109,7 +109,7 @@ describe OrphanImporter do
         change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
     end
 
-    it 'import errors will have a hash of the reference and error when called' do
+    specify '@import errors will include a hash of the reference and error when called' do
       one_orphan_importer.send(:add_validation_error, @ref, @error)
       expect(one_orphan_importer.instance_variable_get(:@import_errors)).to \
         include(@hash)
@@ -118,12 +118,12 @@ describe OrphanImporter do
 
   describe '#process_option' do
     it 'must check the option is defined' do
-      expect(one_orphan_importer).to receive(:option_defined?)
+      expect(one_orphan_importer).to receive(:option_defined?).with('boolean').and_return(true)
       one_orphan_importer.send(:process_option, 'record', 'column', 'boolean', 'Y')
     end
 
     it 'must return nil if the option is not defined' do
-      expect(one_orphan_importer).to receive(:option_defined?).and_return(false)
+      expect(one_orphan_importer).to receive(:option_defined?).with('boolean').and_return(false)
       expect(one_orphan_importer.send(:process_option, 'record', 'column',
         'boolean', 'Y')).to be_nil
     end
