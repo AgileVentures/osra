@@ -222,6 +222,39 @@ describe OrphanImporter do
     end
   end
 
+  describe '#extract' do
+    before :each do
+      @column = Struct.new(:field_val) do
+        def column; return 'column'; end;
+        def field; return field_val; end;
+        def type; return 'String'; end;
+      end
+      @doc = Struct.new(:value) do
+        def cell(col, val); return value; end;
+      end
+      expect(Settings.import).to receive_message_chain(:columns).and_return([@column.new('name')])
+    end
+
+    it 'must check if the field is mandatory when the field value is nil' do
+      expect(one_orphan_importer).to receive(:add_error_if_mandatory)
+      one_orphan_importer.instance_variable_set(:@doc, @doc.new(nil))
+      one_orphan_importer.send(:extract, 'record')
+    end
+
+    it 'should process the record if the field has a value' do 
+      expect(one_orphan_importer).to receive(:process_column)
+      one_orphan_importer.instance_variable_set(:@doc, @doc.new('value'))
+      one_orphan_importer.send(:extract, 'record')
+    end
+
+    it 'should try to create a new PendingOrphan when the fields have been extracted' do
+      expect(PendingOrphan).to receive(:new)
+      expect(one_orphan_importer).to receive(:process_column)
+      one_orphan_importer.instance_variable_set(:@doc, @doc.new('value'))
+      one_orphan_importer.send(:extract, 'record')
+    end
+  end
+
   describe '#option_defined?' do
 
     context "the option exists in the settings file" do
