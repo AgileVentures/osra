@@ -14,6 +14,7 @@ describe Admin::OrphanListsController, type: :controller do
     allow(Partner).to receive(:find).with('1').and_return partner
     allow(PendingOrphanList).to receive(:new).and_return pending_orphan_list
     allow(partner).to receive(:orphan_lists).and_return orphan_lists
+    allow(orphan_lists).to receive(:create!).and_return orphan_list
     allow(orphan_lists).to receive(:build).and_return orphan_list
   end
 
@@ -78,7 +79,7 @@ describe Admin::OrphanListsController, type: :controller do
   describe 'import' do
     before do
       allow(PendingOrphanList).to receive(:find).with('1').and_return pending_orphan_list
-      allow(orphan_list).to receive :save!
+     # allow(orphan_list).to receive :create!
       allow(pending_orphan_list).to receive :destroy
       post :import, partner_id: 1, orphan_list: { pending_id: 1 }
     end
@@ -91,7 +92,7 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     it 'saves orphan_list' do
-      expect(orphan_list).to have_received :save!
+      expect(orphan_lists).to have_received :create!
     end
 
     it 'destroys pending_orphan_list' do
