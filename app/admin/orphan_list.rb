@@ -42,16 +42,20 @@ ActiveAdmin.register OrphanList do
   controller do
 
     def upload
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless partner.active?
-      @partner = partner
+      get_partner
+      unless @partner.active?
+        redirect_to admin_partner_path(params[:partner_id]),
+                    alert: "Partner is not Active. Orphan List cannot be uploaded." and return
+      end
       render action: :upload, locals: { partner: @partner, pending_orphan_list: PendingOrphanList.new }
     end
 
     def validate
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return unless partner.active?
-      @partner = partner
+      get_partner
+      unless @partner.active?
+        redirect_to admin_partner_path(params[:partner_id]),
+                    alert: "Partner is not Active. Orphan List cannot be uploaded." and return
+      end
       @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
       @pending_orphan_list.save!
       filename = params['pending_orphan_list']['spreadsheet'].original_filename
@@ -63,10 +67,10 @@ ActiveAdmin.register OrphanList do
     end
 
     def import
-      @partner = partner
-      @pending_orphan_list = pending_orphan_list
+      get_partner
+      get_pending_orphan_list
       @orphan_count = 0
-      @orphan_list = @partner.orphan_lists.build(spreadsheet: pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
+      @orphan_list = @partner.orphan_lists.build(spreadsheet: @pending_orphan_list.spreadsheet, orphan_count: @orphan_count)
       @orphan_list.save!
       @pending_orphan_list.destroy
       redirect_to admin_partner_path(@partner), notice: 'Orphan List was successfully imported.'
@@ -80,8 +84,8 @@ ActiveAdmin.register OrphanList do
 
     private
 
-    def partner
-      Partner.find(params[:partner_id])
+    def get_partner
+      @partner = Partner.find(params[:partner_id])
     end
 
     def orphan_list_params
@@ -92,8 +96,8 @@ ActiveAdmin.register OrphanList do
       params.require(:pending_orphan_list).permit(:spreadsheet)
     end
 
-    def pending_orphan_list
-      PendingOrphanList.find(params[:orphan_list][:pending_id])
+    def get_pending_orphan_list
+      @pending_orphan_list = PendingOrphanList.find(params[:orphan_list][:pending_id])
     end
 
   end
