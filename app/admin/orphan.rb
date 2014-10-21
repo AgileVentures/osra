@@ -11,10 +11,10 @@ ActiveAdmin.register Orphan do
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
                 :comments, :orphan_status_id, :priority,
-                original_address_attributes: [:city,
-                                              :province_id, :neighborhood, :street, :details],
-                current_address_attributes: [:city,
-                                             :province_id, :neighborhood, :street, :details]
+                original_address_attributes: [:id, :city, :province_id,
+                                              :neighborhood, :street, :details],
+                current_address_attributes: [:id, :city, :province_id,
+                                             :neighborhood, :street, :details]
 
   form do |f|
     f.inputs 'Orphan Details' do
