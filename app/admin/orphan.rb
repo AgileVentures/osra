@@ -27,6 +27,7 @@ ActiveAdmin.register Orphan do
       f.input :schooling_status
       f.input :goes_to_school
       f.input :orphan_status, include_blank: false
+      f.input :orphan_sponsorship_status, label: 'Sponsorship Status', input_html: { :disabled => true }
       f.input :priority, as: :select,
               collection: %w(Normal High), include_blank: false
     end
@@ -87,12 +88,15 @@ ActiveAdmin.register Orphan do
           orphan.goes_to_school ? 'Yes' : 'No'
         end
         row :orphan_status
+        row :orphan_sponsorship_status
+        row :current_sponsor if orphan.currently_sponsored?
         row :priority
       end
     end
 
     panel 'Parents Details' do
       attributes_table_for orphan do
+        row :father_name
         row :mother_name
         row :mother_alive do
           orphan.mother_alive ? 'Yes' : 'No'
@@ -158,12 +162,15 @@ ActiveAdmin.register Orphan do
     column :full_name, sortable: :full_name do |orphan|
       link_to orphan.full_name, admin_orphan_path(orphan)
     end
-    column :orphan_status, sortable: :orphan_status_id
     column :date_of_birth
     column :gender
-    column :mother_alive
+    column :orphan_status, sortable: :orphan_status_id
     column :priority do |orphan|
       status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+    end
+    column :mother_alive
+    column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
+      orphan.orphan_sponsorship_status.name
     end
   end
 end

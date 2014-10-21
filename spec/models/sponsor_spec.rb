@@ -119,6 +119,32 @@ describe Sponsor, type: :model do
         end
       end
     end
+
+    describe 'before_update #validate_inactivation' do
+      let(:inactive_status) { create :status, name: 'Inactive' }
+      let(:sponsor) { create :sponsor }
+
+      context 'when sponsor has no active sponsorships' do
+        specify 's/he can be inactivated' do
+          expect{ sponsor.update!(status: inactive_status) }.not_to raise_exception
+        end
+      end
+
+      context 'when sponsor has active sponsorships' do
+        before do
+          create :orphan_status, name: 'Active'
+          create :orphan_sponsorship_status, name: 'Unsponsored'
+          create :orphan_sponsorship_status, name: 'Sponsored'
+          orphan = create(:orphan)
+          create :sponsorship, sponsor: sponsor, orphan: orphan
+        end
+
+        specify 's/he cannot be inactivated' do
+          expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
+          expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
+        end
+      end
+    end
   end
 
   describe 'before_create #generate_osra_num' do

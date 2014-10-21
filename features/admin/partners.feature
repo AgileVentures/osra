@@ -77,7 +77,7 @@ Feature:
 
   Scenario: Should not be able to edit a partner's province or osra_num
     Given I am on the "Edit Partner" page for partner "Partner1"
-    Then I should not be able to change "Province"
+    Then I should not be able to change "Province" for this partner
     And I should not be able to change "OSRA num" for this partner
 
   Scenario: Should not be able to delete a partner from the partner show page

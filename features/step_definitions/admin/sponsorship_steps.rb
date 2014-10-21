@@ -8,14 +8,6 @@ Given(/^the sponsor "([^"]*)" has attribute (.*) "([^"]*)"$/) do |sponsor_name, 
   sponsor.update_attribute(attr, value)
 end
 
-Given(/^required orphan statuses exist$/) do
-  FactoryGirl.create :orphan_status, name: 'Active'
-  FactoryGirl.create :orphan_status, name: 'Inactive'
-  FactoryGirl.create :orphan_sponsorship_status, name: 'Sponsored'
-  FactoryGirl.create :orphan_sponsorship_status, name: 'Unsponsored'
-  FactoryGirl.create :orphan_sponsorship_status, name: 'Previously Sponsored'
-end
-
 Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
   FactoryGirl.create :orphan, name: orphan_name
 end
@@ -61,4 +53,9 @@ end
 Given(/^the status of sponsor "([^"]*)" is "([^"]*)"$/) do |sponsor_name, status|
   sponsor_status = Status.find_by_name(status) || FactoryGirl.create(:status, name: status)
   Sponsor.find_by_name(sponsor_name).update! status: sponsor_status
+end
+
+And(/^I should see "([^"]*)" linking to the sponsor's page$/) do |sponsor_name|
+  sponsor = Sponsor.find_by_name sponsor_name
+  expect(page).to have_link(sponsor_name, href: admin_sponsor_path(sponsor))
 end

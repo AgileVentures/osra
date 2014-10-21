@@ -23,6 +23,7 @@ Feature:
     And I should see "Mother Alive" for "Orphan 1" set to "No"
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
+    And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
     And I should see "Orphan 2 Father 2"
     
   Scenario: Should not be able to create new orphans directly via the UI
@@ -32,13 +33,14 @@ Feature:
   Scenario: Should be able to visit an orphan from the orphan index page
     Given I am on the "Orphans" page for the "Admin" role
     When I click the "Orphan 1" link
-    Then I should be on the "Show Orphans" page for orphan "Orphan 1"
+    Then I should be on the "Show Orphan" page for orphan "Orphan 1"
 
   Scenario: Should be able to edit an orphan from the orphan show page
-    Given I am on the "Show Orphans" page for orphan "Orphan 1"
+    Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
-    Then I should be on the "Edit Orphans" page for orphan "Orphan 1"
+    Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
     And I should not be able to change "OSRA num" for this orphan
+    And I should not be able to change "Orphan Sponsorship Status" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
     And I fill in "Father name" with "Father N"
@@ -76,7 +78,7 @@ Feature:
     And I fill in "Details" in panel "Current Address" with "Another Current Details"
     And I select "Hama" from the drop down box for "Province" in panel "Current Address"
     And I click the "Update Orphan" button
-    Then I should be on the "Show Orphans" page for orphan "Orphan N"
+    Then I should be on the "Show Orphan" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
     And I should see the OSRA number for "Orphan N"
     And I should see "Orphan N Father N"
@@ -116,11 +118,11 @@ Feature:
     And I should see "Province" in panel "Current Address" set to "Hama"
 
   Scenario: Should not be able to delete an orphan from the orphan show page
-    Given I am on the "Show Orphans" page for orphan "Orphan 1"
+    Given I am on the "Show Orphan" page for orphan "Orphan 1"
     Then I should not see the "Delete Orphan" link
 
   Scenario: Orphan cannot be older than 22 years of age
-    Given I am on the "Edit Orphans" page for orphan "Orphan 1"
+    Given I am on the "Edit Orphan" page for orphan "Orphan 1"
     And I fill in "Date of birth" with "1950-01-01"
     And I click the "Update Orphan" button
     Then I should see "Orphan must be younger than 22 years old."

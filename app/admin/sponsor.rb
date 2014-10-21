@@ -12,35 +12,35 @@ ActiveAdmin.register Sponsor do
     column :name, sortable: :name do |sponsor|
       link_to sponsor.name, admin_sponsor_path(sponsor)
     end
-    column :sponsor_type
+    column :status, sortable: :status_id
+    column :start_date
     column :request_fulfilled
+    column :sponsor_type
     column :country do |sponsor|
       ISO3166::Country.search(sponsor.country)
     end
-    column :status, sortable: :status_id
-    column :start_date
   end
 
   show do |sponsor|
     attributes_table do
       row :osra_num
       row :status
-      row :sponsor_type
+      row :gender
+      row :start_date
       row :requested_orphan_count
       row :request_fulfilled do
         sponsor.request_fulfilled? ? 'Yes' : 'No'
       end
+      row :sponsor_type
+      row :affiliate
       row :country do
         ISO3166::Country.search(sponsor.country)
       end
-      row :affiliate
-      row :gender
       row :address
       row :email
       row :contact1
       row :contact2
       row :additional_info
-      row :start_date
     end
 
     panel "#{ pluralize(sponsor.sponsorships.all_active.count,
@@ -73,20 +73,20 @@ ActiveAdmin.register Sponsor do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
+      f.input :status
       f.input :gender, as: :select, collection: %w(Male Female)
+      f.input :start_date, as: :datepicker
+      f.input :requested_orphan_count
+      f.input :request_fulfilled unless f.object.new_record?
       f.input :sponsor_type
       f.input :organization
       f.input :branch
-      f.input :requested_orphan_count
-      f.input :request_fulfilled unless f.object.new_record?
+      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :address
       f.input :email
       f.input :contact1
       f.input :contact2
       f.input :additional_info
-      f.input :start_date, as: :datepicker
-      f.input :status
     end
     f.actions
   end
