@@ -205,43 +205,51 @@ describe OrphanImporter do
   end
 
   describe '#process_column' do
-    before :each do
-      @record = 'record'
-      @column = Struct.new(:data_type) do
-        def type; return data_type; end;
-        def column; return 'column'; end;
-        def field; return 'field'; end;
-      end
+
+    let(:record) { double('record') }
+    let(:column) do
+      double('column',
+             :column => 'column',
+             :field => 'field')
     end
 
     it 'will return an Integer if the column type is an integer' do
-      expect(one_orphan_importer.send(:process_column, @record,
-        @column.new("Integer"), "8")).to eq 8
+      expect(column).to receive(:type).and_return('Integer')
+      expect(one_orphan_importer.send(:process_column, record, column, "8")).to eq 8
     end
 
-    it 'will return an String if the column type is a string' do
-      expect(one_orphan_importer.send(:process_column, @record,
-        @column.new("String"), "String Value")).to eq "String Value"
+    it 'will return a String if the column type is a string' do
+      expect(column).to receive(:type).and_return("String")
+      expect(one_orphan_importer.send(:process_column, record,
+        column, "String Value")).to eq "String Value"
     end
 
-    it 'will return an Date if the column type is a date' do
+    it 'will return a Date if the column type is a date' do
       date = Date.current
-      expect(one_orphan_importer.send(:process_column, @record,
-        @column.new("Date"), "#{date}")).to eq date
+      expect(column).to receive(:type).and_return("Date")
+      expect(one_orphan_importer.send(:process_column, record,
+        column, "#{date}")).to eq date
     end
 
-    it 'will delegate to #process_options if the column type is an options type' do
+    it 'will call #process_options if the column type is an options type' do
+      expect(column).to receive(:type).and_return("custom options")
       expect(one_orphan_importer).to receive(:process_option)
-      one_orphan_importer.send(:process_column, @record, @column.new("custom options"), "Custom Value")
+      one_orphan_importer.send(:process_column, record, column, "Custom Value")
     end
 
     it 'will add an error if the column type is a date but no date is given' do
-      expect{one_orphan_importer.send(:process_column, @record, @column.new("Date"), "Not a Date")}.to \
+      expect(column).to receive(:type).twice.and_return("Date")
+      expect(one_orphan_importer).to receive(:add_validation_error).with(
+        "(#{record},#{column.column})", anything).and_call_original
+      expect{one_orphan_importer.send(:process_column, record, column, "Not a Date")}.to \
         change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
     end
 
     it 'will add an error if the column type is not recognised' do
-      expect{one_orphan_importer.send(:process_column, @record, @column.new("Unknown"), "unknown")}.to \
+      expect(column).to receive(:type).twice.and_return("unknown")
+      expect(one_orphan_importer).to receive(:add_validation_error).with(
+        "Import configuration", anything).and_call_original
+      expect{one_orphan_importer.send(:process_column, record, column, "unknown")}.to \
         change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
     end
   end
