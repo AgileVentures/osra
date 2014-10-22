@@ -182,22 +182,25 @@ describe OrphanImporter do
   end
 
   describe '#add_error_if_mandatory' do
-    before :each do
-      @column = Struct.new(:bool) do
-        def mandatory; return bool; end;
-        def column; return 'column'; end;
-        def field; return 'field'; end;
-      end
+    let(:column) do
+      double("column",
+             :column => 'column',
+             :field => 'field')
     end
 
+    before :each do
+      @import_errors = one_orphan_importer.instance_variable_get(:@import_errors)
+    end
     it 'should add an error if the column is mandatory' do
-      expect{one_orphan_importer.send(:add_error_if_mandatory, 'record', @column.new(true))}.to \
-        change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+      expect(column).to receive(:mandatory).and_return(true)
+      expect{one_orphan_importer.send(:add_error_if_mandatory, 'record', column)}.to \
+        change{@import_errors.size}.from(0).to(1)
     end
 
     it 'will have no errors if the column is not mandatory' do
-      one_orphan_importer.send(:add_error_if_mandatory, 'record', @column.new(false))
-      expect(one_orphan_importer.instance_variable_get(:@import_errors).size).to eq(0)
+      expect(column).to receive(:mandatory).and_return(false)
+      one_orphan_importer.send(:add_error_if_mandatory, 'record', column)
+      expect{@import_errors.size}.not_to change{@import_errors.size} 
     end
   end
 
