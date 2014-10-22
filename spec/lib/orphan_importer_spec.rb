@@ -244,35 +244,53 @@ describe OrphanImporter do
   end
 
   describe '#extract' do
+    let(:column) do
+      double("column",
+             :column => 'column',
+             :field => 'name',
+             :type => 'String')
+    end
+    let(:doc) { double("doc") }
+
     before :each do
-      @column = Struct.new(:field_val) do
-        def column; return 'column'; end;
-        def field; return field_val; end;
-        def type; return 'String'; end;
-      end
-      @doc = Struct.new(:value) do
-        def cell(col, val); return value; end;
-      end
-      expect(Settings.import).to receive_message_chain(:columns).and_return([@column.new('name')])
+      expect(Settings.import).to receive(:columns).and_return([column])
     end
 
     it 'must check if the field is mandatory when the field value is nil' do
+      allow(doc).to receive(:cell).with('record', column.column).and_return(nil)
       expect(one_orphan_importer).to receive(:add_error_if_mandatory)
-      one_orphan_importer.instance_variable_set(:@doc, @doc.new(nil))
+      one_orphan_importer.instance_variable_set(:@doc, doc)
       one_orphan_importer.send(:extract, 'record')
     end
 
     it 'should process the record if the field has a value' do
+      allow(doc).to receive(:cell).with('record', column.column).and_return('value')
       expect(one_orphan_importer).to receive(:process_column)
-      one_orphan_importer.instance_variable_set(:@doc, @doc.new('value'))
+      one_orphan_importer.instance_variable_set(:@doc, doc)
       one_orphan_importer.send(:extract, 'record')
     end
 
-    it 'should try to create a new PendingOrphan when the fields have been extracted' do
-      expect(PendingOrphan).to receive(:new)
-      expect(one_orphan_importer).to receive(:process_column)
-      one_orphan_importer.instance_variable_set(:@doc, @doc.new('value'))
-      one_orphan_importer.send(:extract, 'record')
+    context "when the fields have been extracted" do
+      before :each do
+        allow(doc).to receive(:cell).with('record', column.column).and_return('value')
+        expect(one_orphan_importer).to receive(:process_column)
+        one_orphan_importer.instance_variable_set(:@doc, doc)
+      end
+
+      it 'should try to create a new PendingOrphan' do
+        expect(PendingOrphan).to receive(:new)
+        one_orphan_importer.send(:extract, 'record')
+      end
+
+      it 'should see if the import is valid' do
+        expect(one_orphan_importer).to receive(:valid?)
+        one_orphan_importer.send(:extract, 'record')
+      end
+
+      it 'should increase the @pending_orphans size by 1' do
+        expect{one_orphan_importer.send(:extract, 'record')}.to \
+         change{one_orphan_importer.instance_variable_get(:@pending_orphans).size}.from(0).to(1)
+      end
     end
   end
 
