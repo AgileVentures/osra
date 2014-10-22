@@ -35,12 +35,10 @@ class Sponsor < ActiveRecord::Base
   private
 
   def date_not_beyond_first_of_next_month
-      next_month = Date.current + 1.month
-      first_of_next_month = Date.new next_month.year, next_month.month, 1
-      if (valid_date? start_date)  && (start_date > first_of_next_month)
+      if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)
         errors.add(:start_date, "must not be beyond the first of next month")
       end
-  end  
+  end
 
   def ensure_valid_date
     unless valid_date? start_date

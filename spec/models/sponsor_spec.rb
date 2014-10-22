@@ -31,8 +31,8 @@ describe Sponsor, type: :model do
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
-    first_of_next_month = (Date.new today.year, today.month, 1) + 1.month
-    yesterday = today - 1.day
+    first_of_next_month = today.beginning_of_month.next_month
+    yesterday = today.yesterday
     second_of_next_month = first_of_next_month + 1.day
     two_months_ahead = today + 2.months
 
