@@ -128,34 +128,55 @@ describe OrphanImporter do
         'boolean', 'Y')).to be_nil
     end
 
-    it 'should return the yaml db setting if one is defined' do
-      return_val = 'result'
-      config_hash = {:db => return_val}
-      expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
-      expect(Settings.import).to receive_message_chain(:options,
-        '[]', :find).and_return(config_hash)
-      expect(one_orphan_importer.send(:process_option, 'record', 'column',
-        'boolean', 'Y')).to eq(return_val)
+    context "when the yaml db setting is defined" do
+      before :each do
+        @return_val = 'result'
+        @config_hash = {:db => @return_val}
+        expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
+        expect(Settings.import).to receive_message_chain(:options,
+          '[]', :find).and_return(@config_hash)
+      end
+
+      it 'should return the yaml db setting' do
+        expect(one_orphan_importer.send(:process_option, 'record', 'column',
+          'boolean', 'Y')).to eq(@return_val)
+      end
+
+      it 'should not add an error' do
+        expect{one_orphan_importer.send(:process_option, 'record', @column, 'boolean', 'Y')}.not_to \
+          change{one_orphan_importer.instance_variable_get(:@import_errors).size}
+      end
     end
 
     context 'when the yaml db setting is not defined' do
       before :each do
-        @column = 'column'
-        expect(@column).to receive(:column).and_return('column')
-        expect(@column).to receive(:field).and_return('field')
+        @column = double 'column'
+        @col_val = 'column'
+        @field_val = 'field_val'
+        @record = 'record'
+        @option = 'boolean'
+        @val = 'Y'
+        expect(@column).to receive(:column).and_return(@col_val)
+        expect(@column).to receive(:field).and_return(@field_val)
         expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
         expect(Settings.import).to receive_message_chain(:options,
           '[]', :find).and_return(nil)
       end
 
       it 'must return false' do
-        expect(one_orphan_importer.send(:process_option, 'record', @column,
-          'boolean', 'Y')).to be false
+        expect(one_orphan_importer.send(:process_option, @record, @column,
+          @option, @val)).to be false
       end
 
       it 'must add an error to import errors' do
-        expect{one_orphan_importer.send(:process_option, 'record', @column, 'boolean', 'Y')}.to \
+        expect{one_orphan_importer.send(:process_option, @record, @column, @option, @val)}.to \
           change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
+      end
+
+      it 'must record the right column and message' do
+        expect(one_orphan_importer).to receive(:add_validation_error).with(
+          "(#{@record},#{@col_val})", "Option value: #{@val} is not defined for field: #{@field_val}")
+        one_orphan_importer.send(:process_option, @record, @column, @option, @val)
       end
     end
   end
