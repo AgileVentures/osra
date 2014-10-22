@@ -178,6 +178,29 @@ describe Orphan, type: :model do
           end
         end
       end
+
+      describe 'before_update #validate_inactivation' do
+        let(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
+        let(:orphan) { create :orphan }
+
+        context 'when orphan has no active sponsorships' do
+          specify 's/he can be inactivated' do
+            expect{ orphan.update!(orphan_status: inactive_orphan_status) }.not_to raise_exception
+          end
+        end
+
+        context 'when orphan has active sponsorships' do
+          before do
+            sponsor = create :sponsor
+            create :sponsorship, sponsor: sponsor, orphan: orphan
+          end
+
+          specify 's/he cannot be inactivated' do
+            expect{ orphan.update!(orphan_status: inactive_orphan_status) }.to raise_error ActiveRecord::RecordInvalid
+            expect(orphan.errors[:orphan_status]).to include 'Cannot inactivate orphan with active sponsorships'
+          end
+        end
+      end
     end
 
     describe 'methods & scopes' do
