@@ -48,9 +48,5 @@ Then(/^I should not be able to change "([^"]*)" for this ([^"]*)$/) do |field, o
     css_selector = "#{css_selector}_id"
   end
 
-  if find(css_selector)['readonly']
-    expect(find(css_selector)['readonly']).to eq 'readonly'
-  else
-    expect(find(css_selector)['disabled']).to eq 'disabled'
-  end
+  expect(find(css_selector)['readonly'] || find(css_selector)['disabled']).to be
 end
