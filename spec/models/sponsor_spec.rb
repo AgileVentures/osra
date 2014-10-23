@@ -169,6 +169,10 @@ describe Sponsor, type: :model do
           expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
           expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
         end
+
+        specify 's/he can be placed On Hold' do
+          expect{ sponsor.update!(status: on_hold_status) }.not_to raise_exception
+        end
       end
     end
   end
