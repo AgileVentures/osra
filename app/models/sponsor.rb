@@ -29,11 +29,11 @@ class Sponsor < ActiveRecord::Base
   end
 
   def eligible_for_sponsorship?
-    self.status.active?
+    self.status.active? && !self.request_fulfilled?
   end
 
   private
-  
+
   def belongs_to_one_branch_or_organization
     unless branch.blank? ^ organization.blank?
       errors.add(:organization, "must belong to a branch or an organization, but not both")
