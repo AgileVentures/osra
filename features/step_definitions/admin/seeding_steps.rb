@@ -16,4 +16,6 @@ Given(/^required statuses exist$/) do
       Status.find_by_name 'Active'
   FactoryGirl.create :status, name: 'Inactive' unless
       Status.find_by_name 'Inactive'
+  FactoryGirl.create :status, name: 'On Hold' unless
+      Status.find_by_name 'On Hold'
 end
