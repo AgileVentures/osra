@@ -61,12 +61,23 @@ describe Sponsorship, type: :model do
       end
     end
 
-    describe 'before_create #set_active_true' do
+    describe 'before_create' do
       let(:sponsorship) { build :sponsorship }
-      it 'sets the .active attribute to true' do
+      before(:each) do
+        allow(sponsorship.sponsor).to receive :check_if_request_fulfilled
         sponsorship.save!
+      end
+
+      it 'sets the .active attribute to true' do
         expect(sponsorship.reload.active).to eq true
+      end
+
+      it 'sets orphan sponsorship status to Sponsored' do
         expect(sponsorship.orphan.orphan_sponsorship_status.name).to eq 'Sponsored'
+      end
+
+      it 'calls Sponsor#check_if_request_fulfilled' do
+        expect(sponsorship.sponsor).to have_received(:check_if_request_fulfilled)
       end
     end
   end

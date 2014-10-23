@@ -35,6 +35,10 @@ class Sponsor < ActiveRecord::Base
     self.status.active? && !self.request_fulfilled?
   end
 
+  def check_if_request_fulfilled
+
+  end
+
   private
 
   def date_not_beyond_first_of_next_month
