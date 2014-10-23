@@ -26,14 +26,14 @@ Feature:
 
   Scenario: Should not be able to inactivate orphan with active sponsorships
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    When I am on the "Edit Orphans" page for orphan "First Orphan"
+    When I am on the "Edit Orphan" page for orphan "First Orphan"
     And I select "Inactive" from the drop down box for "Orphan status"
     And I click the "Update Orphan" button
     Then I should see "Cannot inactivate orphan with active sponsorships"
 
   Scenario: Should  be able to inactivate orphan without active sponsorships
     Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    When I am on the "Edit Orphans" page for orphan "First Orphan"
+    When I am on the "Edit Orphan" page for orphan "First Orphan"
     And I select "Inactive" from the drop down box for "Orphan status"
     And I click the "Update Orphan" button
     Then I should see "Orphan was successfully updated."
