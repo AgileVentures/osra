@@ -59,3 +59,7 @@ And(/^I should see "([^"]*)" linking to the sponsor's page$/) do |sponsor_name|
   sponsor = Sponsor.find_by_name sponsor_name
   expect(page).to have_link(sponsor_name, href: admin_sponsor_path(sponsor))
 end
+
+Given(/^the request for sponsor "([^"]*)" is (un)?fulfilled$/) do |sponsor_name, negative|
+  Sponsor.find_by_name(sponsor_name).update! request_fulfilled: (negative ? false : true)
+end

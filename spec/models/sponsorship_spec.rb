@@ -25,6 +25,7 @@ describe Sponsorship, type: :model do
       Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
     end
     let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
+    let(:request_fulfilled_sponsor) { build_stubbed :sponsor, request_fulfilled: true}
     let(:inactive_orphan_status) do
       OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
     end
@@ -32,6 +33,10 @@ describe Sponsorship, type: :model do
 
     it 'disallows creation of new sponsorships with ineligible sponsors' do
       expect{ create :sponsorship, sponsor: ineligible_sponsor }.to raise_error ActiveRecord::RecordInvalid
+    end
+
+    it 'disallows creation of new sponsorships for sponsors with fulfilled requests' do
+      expect{ create :sponsorship, sponsor: request_fulfilled_sponsor }.to raise_error ActiveRecord::RecordInvalid
     end
 
     it 'disallows creation of new sponsorships with ineligible orphans' do
