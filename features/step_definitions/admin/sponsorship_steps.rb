@@ -62,3 +62,8 @@ end
 Given(/^the request for sponsor "([^"]*)" is (un)?fulfilled$/) do |sponsor_name, negative|
   Sponsor.find_by_name(sponsor_name).update! request_fulfilled: (negative ? false : true)
 end
+
+Given /^sponsor "([^"]*)" has requested to sponsor (\d+) orphans$/ do |sponsor_name, request|
+  sponsor = Sponsor.find_by_name sponsor_name
+  sponsor.update(requested_orphan_count: request)
+end
