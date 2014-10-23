@@ -30,7 +30,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   def eligible_for_sponsorship?
-    self.status.active?
+    self.status.active? && !self.request_fulfilled?
   end
 
   private
