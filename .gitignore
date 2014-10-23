@@ -46,3 +46,7 @@ config/secrets.yml
 # emacs and vim backup files
 *.swp
 *~
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

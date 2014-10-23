@@ -1,0 +1,184 @@
+import:
+  first_row: 4
+  options:
+    boolean:
+      - cell: Y
+        db: true
+      - cell: N
+        db: false
+    mother:
+      - cell: متوفاة
+        db: false
+      - cell: موجودة
+        db: true
+    gender:
+      - cell: ذكر
+        db: Male
+      - cell: أنثى
+        db: Female
+    province:
+      - cell: دمشق و ريف دمشق
+        db: 11
+      - cell: حمص
+        db: 13
+      - cell: حلب
+        db: 12
+      - cell: حماة
+        db: 14
+      - cell: اللاذقية
+        db: 15
+      - cell: دير الزور
+        db: 16
+      - cell: درعا
+        db: 17
+      - cell: إدلب
+        db: 18
+      - cell: الرقة
+        db: 19
+      - cell: الحسكة
+        db: 20
+      - cell: طرطوس
+        db: 21
+      - cell: السويداء
+        db: 22
+      - cell: القنيطرة
+        db: 23
+      - cell: خارج سوريا
+        db: 29
+  columns:
+    - field: name
+      column: B
+      mandatory: true
+      type: String
+    - field: father_name
+      column: C
+      mandatory: true
+      type: String
+    - field: father_is_martyr
+      column: D
+      mandatory: true
+      type: boolean options
+    - field: father_occupation
+      column: E
+      mandatory: false
+      type: String
+    - field: father_place_of_death
+      column: F
+      mandatory: false
+      type: String
+    - field: father_cause_of_death
+      column: G
+      mandatory: false
+      type: String
+    - field: father_date_of_death
+      column: H
+      mandatory: true
+      type: Date
+    - field: mother_name
+      column: I
+      mandatory: true
+      type: String
+    - field: mother_alive
+      column: J
+      mandatory: true
+      type: mother options
+    - field: date_of_birth
+      column: K
+      mandatory: true
+      type: Date
+    - field: gender
+      column: L
+      mandatory: true
+      type: gender options
+    - field: health_status
+      column: M
+      mandatory: false
+      type: String
+    - field: schooling_status
+      column: N
+      mandatory: false
+      type: String
+    - field: goes_to_school
+      column: O
+      mandatory: false
+      type: boolean options
+    - field: guardian_name
+      column: P
+      mandatory: true
+      type: String
+    - field: guardian_relationship
+      column: Q
+      mandatory: true
+      type: Integer
+    - field: guardian_id_num
+      column: R
+      mandatory: true
+      type: Integer
+    - field: original_address_province
+      column: S
+      mandatory: true
+      type: province options
+    - field: original_address_city
+      column: T
+      mandatory: true
+      type: String
+    - field: original_address_neighborhood
+      column: U
+      mandatory: true
+      type: String
+    - field: original_address_street
+      column: V
+      mandatory: false
+      type: String
+    - field: original_address_details
+      column: W
+      mandatory: false
+      type: String
+    - field: current_address_province
+      column: X
+      mandatory: true
+      type: province options
+    - field: current_address_city
+      column: Y
+      mandatory: true
+      type: String
+    - field: current_address_neighborhood
+      column: Z
+      mandatory: true
+      type: String
+    - field: current_address_street
+      column: AA
+      mandatory: false
+      type: String
+    - field: current_address_details
+      column: AB
+      mandatory: false
+      type: String
+    - field: contact_number
+      column: AC
+      mandatory: true
+      type: String
+    - field: alt_contact_number
+      column: AD
+      mandatory: false
+      type: String
+    - field: sponsored_by_another_org
+      column: AE
+      mandatory: true
+      type: boolean options
+    - field: another_org_sponsorship_details
+      column: AF
+      mandatory: false
+      type: String
+    - field: minor_siblings_count
+      column: AG
+      mandatory: true
+      type: Integer
+    - field: sponsored_minor_siblings_count
+      column: AH
+      mandatory: false
+      type: Integer
+    - field: comments
+      column: AL
+      mandatory: false
+      type: String
