@@ -77,7 +77,9 @@ ActiveAdmin.register Sponsor do
       f.input :gender, as: :select, collection: %w(Male Female)
       f.input :start_date, as: :datepicker
       f.input :requested_orphan_count
-      f.input :request_fulfilled unless f.object.new_record?
+      unless f.object.new_record?
+        f.input :request_fulfilled, :input_html => { :disabled => true }
+      end
       f.input :sponsor_type, include_blank: false
       f.input :organization
       f.input :branch

@@ -87,13 +87,12 @@ Feature:
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     And I click the "Edit Sponsor" button
     Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I should not be able to change "Request fulfilled" for this sponsor
     And I select "Canada" from the drop down box for "Country"
-    And I check the "Request fulfilled" checkbox
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
-    And I should see "Yes"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
