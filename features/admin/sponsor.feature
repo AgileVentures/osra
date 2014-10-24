@@ -97,3 +97,18 @@ Feature:
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
+
+  Scenario: "Request fulfilled" should be updated when "Requested orphan count" changes
+    Given required orphan statuses exist
+    And an orphan "Orphan1" exists
+    And an orphan "Orphan2" exists
+    And sponsor "Sponsor1" has requested to sponsor 2 orphans
+    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
+    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
+    When I go to the "Show Sponsor" page for sponsor "Sponsor1"
+    Then I should see "Request Fulfilled" set to "Yes"
+    When I click the "Edit Sponsor" button
+    And I fill in "Requested orphan count" with "3"
+    And I click the "Update Sponsor" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should see "Request Fulfilled" set to "No"
