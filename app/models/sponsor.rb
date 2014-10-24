@@ -36,11 +36,6 @@ class Sponsor < ActiveRecord::Base
     self.status.active? && !self.request_fulfilled?
   end
 
-  def set_request_fulfilled
-    self.request_fulfilled = request_is_fulfilled?
-    true
-  end
-
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
   end
@@ -92,6 +87,11 @@ class Sponsor < ActiveRecord::Base
 
   def set_request_unfulfilled
     self.request_fulfilled = false
+    true
+  end
+
+  def set_request_fulfilled
+    self.request_fulfilled = request_is_fulfilled?
     true
   end
 

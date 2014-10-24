@@ -251,18 +251,36 @@ describe Sponsor, type: :model do
       end
 
       describe '#set_request_fulfilled' do
+        let(:in_memory_sponsor) { Sponsor.new }
+
         it 'should set request_fulfilled to true when requests have been fulfilled' do
-          # active_sponsor.update!(request_fulfilled: false)
-          active_sponsor.request_fulfilled = false
-          expect(active_sponsor).to receive(:request_is_fulfilled?).and_return true
-          expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(false).to(true)
+          in_memory_sponsor.request_fulfilled = false
+          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return true
+          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(false).to(true)
         end
 
         it 'should set request_fulfilled to false when requests have not been fulfilled' do
-          # active_sponsor.update!(request_fulfilled: true)
-          active_sponsor.request_fulfilled = true
-          expect(active_sponsor).to receive(:request_is_fulfilled?).and_return false
-          expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(true).to(false)
+          in_memory_sponsor.request_fulfilled = true
+          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return false
+          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(true).to(false)
+        end
+      end
+
+      describe '#update_request_fulfilled!' do
+        let(:persisted_sponsor) { create :sponsor }
+
+        it 'should set request_fulfilled to true when requests have been fulfilled' do
+          persisted_sponsor.update_columns(request_fulfilled: false)
+          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return true
+          expect{ persisted_sponsor.update_request_fulfilled! }.to \
+            change{ persisted_sponsor.reload.request_fulfilled }.from(false).to(true)
+        end
+
+        it 'should set request_fulfilled to false when requests have not been fulfilled' do
+          persisted_sponsor.update_columns(request_fulfilled: true)
+          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return false
+          expect{ persisted_sponsor.update_request_fulfilled! }.to \
+            change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
         end
       end
     end
