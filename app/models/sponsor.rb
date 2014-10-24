@@ -35,8 +35,8 @@ class Sponsor < ActiveRecord::Base
     self.status.active? && !self.request_fulfilled?
   end
 
-  def check_if_request_fulfilled
-
+  def set_request_fulfilled
+    update!(request_fulfilled: request_is_fulfilled?)
   end
 
   private
@@ -97,5 +97,9 @@ class Sponsor < ActiveRecord::Base
 
   def being_inactivated?
     status_id_changed? && (Status.find(status_id).name == 'Inactive')
+  end
+
+  def request_is_fulfilled?
+    sponsorships.all_active.count >= requested_orphan_count
   end
 end
