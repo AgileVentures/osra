@@ -137,8 +137,7 @@ Feature:
     And I should not see "Canada"
 
   Scenario: "Request fulfilled" should be updated when "Requested orphan count" changes
-    Given required orphan statuses exist
-    And an orphan "Orphan1" exists
+    Given an orphan "Orphan1" exists
     And an orphan "Orphan2" exists
     And sponsor "Sponsor1" has requested to sponsor 2 orphans
     And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
