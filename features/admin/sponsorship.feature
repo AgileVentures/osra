@@ -21,13 +21,15 @@ Feature:
     And I should see "First Sponsor" linking to the sponsor's page
 
   Scenario: Sponsorships cannot be created for inactive sponsors
-    Given the request for sponsor "First Sponsor" is unfulfilled
+    Given sponsor "First Sponsor" has requested to sponsor 2 orphans
     And the status of sponsor "First Sponsor" is "Inactive"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should not see the "Link to Orphan" link
 
   Scenario: Sponsorships cannot be created for sponsors whose requests have been fulfilled
-    Given the request for sponsor "First Sponsor" is fulfilled
+    Given sponsor "First Sponsor" has requested to sponsor 2 orphans
+    And a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And a sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
     And the status of sponsor "First Sponsor" is "Active"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should not see the "Link to Orphan" link
