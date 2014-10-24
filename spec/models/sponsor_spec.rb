@@ -234,5 +234,35 @@ describe Sponsor, type: :model do
       expect(on_hold_sponsor.eligible_for_sponsorship?).to eq false
       expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
     end
+
+    describe 'sponsorship requests' do
+      describe '#request_is_fulfilled?' do
+        it 'should return false if number of active sponsorships is less than requested' do
+          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
+          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 3
+          expect(active_sponsor.send(:request_is_fulfilled?)).to be false
+        end
+
+        it 'should return true if number of active sponsorships is equal to requested' do
+          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
+          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 5
+          expect(active_sponsor.send(:request_is_fulfilled?)).to be true
+        end
+      end
+
+      describe '#set_request_fulfilled' do
+        it 'should set request_fulfilled to true when requests have been fulfilled' do
+          active_sponsor.update!(request_fulfilled: false)
+          expect(active_sponsor).to receive(:request_is_fulfilled?).and_return true
+          expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(false).to(true)
+        end
+
+        it 'should set request_fulfilled to false when requests have not been fulfilled' do
+          active_sponsor.update!(request_fulfilled: true)
+          expect(active_sponsor).to receive(:request_is_fulfilled?).and_return false
+          expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(true).to(false)
+        end
+      end
+    end
   end
 end
