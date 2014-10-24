@@ -50,7 +50,7 @@ describe Sponsor, type: :model do
   end
 
   describe '.request_fulfilled' do
-    let(:sponsor) { build(:sponsor) }
+    let(:sponsor) { build(:sponsor, requested_orphan_count: 2) }
 
     it 'should default to  request unfulfilled'  do
       sponsor.save!
@@ -65,7 +65,7 @@ describe Sponsor, type: :model do
 
     it 'should allow exisitng records to have request_fulfilled' do
       sponsor.save!
-      sponsor.request_fulfilled = true
+      expect(sponsor).to receive(:request_is_fulfilled?).and_return true
       sponsor.save!
       expect(sponsor.reload.request_fulfilled?).to be true
     end
@@ -252,13 +252,15 @@ describe Sponsor, type: :model do
 
       describe '#set_request_fulfilled' do
         it 'should set request_fulfilled to true when requests have been fulfilled' do
-          active_sponsor.update!(request_fulfilled: false)
+          # active_sponsor.update!(request_fulfilled: false)
+          active_sponsor.request_fulfilled = false
           expect(active_sponsor).to receive(:request_is_fulfilled?).and_return true
           expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(false).to(true)
         end
 
         it 'should set request_fulfilled to false when requests have not been fulfilled' do
-          active_sponsor.update!(request_fulfilled: true)
+          # active_sponsor.update!(request_fulfilled: true)
+          active_sponsor.request_fulfilled = true
           expect(active_sponsor).to receive(:request_is_fulfilled?).and_return false
           expect{ active_sponsor.set_request_fulfilled }.to change{ active_sponsor.request_fulfilled }.from(true).to(false)
         end

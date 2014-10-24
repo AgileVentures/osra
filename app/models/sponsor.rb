@@ -5,6 +5,7 @@ class Sponsor < ActiveRecord::Base
                    :default_start_date_to_today,
                    :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
+  before_update :set_request_fulfilled
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true,
@@ -36,6 +37,11 @@ class Sponsor < ActiveRecord::Base
   end
 
   def set_request_fulfilled
+    self.request_fulfilled = request_is_fulfilled?
+    true
+  end
+
+  def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
   end
 

@@ -64,7 +64,7 @@ describe Sponsorship, type: :model do
     describe 'before_create & after_save' do
       let(:sponsorship) { build :sponsorship }
       before(:each) do
-        allow(sponsorship.sponsor).to receive :set_request_fulfilled
+        allow(sponsorship.sponsor).to receive :update_request_fulfilled!
         sponsorship.save!
       end
 
@@ -77,7 +77,7 @@ describe Sponsorship, type: :model do
       end
 
       it 'calls Sponsor#set_request_fulfilled' do
-        expect(sponsorship.sponsor).to have_received(:set_request_fulfilled)
+        expect(sponsorship.sponsor).to have_received(:update_request_fulfilled!)
       end
     end
   end
