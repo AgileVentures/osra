@@ -98,8 +98,8 @@ Feature:
     When a sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "Yes"
-#    And I should not see the "Link to Orphan" link
+    And I should not see the "Link to Orphan" link
     When I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "No"
-#    And I should see the "Link to Orphan" link
+    And I should see the "Link to Orphan" link
