@@ -1,5 +1,5 @@
 Given(/^a sponsor "([^"]*)" exists$/) do |sponsor_name|
-  FactoryGirl.create :sponsor, name: sponsor_name
+  FactoryGirl.create :sponsor, name: sponsor_name, requested_orphan_count: 5
 end
 
 Given(/^the sponsor "([^"]*)" has attribute (.*) "([^"]*)"$/) do |sponsor_name, attr, value|
@@ -65,5 +65,5 @@ end
 
 Given /^sponsor "([^"]*)" has requested to sponsor (\d+) orphans$/ do |sponsor_name, request|
   sponsor = Sponsor.find_by_name sponsor_name
-  sponsor.update(requested_orphan_count: request)
+  sponsor.update!(requested_orphan_count: request)
 end
