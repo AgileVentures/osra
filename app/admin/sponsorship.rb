@@ -12,7 +12,6 @@ ActiveAdmin.register Sponsorship do
     panel 'Orphans' do
 
       table_for Orphan.active.currently_unsponsored.sort_by_param(params), sortable: true do
-		  column :id, sortable: :id
 		  column :osra_num, sortable: :osra_num
 		  column 'Name', sortable: :name do |_orphan|
 			link_to _orphan.name, admin_orphan_path(_orphan)
