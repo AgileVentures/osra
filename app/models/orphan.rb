@@ -73,15 +73,17 @@ class Orphan < ActiveRecord::Base
             where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
 
+  scope :sort_by_eligibility, -> { currently_unsponsored.order(eligibility_sort_criteria) }
+
   acts_as_sequenced scope: :province_code
 
   def self.sort_by_param param
     if param[:order]
       if param.class== ActionController::Parameters.new().class
-        return order(Orphan.transform_param param)
+        return self.order(transform_param param)
       end
     end
-    order('')
+    self.sort_by_eligibility
   end
   
   def eligible_for_sponsorship?
@@ -109,6 +111,10 @@ class Orphan < ActiveRecord::Base
   end
   
   private
+  
+  def self.eligibility_sort_criteria
+    '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+  end
   
   def self.transform_param param
     #"name_asc" into "name ASC"
