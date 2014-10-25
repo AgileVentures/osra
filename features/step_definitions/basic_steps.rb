@@ -87,6 +87,14 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   end
 end
 
+Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
+  unless negative
+    expect(/#{string1}/=~ page.html.to_s).to be < (/#{string2}/=~ page.html.to_s)
+  else
+    expect(/#{string2}/=~ page.html.to_s).to be < (/#{string1}/=~ page.html.to_s)
+  end
+end
+
 Then /^I should( not)? see the "([^"]*)" link$/ do |negative, button|
   unless negative
     expect(page).to have_link button
