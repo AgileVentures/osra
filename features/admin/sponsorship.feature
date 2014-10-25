@@ -34,6 +34,12 @@ Feature:
     And I should see "Prefer male orphans from Homs"
     And I should see "First Orphan"
     And I should see "Second Orphan"
+    When I click the "Name" link
+    Then I should see "Second Orphan" before "First Orphan"
+    And I should not see "First Orphan" before "Second Orphan"
+    When I click the "Name" link
+    Then I should see "First Orphan" before "Second Orphan"
+    And I should not see "Second Orphan" before "First Orphan"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully created"
