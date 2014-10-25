@@ -1,0 +1,12 @@
+div do
+  active_admin_form_for pending_orphan_list,
+                        url: validate_admin_partner_orphan_lists_path(partner) do |f|
+    f.inputs do
+      f.input :spreadsheet, as: :file
+    end
+    f.actions do
+      f.action :submit, label: 'Upload'
+      f.cancel_link admin_partner_path(partner)
+    end
+  end
+end
