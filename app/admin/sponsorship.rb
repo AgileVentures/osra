@@ -9,22 +9,29 @@ ActiveAdmin.register Sponsorship do
       para link_to 'Return to Sponsor page', admin_sponsor_path(sponsorship.sponsor)
       para sponsorship.sponsor_additional_info
     end
-
     panel 'Orphans' do
-      table_for Orphan.active.currently_unsponsored do
-        column :id
-        column 'Name' do |_orphan|
+      table_for Orphan.active.currently_unsponsored.sort_by_param(params), sortable: true do
+        #table_for Orphan.active.currently_unsponsored, sortable: true do
+        column :id, sortable: :id
+        column :osra_num, sortable: :osra_num
+        column 'Name', sortable: :name do |_orphan|
           link_to _orphan.name, admin_orphan_path(_orphan)
         end
-        column :gender
-        column :father_alive
-        column :mother_alive
+        column :father_name, sortable: :father_name
+        column :gender, sortable: :gender
+        column :date_of_birth, sortable: :date_of_birth
+        #column original address province
+        #column partner name
+        column :father_is_martyr, sortable: :father_is_martyr
+        column :mother_alive, sortable: :mother_alive
+        column :priority
         column 'Establish sponsorship' do |_orphan|
           link_to 'Sponsor this orphan',
-                  admin_sponsor_sponsorships_path(sponsor_id: sponsorship.sponsor_id,
-                                                orphan_id: _orphan.id),
-                  method: :post
+              admin_sponsor_sponsorships_path(sponsor_id: sponsorship.sponsor_id,
+                            orphan_id: _orphan.id),
+              method: :post
         end
+
       end
     end
   end

@@ -75,6 +75,15 @@ class Orphan < ActiveRecord::Base
 
   acts_as_sequenced scope: :province_code
 
+  def self.sort_by_param param
+    if param[:order]
+      if param.class== ActionController::Parameters.new().class
+        return order(Orphan.transform_param param)
+      end
+    end
+    order('')
+  end
+  
   def eligible_for_sponsorship?
     Orphan.active.currently_unsponsored.include? self
   end
@@ -98,8 +107,15 @@ class Orphan < ActiveRecord::Base
   def current_sponsor
     current_sponsorship.sponsor if currently_sponsored?
   end
-
+  
   private
+  
+  def self.transform_param param
+    #"name_asc" into "name ASC"
+    #"name_of_mum_desc" into "name_of_mum DESC"
+    #"Birth_Date_Asc" into "Birth_Date ASC"
+    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
+  end
 
   def default_sponsorship_status_unsponsored
     self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'
