@@ -3,6 +3,8 @@ require 'rails_helper'
 describe Sponsor, type: :model do
   let!(:active_status) { create :status, name: 'Active' }
   let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
+  let!(:individual_type) { create :sponsor_type, name: 'Individual' }
+  let(:organization_type) { create :sponsor_type, name: 'Organization' }
 
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
@@ -130,6 +132,16 @@ describe Sponsor, type: :model do
         it 'sets non-default start_date if provided' do
           options = { start_date: Date.yesterday }
           expect(Sponsor.new(options).start_date).to eq Date.yesterday
+        end
+      end
+
+      describe 'sponsor_type' do
+        it 'defaults sponsor_type to Individual' do
+          expect(Sponsor.new.sponsor_type).to eq individual_type
+        end
+
+        it 'sets non-default sponsor_type if provided' do
+          expect(Sponsor.new(sponsor_type: organization_type).sponsor_type).to eq organization_type
         end
       end
     end

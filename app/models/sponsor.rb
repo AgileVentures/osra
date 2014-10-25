@@ -1,7 +1,9 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
 
-  after_initialize :default_status_to_active, :default_start_date_to_today
+  after_initialize :default_status_to_active,
+                   :default_start_date_to_today,
+                   :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
 
   validates :name, presence: true
@@ -36,9 +38,13 @@ class Sponsor < ActiveRecord::Base
   private
 
   def date_not_beyond_first_of_next_month
-      if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)
-        errors.add(:start_date, "must not be beyond the first of next month")
-      end
+    if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)
+      errors.add(:start_date, "must not be beyond the first of next month")
+    end
+  end
+
+  def default_type_to_individual
+    self.sponsor_type ||= SponsorType.find_by_name 'Individual'
   end
 
   def ensure_valid_date
