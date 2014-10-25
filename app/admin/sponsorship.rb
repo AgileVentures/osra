@@ -35,7 +35,6 @@ ActiveAdmin.register Sponsorship do
 		  										orphan_id: _orphan.id),
 		  		  method: :post
 		  end
-
       end
     end
   end

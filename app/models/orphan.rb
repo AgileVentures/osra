@@ -78,6 +78,7 @@ class Orphan < ActiveRecord::Base
   acts_as_sequenced scope: :province_code
 
   def self.sort_by_param param
+<<<<<<< HEAD
     if whitelist_sort param
       self.currently_unsponsored.
           joins(:original_address).
@@ -87,6 +88,14 @@ class Orphan < ActiveRecord::Base
     else
       self.sort_by_eligibility
     end
+=======
+    if param[:order]
+      if param.class== ActionController::Parameters.new().class
+        return order(Orphan.transform_param param)
+      end
+    end
+    order('')
+>>>>>>> sort eligible orphans by column
   end
   
   def eligible_for_sponsorship?
@@ -115,14 +124,18 @@ class Orphan < ActiveRecord::Base
   
   private
   
+<<<<<<< HEAD
   def self.eligibility_sort_criteria
     sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
   end
   
+=======
+>>>>>>> sort eligible orphans by column
   def self.transform_param param
     #"name_asc" into "name ASC"
     #"name_of_mum_desc" into "name_of_mum DESC"
     #"Birth_Date_Asc" into "Birth_Date ASC"
+<<<<<<< HEAD
     first_half(param) + ' ' + second_half(param)
   end
   
@@ -143,6 +156,9 @@ class Orphan < ActiveRecord::Base
         end
       end
     end
+=======
+    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
+>>>>>>> sort eligible orphans by column
   end
 
   def default_sponsorship_status_unsponsored
