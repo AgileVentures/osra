@@ -53,14 +53,14 @@ Feature:
     And I upload the "three_invalid_orphans_xlsx.xlsx" file
     Then I click the "Upload" button
     Then I should see "is invalid"
-    And I should not see "Import" link
+    And I should not see the "Import" link
 
   Scenario: I should not be able to upload an empty orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "empty_xlsx.xlsx" file
     Then I click the "Upload" button
     Then I should see "is invalid"
-    And I should not see "Import" link
+    And I should not see the "Import" link
 
   Scenario: I should be able to upload a valid .xls orphan list file
     Given I visit the new orphan list page for partner "Partner1"
@@ -74,7 +74,7 @@ Feature:
     And I upload the "not_an_excel_file.txt" file
     Then I click the "Upload" button
     Then I should see "is invalid"
-    And I should not see "Import" link
+    And I should not see the "Import" link
 
   Scenario: I should be able to see the uploaded orphan list file
     Given I visit the new orphan list page for partner "Partner1"
