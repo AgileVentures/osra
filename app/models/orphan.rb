@@ -91,11 +91,15 @@ class Orphan < ActiveRecord::Base
 =======
     if param[:order]
       if param.class== ActionController::Parameters.new().class
-        return order(Orphan.transform_param param)
+        return self.order(transform_param param)
       end
     end
+<<<<<<< HEAD
     order('')
 >>>>>>> sort eligible orphans by column
+=======
+    self.sort_by_eligibility
+>>>>>>> orphan sort scope
   end
   
   def eligible_for_sponsorship?
@@ -125,12 +129,19 @@ class Orphan < ActiveRecord::Base
   private
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   def self.eligibility_sort_criteria
     sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
   end
   
 =======
 >>>>>>> sort eligible orphans by column
+=======
+  def self.eligibility_sort_criteria
+    '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+  end
+  
+>>>>>>> orphan sort scope
   def self.transform_param param
     #"name_asc" into "name ASC"
     #"name_of_mum_desc" into "name_of_mum DESC"
