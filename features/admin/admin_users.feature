@@ -53,9 +53,10 @@ Feature:
   @javascript
   Scenario: Should be able to delete an admin user from the admin user show page
     Given I am on the "Admin Users" page for admin user "admin1@example.com"
+    Then show me the page
     Then I should see the "Delete" link
     And I accept the Delete link for admin user "admin1@example.com"
-    Then I should be on the "Admin Users" page for the "Admin" role 
+    Then I should be on the "Admin Users" page for the "Admin" role
     And I should not see "admin1@example.com"
 
   # additionally testing that the full stack can handle the unhappy path of a javascript call
@@ -64,7 +65,7 @@ Feature:
     Given I am on the "Admin Users" page for admin user "admin1@example.com"
     Then I should see the "Delete" link
     And I do not accept the Delete link for admin user "admin1@example.com"
-    Then I should be on the "Admin Users" page for the "Admin" role 
+    Then I should be on the "Admin Users" page for the "Admin" role
     And I should see "admin1@example.com"
 
   Scenario: I should also see a delete link on the index page
