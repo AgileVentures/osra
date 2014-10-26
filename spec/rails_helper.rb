@@ -45,6 +45,8 @@ RSpec.configure do |config|
   # Use FactoryGirl methods without prefacing them with 'FactoryGirl.'
   config.include FactoryGirl::Syntax::Methods
 
+  config.global_fixtures = :all
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
