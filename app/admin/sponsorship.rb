@@ -19,8 +19,12 @@ ActiveAdmin.register Sponsorship do
         column :father_name, sortable: :father_name
         column :gender, sortable: :gender
         column :date_of_birth, sortable: :date_of_birth
-        #column original address province
-        #column partner name
+        column :original_province, sortable: 'addresses.province_id' do |_orphan|
+          _orphan.original_address.province.name
+        end
+        column :partner, sortable: 'partners.name' do |_orphan|
+          _orphan.partner.name
+        end
         column :father_is_martyr, sortable: :father_is_martyr
         column :mother_alive, sortable: :mother_alive
         column :priority
