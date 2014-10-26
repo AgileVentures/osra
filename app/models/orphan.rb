@@ -80,7 +80,7 @@ class Orphan < ActiveRecord::Base
   def self.sort_by_param param
     if param[:order]
       if param.class== ActionController::Parameters.new().class
-        return self.order(transform_param param)
+        return self.joins(:original_address).joins(:partner).order(transform_param param)
       end
     end
     self.sort_by_eligibility
