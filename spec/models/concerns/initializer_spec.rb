@@ -14,6 +14,8 @@ describe Initializer do
   describe 'set_status' do
     let!(:active_status) { create :status, name: 'Active' }
     let(:on_hold_status) { build_stubbed :status }
+    let(:active_status) { Status.find_by_name 'Active' }
+    let(:on_hold_status) { Status.find_by_name 'On Hold' }
 
     it 'sets status to default if it is blank' do
       test_model.default_status_to_active

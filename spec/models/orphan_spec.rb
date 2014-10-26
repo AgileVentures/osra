@@ -10,7 +10,6 @@ describe Orphan, type: :model do
   let!(:unsponsored_status) { create :orphan_sponsorship_status, name: 'Unsponsored' }
   let!(:previously_sponsored_status) { create :orphan_sponsorship_status, name: 'Previously Sponsored' }
   let!(:on_hold_sponsorship_status) { create :orphan_sponsorship_status, name: 'On Hold' }
-  let!(:active_status) { create :status, name: 'Active' }
 
   subject { build :orphan }
 
