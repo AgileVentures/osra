@@ -111,7 +111,7 @@ class Orphan < ActiveRecord::Base
   private
   
   def self.eligibility_sort_criteria
-    '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+    sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
   end
   
   def self.transform_param param
