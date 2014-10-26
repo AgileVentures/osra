@@ -138,7 +138,7 @@ class Orphan < ActiveRecord::Base
 >>>>>>> sort eligible orphans by column
 =======
   def self.eligibility_sort_criteria
-    '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+    sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
   end
   
 >>>>>>> orphan sort scope
