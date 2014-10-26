@@ -93,7 +93,6 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   end
 end
 
-<<<<<<< HEAD
 Then /^I should see html "([^"]*)" 2 times$/ do |string|
   expect(page.html.to_s.partition(string)[1]).to eq string
   expect(page.html.to_s.partition(string)[2].partition(string)[1]).to eq string
@@ -106,12 +105,6 @@ Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, s
     expect(/#{string1}/=~ page.html.to_s).to be < (/#{string2}/=~ page.html.to_s)
   else
     expect(page).to have_text string2
-=======
-Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
-  unless negative
-    expect(/#{string1}/=~ page.html.to_s).to be < (/#{string2}/=~ page.html.to_s)
-  else
->>>>>>> a is before b step definition
     expect(/#{string2}/=~ page.html.to_s).to be < (/#{string1}/=~ page.html.to_s)
   end
 end
