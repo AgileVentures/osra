@@ -78,7 +78,7 @@ ActiveAdmin.register Sponsor do
       f.input :start_date, as: :datepicker
       f.input :requested_orphan_count
       f.input :request_fulfilled unless f.object.new_record?
-      f.input :sponsor_type
+      f.input :sponsor_type, include_blank: false
       f.input :organization
       f.input :branch
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
