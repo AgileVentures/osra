@@ -71,6 +71,10 @@ Feature:
     And I click the "Father Name" link
     And I click the "Gender" link
     And I click the "Date Of Birth" link
+    And I click the "Original Province" link
+    #TODO: linked table sort test
+    And I click the "Partner" link
+    #TODO: linked table sort test
     And I click the "Father Is Martyr" link
     And I click the "Mother Alive" link
     And I click the "Priority" link
