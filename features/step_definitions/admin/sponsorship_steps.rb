@@ -11,6 +11,18 @@ Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
   FactoryGirl.create :orphan, name: orphan_name
 end
 
+Given(/^the orphan "([^"]*)" has attribute (.*) "([^"]*)"$/) do |orphan_name, attr, value|
+  orphan = Orphan.find_by_name orphan_name
+  orphan.update_attribute attr, value 
+end
+
+Given(/^the orphan "([^"]*)" has sponsorship_status "([^"]*)"$/) do |orphan_name, status_name|
+  orphan = Orphan.find_by_name orphan_name
+  status = OrphanSponsorshipStatus.find_by_name status_name
+  orphan.orphan_sponsorship_status = status
+  orphan.save!
+end
+
 Given(/^a(n inactive)? sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
   sponsor = Sponsor.find_by_name sponsor_name
   orphan = Orphan.find_by_name orphan_name
