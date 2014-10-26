@@ -88,6 +88,7 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
 end
 
 Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
+  #NOTE: this checks the FIRST instance of each string on the page. Use accordingly.
   unless negative
     expect(/#{string1}/=~ page.html.to_s).to be < (/#{string2}/=~ page.html.to_s)
   else
