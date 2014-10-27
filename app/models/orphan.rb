@@ -77,12 +77,11 @@ class Orphan < ActiveRecord::Base
   acts_as_sequenced scope: :province_code
 
   def self.sort_by_param param
-    if param[:order]
-      if param.class== ActionController::Parameters.new().class
-        return self.joins(:original_address).joins(:partner).order(transform_param param)
-      end
+    if whitelist_sort param
+      self.joins(:original_address).joins(:partner).order(transform_param param)
+    else
+      self.sort_by_eligibility
     end
-    self.sort_by_eligibility
   end
   
   def eligible_for_sponsorship?
@@ -119,7 +118,26 @@ class Orphan < ActiveRecord::Base
     #"name_asc" into "name ASC"
     #"name_of_mum_desc" into "name_of_mum DESC"
     #"Birth_Date_Asc" into "Birth_Date ASC"
-    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
+    first_half(param) + ' ' + second_half(param)
+  end
+  
+  def self.first_half param
+    param[:order].to_s.gsub(/_[^_]+$/, '')
+  end
+  
+  def self.second_half param
+    param[:order].gsub(/.*_/, '').upcase
+  end
+  
+  def self.whitelist_sort param
+    if param[:order] && (param.class== ActionController::Parameters.new().class)
+      if ['ASC', 'DESC'].include?(second_half(param))
+        if ['addresses.province_id', 'partners.name'].include?(first_half(param)) ||
+                                      Orphan.method_defined?(first_half(param).to_sym)
+          true
+        end
+      end
+    end
   end
 
   def default_sponsorship_status_unsponsored
