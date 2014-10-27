@@ -3,7 +3,6 @@ require 'rails_helper'
 describe Sponsorship, type: :model do
 
   before(:each) do
-    create :orphan_status, name: 'Active'
     create :orphan_sponsorship_status, name: 'Sponsored'
     create :orphan_sponsorship_status, name: 'Unsponsored'
     create :orphan_sponsorship_status, name: 'Previously Sponsored'
@@ -23,9 +22,7 @@ describe Sponsorship, type: :model do
     let(:inactive_status) { Status.find_by_name 'Inactive' }
     let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
     let(:request_fulfilled_sponsor) { build_stubbed :sponsor, request_fulfilled: true}
-    let(:inactive_orphan_status) do
-      OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
-    end
+    let(:inactive_orphan_status) { OrphanStatus.find_by_name('Inactive') }
     let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
 
     it 'disallows creation of new sponsorships with ineligible sponsors' do
