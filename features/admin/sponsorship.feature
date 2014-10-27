@@ -7,7 +7,6 @@ Feature:
     Given a sponsor "First Sponsor" exists
     And a sponsor "Second Sponsor" exists
     And the sponsor "First Sponsor" has attribute additional_info "Prefer male orphans from Homs"
-    And required orphan statuses exist
     And an orphan "First Orphan" exists
     And an orphan "Second Orphan" exists
     And I am a new, authenticated user
