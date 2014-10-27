@@ -159,8 +159,6 @@ describe Sponsor, type: :model do
 
       context 'when sponsor has active sponsorships' do
         before do
-          create :orphan_sponsorship_status, name: 'Unsponsored'
-          create :orphan_sponsorship_status, name: 'Sponsored'
           orphan = create(:orphan)
           create :sponsorship, sponsor: sponsor, orphan: orphan
         end

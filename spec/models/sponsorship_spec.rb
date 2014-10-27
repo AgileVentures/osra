@@ -2,13 +2,6 @@ require 'rails_helper'
 
 describe Sponsorship, type: :model do
 
-  before(:each) do
-    create :orphan_sponsorship_status, name: 'Sponsored'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
-    create :orphan_sponsorship_status, name: 'Previously Sponsored'
-    create :orphan_sponsorship_status, name: 'On Hold'
-  end
-
   it 'should have a valid factory' do
     expect(build_stubbed :sponsorship).to be_valid
   end

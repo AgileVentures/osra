@@ -5,7 +5,6 @@ describe OrphanImporter do
 
   before(:each) {
     14.times { create :province }
-    create :orphan_sponsorship_status, name: 'Unsponsored'
   }
 
   let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
