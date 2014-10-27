@@ -53,7 +53,6 @@ Feature:
   @javascript
   Scenario: Should be able to delete an admin user from the admin user show page
     Given I am on the "Admin Users" page for admin user "admin1@example.com"
-    Then show me the page
     Then I should see the "Delete" link
     And I accept the Delete link for admin user "admin1@example.com"
     Then I should be on the "Admin Users" page for the "Admin" role
