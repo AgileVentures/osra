@@ -1,8 +1,5 @@
 Given(/^the following orphans exist:$/) do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create(:orphan_status, name: 'Active') unless OrphanStatus.find_by_name('Active')
-    FactoryGirl.create(:orphan_status, name: 'Inactive') unless OrphanStatus.find_by_name('Inactive')
-    FactoryGirl.create(:status, name: 'Active') unless Status.find_by_name('Active')
     orphan_list = FactoryGirl.create :orphan_list
     sponsorship_status = OrphanSponsorshipStatus.find_or_create_by!(name: hash[:spon_status], code: hash[:code])
     original_province = Province.find_or_create_by!(name: hash[:o_province],

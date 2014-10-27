@@ -12,8 +12,6 @@ describe Initializer do
   subject(:test_model) { test_class.new }
 
   describe 'set_status' do
-    let!(:active_status) { create :status, name: 'Active' }
-    let(:on_hold_status) { build_stubbed :status }
     let(:active_status) { Status.find_by_name 'Active' }
     let(:on_hold_status) { Status.find_by_name 'On Hold' }
 

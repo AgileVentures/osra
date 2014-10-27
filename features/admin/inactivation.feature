@@ -5,7 +5,6 @@ Feature:
 
   Background:
     Given required orphan statuses exist
-    And required statuses exist
     And an orphan "First Orphan" exists
     And a sponsor "First Sponsor" exists
     And I am a new, authenticated user

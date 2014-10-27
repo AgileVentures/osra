@@ -52,13 +52,6 @@ ActionController::Base.allow_rescue = false
 #     DatabaseCleaner.strategy = :transaction
 #   end
 #
-# Before('@webkit') do
-#   DatabaseCleaner.strategy = :truncation
-# end
-#
-# Before('~@webkit') do
-#   DatabaseCleaner.strategy = :transaction
-# end
 
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
