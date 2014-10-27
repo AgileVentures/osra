@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe Orphan, type: :model do
 
-  let!(:active_orphan_status) { create :orphan_status, name: 'Active' }
-  let!(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
-  let!(:under_revision_orphan_status) { create :orphan_status, name: 'Under Revision' }
-  let!(:on_hold_orphan_status) { create :orphan_status, name: 'On Hold' }
+  let(:active_orphan_status) { OrphanStatus.find_by_name 'Active' }
+  let(:inactive_orphan_status) { OrphanStatus.find_by_name 'Inactive' }
+  let(:on_hold_orphan_status) { OrphanStatus.find_by_name 'On Hold' }
+  let(:under_revision_orphan_status) { OrphanStatus.find_by_name 'Under Revision' }
   let!(:sponsored_status) { create :orphan_sponsorship_status, name: 'Sponsored' }
   let!(:unsponsored_status) { create :orphan_sponsorship_status, name: 'Unsponsored' }
   let!(:previously_sponsored_status) { create :orphan_sponsorship_status, name: 'Previously Sponsored' }
@@ -179,7 +179,6 @@ describe Orphan, type: :model do
       end
 
       describe 'before_update #validate_inactivation' do
-        let(:inactive_orphan_status) { create :orphan_status, name: 'Inactive' }
         let(:orphan) { create :orphan }
 
         context 'when orphan has no active sponsorships' do
