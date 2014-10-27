@@ -56,7 +56,7 @@ Feature:
     And I should see "Second Orphan" within "Currently Sponsored Orphans"
 
   Scenario: Allow ordering & filtering of orphans by attributes during sponsorship creation
-    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And the orphan "First Orphan" has attribute priority "High"
     And the orphan "First Orphan" has sponsorship_status "Unsponsored"
     And the orphan "Second Orphan" has attribute priority "Normal"
@@ -71,18 +71,19 @@ Feature:
     And I should not see "High" before "Normal"
     When I click the "Name" link
     Then I should see "Second Orphan" before "First Orphan"
-    And I should not see "First Orphan" before "Second Orphan"
     When I click the "Name" link
     Then I should see "First Orphan" before "Second Orphan"
-    And I should not see "Second Orphan" before "First Orphan"
     When I click the "Osra Num" link
     And I click the "Father Name" link
     And I click the "Gender" link
     And I click the "Date Of Birth" link
     And I click the "Original Province" link
-    #TODO: linked table sort test
+    Then I should see "Deir Al-Zor" before "Homs"
+    And I should see "Homs" before "Outside Syria"
+    And I click the "Original Province" link
+    Then I should see "Outside Syria" before "Homs"
+    And I should see "Homs" before "Deir Al-Zor"
     And I click the "Partner" link
-    #TODO: linked table sort test
     And I click the "Father Is Martyr" link
     And I click the "Mother Alive" link
     And I click the "Priority" link
@@ -99,6 +100,7 @@ Feature:
     And I should not see "Previously Sponsored" before "Unsponsored"
     And I should see "Filters"
     Given I select "Normal" from the drop down box for "Priority"
+    And I click the "Filter" button
     Then I should see "Second Orphan"
     And I should see "Third Orphan"
     And I should not see "First Orphan"
