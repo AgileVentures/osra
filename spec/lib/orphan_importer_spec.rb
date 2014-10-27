@@ -73,7 +73,7 @@ describe OrphanImporter do
     it 'should return valid orphan objects' do
       [one_orphan_result, three_orphans_result].each do |result|
         result.each do |fields|
-          orphan = OrphanImporter.to_orphan fields
+          orphan             = OrphanImporter.to_orphan fields
           orphan.orphan_list = create :orphan_list
           expect(orphan).to be_valid
         end
@@ -96,9 +96,9 @@ describe OrphanImporter do
 
   describe '#add_validation_error' do
     before :each do
-      @ref = 'ref'
+      @ref   = 'ref'
       @error = 'error'
-      @hash = {:ref => @ref, :error => @error}
+      @hash  = { :ref => @ref, :error => @error }
     end
 
     it 'must return false' do
@@ -131,8 +131,8 @@ describe OrphanImporter do
 
     context "when the yaml db setting is defined" do
       before :each do
-        @return_val = 'result'
-        @config_hash = {:db => @return_val}
+        @return_val  = 'result'
+        @config_hash = { :db => @return_val }
         expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
         expect(Settings.import).to receive_message_chain(:options,
                                                          '[]', :find).and_return(@config_hash)
@@ -151,12 +151,12 @@ describe OrphanImporter do
 
     context 'when the yaml db setting is not defined' do
       before :each do
-        @column = double 'column'
-        @col_val = 'column'
+        @column    = double 'column'
+        @col_val   = 'column'
         @field_val = 'field_val'
-        @record = 'record'
-        @option = 'boolean'
-        @val = 'Y'
+        @record    = 'record'
+        @option    = 'boolean'
+        @val       = 'Y'
         expect(@column).to receive(:column).and_return(@col_val)
         expect(@column).to receive(:field).and_return(@field_val)
         expect(one_orphan_importer).to receive(:option_defined?).and_return(true)
@@ -186,7 +186,7 @@ describe OrphanImporter do
     let(:column) do
       double("column",
              :column => 'column',
-             :field => 'field')
+             :field  => 'field')
     end
 
     before :each do
@@ -211,7 +211,7 @@ describe OrphanImporter do
     let(:column) do
       double('column',
              :column => 'column',
-             :field => 'field')
+             :field  => 'field')
     end
 
     it 'will return an Integer if the column type is an integer' do
@@ -259,8 +259,8 @@ describe OrphanImporter do
     let(:column) do
       double("column",
              :column => 'column',
-             :field => 'name',
-             :type => 'String')
+             :field  => 'name',
+             :type   => 'String')
     end
     let(:doc) { double("doc") }
 

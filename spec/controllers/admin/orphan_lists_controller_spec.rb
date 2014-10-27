@@ -54,7 +54,7 @@ describe Admin::OrphanListsController, type: :controller do
     end
 
     context 'when partner is active' do
-      let(:orphan_list_params) { {spreadsheet: fixture_file_upload('one_orphan_xls.xls')} }
+      let(:orphan_list_params) { { spreadsheet: fixture_file_upload('one_orphan_xls.xls') } }
 
       before do
         allow(partner).to receive(:active?).and_return true
@@ -87,13 +87,12 @@ describe Admin::OrphanListsController, type: :controller do
       allow(pending_orphans).to receive :each
       allow(orphan_list).to receive :osra_num
       allow(pending_orphan_list).to receive(:pending_orphans).and_return pending_orphans
-      post :import, partner_id: 1, orphan_list: {pending_id: 1}
+      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
     end
 
     it 'sets instance variables' do
       expect(assigns :partner).to eq partner
       expect(assigns :pending_orphan_list).to eq pending_orphan_list
-      expect(assigns :orphan_list).to eq orphan_list
     end
 
     it 'saves orphan_list' do
