@@ -78,7 +78,6 @@ class Orphan < ActiveRecord::Base
   acts_as_sequenced scope: :province_code
 
   def self.sort_by_param param
-<<<<<<< HEAD
     if whitelist_sort param
       self.currently_unsponsored.
           joins(:original_address).
@@ -88,18 +87,6 @@ class Orphan < ActiveRecord::Base
     else
       self.sort_by_eligibility
     end
-=======
-    if param[:order]
-      if param.class== ActionController::Parameters.new().class
-        return self.joins(:original_address).joins(:partner).order(transform_param param)
-      end
-    end
-<<<<<<< HEAD
-    order('')
->>>>>>> sort eligible orphans by column
-=======
-    self.sort_by_eligibility
->>>>>>> orphan sort scope
   end
   
   def eligible_for_sponsorship?
@@ -128,25 +115,14 @@ class Orphan < ActiveRecord::Base
   
   private
   
-<<<<<<< HEAD
-<<<<<<< HEAD
   def self.eligibility_sort_criteria
     sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
   end
   
-=======
->>>>>>> sort eligible orphans by column
-=======
-  def self.eligibility_sort_criteria
-    sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
-  end
-  
->>>>>>> orphan sort scope
   def self.transform_param param
     #"name_asc" into "name ASC"
     #"name_of_mum_desc" into "name_of_mum DESC"
     #"Birth_Date_Asc" into "Birth_Date ASC"
-<<<<<<< HEAD
     first_half(param) + ' ' + second_half(param)
   end
   
@@ -159,17 +135,15 @@ class Orphan < ActiveRecord::Base
   end
   
   def self.whitelist_sort param
-    if (param.class== ActionController::Parameters.new().class) && param[:order]
+    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
+    if param[:order] && (param.class== ActionController::Parameters.new().class)
       if ['ASC', 'DESC'].include?(second_half(param))
-        if ['addresses.province_id', 'partners.name', 'orphan_sponsorship_statuses.name'].include?(first_half(param)) ||
+        if ['addresses.province_id', 'partners.name'].include?(first_half(param)) ||
                                       Orphan.method_defined?(first_half(param).to_sym)
-          first_half(param)!= 'id'
+          true
         end
       end
     end
-=======
-    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
->>>>>>> sort eligible orphans by column
   end
 
   def default_sponsorship_status_unsponsored
