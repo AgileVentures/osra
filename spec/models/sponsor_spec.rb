@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Sponsor, type: :model do
   let!(:active_status) { create :status, name: 'Active' }
-  let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
+  let(:on_hold_status) { create :status, name: 'On Hold' }
   let!(:individual_type) { create :sponsor_type, name: 'Individual' }
   let(:organization_type) { create :sponsor_type, name: 'Organization' }
 
@@ -168,6 +168,10 @@ describe Sponsor, type: :model do
         specify 's/he cannot be inactivated' do
           expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
           expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
+        end
+
+        specify 's/he can be placed On Hold' do
+          expect{ sponsor.update!(status: on_hold_status) }.not_to raise_exception
         end
       end
     end

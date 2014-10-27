@@ -92,8 +92,6 @@ class Sponsor < ActiveRecord::Base
   end
 
   def being_inactivated?
-    unless status_id_was.nil?
-      status_id_changed? && (Status.find(status_id_was).name == 'Active')
-    end
+    status_id_changed? && (Status.find(status_id).name == 'Inactive')
   end
 end
