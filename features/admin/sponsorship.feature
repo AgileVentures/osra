@@ -59,10 +59,13 @@ Feature:
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And the orphan "First Orphan" has attribute priority "High"
     And the orphan "First Orphan" has sponsorship_status "Unsponsored"
+    And the orphan "First Orphan" has original_province "Daraa"
     And the orphan "Second Orphan" has attribute priority "Normal"
     And the orphan "Second Orphan" has sponsorship_status "Previously Sponsored"
+    And the orphan "Second Orphan" has original_province "Idlib"
     And the orphan "Third Orphan" has attribute priority "Normal"
     And the orphan "Third Orphan" has sponsorship_status "Unsponsored"
+    And the orphan "Third Orphan" has original_province "Deir Al-Zor"
     And I click the "Link to Orphan" button
     Then I should see "Second Orphan" before "First Orphan"
     And I should see "Previously Sponsored" before "Unsponsored"
@@ -78,11 +81,11 @@ Feature:
     And I click the "Gender" link
     And I click the "Date Of Birth" link
     And I click the "Original Province" link
-    Then I should see "Deir Al-Zor" before "Homs"
-    And I should see "Homs" before "Outside Syria"
+    Then I should see "Idlib" before "Daraa"
+    And I should see "Daraa" before "Deir Al-Zor"
     And I click the "Original Province" link
-    Then I should see "Outside Syria" before "Homs"
-    And I should see "Homs" before "Deir Al-Zor"
+    Then I should see "Deir Al-Zor" before "Daraa"
+    And I should see "Daraa" before "Idlib"
     And I click the "Partner" link
     And I click the "Father Is Martyr" link
     And I click the "Mother Alive" link
