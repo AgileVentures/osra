@@ -30,6 +30,7 @@ class Orphan < ActiveRecord::Base
   validates :orphan_list, presence: true
   validate :orphans_dob_within_1yr_of_fathers_death
   validate :less_than_22_yo_when_joined_osra
+  validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
@@ -169,5 +170,17 @@ class Orphan < ActiveRecord::Base
   def set_sponsorship_status(status_name)
     sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
     self.orphan_sponsorship_status = sponsorship_status
+  end
+
+  def can_be_inactivated
+    if currently_sponsored?
+      errors[:orphan_status] << 'Cannot inactivate orphan with active sponsorships'
+    end
+  end
+
+  def being_inactivated?
+    unless orphan_status_id_was.nil?
+      orphan_status_id_changed? && (OrphanStatus.find(orphan_status_id_was).name == 'Active')
+    end
   end
 end

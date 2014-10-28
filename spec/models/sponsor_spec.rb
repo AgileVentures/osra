@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe Sponsor, type: :model do
   let!(:active_status) { create :status, name: 'Active' }
-  let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
+  let(:on_hold_status) { create :status, name: 'On Hold' }
+  let!(:individual_type) { create :sponsor_type, name: 'Individual' }
+  let(:organization_type) { create :sponsor_type, name: 'Organization' }
 
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
@@ -132,6 +134,16 @@ describe Sponsor, type: :model do
           expect(Sponsor.new(options).start_date).to eq Date.yesterday
         end
       end
+
+      describe 'sponsor_type' do
+        it 'defaults sponsor_type to Individual' do
+          expect(Sponsor.new.sponsor_type).to eq individual_type
+        end
+
+        it 'sets non-default sponsor_type if provided' do
+          expect(Sponsor.new(sponsor_type: organization_type).sponsor_type).to eq organization_type
+        end
+      end
     end
 
     describe 'before_update #validate_inactivation' do
@@ -156,6 +168,10 @@ describe Sponsor, type: :model do
         specify 's/he cannot be inactivated' do
           expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
           expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
+        end
+
+        specify 's/he can be placed On Hold' do
+          expect{ sponsor.update!(status: on_hold_status) }.not_to raise_exception
         end
       end
     end
@@ -212,11 +228,13 @@ describe Sponsor, type: :model do
 
   describe 'methods' do
     let(:active_sponsor) { build_stubbed :sponsor }
-    let(:on_hold_sponsor) { build_stubbed :sponsor, status: on_hold_status}
+    let(:on_hold_sponsor) { build_stubbed :sponsor, status: on_hold_status }
+    let(:request_fulfilled_sponsor) { build_stubbed :sponsor, request_fulfilled: true }
 
     specify '#eligible_for_sponsorship? should return true for eligible sponsors' do
       expect(active_sponsor.eligible_for_sponsorship?).to eq true
       expect(on_hold_sponsor.eligible_for_sponsorship?).to eq false
+      expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
     end
   end
 end
