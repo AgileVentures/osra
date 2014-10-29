@@ -1,5 +1,5 @@
 Given(/^a sponsor "([^"]*)" exists$/) do |sponsor_name|
-  FactoryGirl.create :sponsor, name: sponsor_name
+  FactoryGirl.create :sponsor, name: sponsor_name, requested_orphan_count: 5
 end
 
 Given(/^the sponsor "([^"]*)" has attribute (.*) "([^"]*)"$/) do |sponsor_name, attr, value|
@@ -59,6 +59,7 @@ And(/^I should see "([^"]*)" linking to the sponsor's page$/) do |sponsor_name|
   expect(page).to have_link(sponsor_name, href: admin_sponsor_path(sponsor))
 end
 
-Given(/^the request for sponsor "([^"]*)" is (un)?fulfilled$/) do |sponsor_name, negative|
-  Sponsor.find_by_name(sponsor_name).update! request_fulfilled: (negative ? false : true)
+Given /^sponsor "([^"]*)" has requested to sponsor (\d+) orphans$/ do |sponsor_name, request|
+  sponsor = Sponsor.find_by_name sponsor_name
+  sponsor.update!(requested_orphan_count: request)
 end
