@@ -27,11 +27,10 @@ Given(/^the orphan "([^"]*)" has the (.*)-lowest original_province$/) do |orphan
   orphan = Orphan.find_by_name orphan_name || raise("Cannot find orphan \"#{orphan_name}\"")
   orig_addr = orphan.original_address || raise("Cannot find original_address \"#{orphan.original_address}\"")
   unless ['first', 'second', 'third'].include? qualifier.to_s
-    return raise "Qualifier needs to be one of ['first', 'second', 'third']"
+    raise "Qualifier needs to be one of ['first', 'second', 'third']"
   end
-  #indx = 0
-  #puts eval("[0, 1, 2].#{qualifier.to_s}.to_i")
-  new_prov = Province.all.order('code ASC')[eval("[0, 1, 2].#{qualifier.to_s}.to_i")]
+  new_prov = Province.all.order('code ASC')[eval("[0, 1, 2].#{qualifier.to_s}.to_i")] ||
+                                                              raise("can't find #{qualifier}-lowest province")
   orig_addr.province = new_prov || raise("Cannot change original_address \"#{orig_addr.province.name}\"")
   orig_addr.save!
 end
