@@ -72,8 +72,18 @@ class Orphan < ActiveRecord::Base
             where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
 
+  scope :sort_by_eligibility, -> { currently_unsponsored.order(eligibility_sort_criteria) }
+
   acts_as_sequenced scope: :province_code
 
+  def self.sort_by_param param
+    if whitelist_sort param
+      self.joins(:original_address).joins(:partner).order(transform_param param)
+    else
+      self.sort_by_eligibility
+    end
+  end
+  
   def eligible_for_sponsorship?
     Orphan.active.currently_unsponsored.include? self
   end
@@ -97,8 +107,38 @@ class Orphan < ActiveRecord::Base
   def current_sponsor
     current_sponsorship.sponsor if currently_sponsored?
   end
-
+  
   private
+  
+  def self.eligibility_sort_criteria
+    sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+  end
+  
+  def self.transform_param param
+    #"name_asc" into "name ASC"
+    #"name_of_mum_desc" into "name_of_mum DESC"
+    #"Birth_Date_Asc" into "Birth_Date ASC"
+    first_half(param) + ' ' + second_half(param)
+  end
+  
+  def self.first_half param
+    param[:order].to_s.gsub(/_[^_]+$/, '')
+  end
+  
+  def self.second_half param
+    param[:order].gsub(/.*_/, '').upcase
+  end
+  
+  def self.whitelist_sort param
+    if param[:order] && (param.class== ActionController::Parameters.new().class)
+      if ['ASC', 'DESC'].include?(second_half(param))
+        if ['addresses.province_id', 'partners.name'].include?(first_half(param)) ||
+                                      Orphan.method_defined?(first_half(param).to_sym)
+          true
+        end
+      end
+    end
+  end
 
   def default_sponsorship_status_unsponsored
     self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'

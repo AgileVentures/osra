@@ -4,11 +4,13 @@ Feature:
   I would like to be able to manage sponsorship relations between sponsors and orphans
 
   Background:
-    Given a sponsor "First Sponsor" exists
+    Given required orphan statuses exist
+    And a sponsor "First Sponsor" exists
     And a sponsor "Second Sponsor" exists
     And the sponsor "First Sponsor" has attribute additional_info "Prefer male orphans from Homs"
     And an orphan "First Orphan" exists
     And an orphan "Second Orphan" exists
+    And an orphan "Third Orphan" exists
     And I am a new, authenticated user
 
   Scenario: Viewing existing sponsorship links between sponsor and orphans
@@ -52,6 +54,53 @@ Feature:
     And I should see "Sponsorship link was successfully created"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "Second Orphan" within "Currently Sponsored Orphans"
+
+  Scenario: Allow ordering of orphans by attributes during sponsorship creation
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And the orphan "First Orphan" has attribute priority "High"
+    And the orphan "First Orphan" has sponsorship_status "Unsponsored"
+    And the orphan "First Orphan" has the second-lowest original_province
+    And the orphan "Second Orphan" has attribute priority "Normal"
+    And the orphan "Second Orphan" has sponsorship_status "Previously Sponsored"
+    And the orphan "Second Orphan" has the third-lowest original_province
+    And the orphan "Third Orphan" has attribute priority "Normal"
+    And the orphan "Third Orphan" has sponsorship_status "Unsponsored"
+    And the orphan "Third Orphan" has the first-lowest original_province
+    And I click the "Link to Orphan" button
+    Then I should see "Second Orphan" before "First Orphan"
+    And I should see "Previously Sponsored" before "Unsponsored"
+    And I should not see "Unsponsored" before "Previously Sponsored"
+    And I should see "Normal" before "High"
+    And I should not see "High" before "Normal"
+    When I click the "Name" link
+    Then I should see "Second Orphan" before "First Orphan"
+    When I click the "Name" link
+    Then I should see "First Orphan" before "Second Orphan"
+    When I click the "Osra Num" link
+    And I click the "Father Name" link
+    And I click the "Gender" link
+    And I click the "Date Of Birth" link
+    And I click the "Original Province" link
+    Then I should see "Second Orphan" before "First Orphan"
+    And I should see "First Orphan" before "Third Orphan"
+    And I click the "Original Province" link
+    Then I should see "Third Orphan" before "First Orphan"
+    And I should see "First Orphan" before "Second Orphan"
+    And I click the "Partner" link
+    And I click the "Father Is Martyr" link
+    And I click the "Mother Alive" link
+    And I click the "Priority" link
+    Then I should see "Normal" before "High"
+    And I should not see "High" before "Normal"
+    When I click the "Priority" link
+    Then I should see "High" before "Normal"
+    And I should not see "Normal" before "High"
+    When I click the "Orphan Sponsorship Status" link
+    Then I should see "Previously Sponsored" before "Unsponsored"
+    And I should not see "Unsponsored" before "Previously Sponsored"
+    When I click the "Orphan Sponsorship Status" link
+    Then I should see "Unsponsored" before "Previously Sponsored"
+    And I should not see "Previously Sponsored" before "Unsponsored"
 
   Scenario: Ending a sponsorship
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
