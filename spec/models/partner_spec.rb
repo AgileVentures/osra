@@ -29,8 +29,8 @@ describe Partner, type: :model do
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do
-        let!(:active_status) { create :status, name: 'Active' }
-        let(:on_hold_status) { build_stubbed :status, name: 'On Hold' }
+        let(:active_status) { Status.find_by_name 'Active' }
+        let(:on_hold_status) { Status.find_by_name 'On Hold' }
 
         it 'defaults status to "Active"' do
           expect(Partner.new.status).to eq active_status

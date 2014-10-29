@@ -1,5 +1,4 @@
 Given(/^a sponsor "([^"]*)" exists$/) do |sponsor_name|
-  FactoryGirl.create(:status, name: 'Active') unless Status.find_by_name('Active')
   FactoryGirl.create :sponsor, name: sponsor_name
 end
 
@@ -51,7 +50,7 @@ Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name
 end
 
 Given(/^the status of sponsor "([^"]*)" is "([^"]*)"$/) do |sponsor_name, status|
-  sponsor_status = Status.find_by_name(status) || FactoryGirl.create(:status, name: status)
+  sponsor_status = Status.find_by_name(status)
   Sponsor.find_by_name(sponsor_name).update! status: sponsor_status
 end
 

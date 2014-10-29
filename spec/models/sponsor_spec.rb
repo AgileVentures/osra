@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe Sponsor, type: :model do
-  let!(:active_status) { create :status, name: 'Active' }
-  let(:on_hold_status) { create :status, name: 'On Hold' }
+  let(:active_status) { Status.find_by_name 'Active' }
+  let(:inactive_status) { Status.find_by_name 'Inactive' }
+  let(:on_hold_status) { Status.find_by_name 'On Hold' }
+
   let!(:individual_type) { create :sponsor_type, name: 'Individual' }
   let(:organization_type) { create :sponsor_type, name: 'Organization' }
 
@@ -147,7 +149,6 @@ describe Sponsor, type: :model do
     end
 
     describe 'before_update #validate_inactivation' do
-      let(:inactive_status) { create :status, name: 'Inactive' }
       let(:sponsor) { create :sponsor }
 
       context 'when sponsor has no active sponsorships' do
@@ -158,9 +159,6 @@ describe Sponsor, type: :model do
 
       context 'when sponsor has active sponsorships' do
         before do
-          create :orphan_status, name: 'Active'
-          create :orphan_sponsorship_status, name: 'Unsponsored'
-          create :orphan_sponsorship_status, name: 'Sponsored'
           orphan = create(:orphan)
           create :sponsorship, sponsor: sponsor, orphan: orphan
         end

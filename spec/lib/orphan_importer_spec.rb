@@ -5,8 +5,6 @@ describe OrphanImporter do
 
   before(:each) {
     14.times { create :province }
-    create :orphan_status, name: 'Active'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
   }
 
   let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
@@ -67,8 +65,6 @@ describe OrphanImporter do
   end
 
   describe '#to_orphan' do
-    before(:each) { create :status, name: 'Active' }
-
     it 'should return valid orphan objects' do
       [one_orphan_result, three_orphans_result].each do |result|
         result.each do |fields|

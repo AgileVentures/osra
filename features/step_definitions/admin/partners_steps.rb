@@ -1,6 +1,6 @@
 Given(/^the following partners exist:$/) do |table|
   table.hashes.each do |hash|
-    status = Status.find_or_create_by(name: hash[:status], code: hash[:status_code])
+    status = Status.find_by_name(hash[:status])
     province = Province.find_or_create_by!(name: hash[:province],
                                            code: hash[:province_code]) 
     partner = Partner.new(name: hash[:name], 

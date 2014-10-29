@@ -4,9 +4,7 @@ Feature:
   I need to make sure that various application entities cannot be inactivated inappropriately
 
   Background:
-    Given required orphan statuses exist
-    And required statuses exist
-    And an orphan "First Orphan" exists
+    Given an orphan "First Orphan" exists
     And a sponsor "First Sponsor" exists
     And I am a new, authenticated user
 
