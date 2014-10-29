@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :partner do
-    name { Faker::Company.name }
+    sequence(:name) { |n| "#{Faker::Company.name} #{n}" }
     province
   end
 end

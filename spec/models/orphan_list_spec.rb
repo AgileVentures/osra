@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe OrphanList, type: :model do
 
-  let(:active_status) { build_stubbed :status, name: 'Active', code: 1 }
-  let(:inactive_status) { build_stubbed :status, name: 'Inactive', code: 2 }
+  let(:active_status) { Status.find_by_name 'Active' }
+  let(:inactive_status) { Status.find_by_name 'Inactive' }
   let(:active_partner) { build_stubbed :partner, status: active_status }
   let(:inactive_partner) { build_stubbed :partner, status: inactive_status }
 

@@ -5,10 +5,10 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name          | region      | status | status_code |province                   | province_code | contact_details | start_date |
-      | Partner1      | Region1     | Active | 1           |Damascus & Rif Dimashq     | 11            | 12345           | 2013-09-25 |
-      | Partner2      | Region2     | Active | 1           |Aleppo                     | 12            | 23456           | 2013-09-25 |
-      | Partner3      | Region3     | Active | 1           |Homs                       | 13            | 34567           | 2013-09-25 |
+      | name          | region      | status |province                   | province_code | contact_details | start_date |
+      | Partner1      | Region1     | Active |Damascus & Rif Dimashq     | 11            | 12345           | 2013-09-25 |
+      | Partner2      | Region2     | Active |Aleppo                     | 12            | 23456           | 2013-09-25 |
+      | Partner3      | Region3     | Active |Homs                       | 13            | 34567           | 2013-09-25 |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the partners page on the navbar
