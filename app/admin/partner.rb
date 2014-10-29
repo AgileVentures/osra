@@ -48,7 +48,7 @@ ActiveAdmin.register Partner do
   end
 
   action_item :only => :show do
-    link_to('Upload Orphan List', upload_admin_partner_orphan_lists_path(partner)) if partner.active?
+    link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(partner)) if partner.active?
   end
 
   permit_params :name, :region, :contact_details, :province_id, :status_id, :start_date

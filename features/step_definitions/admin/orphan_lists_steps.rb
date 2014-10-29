@@ -1,6 +1,6 @@
 Given(/^I visit the new orphan list page for partner "([^"]*)"$/) do |partner|
   partner_id = Partner.find_by_name(partner).id
-  visit upload_admin_partner_orphan_lists_path(partner_id)
+  visit upload_admin_partner_pending_orphan_lists_path(partner_id)
 end
 
 And(/^I upload the "([^"]*)" file$/) do |file|
