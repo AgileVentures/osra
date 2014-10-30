@@ -116,6 +116,41 @@ describe Sponsor, type: :model do
         end
       end
     end
+
+    describe 'SponsorType must match affiliation' do
+      let(:sponsor) { build_stubbed :sponsor }
+      context 'when SponsorType matches affiliation' do
+        specify 'Individual type and Branch affiliation are valid' do
+          sponsor.sponsor_type = build_stubbed(:sponsor_type, name: 'Individual') unless SponsorType.find_by_name('Individual')
+          sponsor.branch = Branch.new
+          sponsor.organization = nil
+          expect(sponsor).to be_valid
+        end
+
+        specify 'Organization type and Organization affiliation are valid' do
+          sponsor.sponsor_type = build_stubbed(:sponsor_type, name: 'Organization') unless SponsorType.find_by_name('Organization')
+          sponsor.organization = Organization.new
+          sponsor.branch = nil
+          expect(sponsor).to be_valid
+        end
+      end
+
+      context 'when SponsorType matches affiliation' do
+        specify 'Individual type and Organization affiliation are not valid' do
+          sponsor.sponsor_type = build_stubbed(:sponsor_type, name: 'Individual') unless SponsorType.find_by_name('Individual')
+          sponsor.organization = Organization.new
+          sponsor.branch = nil
+          expect(sponsor).not_to be_valid
+        end
+
+        specify 'Organization type and Branch affiliation are not valid' do
+          sponsor.sponsor_type = build_stubbed(:sponsor_type, name: 'Organization') unless SponsorType.find_by_name('Organization')
+          sponsor.branch = Branch.new
+          sponsor.organization = nil
+          expect(sponsor).not_to be_valid
+        end
+      end
+      end
   end
 
   describe 'callbacks' do
