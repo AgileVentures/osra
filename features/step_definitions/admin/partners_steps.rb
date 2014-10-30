@@ -1,6 +1,6 @@
 Given(/^the following partners exist:$/) do |table|
   table.hashes.each do |hash|
-    status = Status.find_or_create_by(name: hash[:status], code: hash[:status_code])
+    status = Status.find_by_name(hash[:status])
     province = Province.find_or_create_by!(name: hash[:province],
                                            code: hash[:province_code]) 
     partner = Partner.new(name: hash[:name], 
@@ -48,8 +48,5 @@ Then(/^I should not be able to change "([^"]*)" for this ([^"]*)$/) do |field, o
     css_selector = "#{css_selector}_id"
   end
 
-  expect do
-    (find(css_selector)['readonly'].to eq('readonly')) ||
-        (find(css_selector)['disabled'].to eq('disabled'))
-  end
+  expect(find(css_selector)['readonly'] || find(css_selector)['disabled']).to be
 end

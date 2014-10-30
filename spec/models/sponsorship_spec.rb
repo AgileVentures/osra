@@ -2,15 +2,6 @@ require 'rails_helper'
 
 describe Sponsorship, type: :model do
 
-  before(:each) do
-    create :orphan_status, name: 'Active'
-    create :orphan_sponsorship_status, name: 'Sponsored'
-    create :orphan_sponsorship_status, name: 'Unsponsored'
-    create :orphan_sponsorship_status, name: 'Previously Sponsored'
-    create :orphan_sponsorship_status, name: 'On Hold'
-    create :status, name: 'Active'
-  end
-
   it 'should have a valid factory' do
     expect(build_stubbed :sponsorship).to be_valid
   end
@@ -21,14 +12,10 @@ describe Sponsorship, type: :model do
   it { is_expected.to belong_to :orphan }
 
   describe 'validations' do
-    let(:inactive_status) do
-      Status.find_by_name('Inactive') || create(:status, name: 'Inactive')
-    end
+    let(:inactive_status) { Status.find_by_name 'Inactive' }
     let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
     let(:request_fulfilled_sponsor) { build_stubbed :sponsor, request_fulfilled: true}
-    let(:inactive_orphan_status) do
-      OrphanStatus.find_by_name('Inactive') || create(:orphan_status, name: 'Inactive')
-    end
+    let(:inactive_orphan_status) { OrphanStatus.find_by_name('Inactive') }
     let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
 
     it 'disallows creation of new sponsorships with ineligible sponsors' do
@@ -74,12 +61,23 @@ describe Sponsorship, type: :model do
       end
     end
 
-    describe 'before_create #set_active_true' do
+    describe 'before_create & after_save' do
       let(:sponsorship) { build :sponsorship }
-      it 'sets the .active attribute to true' do
+      before(:each) do
+        allow(sponsorship.sponsor).to receive :update_request_fulfilled!
         sponsorship.save!
+      end
+
+      it 'sets the .active attribute to true' do
         expect(sponsorship.reload.active).to eq true
+      end
+
+      it 'sets orphan sponsorship status to Sponsored' do
         expect(sponsorship.orphan.orphan_sponsorship_status.name).to eq 'Sponsored'
+      end
+
+      it 'calls Sponsor#set_request_fulfilled' do
+        expect(sponsorship.sponsor).to have_received(:update_request_fulfilled!)
       end
     end
   end

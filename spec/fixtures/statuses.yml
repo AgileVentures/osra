@@ -1,0 +1,11 @@
+active:
+  name: 'Active'
+  code: 1
+
+inactive:
+  name: 'Inactive'
+  code: 2
+
+on_hold:
+  name: 'On Hold'
+  code: 3

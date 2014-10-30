@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe Sponsor, type: :model do
-  let!(:active_status) { create :status, name: 'Active' }
-  let(:on_hold_status) { create :status, name: 'On Hold' }
+  let(:active_status) { Status.find_by_name 'Active' }
+  let(:inactive_status) { Status.find_by_name 'Inactive' }
+  let(:on_hold_status) { Status.find_by_name 'On Hold' }
+
   let!(:individual_type) { create :sponsor_type, name: 'Individual' }
   let(:organization_type) { create :sponsor_type, name: 'Organization' }
 
@@ -48,7 +50,7 @@ describe Sponsor, type: :model do
   end
 
   describe '.request_fulfilled' do
-    let(:sponsor) { build(:sponsor) }
+    let(:sponsor) { build(:sponsor, requested_orphan_count: 2) }
 
     it 'should default to  request unfulfilled'  do
       sponsor.save!
@@ -63,7 +65,7 @@ describe Sponsor, type: :model do
 
     it 'should allow exisitng records to have request_fulfilled' do
       sponsor.save!
-      sponsor.request_fulfilled = true
+      expect(sponsor).to receive(:request_is_fulfilled?).and_return true
       sponsor.save!
       expect(sponsor.reload.request_fulfilled?).to be true
     end
@@ -147,7 +149,6 @@ describe Sponsor, type: :model do
     end
 
     describe 'before_update #validate_inactivation' do
-      let(:inactive_status) { create :status, name: 'Inactive' }
       let(:sponsor) { create :sponsor }
 
       context 'when sponsor has no active sponsorships' do
@@ -158,9 +159,6 @@ describe Sponsor, type: :model do
 
       context 'when sponsor has active sponsorships' do
         before do
-          create :orphan_status, name: 'Active'
-          create :orphan_sponsorship_status, name: 'Unsponsored'
-          create :orphan_sponsorship_status, name: 'Sponsored'
           orphan = create(:orphan)
           create :sponsorship, sponsor: sponsor, orphan: orphan
         end
@@ -235,6 +233,56 @@ describe Sponsor, type: :model do
       expect(active_sponsor.eligible_for_sponsorship?).to eq true
       expect(on_hold_sponsor.eligible_for_sponsorship?).to eq false
       expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
+    end
+
+    describe 'sponsorship requests' do
+      describe '#request_is_fulfilled?' do
+        it 'should return false if number of active sponsorships is less than requested' do
+          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
+          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 3
+          expect(active_sponsor.send(:request_is_fulfilled?)).to be false
+        end
+
+        it 'should return true if number of active sponsorships is equal to requested' do
+          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
+          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 5
+          expect(active_sponsor.send(:request_is_fulfilled?)).to be true
+        end
+      end
+
+      describe '#set_request_fulfilled' do
+        let(:in_memory_sponsor) { Sponsor.new }
+
+        it 'should set request_fulfilled to true when requests have been fulfilled' do
+          in_memory_sponsor.request_fulfilled = false
+          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return true
+          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(false).to(true)
+        end
+
+        it 'should set request_fulfilled to false when requests have not been fulfilled' do
+          in_memory_sponsor.request_fulfilled = true
+          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return false
+          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(true).to(false)
+        end
+      end
+
+      describe '#update_request_fulfilled!' do
+        let(:persisted_sponsor) { create :sponsor }
+
+        it 'should set request_fulfilled to true when requests have been fulfilled' do
+          persisted_sponsor.update_columns(request_fulfilled: false)
+          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return true
+          expect{ persisted_sponsor.update_request_fulfilled! }.to \
+            change{ persisted_sponsor.reload.request_fulfilled }.from(false).to(true)
+        end
+
+        it 'should set request_fulfilled to false when requests have not been fulfilled' do
+          persisted_sponsor.update_columns(request_fulfilled: true)
+          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return false
+          expect{ persisted_sponsor.update_request_fulfilled! }.to \
+            change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
+        end
+      end
     end
   end
 end

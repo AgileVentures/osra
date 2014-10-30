@@ -5,6 +5,7 @@ class Sponsor < ActiveRecord::Base
                    :default_start_date_to_today,
                    :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
+  before_update :set_request_fulfilled
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true,
@@ -33,6 +34,10 @@ class Sponsor < ActiveRecord::Base
 
   def eligible_for_sponsorship?
     self.status.active? && !self.request_fulfilled?
+  end
+
+  def update_request_fulfilled!
+    update!(request_fulfilled: request_is_fulfilled?)
   end
 
   private
@@ -85,6 +90,11 @@ class Sponsor < ActiveRecord::Base
     true
   end
 
+  def set_request_fulfilled
+    self.request_fulfilled = request_is_fulfilled?
+    true
+  end
+
   def can_be_inactivated
     unless sponsorships.all_active.empty?
       errors[:status] << 'Cannot inactivate sponsor with active sponsorships'
@@ -93,5 +103,9 @@ class Sponsor < ActiveRecord::Base
 
   def being_inactivated?
     status_id_changed? && (Status.find(status_id).name == 'Inactive')
+  end
+
+  def request_is_fulfilled?
+    sponsorships.all_active.count >= requested_orphan_count
   end
 end
