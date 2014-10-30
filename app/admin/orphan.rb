@@ -159,7 +159,7 @@ ActiveAdmin.register Orphan do
     column 'OSRA No.', sortable: :osra_num do |orphan|
       link_to orphan.osra_num, admin_orphan_path(orphan)
     end
-    column :full_name, sortable: :full_name do |orphan|
+    column :full_name do |orphan|
       link_to orphan.full_name, admin_orphan_path(orphan)
     end
     column :date_of_birth
