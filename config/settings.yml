@@ -1,3 +1,7 @@
+lookup:
+  gender:
+    - Male
+    - Female
 import:
   first_row: 4
   options:

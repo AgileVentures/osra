@@ -1,7 +1,7 @@
 ActiveAdmin.register Sponsor do
 
   preserve_default_filters!
-  filter :gender, as: :select, collection: %w(Male Female)
+  filter :gender, as: :select, collection: Settings.lookup.gender
 
   actions :all, except: [:destroy]
 
@@ -74,7 +74,7 @@ ActiveAdmin.register Sponsor do
     f.inputs do
       f.input :name
       f.input :status
-      f.input :gender, as: :select, collection: %w(Male Female)
+      f.input :gender, as: :select, collection: Settings.lookup.gender
       f.input :start_date, as: :datepicker
       f.input :requested_orphan_count
       unless f.object.new_record?

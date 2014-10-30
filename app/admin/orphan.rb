@@ -22,7 +22,7 @@ ActiveAdmin.register Orphan do
       f.input :name
       f.input :date_of_birth, as: :datepicker
       f.input :gender, as: :select,
-              collection:  %w(Male Female), include_blank: false
+              collection: Settings.lookup.gender, include_blank: false
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
