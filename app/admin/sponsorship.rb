@@ -27,7 +27,7 @@ ActiveAdmin.register Sponsorship do
 		  column :father_is_martyr, sortable: :father_is_martyr
 		  column :mother_alive, sortable: :mother_alive
 		  column :priority
-		  column :orphan_sponsorship_status, sortable: :orphan_sponsorship_status_id
+		  column :orphan_sponsorship_status, sortable: 'orphan_sponsorship_statuses.name'
 		  column 'Establish sponsorship' do |_orphan|
 		    link_to 'Sponsor this orphan',
 		  		  admin_sponsor_sponsorships_path(sponsor_id: sponsorship.sponsor_id,
