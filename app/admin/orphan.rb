@@ -1,6 +1,8 @@
 ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
+  preserve_default_filters!
+  filter :gender, as: :select, collection: Settings.lookup.gender
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
