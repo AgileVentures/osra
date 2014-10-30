@@ -4,8 +4,7 @@ Feature:
   I would like to be able to manage sponsorship relations between sponsors and orphans
 
   Background:
-    Given required orphan statuses exist
-    And a sponsor "First Sponsor" exists
+    Given a sponsor "First Sponsor" exists
     And a sponsor "Second Sponsor" exists
     And the sponsor "First Sponsor" has attribute additional_info "Prefer male orphans from Homs"
     And an orphan "First Orphan" exists
@@ -96,11 +95,11 @@ Feature:
     Then I should see "High" before "Normal"
     And I should not see "Normal" before "High"
     When I click the "Orphan Sponsorship Status" link
-    Then I should see "Previously Sponsored" before "Unsponsored"
-    And I should not see "Unsponsored" before "Previously Sponsored"
-    When I click the "Orphan Sponsorship Status" link
     Then I should see "Unsponsored" before "Previously Sponsored"
     And I should not see "Previously Sponsored" before "Unsponsored"
+    When I click the "Orphan Sponsorship Status" link
+    Then I should see "Previously Sponsored" before "Unsponsored"
+    And I should not see "Unsponsored" before "Previously Sponsored"
 
   Scenario: Ending a sponsorship
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"

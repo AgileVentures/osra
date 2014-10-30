@@ -79,7 +79,7 @@ class Orphan < ActiveRecord::Base
 
   def self.sort_by_param param
     if whitelist_sort param
-      self.joins(:original_address).joins(:partner).order(transform_param param)
+      self.joins(:original_address).joins(:partner).joins(:orphan_sponsorship_status).order(transform_param param)
     else
       self.sort_by_eligibility
     end
@@ -133,7 +133,7 @@ class Orphan < ActiveRecord::Base
   def self.whitelist_sort param
     if param[:order] && (param.class== ActionController::Parameters.new().class)
       if ['ASC', 'DESC'].include?(second_half(param))
-        if ['addresses.province_id', 'partners.name'].include?(first_half(param)) ||
+        if ['addresses.province_id', 'partners.name', 'orphan_sponsorship_statuses.name'].include?(first_half(param)) ||
                                       Orphan.method_defined?(first_half(param).to_sym)
           true
         end
