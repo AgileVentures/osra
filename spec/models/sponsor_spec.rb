@@ -25,7 +25,7 @@ describe Sponsor, type: :model do
   end
 
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
-     only_integer.is_greater_than(0) }
+                          only_integer.is_greater_than(0) }
 
   it { is_expected.to allow_value(nil, '', 'admin@example.com').for :email }
   ['not_an_emai', 'also@not_an_email', 'really_not@'].each do |bad_email_value|
@@ -118,7 +118,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'SponsorType must match affiliation' do
-      let(:sponsor) { build_stubbed :sponsor }
+      let(:sponsor) { build :sponsor }
       context 'when SponsorType matches affiliation' do
         specify 'Individual type and Branch affiliation are valid' do
           sponsor.sponsor_type = build_stubbed(:sponsor_type, name: 'Individual') unless SponsorType.find_by_name('Individual')
@@ -150,7 +150,22 @@ describe Sponsor, type: :model do
           expect(sponsor).not_to be_valid
         end
       end
+
+      describe 'should not be able to change affiliation-related info for persisted sponsors' do
+        let(:organization) { create :organization }
+        let(:org_sponsor_type) { SponsorType.find_by_name('Organization') || create(:sponsor_type, name: 'Organization') }
+
+        before { sponsor.save! }
+
+        it 'should not update affiliation or SponsorType' do
+          sponsor.update!(branch: nil, organization: organization, sponsor_type: org_sponsor_type)
+          sponsor.reload
+          expect(sponsor.branch).not_to be_nil
+          expect(sponsor.organization).to be_nil
+          expect(sponsor.sponsor_type.name).to eq 'Individual'
+        end
       end
+    end
   end
 
   describe 'callbacks' do
