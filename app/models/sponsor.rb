@@ -14,6 +14,7 @@ class Sponsor < ActiveRecord::Base
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :payment_plan, inclusion: {in: Settings.payment_plans }
+  validates :payment_plan, inclusion: { in: Settings.payment_plans }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
   validate :ensure_valid_date
