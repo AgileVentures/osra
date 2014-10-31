@@ -5,8 +5,8 @@ describe Sponsor, type: :model do
   let(:inactive_status) { Status.find_by_name 'Inactive' }
   let(:on_hold_status) { Status.find_by_name 'On Hold' }
 
-  let!(:individual_type) { create :sponsor_type, name: 'Individual' }
-  let(:organization_type) { create :sponsor_type, name: 'Organization' }
+  let(:individual_type) { SponsorType.find_by_name 'Individual' }
+  let(:organization_type) { SponsorType.find_by_name 'Organization' }
 
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid

@@ -11,7 +11,7 @@ FactoryGirl.define do
     requested_orphan_count (1..10).to_a.sample
     country { generate :countries }
     gender { %w(Male Female).sample }
-    sponsor_type
+    sponsor_type { SponsorType.find_by_name 'Individual' }
     branch
   end
 end
