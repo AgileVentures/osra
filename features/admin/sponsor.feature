@@ -168,6 +168,9 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor3" link
     Then I should see "Other"
+    And I select "Every Six Months" from the drop down box for "Payment Plan"
+    And I click the "Update Sponsor" button
+    Then I should see "Sponsor was successfully updated"
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor5"
     And I fill in "Requested orphan count" with "2"
