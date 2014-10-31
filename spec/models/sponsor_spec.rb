@@ -11,6 +11,10 @@ describe Sponsor, type: :model do
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
+  
+  it 'should have payment plans' do
+    expect(Settings.payment_plans).to_not be_nil
+  end
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
