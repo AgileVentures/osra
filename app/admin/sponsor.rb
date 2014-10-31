@@ -81,6 +81,7 @@ ActiveAdmin.register Sponsor do
       unless f.object.new_record?
         f.input :request_fulfilled, :input_html => { :disabled => true }
       end
+<<<<<<< HEAD
       if f.object.new_record?
         f.input :sponsor_type, include_blank: false
         f.input :organization
@@ -90,7 +91,7 @@ ActiveAdmin.register Sponsor do
         f.input :organization, :input_html => { :disabled => true }
         f.input :branch, :input_html => { :disabled => true }
       end
-      f.input :payment_plan, as: :select, collection: ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: false
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :address
       f.input :email
