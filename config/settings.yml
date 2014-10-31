@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 lookup:
   gender:
     - Male
@@ -9,6 +10,8 @@ payment_plans:
   - 'Every Six Months'
   - 'Annually'
   - 'Other'
+=======
+>>>>>>> move payment_plans list to model
 import:
   first_row: 4
   options:
