@@ -78,10 +78,11 @@ describe Sponsor, type: :model do
   end
 
   describe 'branch or organization affiliation' do
+    let(:organization) { build_stubbed(:organization) }
+    let(:branch) { build_stubbed(:branch) }
+
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
-      let(:organization) { build_stubbed(:organization) }
-      let(:branch) { build_stubbed(:branch) }
 
       it 'cannot be unaffiliated' do
         sponsor.organization, sponsor.branch = nil
@@ -123,8 +124,6 @@ describe Sponsor, type: :model do
 
     describe 'SponsorType must match affiliation' do
       let(:sponsor) { build :sponsor }
-      let(:organization) { build_stubbed :organization }
-      let(:branch) { build_stubbed :branch }
 
       context 'when SponsorType matches affiliation' do
         specify 'Individual type and Branch affiliation are valid' do

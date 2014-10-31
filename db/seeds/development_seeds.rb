@@ -12,7 +12,8 @@ FactoryGirl.create :sponsor,
                    branch: Branch.find_by_name('Riyadh')
 FactoryGirl.create :sponsor,
                    sponsor_type: SponsorType.find_by_name('Organization'),
-                   organization: Organization.find_by_name('أهل الغربة وقت الكربة')
+                   organization: Organization.find_by_name('أهل الغربة وقت الكربة'),
+                   branch: nil
 FactoryGirl.create :partner,
                    province: Province.find_by_name('Homs')
 FactoryGirl.create :partner,
