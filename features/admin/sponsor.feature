@@ -39,6 +39,7 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     When I click the "Sponsor1" link
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should see "Every Two Months"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
     Given I am on the "New Sponsor" page for the "Admin" role
@@ -54,6 +55,7 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor4"
+    And I should see "Every Four Months"
 
   Scenario: I should see the required fields on the index page
     Given I am on the "Sponsors" page for the "Admin" role
@@ -91,10 +93,16 @@ Feature:
     Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
     And I should not be able to change "Request fulfilled" for this sponsor
     And I select "Canada" from the drop down box for "Country"
+    And I select "Every Six Months" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
+    And I should see "Every Six Months"
+    Given  I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "" from the drop down box for "Payment plan"
+    Then I should not see "is not included in the list"
+    And I should see "Sponsor was successfully created"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -113,41 +121,3 @@ Feature:
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Request Fulfilled" set to "No"
-
-  Scenario: Selectable payment plan for sponsors
-    Given I am on the "Sponsors" page for the "Admin" role
-    And I click the "Sponsor1" link
-    Then I should see "Every Two Months"
-    Given I am on the "Sponsors" page for the "Admin" role
-    And I click the "Sponsor2" link
-    Then I should see "Annually"
-    Given I am on the "Sponsors" page for the "Admin" role
-    And I click the "Sponsor3" link
-    Then I should see "Other"
-    Given I click the "Edit Sponsor" button
-    And I select "Every Six Months" from the drop down box for "Payment plan"
-    And I click the "Update Sponsor" button
-    Then I should see "Sponsor was successfully updated"
-    Given I am on the "New Sponsor" page for the "Admin" role
-    And I fill in "Name" with "Sponsor5"
-    And I fill in "Requested orphan count" with "2"
-    And I select "Spain" from the drop down box for "Country"
-    And I select "Male" from the drop down box for "Gender"
-    And I select "Jeddah" from the drop down box for "Branch"
-    And I select "Individual" from the drop down box for "Sponsor type"
-    And I select "Every Four Months" from the drop down box for "Payment plan"
-    And I click the "Create Sponsor" button
-    Then I should be on the "Show Sponsor" page for sponsor "Sponsor5"
-    And I should see "Sponsor was successfully created"
-    And I should see "Sponsor5"
-    And I should see "Every Four Months"
-    Given I am on the "New Sponsor" page for the "Admin" role
-    And I fill in "Name" with "Sponsor6"
-    And I fill in "Requested orphan count" with "3"
-    And I select "Spain" from the drop down box for "Country"
-    And I select "Male" from the drop down box for "Gender"
-    And I select "Jeddah" from the drop down box for "Branch"
-    And I select "Individual" from the drop down box for "Sponsor type"
-    And I click the "Create Sponsor" button
-    Then I should see "is not included in the list"
-    And I should not see "Sponsor was successfully created"
