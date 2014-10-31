@@ -2,6 +2,13 @@ lookup:
   gender:
     - Male
     - Female
+payment_plans:
+  - Monthly
+  - Every Two Months
+  - Every Four Months
+  - Every Six Months
+  - Annually
+  - Other
 import:
   first_row: 4
   options:
