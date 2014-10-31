@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 20141110225316) do
     t.integer  "requested_orphan_count"
     t.boolean  "request_fulfilled",      default: false, null: false
     t.integer  "agent_id"
-    t.string   "payment_plan"
+    t.string   "payment_plan" 
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
