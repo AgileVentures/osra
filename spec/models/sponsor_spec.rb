@@ -17,7 +17,7 @@ describe Sponsor, type: :model do
   end
   
   it 'should have payment plans' do
-    expect(Settings.payment_plans).to_not be_nil
+    expect(Sponsor.payment_plans).to be_truthy
   end
 
   it { is_expected.to validate_presence_of :name }
