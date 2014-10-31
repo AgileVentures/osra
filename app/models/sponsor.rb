@@ -8,7 +8,7 @@ class Sponsor < ActiveRecord::Base
   before_update :set_request_fulfilled
 
   validates :name, presence: true
-  validates :payment_plan, inclusion: { in: Settings.payment_plans }
+  validates :payment_plan, inclusion: { in: (Sponsor.payment_plans << nil) }
   validates :requested_orphan_count, presence: true,
             numericality: {only_integer: true, greater_than: 0}
   validates :country, presence: true, inclusion:  {in: ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
@@ -39,6 +39,10 @@ class Sponsor < ActiveRecord::Base
 
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
+  end
+  
+  def self.payment_plans
+    ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
   end
 
   private
