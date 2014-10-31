@@ -10,21 +10,16 @@ class Sponsor < ActiveRecord::Base
   before_update :set_request_fulfilled
 
   validates :name, presence: true
-<<<<<<< HEAD
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :payment_plan, inclusion: {in: Settings.payment_plans }
   validates :payment_plan, inclusion: { in: Settings.payment_plans }
-=======
   validates :payment_plan, inclusion: { in: (Sponsor.payment_plans << nil) }
-  validates :requested_orphan_count, presence: true,
-            numericality: {only_integer: true, greater_than: 0}
-  validates :country, presence: true, inclusion:  {in: ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
-  validates :request_fulfilled, inclusion: {in: [true, false] }
->>>>>>> move payment_plans list to model
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
+  validates :payment_plan, inclusion: { in:
+            ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other'] }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
@@ -52,10 +47,6 @@ class Sponsor < ActiveRecord::Base
 
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
-  end
-  
-  def self.payment_plans
-    ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
   end
 
   private
