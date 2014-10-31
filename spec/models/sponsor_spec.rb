@@ -13,7 +13,7 @@ describe Sponsor, type: :model do
   end
   
   it 'should have payment plans' do
-    expect(Settings.payment_plans).to_not be_nil
+    expect(Sponsor.payment_plans).to be_truthy
   end
 
   it { is_expected.to validate_presence_of :name }
@@ -43,7 +43,7 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array Settings.payment_plans }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor.payment_plans << nil) }
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
