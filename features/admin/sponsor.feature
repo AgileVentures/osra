@@ -135,10 +135,10 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor1" link
     Then I should see "Every Two Months"
-    Given I click the "Sponsors" link
+    Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor2" link
     Then I should see "Annually"
-    Given I click the "Sponsors" link
+    Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor3" link
     Then I should see "Other"
     
