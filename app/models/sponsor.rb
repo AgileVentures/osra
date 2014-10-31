@@ -1,6 +1,6 @@
 class Sponsor < ActiveRecord::Base
 
-  PAYMENT_PLANS = [nil, 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+  PAYMENT_PLANS = ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
   include Initializer
 
