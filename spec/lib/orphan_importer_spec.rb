@@ -3,10 +3,6 @@ require 'orphan_importer'
 
 describe OrphanImporter do
 
-  before(:each) {
-    14.times { create :province }
-  }
-
   let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
   let (:one_orphan_importer) { OrphanImporter.new('spec/fixtures/one_orphan_xlsx.xlsx') }
   let (:three_orphans_importer) { OrphanImporter.new('spec/fixtures/three_orphans_xlsx.xlsx') }
