@@ -15,5 +15,5 @@ FactoryGirl.define do
     sponsor_type { SponsorType.all[[0,1].sample] }
     branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
     organization { FactoryGirl.create(:organization) if sponsor_type.name == 'Organization' }
-  end
+  end 
 end
