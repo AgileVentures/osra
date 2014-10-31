@@ -8,8 +8,4 @@ module Initializer
     self.start_date ||= Date.current
   end
 
-  #def payment_plans
-  #  ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
-  #end
-
 end

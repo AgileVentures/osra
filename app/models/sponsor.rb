@@ -1,4 +1,7 @@
 class Sponsor < ActiveRecord::Base
+
+  PAYMENT_PLANS = [nil, 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+
   include Initializer
 
   after_initialize :default_status_to_active,
@@ -14,8 +17,7 @@ class Sponsor < ActiveRecord::Base
   validates :request_fulfilled, inclusion: {in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
-  validates :payment_plan, inclusion: { in:
-            ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other'] }
+  validates :payment_plan, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
