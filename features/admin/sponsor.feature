@@ -124,7 +124,10 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor3" link
     Then I should see "Other"
-    
+    Given I click the "Edit Sponsor" button
+    And I select "Every Six Months" from the drop down box for "Payment Plan"
+    And I click the "Update Sponsor" button
+    Then I should see "Sponsor was successfully updated"
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor5"
     And I fill in "Requested orphan count" with "2"
@@ -138,7 +141,6 @@ Feature:
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor5"
     And I should see "Every Four Months"
-    
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor6"
     And I fill in "Requested orphan count" with "3"
@@ -147,4 +149,5 @@ Feature:
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
-    Then I should see "can't be blank"
+    Then I should see "is not included in the list"
+    And I should not see "Sponsor was successfully created"
