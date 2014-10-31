@@ -142,6 +142,7 @@ Feature:
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
 
+
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
     Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -161,6 +162,12 @@ Feature:
     And I select "Every Six Months" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should see "Sponsor was successfully updated"
+    Given I click the "Sponsors" link
+    And I click the "Sponsor2" link
+    Then I should see "Annually"
+    Given I click the "Sponsors" link
+    And I click the "Sponsor3" link
+    Then I should see "Other"
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor5"
     And I fill in "Requested orphan count" with "2"
@@ -168,7 +175,7 @@ Feature:
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
-    And I select "Every Four Months" from the drop down box for "Payment plan"
+    And I select "Every Four Months" from the drop down box for "Payment Plan"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor5"
     And I should see "Sponsor was successfully created"
@@ -184,3 +191,4 @@ Feature:
     And I click the "Create Sponsor" button
     Then I should see "is not included in the list"
     And I should not see "Sponsor was successfully created"
+    Then I should see "can't be blank"
