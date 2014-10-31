@@ -1,4 +1,5 @@
 Given(/^a sponsor "([^"]*)" exists$/) do |sponsor_name|
+  FactoryGirl.create(:sponsor_type, name: 'Individual') unless SponsorType.find_by_name('Individual')
   FactoryGirl.create :sponsor, name: sponsor_name, requested_orphan_count: 5
 end
 
