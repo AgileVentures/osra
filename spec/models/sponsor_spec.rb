@@ -38,7 +38,11 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
+<<<<<<< HEAD
   it { is_expected.to belong_to :agent }
+=======
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array Settings.payment_plans }
+>>>>>>> failing test for model
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
