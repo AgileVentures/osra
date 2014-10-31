@@ -16,9 +16,9 @@ describe Sponsor, type: :model do
     expect(build_stubbed :sponsor).to be_valid
   end
   
-  it 'should have payment plans' do
-    expect(Sponsor.payment_plans).to be_truthy
-  end
+  #it 'should have payment plans' do
+  #  expect(Sponsor.payment_plans).to be_truthy
+  #end
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }

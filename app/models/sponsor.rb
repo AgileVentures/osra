@@ -48,10 +48,6 @@ class Sponsor < ActiveRecord::Base
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
   end
-  
-  def self.payment_plans
-    ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
-  end
 
   private
 
