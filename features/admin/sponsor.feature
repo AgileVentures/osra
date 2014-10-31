@@ -49,8 +49,12 @@ Feature:
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
+<<<<<<< HEAD
     And I select "Tarek Al Wafai" from the drop down box for "Agent"
     And I select "Every Four Months" from the drop down box for "Payment Plan"
+=======
+    And I select "Every Four Months" from the drop down box for "Payment plan"
+>>>>>>> fix typo
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
@@ -178,7 +182,7 @@ Feature:
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
-    And I select "Every Four Months" from the drop down box for "Payment Plan"
+    And I select "Every Four Months" from the drop down box for "Payment plan"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor5"
     And I should see "Sponsor was successfully created"
