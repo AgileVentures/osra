@@ -18,6 +18,7 @@ class Sponsor < ActiveRecord::Base
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
+  validates_format_of :email, with: Devise.email_regexp, allow_blank: true
 
   belongs_to :branch
   belongs_to :organization

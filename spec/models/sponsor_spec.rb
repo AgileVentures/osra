@@ -27,6 +27,12 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
      only_integer.is_greater_than(0) }
 
+  it { is_expected.to allow_value(nil, '', 'admin@example.com').for :email }
+  ['not_an_emai', 'also@not_an_email', 'really_not@'].each do |bad_email_value|
+    it { is_expected.to_not allow_value(bad_email_value).for :email }
+  end
+
+
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }
   it { is_expected.to belong_to :status }
