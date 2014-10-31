@@ -109,3 +109,23 @@ Feature:
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Request Fulfilled" set to "No"
+
+  Scenario: Sponsor Type should match affiliation
+    Given the sponsor type "Organization" exists
+    And the organization "Organization 1" exists
+    And I am on the "New Sponsor" page for the "Admin" role
+    And I select "Jeddah" from the drop down box for "Branch"
+    And I select "Organization" from the drop down box for "Sponsor type"
+    And I click the "Create Sponsor" button
+    Then I should see "Sponsor type must match affiliation"
+    When I select "Organization 1" from the drop down box for "Organization"
+    And I select "Individual" from the drop down box for "Sponsor type"
+    And I select "" from the drop down box for "Branch"
+    And I click the "Create Sponsor" button
+    Then I should see "Sponsor type must match affiliation"
+
+  Scenario: Should not be able to change Sponsor Type or affiliation for persisted sponsor
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    Then I should not be able to change "Branch" for this sponsor
+    And I should not be able to change "Organization" for this sponsor
+    And I should not be able to change "Sponsor Type" for this sponsor
