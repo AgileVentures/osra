@@ -1,4 +1,7 @@
 class Sponsor < ActiveRecord::Base
+
+  PAYMENT_PLANS = [nil, 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+
   include Initializer
 
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
@@ -10,15 +13,13 @@ class Sponsor < ActiveRecord::Base
   before_update :set_request_fulfilled
 
   validates :name, presence: true
-<<<<<<< HEAD
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :payment_plan, inclusion: { in: (Sponsor.payment_plans << nil) }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
-  validates :payment_plan, inclusion: { in:
-            ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other'] }
+  validates :payment_plan, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
