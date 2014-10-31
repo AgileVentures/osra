@@ -9,16 +9,16 @@ describe Sponsor, type: :model do
   let(:organization_type) { SponsorType.find_by_name 'Organization' }
 
   it 'should have payment plans' do
+<<<<<<< HEAD
     expect(Sponsor::PAYMENT_PLANS).to be_present
+=======
+    expect(Sponsor::PAYMENT_PLANS).to be_truthy
+>>>>>>> DRY up payment_plans
   end
 
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
-  
-  #it 'should have payment plans' do
-  #  expect(Sponsor.payment_plans).to be_truthy
-  #end
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
@@ -47,7 +47,11 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
+<<<<<<< HEAD
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
+=======
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array Sponsor::PAYMENT_PLANS }
+>>>>>>> DRY up payment_plans
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
