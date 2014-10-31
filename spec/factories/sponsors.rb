@@ -14,5 +14,7 @@ FactoryGirl.define do
     sponsor_type { SponsorType.all[[0,1].sample] }
     branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
     organization { FactoryGirl.create(:organization) if sponsor_type.name == 'Organization' }
+    payment_plan { Settings.payment_plans.sample }
+
   end
 end
