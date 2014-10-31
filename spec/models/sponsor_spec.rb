@@ -12,9 +12,9 @@ describe Sponsor, type: :model do
     expect(build_stubbed :sponsor).to be_valid
   end
   
-  it 'should have payment plans' do
-    expect(Sponsor.payment_plans).to be_truthy
-  end
+  #it 'should have payment plans' do
+  #  expect(Sponsor.payment_plans).to be_truthy
+  #end
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
@@ -43,7 +43,8 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor.payment_plans << nil) }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array
+            ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other'] }
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
