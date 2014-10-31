@@ -1,0 +1,7 @@
+individual:
+  name: 'Individual'
+  code: 1
+
+organization:
+  name: 'Organization'
+  code: 2
