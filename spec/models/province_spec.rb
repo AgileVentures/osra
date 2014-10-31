@@ -2,10 +2,6 @@ require 'rails_helper'
 
 describe Province, type: :model do
 
-  # it 'should have a valid factory' do
-  #   expect(build_stubbed :province).to be_valid
-  # end
-
   it 'should have valid fixtures' do
     Province.all.each do |province|
       expect(province).to be_valid
