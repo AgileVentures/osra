@@ -165,7 +165,7 @@ Feature:
     Given I click the "Sponsors" link
     And I click the "Sponsor2" link
     Then I should see "Annually"
-    Given I click the "Sponsors" link
+    Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor3" link
     Then I should see "Other"
     Given I am on the "New Sponsor" page for the "Admin" role
