@@ -191,4 +191,4 @@ Feature:
     And I click the "Create Sponsor" button
     Then I should see "is not included in the list"
     And I should not see "Sponsor was successfully created"
-    Then I should see "can't be blank"
+    Then I should see "can't be blank" 
