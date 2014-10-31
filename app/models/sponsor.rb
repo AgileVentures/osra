@@ -1,7 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
 
-  attr_readonly :branch, :organization, :sponsor_type
+  attr_readonly :branch_id, :organization_id, :sponsor_type_id
 
   after_initialize :default_status_to_active,
                    :default_start_date_to_today,
