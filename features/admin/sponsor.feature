@@ -19,6 +19,8 @@ Feature:
       | additional_info        | additional1        | additional2         | addtional3          |
       | start_date             | 2013-09-25         | 2013-09-25          | 2013-09-25          |
       | status                 | Active             | Active              | Active              |
+      | status_code            | 01                 | 01                  | 01                  |
+      | payment_plan           | Every Two Months   | Annually            | Other               |
 
     And I am a new, authenticated user
 
@@ -134,3 +136,36 @@ Feature:
     Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"
+
+  Scenario: Selectable payment plan for sponsors
+    Given I am on the "Sponsors" page for the "Admin" role
+    And I click the "Sponsor1" link
+    Then I should see "Every Two Months"
+    Given I click the "Sponsors" link
+    And I click the "Sponsor2" link
+    Then I should see "Annually"
+    Given I click the "Sponsors" link
+    And I click the "Sponsor3" link
+    Then I should see "Other"
+    Given I am on the "New Sponsor" page for the "Admin" role
+    And I fill in "Name" with "Sponsor5"
+    And I fill in "Requested orphan count" with "2"
+    And I select "Spain" from the drop down box for "Country"
+    And I select "Male" from the drop down box for "Gender"
+    And I select "Jeddah" from the drop down box for "Branch"
+    And I select "Individual" from the drop down box for "Sponsor type"
+    And I select "Every Four Months" from the drop down box for "Payment Plan"
+    And I click the "Create Sponsor" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor5"
+    And I should see "Sponsor was successfully created"
+    And I should see "Sponsor5"
+    And I should see "Every Four Months"
+    Given I am on the "New Sponsor" page for the "Admin" role
+    And I fill in "Name" with "Sponsor6"
+    And I fill in "Requested orphan count" with "3"
+    And I select "Spain" from the drop down box for "Country"
+    And I select "Male" from the drop down box for "Gender"
+    And I select "Jeddah" from the drop down box for "Branch"
+    And I select "Individual" from the drop down box for "Sponsor type"
+    And I click the "Create Sponsor" button
+    Then I should see "can't be blank"
