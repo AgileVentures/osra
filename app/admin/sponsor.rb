@@ -31,6 +31,7 @@ ActiveAdmin.register Sponsor do
       row :request_fulfilled do
         sponsor.request_fulfilled? ? 'Yes' : 'No'
       end
+      row :payment_plan
       row :sponsor_type
       row :affiliate
       row :country do
