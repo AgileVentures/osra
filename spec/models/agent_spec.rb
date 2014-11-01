@@ -18,4 +18,14 @@ RSpec.describe Agent, :type => :model do
   end
 
   it { is_expected.to have_many :sponsors }
+
+  describe 'methods' do
+    describe '#full_name' do
+      let(:agent) { Agent.new(first_name: 'Bob', last_name: 'Loblaw') }
+
+      it 'should join first and last names with a space' do
+        expect(agent.full_name).to eq 'Bob Loblaw'
+      end
+    end
+  end
 end

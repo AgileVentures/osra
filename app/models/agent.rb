@@ -6,4 +6,8 @@ class Agent < ActiveRecord::Base
   validates_format_of :email, with: Devise.email_regexp, allow_blank: false
 
   has_many :sponsors
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
