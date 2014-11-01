@@ -102,7 +102,7 @@ Feature:
     And I select "" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should not see "is not included in the list"
-    And I should see "Sponsor was successfully created"
+    And I should see "Sponsor was successfully updated"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
