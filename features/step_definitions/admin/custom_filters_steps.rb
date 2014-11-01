@@ -14,7 +14,7 @@ end
 Given(/^there are (#{A_NUMBER}) male and (#{A_NUMBER}) female (sponsor|orphan)[s]?$/) do |num_male, num_female, model|
   FactoryGirl.create_list(model, num_male, gender: 'Male')
   FactoryGirl.create_list(model, num_female, gender: 'Female')
-  expect(model.capitalize.constantize.all.count).to eq num_male + num_female
+  expect(model.classify.constantize.all.count).to eq num_male + num_female
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, selector|
@@ -24,7 +24,7 @@ end
 
 Then(/^I should see only (fe)?male (sponsor|orphan)[s]?$/) do |fe, model|
   gender = fe ? 'Female' : 'Male'
-  modelClass = model.capitalize.constantize
+  modelClass = model.classify.constantize
   objects = modelClass.where(gender: gender)
   objects.each do |obj|
     expect(page).to have_content obj.name
