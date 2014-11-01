@@ -96,6 +96,9 @@ ActiveAdmin.register Sponsor do
       f.input :contact2
       f.input :additional_info
     end
+    f.inputs 'Assign OSRA employee' do
+      f.input :agent, member_label: :agent_name
+    end
     f.actions
   end
 

@@ -11,7 +11,7 @@ ActiveAdmin.register Agent do
     column :email, sortable: :email
   end
 
-  show do |agent|
+  show title: :agent_name do |agent|
     attributes_table do
       row :agent_name
       row :email
@@ -30,5 +30,4 @@ ActiveAdmin.register Agent do
       end
     end
   end
-
 end

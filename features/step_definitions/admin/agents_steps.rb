@@ -18,3 +18,7 @@ When(/^I (?:go to|am on) the "([^"]*)" page for agent "([^"]*)"$/) do |page, age
   agent = Agent.find_by_agent_name agent
   visit path_to_admin_role(page, agent.id)
 end
+
+Given /^an agent "([^"]*)" exists$/ do |agent_name|
+  FactoryGirl.create :agent, agent_name: agent_name
+end
