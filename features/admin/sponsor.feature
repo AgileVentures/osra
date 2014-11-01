@@ -127,3 +127,14 @@ Feature:
     Then I should not be able to change "Branch" for this sponsor
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
+
+  Scenario: Should return to sponsor show page when edit sponsor is cancelled
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I click the "Edit Sponsor" button
+    Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "Canada" from the drop down box for "Country"
+    And I check the "Request fulfilled" checkbox
+    And I click the "Cancel" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should not see "Canada"
+    And I should see "No"
