@@ -98,3 +98,14 @@ Feature:
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should not see the "Delete" link
+
+  Scenario: Should return to sponsor show page when edit sponsor is cancelled
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I click the "Edit Sponsor" button
+    Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "Canada" from the drop down box for "Country"
+    And I check the "Request fulfilled" checkbox
+    And I click the "Cancel" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should not see "Canada"
+    And I should see "No"
