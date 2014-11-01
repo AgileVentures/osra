@@ -13,5 +13,6 @@ FactoryGirl.define do
     gender { %w(Male Female).sample }
     sponsor_type
     branch
+    payment_plan { Sponsor::PAYMENT_PLANS.sample }
   end
 end
