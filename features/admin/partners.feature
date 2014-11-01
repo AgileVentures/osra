@@ -13,7 +13,7 @@ Feature:
 
   Scenario: There should be a link to the partners page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Partners" linking to the partners index page
+    Then I should see "Partners" linking to the admin partners index page
 
   Scenario: There should be a list of partners on the admin index page
     Given I am on the "Partners" page for the "Admin" role

@@ -4,7 +4,7 @@ Given(/^the following agents exist:$/) do |table|
   end
 end
 
-Then(/^I should see "([^"]*)" linking to the (.*) index page$/) do |link_text, link_path|
+Then(/^I should see "([^"]*)" linking to the admin (.*) index page$/) do |link_text, link_path|
   path = "admin_#{link_path.gsub(' ', '_')}_path"
   expect(page).to have_link(link_text, href: eval(path))
 end

@@ -12,7 +12,7 @@ Feature:
 
   Scenario: There should be a link to the Agents page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Agents" linking to the agents index page
+    Then I should see "Agents" linking to the admin agents index page
 
   Scenario: There should be a list of agents on the agents index page
     Given I am on the "Agents" page for the "Admin" role

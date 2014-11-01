@@ -24,7 +24,7 @@ Feature:
 
   Scenario: There should be a link to the sponsors index page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Sponsors" linking to the sponsors index page
+    Then I should see "Sponsors" linking to the admin sponsors index page
 
   Scenario: There should be a list of sponsors on the sponsors index page
     Given I am on the "Sponsors" page for the "Admin" role
