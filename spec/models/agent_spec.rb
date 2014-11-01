@@ -16,4 +16,6 @@ RSpec.describe Agent, :type => :model do
   [nil, '', 'not_an_email@'].each do |bad_email|
     it { is_expected.not_to allow_value(bad_email).for :email }
   end
+
+  it { is_expected.to have_many :sponsors }
 end
