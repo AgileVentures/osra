@@ -9,12 +9,12 @@ Then(/^I should see "([^"]*)" linking to the admin (.*) index page$/) do |link_t
   expect(page).to have_link(link_text, href: eval(path))
 end
 
-Then /^I should be on the "([^"]*)" page for agent "([^"]*)"$/ do |page_name, agent_name|
-  agent = Agent.find_by_first_name agent_name
-  expect(current_path).to eq path_to_admin_role(page_name, agent.id)
+Then /^I should be on the "([^"]*)" page for agent "([^"]*)"$/ do |page, agent|
+  agent = Agent.find_by_agent_name agent
+  expect(current_path).to eq path_to_admin_role(page, agent.id)
 end
 
-When(/^I (?:go to|am on) the "([^"]*)" page for agent "([^"]*)"$/) do |page, first_name|
-  agent = Agent.find_by_first_name first_name
+When(/^I (?:go to|am on) the "([^"]*)" page for agent "([^"]*)"$/) do |page, agent|
+  agent = Agent.find_by_agent_name agent
   visit path_to_admin_role(page, agent.id)
 end

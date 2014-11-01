@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following agents exist:
-      | first_name | last_name  | email          |
-      | Tarek      | Al Wafai   | tarek@osra.org |
-      | Ahmed      | Abdulmawla | ahmed@osra.org |
+      | agent_name       | email          |
+      | Tarek Al Wafai   | tarek@osra.org |
+      | Ahmed Abdulmawla | ahmed@osra.org |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the Agents page on the navbar
@@ -22,28 +22,26 @@ Feature:
   Scenario: It should be possible to visit an agent from the agents index page
     Given I am on the "Agents" page for the "Admin" role
     When I click the "Tarek Al Wafai" link
-    Then I should be on the "Show Agent" page for agent "Tarek"
+    Then I should be on the "Show Agent" page for agent "Tarek Al Wafai"
 
   Scenario: Should be able to add an agent from the agents index page
     Given I am on the "Agents" page for the "Admin" role
     And I click the "New Agent" button
     Then I should be on the "New Agent" page for the "Admin" role
-    When I fill in "First name" with "New"
-    And I fill in "Last name" with "Agent"
+    When I fill in "Agent name" with "New Agent"
     And I fill in "Email" with "new_agent@osra.org"
     And I click the "Create Agent" button
-    Then I should be on the "Show Agent" page for agent "New"
+    Then I should be on the "Show Agent" page for agent "New Agent"
     And I should see "Agent was successfully created"
     And I should see "new_agent@osra.org"
 
   Scenario: Should be able to edit an agent from the agent show page
-    Given I am on the "Show Agent" page for agent "Tarek"
+    Given I am on the "Show Agent" page for agent "Tarek Al Wafai"
     And I click the "Edit Agent" button
-    Then I should be on the "Edit Agent" page for agent "Tarek"
-    When I fill in "First name" with "New"
-    And I fill in "Last name" with "Agent"
+    Then I should be on the "Edit Agent" page for agent "Tarek Al Wafai"
+    When I fill in "Agent name" with "New Agent"
     And I fill in "Email" with "new_agent@osra.org"
     And I click the "Update Agent" button
-    Then I should be on the "Show Agent" page for agent "New"
+    Then I should be on the "Show Agent" page for agent "New Agent"
     And I should see "Agent was successfully updated"
     And I should see "new_agent@osra.org"

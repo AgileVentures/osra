@@ -2,18 +2,18 @@ ActiveAdmin.register Agent do
 
   actions :all, except: :destroy
 
-  permit_params :first_name, :last_name, :email
+  permit_params :agent_name, :email
 
   index do
-    column :full_name, sortable: :last_name do |agent|
-      link_to agent.full_name, admin_agent_path(agent)
+    column :agent_name, sortable: :agent_name do |agent|
+      link_to agent.agent_name, admin_agent_path(agent)
     end
     column :email, sortable: :email
   end
 
   show do |agent|
     attributes_table do
-      row :full_name
+      row :agent_name
       row :email
     end
 
