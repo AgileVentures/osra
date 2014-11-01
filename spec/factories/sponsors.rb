@@ -14,5 +14,6 @@ FactoryGirl.define do
     payment_plan { Settings.payment_plans.sample }
     sponsor_type
     branch
+    payment_plan { Sponsor::PAYMENT_PLANS.sample }
   end
 end
