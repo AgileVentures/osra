@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name     | region   | status   | status_code | province | province_code | contact_details | start_date |
-      | Partner1 | Region1  | Active   | 1           |Homs      | 13            | 12345           | 2013-09-25 |
-      | Partner2 | Region2  | Inactive | 2           |Hama      | 14            | 98765           | 2012-09-25 |
+      | name     | region   | status   | province | contact_details | start_date |
+      | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 |
+      | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 |
 
     And I am a new, authenticated user
 

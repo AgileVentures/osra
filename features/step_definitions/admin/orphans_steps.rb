@@ -2,10 +2,8 @@ Given(/^the following orphans exist:$/) do |table|
   table.hashes.each do |hash|
     orphan_list = FactoryGirl.create :orphan_list
     sponsorship_status = OrphanSponsorshipStatus.find_by_name(hash[:spon_status])
-    original_province = Province.find_or_create_by!(name: hash[:o_province],
-                                           code: hash[:o_code])
-    current_province = Province.find_or_create_by!(name: hash[:c_province],
-                                                    code: hash[:c_code])
+    original_province = Province.find_by_name(hash[:o_province])
+    current_province = Province.find_by_name(hash[:c_province])
     original_address = Address.create(city: hash[:o_city], province: original_province,
                                       neighborhood: hash[:o_hood])
     current_address = Address.create(city: hash[:c_city], province: current_province,

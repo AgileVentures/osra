@@ -1,0 +1,55 @@
+damascus_rif_dimashq:
+  name: 'Damascus & Rif Dimashq'
+  code: 11
+
+aleppo:
+  name: 'Aleppo'
+  code: 12
+
+homs:
+  name: 'Homs'
+  code: 13
+
+hama:
+  name: 'Hama'
+  code: 14
+
+latakia:
+  name: 'Latakia'
+  code: 15
+
+deir_al_zor:
+  name: 'Deir Al-Zor'
+  code: 16
+
+daraa:
+  name: 'Daraa'
+  code: 17
+
+idlib:
+  name: 'Idlib'
+  code: 18
+
+ar_raqqah:
+  name: 'Ar Raqqah'
+  code: 19
+
+al_hasakah:
+  name: 'Al Ḥasakah'
+  code: 20
+
+tartous:
+  name: 'Tartous'
+  code: 21
+
+al_suwayada:
+  name: 'Al-Suwayada'
+  code: 22
+
+al_quneitera:
+  name: 'Al-Quneitera'
+  code: 23
+
+outside_syria:
+  name: 'Outside Syria'
+  code: 29
