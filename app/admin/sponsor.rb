@@ -93,7 +93,7 @@ ActiveAdmin.register Sponsor do
         f.input :organization, :input_html => { :disabled => true }
         f.input :branch, :input_html => { :disabled => true }
       end
-      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
+      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: false
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :address
       f.input :email
