@@ -40,11 +40,3 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   sponsor = Sponsor.find_by name: sponsor_name
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
-
-Given /^the sponsor type "Organization" exists$/ do
-  FactoryGirl.create :sponsor_type, name: 'Organization', code: 2
-end
-
-Given /^the organization "([^"]*)" exists$/ do |org_name|
-  FactoryGirl.create :organization, name: org_name
-end
