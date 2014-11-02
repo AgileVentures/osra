@@ -54,6 +54,7 @@ describe Sponsor, type: :model do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
 =======
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array Sponsor::PAYMENT_PLANS }
@@ -64,6 +65,9 @@ describe Sponsor, type: :model do
 =======
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS) }
 >>>>>>> move blank payment plan back to array
+=======
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
+>>>>>>> blank payment_plan to model validation
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
