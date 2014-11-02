@@ -36,7 +36,7 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << nil) }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS) }
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
