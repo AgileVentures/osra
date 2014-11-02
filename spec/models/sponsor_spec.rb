@@ -79,24 +79,28 @@ describe Sponsor, type: :model do
   end
 
   describe 'branch or organization affiliation' do
+    let(:organization) { build_stubbed(:organization) }
+    let(:branch) { build_stubbed(:branch) }
+
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
-      let(:organization) { build_stubbed(:organization) }
-      let(:branch) { build_stubbed(:branch) }
 
       it 'cannot be unaffiliated' do
         sponsor.organization, sponsor.branch = nil
         expect(sponsor).not_to be_valid
       end
+
       it 'cannot be affiliated to a branch and an organisation' do
         sponsor.branch = branch
         sponsor.organization = organization
         expect(sponsor).not_to be_valid
       end
+
       context 'when affiliated with a branch but not an organization' do
         before do
           sponsor.branch = branch
           sponsor.organization = nil
+          sponsor.sponsor_type = individual_type
         end
 
         it { is_expected.to be_valid }
@@ -109,11 +113,62 @@ describe Sponsor, type: :model do
         before do
           sponsor.branch = nil
           sponsor.organization = organization
+          sponsor.sponsor_type = organization_type
         end
 
         it { is_expected.to be_valid }
         it 'returns branch name as affiliate' do
           expect(sponsor.affiliate).to eq organization.name
+        end
+      end
+    end
+
+    describe 'SponsorType must match affiliation' do
+      let(:sponsor) { build :sponsor, sponsor_type: individual_type }
+
+      context 'when SponsorType matches affiliation' do
+        specify 'Individual type and Branch affiliation are valid' do
+          sponsor.sponsor_type = individual_type
+          sponsor.branch = branch
+          sponsor.organization = nil
+          expect(sponsor).to be_valid
+        end
+
+        specify 'Organization type and Organization affiliation are valid' do
+          sponsor.sponsor_type = organization_type
+          sponsor.organization = organization
+          sponsor.branch = nil
+          expect(sponsor).to be_valid
+        end
+      end
+
+      context 'when SponsorType does not match affiliation' do
+        specify 'Individual type and Organization affiliation are not valid' do
+          sponsor.sponsor_type = individual_type
+          sponsor.organization = organization
+          sponsor.branch = nil
+          expect(sponsor).not_to be_valid
+        end
+
+        specify 'Organization type and Branch affiliation are not valid' do
+          sponsor.sponsor_type = organization_type
+          sponsor.branch = branch
+          sponsor.organization = nil
+          expect(sponsor).not_to be_valid
+        end
+      end
+
+      describe 'should not be able to change affiliation-related info for persisted sponsors' do
+        let(:organization) { create :organization }
+
+        before { sponsor.save! }
+
+        it 'should not update affiliation or SponsorType' do
+          sponsor.update!(branch: nil, organization: organization, sponsor_type: organization_type)
+          sponsor.reload
+          expect(sponsor.branch).not_to be_nil
+          expect(sponsor.organization).to be_nil
+          expect(sponsor.sponsor_type.name).to eq 'Individual'
         end
       end
     end
@@ -189,6 +244,7 @@ describe Sponsor, type: :model do
 
     it 'sets osra_num' do
       sponsor.branch = branch
+      sponsor.sponsor_type = individual_type
       sponsor.save!
       expect(sponsor.osra_num).not_to be_nil
     end
@@ -196,6 +252,7 @@ describe Sponsor, type: :model do
     describe 'when recruited by osra branch' do
       before(:each) do
         sponsor.branch = branch
+        sponsor.sponsor_type = individual_type
         sponsor.save!
       end
 
@@ -211,6 +268,7 @@ describe Sponsor, type: :model do
     describe 'when recruited by a sister organization' do
       before(:each) do
         sponsor.organization = organization
+        sponsor.sponsor_type = organization_type
         sponsor.save!
       end
 
@@ -225,6 +283,7 @@ describe Sponsor, type: :model do
 
     it 'sets the last 4 digits of osra_num to sequential_id' do
       sponsor.branch = branch
+      sponsor.sponsor_type = individual_type
       sponsor.sequential_id = 999
       sponsor.save!
       expect(sponsor.osra_num[3..-1]).to eq '0999'
