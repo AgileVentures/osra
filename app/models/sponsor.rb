@@ -1,6 +1,6 @@
 class Sponsor < ActiveRecord::Base
 
-  PAYMENT_PLANS = ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+  PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
   include Initializer
 
@@ -19,7 +19,7 @@ class Sponsor < ActiveRecord::Base
   validates :payment_plan, inclusion: {in: Settings.payment_plans }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
-  validates :payment_plan, allow_nil: false, inclusion: { in: PAYMENT_PLANS }
+  validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
