@@ -3,6 +3,7 @@ class Sponsor < ActiveRecord::Base
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 =======
   PAYMENT_PLANS = [nil, 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -13,6 +14,9 @@ class Sponsor < ActiveRecord::Base
 =======
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 >>>>>>> move blank payment_plan
+=======
+  PAYMENT_PLANS = ['', 'Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+>>>>>>> move blank payment plan back to array
 
   include Initializer
 
