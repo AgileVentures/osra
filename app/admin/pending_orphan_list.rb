@@ -1,3 +1,5 @@
+require 'orphan_importer'
+
 ActiveAdmin.register PendingOrphanList do
   actions :destroy, :create, :new
   belongs_to :partner
@@ -14,8 +16,9 @@ ActiveAdmin.register PendingOrphanList do
   collection_action :upload do
     get_partner
     unless @partner.active?
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return
+      flash[:alert] = 'Partner is not Active. Orphan List cannot be uploaded.'
+      redirect_to admin_partner_path(params[:partner_id])
+      return
     end
     render action: :upload, locals: { partner: @partner, pending_orphan_list: PendingOrphanList.new }
   end
@@ -23,20 +26,25 @@ ActiveAdmin.register PendingOrphanList do
   collection_action :validate, method: :post do
     get_partner
     unless @partner.active?
-      redirect_to admin_partner_path(params[:partner_id]),
-                  alert: "Partner is not Active. Orphan List cannot be uploaded." and return
+      flash[:alert] = 'Partner is not Active. Orphan List cannot be uploaded.'
+      redirect_to admin_partner_path(params[:partner_id])
+      return
     end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
     importer             = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
     result               = importer.extract_orphans
-    list_valid           = importer.valid?
-    if list_valid
+    if importer.valid?
       @pending_orphan_list.pending_orphans = result
       @pending_orphan_list.save!
+      to_render = :valid_list
+    else
+      to_render = :invalid_list
     end
-    render action: :validate, locals: { partner:             @partner, orphan_list: @partner.orphan_lists.build,
-                                        pending_orphan_list: @pending_orphan_list, list_valid: list_valid,
-                                        result:              result }
+    render action: to_render,
+           locals: { partner:             @partner,
+                     orphan_list:         @partner.orphan_lists.build,
+                     pending_orphan_list: @pending_orphan_list,
+                     result:              result }
   end
 
   collection_action :import, method: :post do
@@ -55,8 +63,9 @@ ActiveAdmin.register PendingOrphanList do
     orphan_list.orphan_count = orphan_count
     orphan_list.save!
     @pending_orphan_list.destroy
-    redirect_to admin_partner_path(@partner),
-                notice: "Orphan List (#{orphan_list.osra_num}) was successfully imported. Registered #{orphan_count} new #{'orphan'.pluralize orphan_count}."
+    flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
+                      Registered #{orphan_count} new #{'orphan'.pluralize orphan_count}."
+    redirect_to admin_partner_path(@partner)
   end
 
   controller do
@@ -65,6 +74,7 @@ ActiveAdmin.register PendingOrphanList do
       pending_orphan_list.destroy!
       redirect_to admin_partner_path(params[:partner_id]), alert: 'Orphan List was not imported.'
     end
+
     private
 
     def get_partner

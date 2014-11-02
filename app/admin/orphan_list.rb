@@ -1,5 +1,3 @@
-require 'orphan_importer'
-
 ActiveAdmin.register OrphanList do
 
   actions :index
