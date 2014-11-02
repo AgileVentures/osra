@@ -1,4 +1,3 @@
-
 Then(/^I should see a "([^"]*)" drop down box in the "Filters" section$/) do |selector|
   selector_id = "q_#{selector.parameterize}_id"
   within('div#filters_sidebar_section') { expect(page).to have_select selector_id }
@@ -12,10 +11,10 @@ Then(/^I should see a "([^"]*)" drop down box in the "Filters" section with opti
   end
 end
 
-Given(/^there are (#{A_NUMBER}) male sponsors and (#{A_NUMBER}) female sponsors$/) do |num_male, num_female|
-  FactoryGirl.create_list(:sponsor, num_male, gender: 'Male')
-  FactoryGirl.create_list(:sponsor, num_female, gender: 'Female')
-  expect(Sponsor.all.count).to eq num_male + num_female
+Given(/^there are (#{A_NUMBER}) male and (#{A_NUMBER}) female (sponsor|orphan)[s]?$/) do |num_male, num_female, model|
+  FactoryGirl.create_list(model, num_male, gender: 'Male')
+  FactoryGirl.create_list(model, num_female, gender: 'Female')
+  expect(model.classify.constantize.all.count).to eq num_male + num_female
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, selector|
@@ -23,10 +22,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, selector|
   click_button 'Filter'
 end
 
-Then(/^I should see only (fe)?male sponsors$/) do |fe|
+Then(/^I should see only (fe)?male (sponsor|orphan)[s]?$/) do |fe, model|
   gender = fe ? 'Female' : 'Male'
-  sponsors = Sponsor.where(gender: gender)
-  sponsors.each do |sponsor|
-    expect(page).to have_content sponsor.name
+  modelClass = model.classify.constantize
+  objects = modelClass.where(gender: gender)
+  objects.each do |obj|
+    expect(page).to have_content obj.name
   end
 end

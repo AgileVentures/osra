@@ -17,15 +17,15 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :sponsor_type }
 
-  it { is_expected.to validate_inclusion_of(:gender).in_array %w(Male Female) }
-  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
+  it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
+  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
 
   [7, 'yes', true].each do |bad_date_value|
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
 
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
-     only_integer.is_greater_than(0) }
+                          only_integer.is_greater_than(0) }
 
   it { is_expected.to allow_value(nil, '', 'admin@example.com').for :email }
   ['not_an_emai', 'also@not_an_email', 'really_not@'].each do |bad_email_value|
@@ -58,18 +58,18 @@ describe Sponsor, type: :model do
   describe '.request_fulfilled' do
     let(:sponsor) { build(:sponsor, requested_orphan_count: 2) }
 
-    it 'should default to  request unfulfilled'  do
+    it 'should default to request unfulfilled' do
       sponsor.save!
       expect(sponsor.request_fulfilled?).to be false
     end
 
-    it 'should make request unfulfilled on create always'  do
+    it 'should make request unfulfilled on create always' do
       sponsor.request_fulfilled = true
       sponsor.save!
       expect(sponsor.reload.request_fulfilled?).to be false
     end
 
-    it 'should allow exisitng records to have request_fulfilled' do
+    it 'should allow existing records to have request_fulfilled' do
       sponsor.save!
       expect(sponsor).to receive(:request_is_fulfilled?).and_return true
       sponsor.save!
@@ -159,7 +159,7 @@ describe Sponsor, type: :model do
 
       context 'when sponsor has no active sponsorships' do
         specify 's/he can be inactivated' do
-          expect{ sponsor.update!(status: inactive_status) }.not_to raise_exception
+          expect { sponsor.update!(status: inactive_status) }.not_to raise_exception
         end
       end
 
@@ -170,12 +170,12 @@ describe Sponsor, type: :model do
         end
 
         specify 's/he cannot be inactivated' do
-          expect{ sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
+          expect { sponsor.update!(status: inactive_status) }.to raise_error ActiveRecord::RecordInvalid
           expect(sponsor.errors[:status]).to include 'Cannot inactivate sponsor with active sponsorships'
         end
 
         specify 's/he can be placed On Hold' do
-          expect{ sponsor.update!(status: on_hold_status) }.not_to raise_exception
+          expect { sponsor.update!(status: on_hold_status) }.not_to raise_exception
         end
       end
     end
@@ -262,13 +262,13 @@ describe Sponsor, type: :model do
         it 'should set request_fulfilled to true when requests have been fulfilled' do
           in_memory_sponsor.request_fulfilled = false
           expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return true
-          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(false).to(true)
+          expect { in_memory_sponsor.send(:set_request_fulfilled) }.to change { in_memory_sponsor.request_fulfilled }.from(false).to(true)
         end
 
         it 'should set request_fulfilled to false when requests have not been fulfilled' do
           in_memory_sponsor.request_fulfilled = true
           expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return false
-          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(true).to(false)
+          expect { in_memory_sponsor.send(:set_request_fulfilled) }.to change { in_memory_sponsor.request_fulfilled }.from(true).to(false)
         end
       end
 
@@ -278,15 +278,15 @@ describe Sponsor, type: :model do
         it 'should set request_fulfilled to true when requests have been fulfilled' do
           persisted_sponsor.update_columns(request_fulfilled: false)
           allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return true
-          expect{ persisted_sponsor.update_request_fulfilled! }.to \
-            change{ persisted_sponsor.reload.request_fulfilled }.from(false).to(true)
+          expect { persisted_sponsor.update_request_fulfilled! }.to \
+            change { persisted_sponsor.reload.request_fulfilled }.from(false).to(true)
         end
 
         it 'should set request_fulfilled to false when requests have not been fulfilled' do
           persisted_sponsor.update_columns(request_fulfilled: true)
           allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return false
-          expect{ persisted_sponsor.update_request_fulfilled! }.to \
-            change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
+          expect { persisted_sponsor.update_request_fulfilled! }.to \
+            change { persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
         end
       end
     end

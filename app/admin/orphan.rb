@@ -1,6 +1,8 @@
 ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
+  preserve_default_filters!
+  filter :gender, as: :select, collection: Settings.lookup.gender
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
@@ -22,7 +24,7 @@ ActiveAdmin.register Orphan do
       f.input :name
       f.input :date_of_birth, as: :datepicker
       f.input :gender, as: :select,
-              collection: %w(Male Female), include_blank: false
+              collection: Settings.lookup.gender, include_blank: false
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
