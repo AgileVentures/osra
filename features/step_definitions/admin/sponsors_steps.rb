@@ -2,15 +2,26 @@ Given(/^the following sponsors exist:$/) do |table|
   table = table.transpose
   table.hashes.each do |hash|
     sponsor_type = SponsorType.find_by_name(hash[:sponsor_type])
-    branch = Branch.find_or_create_by!(name: hash[:branch],
-                                       code: hash[:branch_code])
+    
+    unless hash[:branch].blank?
+      branch = Branch.find_by_name(hash[:branch]) ||
+          FactoryGirl.create(:branch, name: hash[:branch])
+    end
+
+    unless hash[:organization].blank?
+      organization = Organization.find_by_name(hash[:organization]) ||
+          FactoryGirl.create(:organization, name: hash[:organization])
+    end
+    
     status= Status.find_by_name(hash[:status])
+    
     sponsor = Sponsor.new(name: hash[:name], country: hash[:country],
                           gender: hash[:gender], sponsor_type: sponsor_type,
                           requested_orphan_count: hash[:requested_orphan_count],
                           address: hash[:address], email: hash[:email],
                           contact1: hash[:contact1], contact2: hash[:contact2],
                           additional_info: hash[:additional_info], branch: branch,
+                          organization: organization,
                           start_date: hash[:start_date], status: status)
     sponsor.save!
   end
