@@ -81,7 +81,7 @@ ActiveAdmin.register Sponsor do
       unless f.object.new_record?
         f.input :request_fulfilled, :input_html => { :disabled => true }
       end
-      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: false
+      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
       f.input :sponsor_type, include_blank: false
       f.input :organization
       f.input :branch
