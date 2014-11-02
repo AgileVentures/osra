@@ -81,7 +81,6 @@ ActiveAdmin.register Sponsor do
       unless f.object.new_record?
         f.input :request_fulfilled, :input_html => { :disabled => true }
       end
-<<<<<<< HEAD
       if f.object.new_record?
         f.input :sponsor_type, include_blank: false
         f.input :organization
