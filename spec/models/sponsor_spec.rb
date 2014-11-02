@@ -123,7 +123,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'SponsorType must match affiliation' do
-      let(:sponsor) { build :sponsor }
+      let(:sponsor) { build :sponsor, sponsor_type: individual_type }
 
       context 'when SponsorType matches affiliation' do
         specify 'Individual type and Branch affiliation are valid' do
