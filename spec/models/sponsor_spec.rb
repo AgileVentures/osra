@@ -9,7 +9,7 @@ describe Sponsor, type: :model do
   let(:organization_type) { SponsorType.find_by_name 'Organization' }
 
   it 'should have payment plans' do
-    expect(Sponsor::PAYMENT_PLANS).to be_truthy
+    expect(Sponsor::PAYMENT_PLANS).to be_present
   end
 
   it 'should have a valid factory' do
