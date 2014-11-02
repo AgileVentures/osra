@@ -10,8 +10,8 @@ Feature:
       | gender                 | Male               | Female              | Male                |
       | requested_orphan_count | 15                 | 1                   | 3                   |
       | sponsor_type           | Individual         | Organization        | Individual          |
-      | branch                 | Jeddah             | Jeddah              | Jeddah              |
-      | branch_code            | 2                  | 2                   | 2                   |
+      | branch                 | Jeddah             |                     | Jeddah              |
+      | organization           |                    | Organization 1      |                     |
       | address                | Address1           | Address2            | Address3            |
       | email                  | email1@example.com | email2@example.com  | email3@example.com  |
       | contact1               | cd1                | cs2                 | cs3                 |
@@ -111,9 +111,7 @@ Feature:
     And I should see "Request Fulfilled" set to "No"
 
   Scenario: Sponsor Type should match affiliation
-    Given the sponsor type "Organization" exists
-    And the organization "Organization 1" exists
-    And I am on the "New Sponsor" page for the "Admin" role
+    Given I am on the "New Sponsor" page for the "Admin" role
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Organization" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
