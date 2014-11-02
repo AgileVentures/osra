@@ -1,6 +1,8 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
 
+  attr_readonly :branch_id, :organization_id, :sponsor_type_id
+
   after_initialize :default_status_to_active,
                    :default_start_date_to_today,
                    :default_type_to_individual
@@ -18,6 +20,8 @@ class Sponsor < ActiveRecord::Base
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
+  validates_format_of :email, with: Devise.email_regexp, allow_blank: true
+  validate :type_matches_affiliation, on: :create
 
   belongs_to :branch
   belongs_to :organization
@@ -107,5 +111,17 @@ class Sponsor < ActiveRecord::Base
 
   def request_is_fulfilled?
     sponsorships.all_active.count >= requested_orphan_count
+  end
+
+  def type_matches_affiliation
+    if type_affiliation_mismatch
+      errors[:sponsor_type] << 'Sponsor type must match affiliation'
+    end
+  end
+
+  def type_affiliation_mismatch
+    if sponsor_type
+      (sponsor_type.name == 'Individual' && branch.nil?) || (sponsor_type.name == 'Organization' && organization.nil?)
+    end
   end
 end
