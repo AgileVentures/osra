@@ -10,8 +10,8 @@ OSRA
 
 [![Dependency Status](https://gemnasium.com/AgileVentures/osra.svg)](https://gemnasium.com/AgileVentures/osra)
 
-OSRA is a non-profit organization registered in UK, aiming to sponsor orphans in Syria & insure basic life & education requirements for Syrian children. This projects objective is to build a support system for administration of the information needed to fulfill the organizations goals.
+OSRA is a non-profit organization registered in the UK, aiming to sponsor orphans in Syria & ensure basic life & education requirements for Syrian children. This project's objective is to build a support system for the administration of the information needed to fulfill the organization's goals.
 
-We are proudly using Agile methods and Ruby on Rails as the framework to deliver well tested and solid software.
+We are proudly using Agile methods and Ruby on Rails as the framework to deliver well-tested and solid software.
 
 The principal organization developing this project is [AGILEVENTURES NONPROFIT LTD.][organization], a nonprofit organization registered in the UK, company number: 08929160
