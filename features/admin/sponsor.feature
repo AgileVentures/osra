@@ -9,8 +9,7 @@ Feature:
       | country                | GB                 | CA                  | EE                  |
       | gender                 | Male               | Female              | Male                |
       | requested_orphan_count | 15                 | 1                   | 3                   |
-      | sponsor_type           | Individual         | Organisation        | Individual          |
-      | sponsor_type_code      | 1                  | 2                   | 1                   |
+      | sponsor_type           | Individual         | Organization        | Individual          |
       | branch                 | Jeddah             | Jeddah              | Jeddah              |
       | branch_code            | 2                  | 2                   | 2                   |
       | address                | Address1           | Address2            | Address3            |
@@ -20,7 +19,6 @@ Feature:
       | additional_info        | additional1        | additional2         | addtional3          |
       | start_date             | 2013-09-25         | 2013-09-25          | 2013-09-25          |
       | status                 | Active             | Active              | Active              |
-      | status_code            | 01                 | 01                  | 01                  |
 
     And I am a new, authenticated user
 
