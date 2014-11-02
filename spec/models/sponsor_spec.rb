@@ -10,10 +10,14 @@ describe Sponsor, type: :model do
 
   it 'should have payment plans' do
 <<<<<<< HEAD
+<<<<<<< HEAD
     expect(Sponsor::PAYMENT_PLANS).to be_present
 =======
     expect(Sponsor::PAYMENT_PLANS).to be_truthy
 >>>>>>> DRY up payment_plans
+=======
+    expect(Sponsor::PAYMENT_PLANS).to be_present
+>>>>>>> PAYMENT_PLANS spec update
   end
 
   it 'should have a valid factory' do
