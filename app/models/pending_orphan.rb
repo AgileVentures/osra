@@ -10,14 +10,13 @@ class PendingOrphan < ActiveRecord::Base
   def to_orphan
     ['current_address', 'original_address'].each do |address|
       extract_and_create_address address
-      reject_fields_starting_with(attributes, address_prefix(address))
     end
     pending_attrs_to_orphan
     orphan
   end
 
   def address_prefix address
-    address + '_'
+    "#{address}_"
   end
 
   def pending_attrs_to_orphan
@@ -36,11 +35,6 @@ class PendingOrphan < ActiveRecord::Base
 
   def fields_starting_with dict, prefix
     dict.select {|key, _| String(key).starts_with? prefix}
-  end
-
-  def reject_fields_starting_with dict, prefix
-    rm_keys = fields_starting_with(dict, prefix).keys
-    attributes.reject {|key, _| rm_keys.include? key}
   end
 
   def remove_prefix_from_keys(dict, prefix)
