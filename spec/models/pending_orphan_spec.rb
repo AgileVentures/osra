@@ -31,6 +31,21 @@ describe PendingOrphan, type: :model do
       expect(orphan.class.name).to eq 'Orphan'
       expect(orphan.is_a?(Orphan)).to be true
     end
+
+    it 'should get an address' do
+      expect(pending_orphan.orphan.original_address).to be nil
+      pending_orphan.attributes = attributes
+      orphan = pending_orphan.to_orphan
+      expect(orphan.original_address.street).to eq "ﺎﻠﺷﺍﺮﻋ"
+    end
+
+    it 'should get a name' do
+      debugger
+      expect(pending_orphan.orphan.name).to be nil
+      pending_orphan.attributes = attributes
+      orphan = pending_orphan.to_orphan
+      expect(orphan.name).to eq "ﺎﻠﻄﻔﻟ"
+    end
   end
 
   specify '#address_prefix' do
