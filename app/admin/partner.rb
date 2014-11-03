@@ -44,7 +44,10 @@ ActiveAdmin.register Partner do
       f.input :region
       f.input :contact_details
     end
-    f.actions
+    f.actions do
+      f.action :submit
+      f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
+    end
   end
 
   action_item :only => :show do
