@@ -84,3 +84,11 @@ Feature:
     Given I am on the "Show Partner" page for partner "Partner1"
     Then I should not see the "Delete Partner" link
 
+  Scenario: Should return to partner show page on cancelling edit partner
+    Given I am on the "Show Partner" page for partner "Partner1"
+    And I click the "Edit Partner" button
+    Then I should be on the "Edit Partner" page for partner "Partner1"
+    And I fill in "Region" with "New Region"
+    And I click the "Cancel" button
+    Then I should be on the "Show Partner" page for partner "Partner1"
+    And I should not see "New Region"
