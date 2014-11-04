@@ -1,7 +1,5 @@
 ActiveAdmin.register Orphan do
   actions :all, except: [:new, :destroy]
-  preserve_default_filters!
-  filter :gender, as: :select, collection: Settings.lookup.gender
 
   breadcrumb do
     if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
@@ -190,18 +188,6 @@ ActiveAdmin.register Orphan do
   end
 
   index do
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      panel 'Sponsor' do
-        h3 Sponsor.find_by_id(params[:sponsor_id]).name
-        para Sponsor.find_by_id(params[:sponsor_id]).additional_info
-        para link_to 'Return to Sponsor page', admin_sponsor_path(Sponsor.find_by_id(params[:sponsor_id]))
-      end
-    end
-    column 'OSRA No.', sortable: :osra_num do |orphan|
-      link_to orphan.osra_num, admin_orphan_path(orphan)
-    end
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :full_name, sortable: :name do |orphan|
         link_to orphan.full_name, admin_orphan_path(orphan)
       end
     else
