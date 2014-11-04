@@ -36,3 +36,13 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   sponsor = Sponsor.find_by name: sponsor_name
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
+
+Given /^sponsor "([^"]*)" is assigned to agent "([^"]*)"$/ do |sponsor, agent|
+  sponsor = Sponsor.find_by_name(sponsor)
+  agent = Agent.find_by_agent_name(agent)
+  sponsor.update!(agent: agent)
+end
+
+Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (agent|sponsor|orphan|partner) "([^"]*)"$/ do |link, page, model, name|
+  
+end

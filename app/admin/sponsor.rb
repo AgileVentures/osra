@@ -42,7 +42,7 @@ ActiveAdmin.register Sponsor do
       row :contact2
       row :additional_info
       row :agent do
-        link_to sponsor.agent.agent_name, admin_agent_path(sponsor.agent)
+        link_to sponsor.agent.agent_name, admin_agent_path(sponsor.agent) if sponsor.agent
       end
     end
 
