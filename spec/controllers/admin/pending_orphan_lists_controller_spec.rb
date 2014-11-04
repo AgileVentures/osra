@@ -74,7 +74,7 @@ describe Admin::PendingOrphanListsController, type: :controller do
       end
 
       it 'renders :validate' do
-        expect(response).to render_template :validate
+        expect(response).to render_template :valid_list
       end
     end
   end
