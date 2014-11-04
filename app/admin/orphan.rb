@@ -228,25 +228,7 @@ ActiveAdmin.register Orphan do
       end
       column :father_is_martyr, sortable: :father_is_martyr
     end
-    column :father_alive
-    column :mother_alive
-    column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :mother_alive, sortable: :mother_alive
-    end
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :priority, sortable: :priority
-      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-    else
-      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-    end
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column '' do |orphan|
-          link_to "Sponsor this orphan",
+
             admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
       end
     end
