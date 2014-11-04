@@ -219,7 +219,7 @@ ActiveAdmin.register Orphan do
     end
     if params[:sponsor_id]
       column '' do |orphan|
-          link_to "Sponsor #{orphan.name}",
+          link_to "Sponsor this orphan",
             admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
       end
     end
