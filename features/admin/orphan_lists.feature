@@ -9,8 +9,6 @@ Feature:
       | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 |
       | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 |
 
-    And provinces and orphan statuses have been seeded
-
     And I am a new, authenticated user
 
   Scenario: There should not be a link to the orphan lists page on the navbar
