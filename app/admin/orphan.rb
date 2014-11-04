@@ -12,7 +12,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id, :priority,
+                :comments, :orphan_status_id, :priority, :sponsor_id,
                 original_address_attributes: [:id, :city, :province_id,
                                               :neighborhood, :street, :details],
                 current_address_attributes:  [:id, :city, :province_id,
@@ -162,6 +162,8 @@ ActiveAdmin.register Orphan do
   end
 
   index do
+
+  
     column 'OSRA No.', sortable: :osra_num do |orphan|
       link_to orphan.osra_num, admin_orphan_path(orphan)
     end
@@ -180,4 +182,5 @@ ActiveAdmin.register Orphan do
       orphan.orphan_sponsorship_status.name
     end
   end
+  
 end
