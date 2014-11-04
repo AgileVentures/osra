@@ -1,6 +1,6 @@
 ActiveAdmin.register Sponsorship do
   menu if: proc { false }
-  actions :new, :create
+  actions :create
   belongs_to :sponsor
 
   form do |f|
