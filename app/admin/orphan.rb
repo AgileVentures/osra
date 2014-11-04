@@ -163,6 +163,13 @@ ActiveAdmin.register Orphan do
 
   index do
 
+    if params[:sponsor_id]
+      panel 'Sponsor' do
+        h3 Sponsor.find_by_id(params[:sponsor_id]).name
+        para Sponsor.find_by_id(params[:sponsor_id]).additional_info
+        para link_to 'Return to Sponsor page', admin_sponsor_path(Sponsor.find_by_id(params[:sponsor_id]))
+      end
+    end
     column 'OSRA No.', sortable: :osra_num do |orphan|
       link_to orphan.osra_num, admin_orphan_path(orphan)
     end
