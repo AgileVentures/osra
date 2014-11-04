@@ -20,7 +20,7 @@ ActiveAdmin.register Agent do
     panel "#{pluralize(agent.sponsors.count, 'Sponsor')}" do
       table_for agent.sponsors do
         column :name do |sponsor|
-          link_to sponsor.name, admin_sponsor_path(sponsor) if sponsor
+          link_to sponsor.name, admin_sponsor_path(sponsor)# if sponsor
         end
         column :gender
         column :country
