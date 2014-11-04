@@ -35,8 +35,16 @@ class OrphanImporter
   end
 
   def open_doc
-    @file =~ /[.]([^.]+)\z/
-    @doc = Roo::Spreadsheet.open @file, extension: $1.to_s
+    case @file
+      when String
+        name = @file
+        path = @file
+      when Rack::Test::UploadedFile, ActionDispatch::Http::UploadedFile
+        name = @file.original_filename
+        path = @file.path
+    end
+    name =~ /[.]([^.]+)\z/
+    @doc = Roo::Spreadsheet.open path, extension: $1.to_s
     if @doc.last_row.nil? || (@doc.last_row < CONFIG.first_row)
       add_validation_error('Import file', 'Does not contain any orphan records')
     end
