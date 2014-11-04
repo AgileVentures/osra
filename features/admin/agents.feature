@@ -45,3 +45,8 @@ Feature:
     Then I should be on the "Show Agent" page for agent "New Agent"
     And I should see "Agent was successfully updated"
     And I should see "new_agent@osra.org"
+
+  Scenario: Should be able to see links to assigned sponsors on an agent's page
+    Given sponsor "Sponsor1" is assigned to agent "Tarek Al Wafai"
+    And I am on the "Show Agent" page for agent "Tarek Al Wafai"
+    Then I should see "Sponsor1" linking to the "Show" page for sponsor "Sponsor1"

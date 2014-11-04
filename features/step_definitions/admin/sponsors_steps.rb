@@ -38,7 +38,7 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
 end
 
 Given /^sponsor "([^"]*)" is assigned to agent "([^"]*)"$/ do |sponsor, agent|
-  sponsor = Sponsor.find_by_name(sponsor)
+  sponsor = Sponsor.find_by_name(sponsor) || FactoryGirl.create(:sponsor, name: sponsor)
   agent = Agent.find_by_agent_name(agent) || FactoryGirl.create(:agent, agent_name: agent)
   sponsor.update!(agent: agent)
 end
