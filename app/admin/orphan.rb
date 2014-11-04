@@ -163,24 +163,60 @@ ActiveAdmin.register Orphan do
 
   index do
 
-  
     column 'OSRA No.', sortable: :osra_num do |orphan|
       link_to orphan.osra_num, admin_orphan_path(orphan)
     end
-    column :full_name do |orphan|
-      link_to orphan.full_name, admin_orphan_path(orphan)
+
+    unless params[:sponsor_id]
+      column :full_name, sortable: :full_name do |orphan|
+        link_to orphan.full_name, admin_orphan_path(orphan)
+      end
+    else
+      column :name, sortable: :name do |orphan|
+        link_to orphan.name, admin_orphan_path(orphan)
+      end
+      column :father_name, sortable: :father_name
     end
-    column :date_of_birth
-    column :gender
-    column :orphan_status, sortable: :orphan_status_id
-    column :priority do |orphan|
-      status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+    column :date_of_birth, sortable: :date_of_birth
+    column :gender, sortable: :gender
+    unless params[:sponsor_id]
+      column :orphan_status, sortable: :orphan_status_id
+      column :priority do |orphan|
+        status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+      end
+
     end
+    if params[:sponsor_id]
+      column :original_province, sortable: 'addresses.province_id' do |orphan|
+        orphan.original_address.province.name
+      end
+      column :partner, sortable: 'partners.name' do |orphan|
+        orphan.partner.name
+      end
+      column :father_is_martyr, sortable: :father_is_martyr
+    end
+<<<<<<< HEAD
     column :father_alive
     column :mother_alive
     column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
+=======
+    unless params[:sponsor_id]
+      column :mother_alive, sortable: :mother_alive
+    end
+    if params[:sponsor_id]
+      column :priority, sortable: :priority
+    end
+    column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+>>>>>>> merge sponsorship#new and orphan#index views
       orphan.orphan_sponsorship_status.name
     end
+    if params[:sponsor_id]
+      column '' do |orphan|
+          link_to "Sponsor #{orphan.name}",
+            admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
+      end
+    end
+
   end
   
 end
