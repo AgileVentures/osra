@@ -39,10 +39,29 @@ end
 
 Given /^sponsor "([^"]*)" is assigned to agent "([^"]*)"$/ do |sponsor, agent|
   sponsor = Sponsor.find_by_name(sponsor)
-  agent = Agent.find_by_agent_name(agent)
+  agent = Agent.find_by_agent_name(agent) || FactoryGirl.create(:agent, agent_name: agent)
   sponsor.update!(agent: agent)
 end
 
-Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (agent|sponsor|orphan|partner) "([^"]*)"$/ do |link, page, model, name|
-  
+Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (agent|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|
+  object_class = model.classify.constantize
+  if object_class == Agent
+    object_id = Agent.find_by_agent_name(name).id
+  else
+    object_id = object_class.find_by_name(name).id
+  end
+
+  object_class_param = object_class.name.parameterize
+  case view
+    when 'Show' then
+      href = "admin_#{object_class_param}_path(#{object_id})"
+    when 'Edit' then
+      href = "edit_admin_#{object_class_param}_path(#{object_id})"
+    when 'New' then
+      href = "new_admin_#{object_class_param}_path"
+    else
+      raise "The view '#{view}' is not registered. See the step definition in #{__FILE__}"
+  end
+
+  expect(page).to have_link(link, href: eval(href))
 end
