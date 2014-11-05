@@ -208,9 +208,16 @@ ActiveAdmin.register Orphan do
       link_to orphan.osra_num, admin_orphan_path(orphan)
     end
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+<<<<<<< HEAD
 
       column :full_name, sortable: :full_name do |orphan|
+<<<<<<< HEAD
 >>>>>>> defer params dereferencing
+=======
+=======
+      column :full_name, sortable: :name do |orphan|
+>>>>>>> fix broken link
+>>>>>>> fix broken link
         link_to orphan.full_name, admin_orphan_path(orphan)
       end
     else
@@ -249,9 +256,13 @@ ActiveAdmin.register Orphan do
 >>>>>>> all tests green
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :priority, sortable: :priority
-    end
-    column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-      orphan.orphan_sponsorship_status.name
+      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
+    else
+      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column '' do |orphan|
