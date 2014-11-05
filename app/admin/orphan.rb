@@ -2,6 +2,8 @@ ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
 
+  config.breadcrumb = false
+
   borrow_binding= Proc.new { |statement, object|
       class << object
         def get_binding
@@ -206,9 +208,7 @@ ActiveAdmin.register Orphan do
       end
       column :father_is_martyr, sortable: :father_is_martyr
     end
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :mother_alive, sortable: :mother_alive
-    end
+    column :mother_alive, sortable: :mother_alive
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :priority, sortable: :priority
     end
