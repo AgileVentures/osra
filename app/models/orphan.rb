@@ -139,7 +139,7 @@ class Orphan < ActiveRecord::Base
       if ['ASC', 'DESC'].include?(second_half(param))
         if ['addresses.province_id', 'partners.name', 'orphan_sponsorship_statuses.name'].include?(first_half(param)) ||
                                       Orphan.method_defined?(first_half(param).to_sym)
-          true
+          first_half(param)!= 'id'
         end
       end
     end
