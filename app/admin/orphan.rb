@@ -3,6 +3,8 @@ ActiveAdmin.register Orphan do
   preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
 
+  config.breadcrumb = false
+
   borrow_binding= Proc.new { |statement, object|
       class << object
         def get_binding
@@ -218,7 +220,6 @@ ActiveAdmin.register Orphan do
     column :mother_alive
     column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-
       column :mother_alive, sortable: :mother_alive
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
