@@ -2,13 +2,25 @@ ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
 <<<<<<< HEAD
+<<<<<<< HEAD
   preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
 =======
   
+=======
+
+  borrow_binding= Proc.new { |statement, object|
+      class << object
+        def get_binding
+          return binding()
+        end
+      end
+      eval(statement.to_s, object.get_binding)
+    }
+>>>>>>> defer params dereferencing
   scope :all, default: true
-  scope :eligible_for_sponsorship, default: false do |orphan|
-    Orphan.sort_by_eligibility
+  scope :eligible_for_sponsorship, :private, default: false do |orphan|
+    Orphan.sort_by_param borrow_binding.call("params", self)
   end
 >>>>>>> only show eligible orphans, scopes added
 
@@ -20,7 +32,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id, :priority, :sponsor_id,
+                :comments, :orphan_status_id, :priority, :sponsor_id, :order,
                 original_address_attributes: [:id, :city, :province_id,
                                               :neighborhood, :street, :details],
                 current_address_attributes:  [:id, :city, :province_id,
@@ -170,7 +182,6 @@ ActiveAdmin.register Orphan do
   end
 
   index do
-
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       panel 'Sponsor' do
         h3 Sponsor.find_by_id(params[:sponsor_id]).name
@@ -210,23 +221,14 @@ ActiveAdmin.register Orphan do
       end
       column :father_is_martyr, sortable: :father_is_martyr
     end
-<<<<<<< HEAD
-<<<<<<< HEAD
-    column :father_alive
-    column :mother_alive
-    column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
-=======
-    unless params[:sponsor_id]
-=======
+
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
->>>>>>> only show eligible orphans, scopes added
       column :mother_alive, sortable: :mother_alive
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :priority, sortable: :priority
     end
     column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
->>>>>>> merge sponsorship#new and orphan#index views
       orphan.orphan_sponsorship_status.name
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
