@@ -100,6 +100,21 @@ Feature:
     When I click the "Sponsorship" link
     Then I should see "Previously Sponsored" before "Unsponsored"
     And I should not see "Unsponsored" before "Previously Sponsored"
+    
+  Scenario: Breadcrumbs on orphan list
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    And I click the "Admin" link
+    Then I should be on the admin dashboard page
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    Then I should see html ">Sponsors</a>" 2 times
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    And I click the "Second Sponsor" link
+    Then I should be on the "Show Sponsor" page for sponsor "Second Sponsor"
+    Given I click the "Orphans" link
+    Then I should not see "/admin/sponsors/"
 
   Scenario: Ending a sponsorship
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
