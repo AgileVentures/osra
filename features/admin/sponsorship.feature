@@ -112,24 +112,24 @@ Feature:
 
   Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    When I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
-    When I am on the "Link to Orphan" page for sponsor "Second Sponsor"
+    When I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
 
   Scenario: Cancelling sponsorship creation
-    When I am on the "Link to Orphan" page for sponsor "First Sponsor"
-    Then show me the page
-    Then I should see "Return to Sponsor page"
-    When I click the "Return to Sponsor page" link
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
+    And I click the "Return to Sponsor page" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
 
   Scenario: A sponsor should be able to re-sponsor an orphan
     Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    And I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     Then I should see "First Orphan"
-    Then show me the page
-    And I should see "Sponsor this orphan"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully created"
