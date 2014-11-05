@@ -1,12 +1,20 @@
 ActiveAdmin.register Orphan do
-
   actions :all, except: [:new, :destroy]
   preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
-  
+
+  borrow_binding= Proc.new { |statement, object|
+      class << object
+        def get_binding
+          return binding()
+        end
+      end
+      eval(statement.to_s, object.get_binding)
+    }
+
   scope :all, default: true
-  scope :eligible_for_sponsorship, default: false do |orphan|
-    Orphan.sort_by_eligibility
+  scope :eligible_for_sponsorship, :private, default: false do |orphan|
+    Orphan.sort_by_param borrow_binding.call("params", self)
   end
 
 
@@ -18,7 +26,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id, :priority, :sponsor_id,
+                :comments, :orphan_status_id, :priority, :sponsor_id, :order,
                 original_address_attributes: [:id, :city, :province_id,
                                               :neighborhood, :street, :details],
                 current_address_attributes:  [:id, :city, :province_id,
@@ -168,7 +176,6 @@ ActiveAdmin.register Orphan do
   end
 
   index do
-
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       panel 'Sponsor' do
         h3 Sponsor.find_by_id(params[:sponsor_id]).name
