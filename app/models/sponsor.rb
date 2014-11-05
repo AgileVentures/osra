@@ -10,12 +10,11 @@ class Sponsor < ActiveRecord::Base
   before_update :set_request_fulfilled
 
   validates :name, presence: true
-  validates :requested_orphan_count, presence: true,
-            numericality: {only_integer: true, greater_than: 0}
-  validates :country, presence: true, inclusion:  {in: ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
-  validates :request_fulfilled, inclusion: {in: [true, false] }
+  validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+  validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
-  validates :gender, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
+  validates :gender, inclusion: { in: Settings.lookup.gender }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
