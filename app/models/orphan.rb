@@ -135,8 +135,7 @@ class Orphan < ActiveRecord::Base
   end
   
   def self.whitelist_sort param
-    param[:order].to_s.gsub(/_[^_]+$/, '') + ' ' + param[:order].gsub(/.*_/, '').upcase
-    if param[:order] && (param.class== ActionController::Parameters.new().class)
+
       if ['ASC', 'DESC'].include?(second_half(param))
         if ['addresses.province_id', 'partners.name', 'orphan_sponsorship_statuses.name'].include?(first_half(param)) ||
                                       Orphan.method_defined?(first_half(param).to_sym)

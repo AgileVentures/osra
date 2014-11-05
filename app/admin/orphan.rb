@@ -1,19 +1,6 @@
 ActiveAdmin.register Orphan do
   actions :all, except: [:new, :destroy]
 
-  breadcrumb do
-    if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
-      [
-        link_to('Admin', '/admin'),
-        link_to('Sponsors', '/admin/sponsors'),
-        link_to(Sponsor.find_by_id($1).name, '/admin/sponsors/' + $1.to_s),
-        'Sponsorship',
-        'New'
-      ]
-    else
-      [ link_to('Admin', '/admin') ]
-    end
-  end
 
   borrow_binding= Proc.new { |statement, object|
       class << object
@@ -188,6 +175,22 @@ ActiveAdmin.register Orphan do
   end
 
   index do
+<<<<<<< HEAD
+=======
+    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      panel 'Sponsor' do
+        h3 Sponsor.find_by_id(params[:sponsor_id]).name
+        para Sponsor.find_by_id(params[:sponsor_id]).additional_info
+        para link_to 'Return to Sponsor page', admin_sponsor_path(Sponsor.find_by_id(params[:sponsor_id]))
+      end
+    end
+    column 'OSRA No.', sortable: :osra_num do |orphan|
+      link_to orphan.osra_num, admin_orphan_path(orphan)
+    end
+    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+
+      column :full_name, sortable: :full_name do |orphan|
+>>>>>>> defer params dereferencing
         link_to orphan.full_name, admin_orphan_path(orphan)
       end
     else
@@ -214,6 +217,22 @@ ActiveAdmin.register Orphan do
       end
       column :father_is_martyr, sortable: :father_is_martyr
     end
+<<<<<<< HEAD
+=======
+
+    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      column :mother_alive, sortable: :mother_alive
+    end
+    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      column :priority, sortable: :priority
+    end
+    column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+      orphan.orphan_sponsorship_status.name
+    end
+    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      column '' do |orphan|
+          link_to "Sponsor this orphan",
+>>>>>>> defer params dereferencing
             admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
       end
     end
