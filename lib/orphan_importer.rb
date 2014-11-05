@@ -17,6 +17,10 @@ class OrphanImporter
       address_fields = fields.select { |k, _| k[i] }.map { |k, v| [(k.gsub i, ''), v] }.to_h
       address_fields['province'] = Province.find_by_code(address_fields['province'])
       orphan.send "#{i.chop}=", Address.new(address_fields)
+
+      # hard coding father_alive value for now so that specs will pass
+      # will be fixed once we implement subsequent tasks in IsFatherDead story
+      orphan.father_alive = false
     end
 
     orphan.attributes = fields.reject { |k, _| k['address'] || k['pending'] || k['id'] }

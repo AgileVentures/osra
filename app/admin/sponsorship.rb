@@ -17,6 +17,7 @@ ActiveAdmin.register Sponsorship do
           link_to _orphan.name, admin_orphan_path(_orphan)
         end
         column :gender
+        column :father_alive
         column :mother_alive
         column 'Establish sponsorship' do |_orphan|
           link_to 'Sponsor this orphan',
