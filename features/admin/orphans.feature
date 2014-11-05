@@ -36,7 +36,7 @@ Feature:
     When I click the "Orphan 1" link
     Then I should be on the "Show Orphan" page for orphan "Orphan 1"
 
-  Scenario: Should be able to edit an orphan from the orphan show page
+   Scenario: Should be able to edit an orphan from the orphan show page
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
@@ -53,7 +53,8 @@ Feature:
     And I fill in "Mother name" with "Mother N"
     And I select "Male" from the drop down box for "Gender"
     And I uncheck the "Father is martyr" checkbox
-    And I check the "Mother alive" checkbox
+    And I uncheck the "Mother alive" checkbox
+    And I check the "Father alive" checkbox
     And I fill in "Health status" with "Another Health Status"
     And I fill in "Schooling status" with "Another Schooling Status"
     And I fill in "Guardian name" with "Another Name"
@@ -92,7 +93,8 @@ Feature:
     And I should see "Mother Name" set to "Mother N"
     And I should see "Gender" set to "Male"
     And I should see "Father Is Martyr" set to "No"
-    And I should see "Mother Alive" set to "Yes"
+    And I should see "Mother Alive" set to "No"
+    And I should see "Father Alive" set to "Yes"
     And I should see "Health Status" set to "Another Health Status"
     And I should see "Schooling Status" set to "Another Schooling Status"
     And I should see "Guardian Name" set to "Another Name"
