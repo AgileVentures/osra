@@ -36,7 +36,7 @@ Feature:
     When I click the "Orphan 1" link
     Then I should be on the "Show Orphan" page for orphan "Orphan 1"
 
-  Scenario: Should be able to edit an orphan from the orphan show page
+   Scenario: Should be able to edit an orphan from the orphan show page
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
