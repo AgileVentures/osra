@@ -24,11 +24,10 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for sponsor "([^"]*)"$/) do |page, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
-  unless page== 'Link to Orphan'
-    visit path_to_admin_role(page, sponsor.id)
-  else
-    visit new_sponsorship_path(sponsor.id)
+  if page== 'Link to Orphan'
+    raise "You need to navigate to this page through the application's UI to build parameters."
   end
+  visit path_to_admin_role(page, sponsor.id)
 end
 
 Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, sponsor_name|

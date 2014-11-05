@@ -3,7 +3,7 @@ ActiveAdmin.register Sponsorship do
   actions :create
   belongs_to :sponsor
 
-  form do |f|
+  form do
     panel 'Sponsor' do
       h3 sponsorship.sponsor_name
       para link_to 'Return to Sponsor page', admin_sponsor_path(sponsorship.sponsor)
