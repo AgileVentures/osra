@@ -3,7 +3,19 @@ ActiveAdmin.register Orphan do
   preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
 
-  config.breadcrumb = false
+  breadcrumb do
+    if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
+      [
+        link_to('Admin', '/admin'),
+        link_to('Sponsors', '/admin/sponsors'),
+        link_to(Sponsor.find_by_id($1).name, '/admin/sponsors/' + $1.to_s),
+        'Sponsorship',
+        'New'
+      ]
+    else
+      [ link_to('Admin', '/admin') ]
+    end
+  end
 
   borrow_binding= Proc.new { |statement, object|
       class << object
