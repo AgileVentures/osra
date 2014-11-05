@@ -53,8 +53,7 @@ Feature:
     And I fill in "Mother name" with "Mother N"
     And I select "Male" from the drop down box for "Gender"
     And I uncheck the "Father is martyr" checkbox
-    And I uncheck the "Mother alive" checkbox
-    And I check the "Father alive" checkbox
+    And I check the "Mother alive" checkbox
     And I fill in "Health status" with "Another Health Status"
     And I fill in "Schooling status" with "Another Schooling Status"
     And I fill in "Guardian name" with "Another Name"
@@ -69,8 +68,16 @@ Feature:
     And I fill in "Comments" with "Other Comments"
     And I select "Inactive" from the drop down box for "Orphan status"
     And I select "High" from the drop down box for "Priority"
+    And I fill in "City" in panel "Original Address" with "Another Original City"
+    And I fill in "Neighborhood" in panel "Original Address" with "Another Original Neighborhood"
+    And I fill in "Street" in panel "Original Address" with "Another Original Street"
     And I fill in "Details" in panel "Original Address" with "Another Original Details"
+    And I select "Latakia" from the drop down box for "Province" in panel "Original Address"
+    And I fill in "City" in panel "Current Address" with "Another Current City"
+    And I fill in "Neighborhood" in panel "Current Address" with "Another Current Neighborhood"
+    And I fill in "Street" in panel "Current Address" with "Another Current Street"
     And I fill in "Details" in panel "Current Address" with "Another Current Details"
+    And I select "Hama" from the drop down box for "Province" in panel "Current Address"
     And I click the "Update Orphan" button
     Then I should be on the "Show Orphan" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
@@ -85,8 +92,7 @@ Feature:
     And I should see "Mother Name" set to "Mother N"
     And I should see "Gender" set to "Male"
     And I should see "Father Is Martyr" set to "No"
-    And I should see "Mother Alive" set to "No"
-    And I should see "Father Alive" set to "Yes"
+    And I should see "Mother Alive" set to "Yes"
     And I should see "Health Status" set to "Another Health Status"
     And I should see "Schooling Status" set to "Another Schooling Status"
     And I should see "Guardian Name" set to "Another Name"
@@ -101,8 +107,16 @@ Feature:
     And I should see "Comments" set to "Other Comments"
     And I should see "Orphan Status" set to "Inactive"
     And I should see "Priority" set to "High"
+    And I should see "City" in panel "Original Address" set to "Another Original City"
+    And I should see "Neighborhood" in panel "Original Address" set to "Another Original Neighborhood"
+    And I should see "Street" in panel "Original Address" set to "Another Original Street"
     And I should see "Details" in panel "Original Address" set to "Another Original Details"
+    And I should see "Province" in panel "Original Address" set to "Latakia"
+    And I should see "City" in panel "Current Address" set to "Another Current City"
+    And I should see "Neighborhood" in panel "Current Address" set to "Another Current Neighborhood"
+    And I should see "Street" in panel "Current Address" set to "Another Current Street"
     And I should see "Details" in panel "Current Address" set to "Another Current Details"
+    And I should see "Province" in panel "Current Address" set to "Hama"
 
   Scenario: Should not be able to delete an orphan from the orphan show page
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
