@@ -1,13 +1,8 @@
 ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
-<<<<<<< HEAD
-<<<<<<< HEAD
-  preserve_default_filters!
-  filter :gender, as: :select, collection: Settings.lookup.gender
-=======
-  
-=======
+
+  config.breadcrumb = false
 
   borrow_binding= Proc.new { |statement, object|
       class << object
@@ -17,12 +12,12 @@ ActiveAdmin.register Orphan do
       end
       eval(statement.to_s, object.get_binding)
     }
->>>>>>> defer params dereferencing
+
   scope :all, default: true
   scope :eligible_for_sponsorship, :private, default: false do |orphan|
     Orphan.sort_by_param borrow_binding.call("params", self)
   end
->>>>>>> only show eligible orphans, scopes added
+
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
@@ -221,10 +216,7 @@ ActiveAdmin.register Orphan do
       end
       column :father_is_martyr, sortable: :father_is_martyr
     end
-
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :mother_alive, sortable: :mother_alive
-    end
+    column :mother_alive, sortable: :mother_alive
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :priority, sortable: :priority
     end

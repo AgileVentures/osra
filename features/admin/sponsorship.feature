@@ -74,11 +74,8 @@ Feature:
     When I click the "Name" link
     Then I should see "Second Orphan" before "First Orphan"
     When I click the "Name" link
-    
-    Then show me the page
-    
     Then I should see "First Orphan" before "Second Orphan"
-    When I click the "Osra Num" link
+    When I click the "OSRA No." link
     And I click the "Father Name" link
     And I click the "Gender" link
     And I click the "Date Of Birth" link
@@ -97,10 +94,10 @@ Feature:
     When I click the "Priority" link
     Then I should see "High" before "Normal"
     And I should not see "Normal" before "High"
-    When I click the "Orphan Sponsorship Status" link
+    When I click the "Sponsorship" link
     Then I should see "Unsponsored" before "Previously Sponsored"
     And I should not see "Previously Sponsored" before "Unsponsored"
-    When I click the "Orphan Sponsorship Status" link
+    When I click the "Sponsorship" link
     Then I should see "Previously Sponsored" before "Unsponsored"
     And I should not see "Unsponsored" before "Previously Sponsored"
 
@@ -117,9 +114,6 @@ Feature:
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
-    
-    Then show me the page
-    
     Then I should not see "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
