@@ -4,7 +4,7 @@ ActiveAdmin.register Orphan do
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
-                :father_date_of_death, :mother_name, :mother_alive,
+                :father_date_of_death, :mother_name, :mother_alive, :father_alive,
                 :date_of_birth, :gender, :health_status, :schooling_status,
                 :goes_to_school, :guardian_name, :guardian_relationship,
                 :guardian_id_num, :contact_number, :alt_contact_number,
@@ -13,8 +13,8 @@ ActiveAdmin.register Orphan do
                 :comments, :orphan_status_id, :priority,
                 original_address_attributes: [:id, :city, :province_id,
                                               :neighborhood, :street, :details],
-                current_address_attributes: [:id, :city, :province_id,
-                                             :neighborhood, :street, :details]
+                current_address_attributes:  [:id, :city, :province_id,
+                                              :neighborhood, :street, :details]
 
   form do |f|
     f.inputs 'Orphan Details' do
@@ -22,17 +22,18 @@ ActiveAdmin.register Orphan do
       f.input :name
       f.input :date_of_birth, as: :datepicker
       f.input :gender, as: :select,
-              collection: %w(Male Female), include_blank: false
+              collection:  %w(Male Female), include_blank: false
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
       f.input :orphan_status, include_blank: false
       f.input :orphan_sponsorship_status, label: 'Sponsorship Status', input_html: { :disabled => true }
       f.input :priority, as: :select,
-              collection: %w(Normal High), include_blank: false
+              collection:    %w(Normal High), include_blank: false
     end
     f.inputs 'Parents Details' do
       f.input :father_name
+      f.input :father_alive
       f.input :mother_name
       f.input :mother_alive
       f.input :father_is_martyr
@@ -97,6 +98,9 @@ ActiveAdmin.register Orphan do
     panel 'Parents Details' do
       attributes_table_for orphan do
         row :father_name
+        row :father_alive do
+          orphan.father_alive ? 'Yes' : 'No'
+        end
         row :mother_name
         row :mother_alive do
           orphan.mother_alive ? 'Yes' : 'No'
@@ -168,6 +172,7 @@ ActiveAdmin.register Orphan do
     column :priority do |orphan|
       status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
     end
+    column :father_alive
     column :mother_alive
     column 'Sponsorship', sortable: :orphan_sponsorship_status_id do |orphan|
       orphan.orphan_sponsorship_status.name
