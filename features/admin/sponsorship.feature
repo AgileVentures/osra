@@ -130,8 +130,6 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
     Then I should see "First Orphan"
-    Then show me the page
-    And I should see "Sponsor this orphan"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully created"
