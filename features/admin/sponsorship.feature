@@ -74,6 +74,9 @@ Feature:
     When I click the "Name" link
     Then I should see "Second Orphan" before "First Orphan"
     When I click the "Name" link
+    
+    Then show me the page
+    
     Then I should see "First Orphan" before "Second Orphan"
     When I click the "Osra Num" link
     And I click the "Father Name" link
@@ -114,6 +117,9 @@ Feature:
     Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
+    
+    Then show me the page
+    
     Then I should not see "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
