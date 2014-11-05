@@ -2,6 +2,10 @@ Given(/^I am on the admin dashboard page$/) do
   visit admin_root_path
 end
 
+Then(/^I should be on the admin dashboard page$/) do
+  expect(current_path).to eq path_to_admin_role('dashboard')
+end
+
 Given /^I am a new, authenticated user$/ do
   email = 'testing@man.net'
   password = 'secretpass'
@@ -16,6 +20,8 @@ end
 def path_to_admin_role(page_name, id = '')
   name = page_name.downcase
   case name
+    when 'dashboard' then
+      admin_root_path
     when 'partners' then
       admin_partners_path
     when 'new partner' then
@@ -85,6 +91,11 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   else
     expect(page).not_to have_text string
   end
+end
+
+Then /^I should see html "([^"]*)" 2 times$/ do |string|
+  expect(page.html.to_s.partition(string)[1]).to eq string
+  expect(page.html.to_s.partition(string)[2].partition(string)[1]).to eq string
 end
 
 Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
