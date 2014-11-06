@@ -93,6 +93,14 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   end
 end
 
+Then /^I should( not)? see html "([^"]*)"$/ do |negative, string|
+  if negative
+    expect(page.html.to_s).to_not include string.to_s
+  else
+    expect(page.html.to_s).to include string.to_s
+  end
+end
+
 Then /^I should see html "([^"]*)" 2 times$/ do |string|
   expect(page.html.to_s.partition(string)[1]).to eq string
   expect(page.html.to_s.partition(string)[2].partition(string)[1]).to eq string
