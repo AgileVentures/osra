@@ -206,6 +206,7 @@ ActiveAdmin.register Orphan do
     end
 
   end
+<<<<<<< HEAD
 
 <<<<<<< HEAD
   index do
@@ -319,4 +320,66 @@ ActiveAdmin.register Orphan do
   
 =======
 >>>>>>> refactor orphan views
+=======
+  form do |f|
+    f.inputs 'Orphan Details' do
+      f.input :osra_num, :input_html => { :readonly => true }
+      f.input :name
+      f.input :date_of_birth, as: :datepicker
+      f.input :gender, as: :select,
+              collection: Settings.lookup.gender, include_blank: false
+      f.input :health_status
+      f.input :schooling_status
+      f.input :goes_to_school
+      f.input :orphan_status, include_blank: false
+      f.input :orphan_sponsorship_status, label: 'Sponsorship Status', input_html: { :disabled => true }
+      f.input :priority, as: :select,
+              collection: %w(Normal High), include_blank: false
+    end
+    f.inputs 'Parents Details' do
+      f.input :father_name
+      f.input :father_alive
+      f.input :mother_name
+      f.input :mother_alive
+      f.input :father_is_martyr
+      f.input :father_occupation
+      f.input :father_place_of_death
+      f.input :father_cause_of_death
+      f.input :father_date_of_death, as: :datepicker
+    end
+    f.inputs 'Guardian Details' do
+      f.input :guardian_name
+      f.input :guardian_relationship
+      f.input :guardian_id_num
+      f.input :contact_number
+      f.input :alt_contact_number
+    end
+    f.inputs 'Original Address' do
+      f.semantic_fields_for :original_address do |r|
+        r.inputs :city
+        r.inputs :province
+        r.inputs :neighborhood
+        r.inputs :street
+        r.inputs :details
+      end
+    end
+    f.inputs 'Current Address' do
+      f.semantic_fields_for :current_address do |r|
+        r.inputs :city
+        r.inputs :province
+        r.inputs :neighborhood
+        r.inputs :street
+        r.inputs :details
+      end
+    end
+    f.inputs 'Additional Details' do
+      f.input :sponsored_by_another_org
+      f.input :another_org_sponsorship_details
+      f.input :minor_siblings_count
+      f.input :sponsored_minor_siblings_count
+      f.input :comments
+    end
+    f.actions
+  end
+>>>>>>> fix failing tests
 end
