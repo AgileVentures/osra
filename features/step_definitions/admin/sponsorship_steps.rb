@@ -29,7 +29,7 @@ Given(/^the orphan "([^"]*)" has the (.*)-lowest original_province$/) do |orphan
   unless ['first', 'second', 'third'].include? qualifier.to_s
     raise "Qualifier needs to be one of ['first', 'second', 'third']"
   end
-  new_prov = Province.all.order('code ASC')[eval("[0, 1, 2].#{qualifier.to_s}.to_i")] ||
+  new_prov = Province.all.order('id ASC')[eval("[0, 1, 2].#{qualifier.to_s}.to_i")] ||
                                                               raise("can't find #{qualifier}-lowest province")
   orig_addr.province = new_prov || raise("Cannot change original_address \"#{orig_addr.province.name}\"")
   orig_addr.save!
