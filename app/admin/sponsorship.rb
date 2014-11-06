@@ -3,6 +3,7 @@ ActiveAdmin.register Sponsorship do
   actions :create
   belongs_to :sponsor
 
+<<<<<<< HEAD
   form do
     panel 'Sponsor' do
       h3 sponsorship.sponsor_name
@@ -65,6 +66,8 @@ ActiveAdmin.register Sponsorship do
     end
   end
 
+=======
+>>>>>>> refactor: nuke sponsorship views
   member_action :inactivate, method: :put do
     @sponsorship = Sponsorship.find(params[:id])
     @sponsor = Sponsor.find(params[:sponsor_id])
@@ -83,5 +86,5 @@ ActiveAdmin.register Sponsorship do
     end
   end
 
-  permit_params :orphan_id
 end
+
