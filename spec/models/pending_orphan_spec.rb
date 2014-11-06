@@ -60,7 +60,7 @@ describe PendingOrphan, type: :model do
 
   specify '#extract_and_create_address' do
     expect(pending_orphan).to receive(:attributes).and_return(attributes)
-    expect(Province).to receive(:find_by_code).and_return(create :province)
+    expect(Province).to receive(:find_by_code).and_return(Province.all.first)
     pending_orphan.extract_and_create_address('original_address')
     expect(pending_orphan.instance_variable_get(:@orphan).original_address).to be_valid
   end
