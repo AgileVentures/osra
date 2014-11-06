@@ -271,6 +271,7 @@ ActiveAdmin.register Orphan do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
@@ -292,6 +293,8 @@ ActiveAdmin.register Orphan do
         orphan.orphan_sponsorship_status.name
       end
     end
+=======
+>>>>>>> merge conflict; province order test bugfix
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column '' do |orphan|
           link_to "Sponsor this orphan",
