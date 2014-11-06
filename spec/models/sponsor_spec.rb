@@ -12,6 +12,10 @@ describe Sponsor, type: :model do
     expect(Sponsor::PAYMENT_PLANS).to be_present
   end
 
+  it 'should have payment plans' do
+    expect(Sponsor::PAYMENT_PLANS).to be_present
+  end
+
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
