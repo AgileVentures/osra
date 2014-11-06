@@ -29,9 +29,11 @@ ActiveAdmin.register Orphan do
     eval(statement.to_s, object.get_binding)
   end
 
-  scope :all, default: true
-  scope :eligible_for_sponsorship, :private, default: false do |orphan|
+  scope :all, default: true do |orphan|
     Orphan.sort_by_param borrow_binding['params', self]
+  end
+  scope :eligible_for_sponsorship, :private, default: false do |orphan|
+    Orphan.currently_unsponsored.sort_by_param borrow_binding['params', self]
   end
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
