@@ -33,6 +33,33 @@ ActiveAdmin.register Orphan do
   end
 
 
+  breadcrumb do
+    if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
+      [
+        link_to('Admin', '/admin'),
+        link_to('Sponsors', '/admin/sponsors'),
+        link_to(Sponsor.find_by_id($1).name, '/admin/sponsors/' + $1.to_s),
+        'Sponsorship',
+        'New'
+      ]
+    else
+      [ link_to('Admin', '/admin') ]
+    end
+  end
+
+  borrow_binding= Proc.new { |statement, object|
+      class << object
+        def get_binding
+          return binding()
+        end
+      end
+      eval(statement.to_s, object.get_binding)
+    }
+  scope :all, default: true
+  scope :eligible_for_sponsorship, :private, default: false do |orphan|
+    Orphan.sort_by_param borrow_binding.call("params", self)
+  end
+
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
                 :father_date_of_death, :mother_name, :mother_alive, :father_alive,
@@ -218,7 +245,10 @@ ActiveAdmin.register Orphan do
       column :priority, sortable: :priority do |orphan|
         status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
       end
+<<<<<<< HEAD
 
+=======
+>>>>>>> 22d7115cda0a577642249f3d29948b700577ec74
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :original_province, sortable: 'addresses.province_id' do |orphan|
@@ -228,6 +258,7 @@ ActiveAdmin.register Orphan do
         orphan.partner.name
       end
       column :father_is_martyr, sortable: :father_is_martyr
+<<<<<<< HEAD
     end
     column :father_alive, sortable: :father_alive
     column :mother_alive, sortable: :mother_alive
@@ -241,6 +272,20 @@ ActiveAdmin.register Orphan do
         orphan.orphan_sponsorship_status.name
       end
     end
+=======
+    end
+    column :mother_alive, sortable: :mother_alive
+    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      column :priority, sortable: :priority
+      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
+    else
+      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
+    end
+>>>>>>> 22d7115cda0a577642249f3d29948b700577ec74
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column '' do |orphan|
           link_to "Sponsor this orphan",
