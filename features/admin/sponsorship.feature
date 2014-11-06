@@ -103,33 +103,33 @@ Feature:
     And I should not see "Unsponsored" before "Previously Sponsored"
 
   Scenario: Orphan ordering in Orphan index contains no bad links
-	Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
-	And I click the "Link to Orphan" button
-	When I click the "All" button
-	When I click the "OSRA No." link
-	When I click the "Full Name" link
-	When I click the "Date Of Birth" link
-	When I click the "Gender" link
-	When I click the "Orphan Status" link
-	When I click the "Priority" link
-	When I click the "Father Alive" link
-	When I click the "Mother Alive" link
-	When I click the "Sponsorship" link
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    When I click the "All" button
+    When I click the "OSRA No." link
+    When I click the "Full Name" link
+    When I click the "Date Of Birth" link
+    When I click the "Gender" link
+    When I click the "Orphan Status" link
+    When I click the "Priority" link
+    When I click the "Father Alive" link
+    When I click the "Mother Alive" link
+    When I click the "Sponsorship" link
 
   Scenario: Sponsor visible in Orphan list
-	Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
-	And I click the "Link to Orphan" button
-	Then I should see html ">Second Sponsor</h3>"
-	When I click the "All" button
-	Then I should not see html ">Second Sponsor</h3>"
-	When I click the "Eligible For Sponsorship" button
-	Then I should see html ">Second Sponsor</h3>"
-	When I click the "Orphans" link
-	Then I should not see html ">Second Sponsor</h3>"
-	When I click the "Eligible For Sponsorship" button
-	Then I should not see html ">Second Sponsor</h3>"
-	When I click the "All" button
-	Then I should not see html ">Second Sponsor</h3>"
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    Then I should see html ">Second Sponsor</h3>"
+    When I click the "All" button
+    Then I should not see html ">Second Sponsor</h3>"
+    When I click the "Eligible For Sponsorship" button
+    Then I should see html ">Second Sponsor</h3>"
+    When I click the "Orphans" link
+    Then I should not see html ">Second Sponsor</h3>"
+    When I click the "Eligible For Sponsorship" button
+    Then I should not see html ">Second Sponsor</h3>"
+    When I click the "All" button
+    Then I should not see html ">Second Sponsor</h3>"
 
   Scenario: Breadcrumbs on orphan list
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
