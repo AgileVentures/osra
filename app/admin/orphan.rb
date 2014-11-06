@@ -3,19 +3,10 @@ ActiveAdmin.register Orphan do
   preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  config.breadcrumb = false
->>>>>>> all tests green
-=======
-=======
   new_sponsorship= Proc.new do |params|
     params.has_key?(:sponsor_id) && (params[:scope]== 'eligible_for_sponsorship')
   end
 
->>>>>>> refactor orphan views
   breadcrumb do
     if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
       eval %{ [
@@ -28,24 +19,12 @@ ActiveAdmin.register Orphan do
       [ link_to('Admin', '/admin') ]
     end
   end
->>>>>>> added tests & fixed breadcrumbs
 
   borrow_binding= Proc.new do |statement, object|
     class << object
       def get_binding
         return binding()
       end
-<<<<<<< HEAD
-      eval(statement.to_s, object.get_binding)
-    }
-
-  scope :all, default: true
-  scope :eligible_for_sponsorship, :private, default: false do |orphan|
-    Orphan.sort_by_param borrow_binding.call("params", self)
-  end
-
-
-=======
     end
     eval(statement.to_s, object.get_binding)
   end
@@ -57,7 +36,6 @@ ActiveAdmin.register Orphan do
     Orphan.currently_unsponsored.sort_by_param borrow_binding['params', self]
   end
 
->>>>>>> refactor orphan views
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
                 :father_date_of_death, :mother_name, :mother_alive, :father_alive,
@@ -208,121 +186,6 @@ ActiveAdmin.register Orphan do
     end
 
   end
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-  index do
-<<<<<<< HEAD
-=======
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      panel 'Sponsor' do
-        h3 Sponsor.find_by_id(params[:sponsor_id]).name
-        para Sponsor.find_by_id(params[:sponsor_id]).additional_info
-        para link_to 'Return to Sponsor page', admin_sponsor_path(Sponsor.find_by_id(params[:sponsor_id]))
-      end
-    end
-    column 'OSRA No.', sortable: :osra_num do |orphan|
-      link_to orphan.osra_num, admin_orphan_path(orphan)
-    end
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-      column :full_name, sortable: :full_name do |orphan|
-<<<<<<< HEAD
->>>>>>> defer params dereferencing
-=======
-=======
-      column :full_name, sortable: :name do |orphan|
->>>>>>> fix broken link
->>>>>>> fix broken link
-=======
-      column :full_name, sortable: :name do |orphan|
->>>>>>> rebase to current
-        link_to orphan.full_name, admin_orphan_path(orphan)
-      end
-    else
-      column :name, sortable: :name do |orphan|
-        link_to orphan.name, admin_orphan_path(orphan)
-      end
-      column :father_name, sortable: :father_name
-    end
-    column :date_of_birth, sortable: :date_of_birth
-    column :gender, sortable: :gender
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :orphan_status, sortable: :orphan_status_id
-      column :priority, sortable: :priority do |orphan|
-        status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
-      end
-<<<<<<< HEAD
-
-=======
->>>>>>> conflict resolution
-    end
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :original_province, sortable: 'addresses.province_id' do |orphan|
-        orphan.original_address.province.name
-      end
-      column :partner, sortable: 'partners.name' do |orphan|
-        orphan.partner.name
-      end
-      column :father_is_martyr, sortable: :father_is_martyr
-<<<<<<< HEAD
-=======
-    end
-    column :father_alive, sortable: :father_alive
-    column :mother_alive, sortable: :mother_alive
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :priority, sortable: :priority
-      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-    else
-      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
->>>>>>> conflict resolution
-    end
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-    unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :mother_alive, sortable: :mother_alive
-    end
-=======
-=======
-    column :father_alive, sortable: :father_alive
->>>>>>> rebase to current
-    column :mother_alive, sortable: :mother_alive
->>>>>>> all tests green
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column :priority, sortable: :priority
-      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-    else
-      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-    end
-=======
->>>>>>> merge conflict; province order test bugfix
-    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
-      column '' do |orphan|
-          link_to "Sponsor this orphan",
->>>>>>> defer params dereferencing
-            admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
-      end
-    end
-
-  end
-  
-=======
->>>>>>> refactor orphan views
-=======
   form do |f|
     f.inputs 'Orphan Details' do
       f.input :osra_num, :input_html => { :readonly => true }
@@ -383,5 +246,4 @@ ActiveAdmin.register Orphan do
     end
     f.actions
   end
->>>>>>> fix failing tests
 end

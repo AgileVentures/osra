@@ -132,11 +132,7 @@ class Orphan < ActiveRecord::Base
   end
   
   def self.whitelist_sort param
-<<<<<<< HEAD
-
-=======
     if (param.class== ActionController::Parameters.new().class) && param.has_key?(:order)
->>>>>>> move scope to view
       if ['ASC', 'DESC'].include?(second_half(param))
         if ['addresses.province_id',
                   'partners.name',
