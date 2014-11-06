@@ -85,7 +85,7 @@ Feature:
     And I click the "Original Province" link
     Then I should see "Third Orphan" before "First Orphan"
     And I should see "First Orphan" before "Second Orphan"
-    And I click the "Partner" link
+    When I click the "Partner" link
     And I click the "Father Is Martyr" link
     And I click the "Father Alive" link
     And I click the "Mother Alive" link

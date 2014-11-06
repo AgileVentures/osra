@@ -4,7 +4,7 @@ end
 
 Then(/^show me the orphans$/) do
   Orphan.all.each do |o|
-    puts o.inspect
+    puts o.awesome_inspect
   end
 end
 
