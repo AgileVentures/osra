@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe PendingOrphan, type: :model do
   let(:pending_orphan) {PendingOrphan.new}
-  let(:attributes) { {id: nil, pending_orphan_list_id: nil, name: "Fred",
+  let(:attributes) { {id: nil, pending_orphan_list_id: nil, name: "الطفل",
     father_name: "الأب", father_is_martyr: true, father_occupation: "مهنة الأب",
     father_place_of_death: "مكان الوفاة", father_cause_of_death: "سبب الوفاة",
     father_date_of_death: "2011-03-15", mother_name: "الأم", mother_alive: true,
@@ -11,7 +11,7 @@ describe PendingOrphan, type: :model do
     guardian_name: "الوصي", guardian_relationship: 0, guardian_id_num: 448273,
     original_address_province: 12, original_address_city: "مدينة حلب",
     original_address_neighborhood: "الحي",
-    original_address_street: "South Street",
+    original_address_street: "الشارع",
     original_address_details: nil, current_address_province: 13,
     current_address_city: "مدينة حمص", current_address_neighborhood: "حي",
     current_address_street: nil, current_address_details: "تفصيل",
@@ -19,8 +19,6 @@ describe PendingOrphan, type: :model do
     sponsored_by_another_org: false, another_org_sponsorship_details: nil,
     minor_siblings_count: 7, sponsored_minor_siblings_count: 0,
     comments: "ملاحظات"} }
-
-  # arabic_attrs = {name: "ﺎﻠﻄﻔﻟ, "original_address_street: "ﺎﻠﺷﺍﺮﻋ"}
 
   specify '#create_orphan' do
     orphan = pending_orphan.orphan
@@ -39,19 +37,14 @@ describe PendingOrphan, type: :model do
       expect(pending_orphan.orphan.original_address).to be nil
       pending_orphan.attributes = attributes
       orphan = pending_orphan.to_orphan
-      expect(orphan.original_address.street).to eq "South Street"
-      #FIXME arabic fails this test 
-      #expect(orphan.original_address.street).to eq "ﺎﻠﺷﺍﺮﻋ"
+      expect(orphan.original_address.street).to eq "الشارع"
     end
 
     it 'should get a name' do
-      debugger
       expect(pending_orphan.orphan.name).to be nil
       pending_orphan.attributes = attributes
       orphan = pending_orphan.to_orphan
-      expect(orphan.name).to eq "Fred"
-      #FIXME arabic fails this test 
-      #expect(orphan.name).to eq "ﺎﻠﻄﻔﻟ"
+      expect(orphan.name).to eq "الطفل"
     end
   end
 
