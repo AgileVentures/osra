@@ -76,10 +76,7 @@ ActiveAdmin.register Orphan do
       f.input :sponsored_minor_siblings_count
       f.input :comments
     end
-    f.actions do
-      f.action :submit
-      f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
-    end
+    f.actions
   end
 
   show title: :full_name do |orphan|

@@ -96,10 +96,7 @@ ActiveAdmin.register Sponsor do
       f.input :contact2
       f.input :additional_info
     end
-    f.actions do
-      f.action :submit
-      f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
-    end
+    f.actions
   end
 
   action_item only: :show do

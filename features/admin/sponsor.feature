@@ -127,25 +127,3 @@ Feature:
     Then I should not be able to change "Branch" for this sponsor
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
-
-  Scenario: Should return to sponsor show page when edit sponsor is cancelled
-    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
-    And I click the "Edit Sponsor" button
-    And I select "Canada" from the drop down box for "Country"
-    And I click the "Cancel" button
-    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
-    And I should not see "Canada"
-
-  Scenario: "Request fulfilled" should be updated when "Requested orphan count" changes
-    Given an orphan "Orphan1" exists
-    And an orphan "Orphan2" exists
-    And sponsor "Sponsor1" has requested to sponsor 2 orphans
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
-    When I go to the "Show Sponsor" page for sponsor "Sponsor1"
-    Then I should see "Request Fulfilled" set to "Yes"
-    When I click the "Edit Sponsor" button
-    And I fill in "Requested orphan count" with "3"
-    And I click the "Update Sponsor" button
-    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
-    And I should see "Request Fulfilled" set to "No"
