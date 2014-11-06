@@ -56,7 +56,7 @@ class Orphan < ActiveRecord::Base
     # gestation is considered vaild if within 1 year of a fathers death
     return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
     if (father_date_of_death + 1.year) < date_of_birth
-      errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
+      errors.add(:date_of_birth, 'date of birth must be within the gestation period of fathers death')
     end
   end
 
