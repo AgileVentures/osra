@@ -239,7 +239,10 @@ ActiveAdmin.register Orphan do
       column :priority, sortable: :priority do |orphan|
         status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
       end
+<<<<<<< HEAD
 
+=======
+>>>>>>> conflict resolution
     end
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :original_province, sortable: 'addresses.province_id' do |orphan|
@@ -249,6 +252,21 @@ ActiveAdmin.register Orphan do
         orphan.partner.name
       end
       column :father_is_martyr, sortable: :father_is_martyr
+<<<<<<< HEAD
+=======
+    end
+    column :father_alive, sortable: :father_alive
+    column :mother_alive, sortable: :mother_alive
+    if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
+      column :priority, sortable: :priority
+      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
+    else
+      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
+        orphan.orphan_sponsorship_status.name
+      end
+>>>>>>> conflict resolution
     end
 <<<<<<< HEAD
 <<<<<<< HEAD
