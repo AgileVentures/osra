@@ -1,5 +1,7 @@
 ActiveAdmin.register Orphan do
   actions :all, except: [:new, :destroy]
+  preserve_default_filters!
+  filter :gender, as: :select, collection: Settings.lookup.gender
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -209,6 +211,7 @@ ActiveAdmin.register Orphan do
     end
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
 <<<<<<< HEAD
+<<<<<<< HEAD
 
       column :full_name, sortable: :full_name do |orphan|
 <<<<<<< HEAD
@@ -218,6 +221,9 @@ ActiveAdmin.register Orphan do
       column :full_name, sortable: :name do |orphan|
 >>>>>>> fix broken link
 >>>>>>> fix broken link
+=======
+      column :full_name, sortable: :name do |orphan|
+>>>>>>> rebase to current
         link_to orphan.full_name, admin_orphan_path(orphan)
       end
     else
@@ -246,12 +252,16 @@ ActiveAdmin.register Orphan do
     end
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     unless params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')
       column :mother_alive, sortable: :mother_alive
     end
 =======
+=======
+    column :father_alive, sortable: :father_alive
+>>>>>>> rebase to current
     column :mother_alive, sortable: :mother_alive
 >>>>>>> all tests green
     if params[:sponsor_id] && (params[:scope]== 'eligible_for_sponsorship')

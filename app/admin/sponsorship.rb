@@ -26,6 +26,7 @@ ActiveAdmin.register Sponsorship do
           _orphan.partner.name
         end
         column :father_is_martyr, sortable: :father_is_martyr
+        column :father_alive, sortable: :father_alive
         column :mother_alive, sortable: :mother_alive
         column :priority
         column :orphan_sponsorship_status, sortable: 'orphan_sponsorship_statuses.name'
