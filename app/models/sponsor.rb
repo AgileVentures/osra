@@ -3,6 +3,7 @@ class Sponsor < ActiveRecord::Base
   
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
+  attr_accessor :new_city_name
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
 
   after_initialize :default_status_to_active,
@@ -46,6 +47,10 @@ class Sponsor < ActiveRecord::Base
 
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
+  end
+
+  def self.all_cities
+    pluck(:city).uniq
   end
 
   private

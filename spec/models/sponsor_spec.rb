@@ -357,4 +357,15 @@ describe Sponsor, type: :model do
       end
     end
   end
+
+  describe '.all_cities' do
+    before do
+      2.times { create :sponsor, city: 'London' }
+      create :sponsor, city: 'Toronto'
+    end
+
+    it 'returns all unique city names' do
+      expect(Sponsor.all_cities).to match_array %w{London Toronto}
+    end
+  end
 end

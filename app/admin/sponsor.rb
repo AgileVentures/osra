@@ -96,7 +96,8 @@ ActiveAdmin.register Sponsor do
       end
       f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
-      f.input :city
+      f.input :city, as: :select, collection: Sponsor.all_cities << '**Add New**'
+      f.input :new_city_name
       f.input :address
       f.input :email
       f.input :contact1
