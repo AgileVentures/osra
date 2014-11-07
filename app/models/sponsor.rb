@@ -18,7 +18,7 @@ class Sponsor < ActiveRecord::Base
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :city, presence: true,
             exclusion: { in: ['**Add New**'],
-                         message: 'Please enter city name below.' }
+                         message: 'Please enter city name below. &darr;' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
@@ -138,7 +138,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   def set_city
-    if (city == '**Add New**') && new_city_name
+    if (city == '**Add New**') && !new_city_name.blank?
       self.city = new_city_name
     end
   end

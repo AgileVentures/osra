@@ -147,3 +147,13 @@ Feature:
     And I click the "Cancel" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should not see "Canada"
+
+  Scenario: Entering a new city name
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "**Add New**" from the drop down box for "City"
+    And I click the "Update Sponsor" button
+    Then I should see "Please enter city name below."
+    When I fill in "New city name" with "Timbuktu"
+    And I click the "Update Sponsor" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should see "Timbuktu"

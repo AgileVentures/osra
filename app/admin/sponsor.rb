@@ -122,6 +122,7 @@ ActiveAdmin.register Sponsor do
   permit_params :name, :country, :gender, :requested_orphan_count, :address,
                 :email, :contact1, :contact2, :additional_info, :start_date,
                 :status_id, :sponsor_type_id, :organization_id, :branch_id,
-                :request_fulfilled, :city, :agent_id, :payment_plan
+                :request_fulfilled, :city, :new_city_name, :agent_id,
+                :payment_plan
 
 end

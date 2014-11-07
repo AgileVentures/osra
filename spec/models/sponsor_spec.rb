@@ -21,7 +21,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :city }
   it { is_expected.not_to allow_value('**Add New**').for(:city).
-                              with_message 'Please enter city name below.' }
+                              with_message 'Please enter city name below. &darr;' }
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
