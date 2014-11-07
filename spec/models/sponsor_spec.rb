@@ -19,6 +19,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
+  it { is_expected.to validate_presence_of :city }
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }

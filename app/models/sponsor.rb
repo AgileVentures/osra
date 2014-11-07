@@ -14,6 +14,7 @@ class Sponsor < ActiveRecord::Base
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+  validates :city, presence: true
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
