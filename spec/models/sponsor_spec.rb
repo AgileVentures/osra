@@ -12,12 +12,15 @@ describe Sponsor, type: :model do
 <<<<<<< HEAD
 <<<<<<< HEAD
     expect(Sponsor::PAYMENT_PLANS).to be_present
+<<<<<<< HEAD
 =======
     expect(Sponsor::PAYMENT_PLANS).to be_truthy
 >>>>>>> DRY up payment_plans
 =======
     expect(Sponsor::PAYMENT_PLANS).to be_present
 >>>>>>> PAYMENT_PLANS spec update
+=======
+>>>>>>> merge conflicts, part deux
   end
 
   it 'should have a valid factory' do
@@ -30,6 +33,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
   it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
 
   [7, 'yes', true].each do |bad_date_value|
@@ -44,13 +48,13 @@ describe Sponsor, type: :model do
     it { is_expected.to_not allow_value(bad_email_value).for :email }
   end
 
-
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }
   it { is_expected.to belong_to :status }
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -68,6 +72,8 @@ describe Sponsor, type: :model do
 =======
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
 >>>>>>> blank payment_plan to model validation
+=======
+>>>>>>> merge conflicts, part deux
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current
