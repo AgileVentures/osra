@@ -175,6 +175,7 @@ Feature:
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor5"
     And I should see "Every Four Months"
+<<<<<<< HEAD
 
   Scenario: blank payment plan available
     Given  I am on the "Edit Sponsor" page for sponsor "Sponsor1"
@@ -199,3 +200,5 @@ Feature:
     And I should see "Sponsor was successfully created"
     
 >>>>>>> refactor test for blank payment_plan
+=======
+>>>>>>> avoid duplicate options being a possibility
