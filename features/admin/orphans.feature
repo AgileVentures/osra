@@ -36,7 +36,7 @@ Feature:
     When I click the "Orphan 1" link
     Then I should be on the "Show Orphan" page for orphan "Orphan 1"
 
-   Scenario: Should be able to edit an orphan from the orphan show page
+  Scenario: Should be able to edit an orphan from the orphan show page
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
@@ -69,8 +69,16 @@ Feature:
     And I fill in "Comments" with "Other Comments"
     And I select "Inactive" from the drop down box for "Orphan status"
     And I select "High" from the drop down box for "Priority"
+    And I fill in "City" in panel "Original Address" with "Another Original City"
+    And I fill in "Neighborhood" in panel "Original Address" with "Another Original Neighborhood"
+    And I fill in "Street" in panel "Original Address" with "Another Original Street"
     And I fill in "Details" in panel "Original Address" with "Another Original Details"
+    And I select "Latakia" from the drop down box for "Province" in panel "Original Address"
+    And I fill in "City" in panel "Current Address" with "Another Current City"
+    And I fill in "Neighborhood" in panel "Current Address" with "Another Current Neighborhood"
+    And I fill in "Street" in panel "Current Address" with "Another Current Street"
     And I fill in "Details" in panel "Current Address" with "Another Current Details"
+    And I select "Hama" from the drop down box for "Province" in panel "Current Address"
     And I click the "Update Orphan" button
     Then I should be on the "Show Orphan" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
@@ -101,8 +109,16 @@ Feature:
     And I should see "Comments" set to "Other Comments"
     And I should see "Orphan Status" set to "Inactive"
     And I should see "Priority" set to "High"
+    And I should see "City" in panel "Original Address" set to "Another Original City"
+    And I should see "Neighborhood" in panel "Original Address" set to "Another Original Neighborhood"
+    And I should see "Street" in panel "Original Address" set to "Another Original Street"
     And I should see "Details" in panel "Original Address" set to "Another Original Details"
+    And I should see "Province" in panel "Original Address" set to "Latakia"
+    And I should see "City" in panel "Current Address" set to "Another Current City"
+    And I should see "Neighborhood" in panel "Current Address" set to "Another Current Neighborhood"
+    And I should see "Street" in panel "Current Address" set to "Another Current Street"
     And I should see "Details" in panel "Current Address" set to "Another Current Details"
+    And I should see "Province" in panel "Current Address" set to "Hama"
 
   Scenario: Should not be able to delete an orphan from the orphan show page
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
