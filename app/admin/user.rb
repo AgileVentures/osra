@@ -1,26 +1,26 @@
-ActiveAdmin.register Agent do
+ActiveAdmin.register User do
 
   actions :all, except: :destroy
 
-  permit_params :agent_name, :email
+  permit_params :user_name, :email
 
   index do
-    column :agent_name, sortable: :agent_name do |agent|
-      link_to agent.agent_name, admin_agent_path(agent)
+    column :user_name, sortable: :user_name do |user|
+      link_to user.user_name, admin_user_path(user)
     end
     column :email, sortable: :email
   end
 
-  show title: :agent_name do |agent|
+  show title: :user do |user|
     attributes_table do
-      row :agent_name
+      row :user_name
       row :email
     end
 
-    panel "#{pluralize(agent.sponsors.count, 'Sponsor')}" do
-      table_for agent.sponsors do
+    panel "#{pluralize(user.sponsors.count, 'Sponsor')}" do
+      table_for user.sponsors do
         column :name do |sponsor|
-          link_to sponsor.name, admin_sponsor_path(sponsor)# if sponsor
+          link_to sponsor.name, admin_sponsor_path(sponsor)
         end
         column :gender
         column :country
