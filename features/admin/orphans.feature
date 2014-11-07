@@ -12,7 +12,7 @@ Feature:
 
   Scenario: There should be a link to the orphans page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Orphans" linking to the admin orphans page
+    Then I should see "Orphans" linking to the admin orphans index page
 
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role

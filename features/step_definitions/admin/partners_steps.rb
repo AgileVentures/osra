@@ -12,10 +12,6 @@ Given(/^the following partners exist:$/) do |table|
   end
 end
 
-Then(/^I should see "Partners" linking to the admin partners page$/) do
-  expect(page).to have_link("Partners", href: "#{admin_partners_path}")
-end
-
 When(/^I (?:go to|am on) the "([^"]*)" page for partner "([^"]*)"$/) do |page, partner_name|
   partner = Partner.find_by name: partner_name
   visit path_to_admin_role(page, partner.id)
