@@ -95,8 +95,10 @@ ActiveAdmin.register Sponsor do
         f.input :branch, :input_html => { :disabled => true }
       end
       f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
-      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
-      f.input :city, as: :select, collection: Sponsor.all_cities << '**Add New**'
+      f.input :country, as: :country,
+              priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
+      f.input :city, as: :select,
+              collection: Sponsor.all_cities.unshift('**Add New**'), include_blank: false
       f.input :new_city_name
       f.input :address
       f.input :email

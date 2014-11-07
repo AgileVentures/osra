@@ -11,11 +11,14 @@ class Sponsor < ActiveRecord::Base
                    :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
   before_update :set_request_fulfilled
+  before_validation :set_city
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
-  validates :city, presence: true
+  validates :city, presence: true,
+            exclusion: { in: ['**Add New**'],
+                         message: 'Please enter city name below.' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
@@ -131,6 +134,12 @@ class Sponsor < ActiveRecord::Base
   def type_affiliation_mismatch
     if sponsor_type
       (sponsor_type.name == 'Individual' && branch.nil?) || (sponsor_type.name == 'Organization' && organization.nil?)
+    end
+  end
+
+  def set_city
+    if (city == '**Add New**') && new_city_name
+      self.city = new_city_name
     end
   end
 end

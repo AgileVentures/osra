@@ -7,6 +7,7 @@ Feature:
     Given the following sponsors exist:
       | name                   | Sponsor1           | Sponsor2            | Sponsor3            |
       | country                | GB                 | CA                  | EE                  |
+      | city                   | London             | Toronto             | Tartu               |
       | gender                 | Male               | Female              | Male                |
       | requested_orphan_count | 15                 | 1                   | 3                   |
       | sponsor_type           | Individual         | Organization        | Individual          |
@@ -43,7 +44,8 @@ Feature:
     And I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
-    And I select "Spain" from the drop down box for "Country"
+    And I select "Canada" from the drop down box for "Country"
+    And I select "Toronto" from the drop down box for "City"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"

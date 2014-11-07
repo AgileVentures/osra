@@ -20,6 +20,8 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :city }
+  it { is_expected.not_to allow_value('**Add New**').for(:city).
+                              with_message 'Please enter city name below.' }
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
@@ -293,6 +295,20 @@ describe Sponsor, type: :model do
       sponsor.sequential_id = 999
       sponsor.save!
       expect(sponsor.osra_num[3..-1]).to eq '0999'
+    end
+  end
+
+  describe 'before_validation #set_city' do
+    let(:sponsor) { create :sponsor, city: 'London' }
+
+    before do
+      sponsor.city = '**Add New**'
+      sponsor.new_city_name = 'Riyadh'
+      sponsor.save!
+    end
+
+    it 'sets city to new name' do
+      expect(sponsor.city).to eq 'Riyadh'
     end
   end
 

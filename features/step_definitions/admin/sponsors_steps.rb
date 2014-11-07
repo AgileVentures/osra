@@ -21,7 +21,7 @@ Given(/^the following sponsors exist:$/) do |table|
                           address: hash[:address], email: hash[:email],
                           contact1: hash[:contact1], contact2: hash[:contact2],
                           additional_info: hash[:additional_info], branch: branch,
-                          organization: organization,
+                          organization: organization, city: hash[:city],
                           start_date: hash[:start_date], status: status,
                           payment_plan: hash[:payment_plan])
     sponsor.save!
