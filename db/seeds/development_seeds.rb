@@ -1,8 +1,7 @@
 AdminUser.create(email: 'admin@example.com',
                  password: 'password',
                  password_confirmation: 'password')
-User.create(email: 'tarek@osra.org', user_name: 'Tarek Al Wafai')
-User.create(email: 'ahmed@osra.org', user_name: 'Ahmed Abdulmawla')
+2.times { FactoryGirl.create :user }
 FactoryGirl.create :sponsor,
                    sponsor_type: SponsorType.find_by_name('Individual'),
                    branch: Branch.find_by_name('Riyadh')
