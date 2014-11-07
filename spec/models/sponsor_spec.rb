@@ -18,7 +18,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
-  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map {|c| c[1]} - ['IL']}
 
   [7, 'yes', true].each do |bad_date_value|
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
