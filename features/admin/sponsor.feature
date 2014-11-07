@@ -38,7 +38,7 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
-    Given an agent "Tarek Al Wafai" exists
+    Given a user "Tarek Al Wafai" exists
     And I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
@@ -130,7 +130,7 @@ Feature:
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
 
-  Scenario: Page for Sponsor assigned to an Agent should have a link to agent's page
-    Given sponsor "Sponsor1" is assigned to agent "Tarek Al Wafai"
+  Scenario: Page for Sponsor assigned to a User should have a link to user's page
+    Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
-    Then I should see "Tarek Al Wafai" linking to the "Show" page for agent "Tarek Al Wafai"
+    Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"

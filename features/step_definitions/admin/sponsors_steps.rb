@@ -37,16 +37,16 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
 
-Given /^sponsor "([^"]*)" is assigned to agent "([^"]*)"$/ do |sponsor, agent|
+Given /^sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |sponsor, user_name|
   sponsor = Sponsor.find_by_name(sponsor) || FactoryGirl.create(:sponsor, name: sponsor)
-  agent = Agent.find_by_agent_name(agent) || FactoryGirl.create(:agent, agent_name: agent)
-  sponsor.update!(agent: agent)
+  user = User.find_by_user_name(user_name) || FactoryGirl.create(:user, user_name: user_name)
+  sponsor.update!(agent: user)
 end
 
-Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (agent|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|
+Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (user|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|
   object_class = model.classify.constantize
-  if object_class == Agent
-    object_id = Agent.find_by_agent_name(name).id
+  if object_class == User
+    object_id = User.find_by_user_name(name).id
   else
     object_id = object_class.find_by_name(name).id
   end

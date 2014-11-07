@@ -11,7 +11,7 @@ ActiveAdmin.register User do
     column :email, sortable: :email
   end
 
-  show title: :user do |user|
+  show title: :user_name do |user|
     attributes_table do
       row :user_name
       row :email
