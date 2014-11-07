@@ -28,7 +28,7 @@ class Sponsor < ActiveRecord::Base
   belongs_to :sponsor_type
   has_many :sponsorships
   has_many :orphans, through: :sponsorships
-  belongs_to :agent
+  belongs_to :agent, :class_name => 'User', :foreign_key => 'agent_id'
 
   acts_as_sequenced scope: [:organization_id, :branch_id]
 
