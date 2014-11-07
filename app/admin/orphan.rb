@@ -8,16 +8,16 @@ ActiveAdmin.register Orphan do
   end
 
   breadcrumb do
-    if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
-      eval %{ [
-        link_to('Admin', '/admin'),
-        link_to('Sponsors', '/admin/sponsors'),
-        link_to(Sponsor.find_by_id($1).name, '/admin/sponsors/' + $1.to_s),
-        #{new_sponsorship[params] ? "'Sponsorship', 'New'" : "'View Orphans'"}
-      ] }
-    else
-      [ link_to('Admin', '/admin') ]
-    end
+    [ link_to('Admin', admin_root_path) ].tap do |crumbs|
+      crumbs << if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
+        [ link_to('Sponsors', admin_sponsors_path) ] <<
+        link_to(Sponsor.find_by_id($1).name, admin_sponsor_path($1))
+      end << if new_sponsorship[params]
+        ['Sponsorship', 'New']
+      else
+        ['View Orphans']
+      end
+    end.flatten.compact
   end
 
   borrow_binding= Proc.new do |statement, object|
