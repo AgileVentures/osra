@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20141110225312) do
-=======
-ActiveRecord::Schema.define(version: 20141110225310) do
->>>>>>> 907c6d385911f142f9c64e1c581ff395ac42465f
+ActiveRecord::Schema.define(version: 20141110225313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,13 +247,8 @@ ActiveRecord::Schema.define(version: 20141110225310) do
     t.integer  "sequential_id"
     t.integer  "requested_orphan_count"
     t.boolean  "request_fulfilled",      default: false, null: false
-<<<<<<< HEAD
     t.integer  "agent_id"
     t.string   "payment_plan"
-
-=======
-    t.string   "payment_plan"
->>>>>>> 907c6d385911f142f9c64e1c581ff395ac42465f
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
