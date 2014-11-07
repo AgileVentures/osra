@@ -54,7 +54,6 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor4"
-    And I should see "Every Four Months"
 
   Scenario: I should see the required fields on the index page
     Given I am on the "Sponsors" page for the "Admin" role
@@ -98,11 +97,6 @@ Feature:
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
     And I should see "Every Six Months"
-    Given  I am on the "Edit Sponsor" page for sponsor "Sponsor1"
-    And I select "" from the drop down box for "Payment plan"
-    And I click the "Update Sponsor" button
-    Then I should not see "is not included in the list"
-    And I should see "Sponsor was successfully updated"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -145,9 +139,6 @@ Feature:
     And I click the "Sponsor1" link
     Then I should see "Every Two Months"
     Given I am on the "Sponsors" page for the "Admin" role
-    And I click the "Sponsor2" link
-    Then I should see "Annually"
-    Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor3" link
     Then I should see "Other"
     Given I click the "Edit Sponsor" button
@@ -167,6 +158,13 @@ Feature:
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor5"
     And I should see "Every Four Months"
+
+  Scenario: blank payment plan available
+    Given  I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "" from the drop down box for "Payment plan"
+    And I click the "Update Sponsor" button
+    Then I should not see "is not included in the list"
+    And I should see "Sponsor was successfully updated"
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor6"
     And I fill in "Requested orphan count" with "3"
@@ -175,5 +173,6 @@ Feature:
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
-    Then I should see "is not included in the list"
-    And I should not see "Sponsor was successfully created"
+    Then I should not see "is not included in the list"
+    And I should see "Sponsor was successfully created"
+    
