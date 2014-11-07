@@ -15,6 +15,11 @@ import:
         db: false
       - cell: موجودة
         db: true
+    father:
+      - cell: متوفى
+        db: false
+      - cell: موجود
+        db: true
     gender:
       - cell: ذكر
         db: Male
@@ -66,123 +71,127 @@ import:
       column: E
       mandatory: false
       type: String
-    - field: father_place_of_death
+    - field: father_alive
       column: F
-      mandatory: false
-      type: String
-    - field: father_cause_of_death
+      mandatory: true
+      type: father options
+    - field: father_place_of_death
       column: G
       mandatory: false
       type: String
-    - field: father_date_of_death
+    - field: father_cause_of_death
       column: H
+      mandatory: false
+      type: String
+    - field: father_date_of_death
+      column: I
       mandatory: true
       type: Date
     - field: mother_name
-      column: I
+      column: J
       mandatory: true
       type: String
     - field: mother_alive
-      column: J
+      column: K
       mandatory: true
       type: mother options
     - field: date_of_birth
-      column: K
+      column: L
       mandatory: true
       type: Date
     - field: gender
-      column: L
+      column: M
       mandatory: true
       type: gender options
     - field: health_status
-      column: M
-      mandatory: false
-      type: String
-    - field: schooling_status
       column: N
       mandatory: false
       type: String
-    - field: goes_to_school
+    - field: schooling_status
       column: O
+      mandatory: false
+      type: String
+    - field: goes_to_school
+      column: P
       mandatory: false
       type: boolean options
     - field: guardian_name
-      column: P
+      column: Q
       mandatory: true
       type: String
     - field: guardian_relationship
-      column: Q
-      mandatory: true
-      type: Integer
-    - field: guardian_id_num
       column: R
       mandatory: true
       type: Integer
-    - field: original_address_province
+    - field: guardian_id_num
       column: S
+      mandatory: true
+      type: Integer
+    - field: original_address_province
+      column: T
       mandatory: true
       type: province options
     - field: original_address_city
-      column: T
-      mandatory: true
-      type: String
-    - field: original_address_neighborhood
       column: U
       mandatory: true
       type: String
-    - field: original_address_street
+    - field: original_address_neighborhood
       column: V
-      mandatory: false
+      mandatory: true
       type: String
-    - field: original_address_details
+    - field: original_address_street
       column: W
       mandatory: false
       type: String
-    - field: current_address_province
+    - field: original_address_details
       column: X
+      mandatory: false
+      type: String
+    - field: current_address_province
+      column: Y
       mandatory: true
       type: province options
     - field: current_address_city
-      column: Y
-      mandatory: true
-      type: String
-    - field: current_address_neighborhood
       column: Z
       mandatory: true
       type: String
-    - field: current_address_street
+    - field: current_address_neighborhood
       column: AA
-      mandatory: false
+      mandatory: true
       type: String
-    - field: current_address_details
+    - field: current_address_street
       column: AB
       mandatory: false
       type: String
-    - field: contact_number
+    - field: current_address_details
       column: AC
+      mandatory: false
+      type: String
+    - field: contact_number
+      column: AD
       mandatory: true
       type: String
     - field: alt_contact_number
-      column: AD
+      column: AE
       mandatory: false
       type: String
     - field: sponsored_by_another_org
-      column: AE
+      column: AF
       mandatory: true
       type: boolean options
     - field: another_org_sponsorship_details
-      column: AF
+      column: AG
       mandatory: false
       type: String
     - field: minor_siblings_count
-      column: AG
+      column: AH
       mandatory: true
       type: Integer
     - field: sponsored_minor_siblings_count
-      column: AH
+      column: AI
       mandatory: false
       type: Integer
     - field: comments
-      column: AL
+      column: AM
       mandatory: false
       type: String
