@@ -66,3 +66,8 @@ Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (user|sponsor|or
 
   expect(page).to have_link(link, href: eval(href))
 end
+
+Then /^the "([^"]*)" selector for this (sponsor|partner|orphan|user) should contain "([^"]*)"$/ do |selector_name, model, option|
+  selector = "#{model}_#{selector_name.parameterize}"
+  expect(page).to have_select(selector, with_options: [option])
+end

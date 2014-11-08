@@ -148,7 +148,7 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should not see "Canada"
 
-  Scenario: Entering a new city name
+  Scenario: It should be possible to enter a new city name
     Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
     And I select "**Add New**" from the drop down box for "City"
     And I click the "Update Sponsor" button
@@ -157,3 +157,11 @@ Feature:
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Timbuktu"
+
+  Scenario: Newly entered city names should become available in the City drop down box
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "**Add New**" from the drop down box for "City"
+    And I fill in "New city name" with "Saint-Louis-du-Ha! Ha!"
+    And I click the "Update Sponsor" button
+    When I am on the "New Sponsor" page for the "Admin" role
+    Then the "City" selector for this sponsor should contain "Saint-Louis-du-Ha! Ha!"
