@@ -303,12 +303,16 @@ describe Sponsor, type: :model do
 
     before do
       sponsor.city = '**Add New**'
-      sponsor.new_city_name = 'Riyadh'
-      sponsor.save!
     end
 
     it 'sets city to new name' do
+      sponsor.new_city_name = 'Riyadh'
+      sponsor.save!
       expect(sponsor.city).to eq 'Riyadh'
+    end
+
+    it 'raises an error if **Add New** is given as city without new_city_name' do
+      expect { sponsor.save! }.to raise_error ActiveRecord::RecordInvalid
     end
   end
 
