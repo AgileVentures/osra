@@ -7,4 +7,5 @@ module Initializer
   def default_start_date_to_today
     self.start_date ||= Date.current
   end
+
 end

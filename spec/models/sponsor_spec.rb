@@ -8,6 +8,10 @@ describe Sponsor, type: :model do
   let(:individual_type) { SponsorType.find_by_name 'Individual' }
   let(:organization_type) { SponsorType.find_by_name 'Organization' }
 
+  it 'should have payment plans' do
+    expect(Sponsor::PAYMENT_PLANS).to be_present
+  end
+
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
@@ -18,6 +22,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
   it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
 
   [7, 'yes', true].each do |bad_date_value|
@@ -31,7 +36,6 @@ describe Sponsor, type: :model do
   ['not_an_emai', 'also@not_an_email', 'really_not@'].each do |bad_email_value|
     it { is_expected.to_not allow_value(bad_email_value).for :email }
   end
-
 
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }
