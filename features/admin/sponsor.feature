@@ -38,7 +38,6 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     When I click the "Sponsor1" link
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
-    And I should see "Every Two Months"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
     Given a user "Tarek Al Wafai" exists
@@ -50,7 +49,6 @@ Feature:
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I select "Tarek Al Wafai" from the drop down box for "Agent"
-    And I select "Every Four Months" from the drop down box for "Payment plan"
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
@@ -93,12 +91,10 @@ Feature:
     Then I should be on the "Edit Sponsor" page for sponsor "Sponsor1"
     And I should not be able to change "Request fulfilled" for this sponsor
     And I select "Canada" from the drop down box for "Country"
-    And I select "Every Six Months" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should see "Sponsor was successfully updated"
     And I should see "Canada"
-    And I should see "Every Six Months"
 
   Scenario: Should not be able to delete a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -152,6 +148,7 @@ Feature:
     And I select "Every Six Months" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should see "Sponsor was successfully updated"
+    And I should see "Every Six Months"
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor5"
     And I fill in "Requested orphan count" with "2"
@@ -163,5 +160,4 @@ Feature:
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor5"
     And I should see "Sponsor was successfully created"
-    And I should see "Sponsor5"
     And I should see "Every Four Months"
