@@ -11,6 +11,7 @@ FactoryGirl.define do
     requested_orphan_count (1..10).to_a.sample
     country { generate :countries }
 <<<<<<< HEAD
+<<<<<<< HEAD
     gender { %w(Male Female).sample }
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
     sponsor_type { SponsorType.all[[0,1].sample] }
@@ -26,6 +27,12 @@ FactoryGirl.define do
     branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
     organization { FactoryGirl.create(:organization) if sponsor_type.name == 'Organization' }
 >>>>>>> merge conflicts, part deux
+=======
+    gender { Settings.lookup.gender.sample }
+    sponsor_type { SponsorType.all[[0,1].sample] }
+    branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
+    organization { FactoryGirl.create(:organization) if sponsor_type.name == 'Organization' }
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
   end
 >>>>>>> add payment_plan to Sponsor factory

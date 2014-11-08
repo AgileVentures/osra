@@ -49,7 +49,10 @@ Feature:
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
+<<<<<<< HEAD
     And I select "Tarek Al Wafai" from the drop down box for "Agent"
+=======
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
     And I select "Every Four Months" from the drop down box for "Payment plan"
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
@@ -136,12 +139,15 @@ Feature:
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
 
+<<<<<<< HEAD
 
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
     Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"
 
+=======
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
   Scenario: Selectable payment plan for sponsors
     Given I am on the "Sponsors" page for the "Admin" role
     And I click the "Sponsor1" link
@@ -153,6 +159,7 @@ Feature:
     And I select "Every Six Months" from the drop down box for "Payment plan"
     And I click the "Update Sponsor" button
     Then I should see "Sponsor was successfully updated"
+<<<<<<< HEAD
     Given I click the "Sponsors" link
     And I click the "Sponsor2" link
     Then I should see "Annually"
@@ -162,6 +169,8 @@ Feature:
     And I select "Every Six Months" from the drop down box for "Payment Plan"
     And I click the "Update Sponsor" button
     Then I should see "Sponsor was successfully updated"
+=======
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
     Given I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor5"
     And I fill in "Requested orphan count" with "2"
@@ -175,6 +184,7 @@ Feature:
     And I should see "Sponsor was successfully created"
     And I should see "Sponsor5"
     And I should see "Every Four Months"
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   Scenario: blank payment plan available
@@ -202,3 +212,5 @@ Feature:
 >>>>>>> refactor test for blank payment_plan
 =======
 >>>>>>> avoid duplicate options being a possibility
+=======
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf

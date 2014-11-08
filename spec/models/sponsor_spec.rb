@@ -11,6 +11,7 @@ describe Sponsor, type: :model do
   it 'should have payment plans' do
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     expect(Sponsor::PAYMENT_PLANS).to be_present
 <<<<<<< HEAD
 =======
@@ -21,6 +22,9 @@ describe Sponsor, type: :model do
 >>>>>>> PAYMENT_PLANS spec update
 =======
 >>>>>>> merge conflicts, part deux
+=======
+    expect(Sponsor::PAYMENT_PLANS).to be_present
+>>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
   end
 
   it 'should have a valid factory' do
