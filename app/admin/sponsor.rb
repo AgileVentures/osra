@@ -97,6 +97,7 @@ ActiveAdmin.register Sponsor do
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true 
 =======
       f.input :payment_plan, as: :select, collection: ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -113,6 +114,9 @@ ActiveAdmin.register Sponsor do
                   plan.to_s.empty?
               end
 >>>>>>> avoid duplicate options being a possibility
+=======
+      f.input :payment_plan, as: :select, include_blank: true, collection: Sponsor::PAYMENT_PLANS
+>>>>>>> code review
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :address
       f.input :email
