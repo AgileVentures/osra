@@ -9,22 +9,7 @@ describe Sponsor, type: :model do
   let(:organization_type) { SponsorType.find_by_name 'Organization' }
 
   it 'should have payment plans' do
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     expect(Sponsor::PAYMENT_PLANS).to be_present
-<<<<<<< HEAD
-=======
-    expect(Sponsor::PAYMENT_PLANS).to be_truthy
->>>>>>> DRY up payment_plans
-=======
-    expect(Sponsor::PAYMENT_PLANS).to be_present
->>>>>>> PAYMENT_PLANS spec update
-=======
->>>>>>> merge conflicts, part deux
-=======
-    expect(Sponsor::PAYMENT_PLANS).to be_present
->>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
   end
 
   it 'should have a valid factory' do
@@ -58,26 +43,6 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
-=======
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array Sponsor::PAYMENT_PLANS }
->>>>>>> DRY up payment_plans
-=======
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << nil) }
->>>>>>> move blank payment_plan
-=======
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS) }
->>>>>>> move blank payment plan back to array
-=======
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
->>>>>>> blank payment_plan to model validation
-=======
->>>>>>> merge conflicts, part deux
 
   context 'start_date validation on or before 1st of next month' do
     today = Date.current

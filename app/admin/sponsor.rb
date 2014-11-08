@@ -93,34 +93,7 @@ ActiveAdmin.register Sponsor do
         f.input :organization, :input_html => { :disabled => true }
         f.input :branch, :input_html => { :disabled => true }
       end
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true 
-=======
-      f.input :payment_plan, as: :select, collection: ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
->>>>>>> DRY up payment_plans
-=======
-      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: false
->>>>>>> DRY out payment_plans in view
-=======
-      f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
->>>>>>> refactor test for blank payment_plan
-=======
-      f.input :payment_plan, as: :select, include_blank: true,
-              collection: Sponsor::PAYMENT_PLANS.delete_if do |plan|
-                  plan.to_s.empty?
-              end
->>>>>>> avoid duplicate options being a possibility
-=======
-      f.input :payment_plan, as: :select, include_blank: true, collection: Sponsor::PAYMENT_PLANS
->>>>>>> code review
-=======
-      f.input :payment_plan, as: :select, include_blank: true, collection: Sponsor::PAYMENT_PLANS
->>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
       f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :address
       f.input :email
@@ -137,17 +110,7 @@ ActiveAdmin.register Sponsor do
   action_item only: :show do
     link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.eligible_for_sponsorship?
   end
-<<<<<<< HEAD
-  
-  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled, :agent_id, :payment_plan
-=======
 
-  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2,
-                :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id,
-                :request_fulfilled, :payment_plan
-<<<<<<< HEAD
->>>>>>> merge conflicts, part deux
-=======
->>>>>>> b3eb239f6e139e5419fbc285991df9806a4fcddf
+  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled, :agent_id, :payment_plan
 
 end
