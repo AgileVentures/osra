@@ -85,7 +85,7 @@ import:
       type: String
     - field: father_date_of_death
       column: I
-      mandatory: true
+      mandatory: false
       type: Date
     - field: mother_name
       column: J

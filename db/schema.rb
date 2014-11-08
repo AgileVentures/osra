@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.string  "minor_siblings_count"
     t.string  "sponsored_minor_siblings_count"
     t.string  "comments"
+    t.boolean "father_alive"
   end
 
   create_table "provinces", force: true do |t|
