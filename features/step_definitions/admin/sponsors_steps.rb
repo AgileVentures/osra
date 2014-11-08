@@ -29,12 +29,20 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for sponsor "([^"]*)"$/) do |page, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
+  if page== 'Link to Orphan'
+    raise "You need to navigate to this page through the application's UI to build parameters."
+  end
   visit path_to_admin_role(page, sponsor.id)
 end
 
 Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
-  expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
+  unless page_name== 'Link to Orphan'
+    expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
+  else
+    expect(/^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/ =~ current_path).to_not be_nil
+    expect($1).to eq sponsor.id.to_s
+  end
 end
 
 Given /^sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |sponsor, user_name|
