@@ -24,7 +24,7 @@ Feature:
 
   Scenario: There should be a link to the sponsors index page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Sponsors" linking to the admin sponsors page
+    Then I should see "Sponsors" linking to the admin sponsors index page
 
   Scenario: There should be a list of sponsors on the sponsors index page
     Given I am on the "Sponsors" page for the "Admin" role
@@ -38,13 +38,15 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
-    Given I am on the "New Sponsor" page for the "Admin" role
+    Given a user "Tarek Al Wafai" exists
+    And I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
     And I select "Spain" from the drop down box for "Country"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
+    And I select "Tarek Al Wafai" from the drop down box for "Agent"
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
@@ -127,3 +129,8 @@ Feature:
     Then I should not be able to change "Branch" for this sponsor
     And I should not be able to change "Organization" for this sponsor
     And I should not be able to change "Sponsor Type" for this sponsor
+
+  Scenario: Page for Sponsor assigned to a User should have a link to user's page
+    Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
+    And I am on the "Show Sponsor" page for sponsor "Sponsor1"
+    Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"

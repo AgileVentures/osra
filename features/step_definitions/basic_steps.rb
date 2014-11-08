@@ -56,6 +56,14 @@ def path_to_admin_role(page_name, id = '')
       new_admin_organization_path
     when 'link to orphan' then
       new_admin_sponsor_sponsorship_path(id)
+    when 'users'
+      admin_users_path
+    when 'show user'
+      admin_user_path(id)
+    when 'edit user'
+      edit_admin_user_path(id)
+    when 'new user'
+      new_admin_user_path
     else
       raise('path to specified is not listed in #path_to')
   end
