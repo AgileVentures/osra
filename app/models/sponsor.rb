@@ -1,5 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
+  
+  PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
 
@@ -15,6 +17,7 @@ class Sponsor < ActiveRecord::Base
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
+  validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
