@@ -15,5 +15,7 @@ FactoryGirl.define do
     association :original_address, factory: :address
     association :current_address, factory: :address
     orphan_list
+    priority { %w(Normal High).sample }
+    orphan_sponsorship_status { OrphanSponsorshipStatus.all.sample }
   end
 end
