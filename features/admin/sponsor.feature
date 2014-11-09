@@ -19,6 +19,7 @@ Feature:
       | additional_info        | additional1        | additional2         | addtional3          |
       | start_date             | 2013-09-25         | 2013-09-25          | 2013-09-25          |
       | status                 | Active             | Active              | Active              |
+      | payment_plan           | Every Two Months   |                     | Other               |
 
     And I am a new, authenticated user
 
@@ -47,6 +48,7 @@ Feature:
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I select "Tarek Al Wafai" from the drop down box for "Agent"
+    And I select "Every Six Months" from the drop down box for "Payment plan"
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor4"
@@ -74,6 +76,7 @@ Feature:
     |  gender                  | Active                 |
     |  requested_orphan_count  | 15                     |
     |  sponsor_type            | Individual             |
+    |  payment_plan            | Every Two Months       |
     |  address                 | Address1               |
     |  email                   | email1@example.com     |
     |  contact1                | cd1                    |

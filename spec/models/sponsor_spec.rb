@@ -11,6 +11,10 @@ describe Sponsor, type: :model do
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
+  
+  it 'should have payment plans' do
+    expect(Sponsor::PAYMENT_PLANS).to be_present
+  end
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
@@ -18,6 +22,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
+  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
   it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
 
   [7, 'yes', true].each do |bad_date_value|
