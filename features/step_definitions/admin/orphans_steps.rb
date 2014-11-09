@@ -17,7 +17,8 @@ Given(/^the following orphans exist:$/) do |table|
                         contact_number: hash[:contact],
                         original_address: original_address,
                         current_address: current_address,
-                        mother_alive: false,
+                        mother_alive: true,
+                        father_alive: false,
                         gender: 'Female',
                         minor_siblings_count: 0,
                         father_is_martyr: true,
@@ -39,10 +40,6 @@ Given(/^the following orphans exist:$/) do |table|
 
     orphan.save!
   end
-end
-
-Then(/^I should see "Orphans" linking to the admin orphans page$/) do
-  expect(page).to have_link('Orphans', href: "#{admin_orphans_path}")
 end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for orphan "([^"]*)"$/) do |page, orphan_name|

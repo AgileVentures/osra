@@ -17,8 +17,9 @@ class Orphan < ActiveRecord::Base
   validates :father_date_of_death, presence: true, date_not_in_future: true
   validates :mother_name, presence: true
   validates :mother_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
+  validates :father_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :date_of_birth, presence: true, date_not_in_future: true
-  validates :gender, presence: true, inclusion: {in: %w(Male Female) } # TODO: DRY list of allowed values
+  validates :gender, presence: true, inclusion: {in: Settings.lookup.gender }
   validates :contact_number, presence: true
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :minor_siblings_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

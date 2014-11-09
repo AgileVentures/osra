@@ -1,6 +1,6 @@
 Given(/^the following admin users exist:$/) do |table|
   table.hashes.each do |hash|
-    partner = AdminUser.create!(hash)
+    AdminUser.create!(hash)
   end
 end
 

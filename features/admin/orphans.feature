@@ -12,7 +12,7 @@ Feature:
 
   Scenario: There should be a link to the orphans page on the navbar
     Given I am on the admin dashboard page
-    Then I should see "Orphans" linking to the admin orphans page
+    Then I should see "Orphans" linking to the admin orphans index page
 
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role
@@ -20,7 +20,8 @@ Feature:
     And I should see the OSRA number for "Orphan 1"
     And I should see "Orphan Status" for "Orphan 1" set to "Active"
     And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
-    And I should see "Mother Alive" for "Orphan 1" set to "No"
+    And I should see "Mother Alive" for "Orphan 1" set to "Yes"
+    And I should see "Father Alive" for "Orphan 1" set to "No"
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
     And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
@@ -52,7 +53,8 @@ Feature:
     And I fill in "Mother name" with "Mother N"
     And I select "Male" from the drop down box for "Gender"
     And I uncheck the "Father is martyr" checkbox
-    And I check the "Mother alive" checkbox
+    And I uncheck the "Mother alive" checkbox
+    And I check the "Father alive" checkbox
     And I fill in "Health status" with "Another Health Status"
     And I fill in "Schooling status" with "Another Schooling Status"
     And I fill in "Guardian name" with "Another Name"
@@ -91,7 +93,8 @@ Feature:
     And I should see "Mother Name" set to "Mother N"
     And I should see "Gender" set to "Male"
     And I should see "Father Is Martyr" set to "No"
-    And I should see "Mother Alive" set to "Yes"
+    And I should see "Mother Alive" set to "No"
+    And I should see "Father Alive" set to "Yes"
     And I should see "Health Status" set to "Another Health Status"
     And I should see "Schooling Status" set to "Another Schooling Status"
     And I should see "Guardian Name" set to "Another Name"

@@ -30,6 +30,7 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :mother_name }
   it { is_expected.to_not allow_value(nil).for(:mother_alive) }
+  it { is_expected.to_not allow_value(nil).for(:father_alive) }
 
   it { is_expected.to allow_value(Date.today - 5, Date.current).for(:date_of_birth) }
   it { is_expected.to_not allow_value(Date.today + 5).for(:date_of_birth) }
@@ -38,7 +39,7 @@ describe Orphan, type: :model do
   end
 
   it { is_expected.to validate_presence_of :gender }
-  it { is_expected.to validate_inclusion_of(:gender).in_array %w(Male Female) }
+  it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
 
   it { is_expected.to validate_presence_of :contact_number }
 

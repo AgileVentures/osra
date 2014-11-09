@@ -1,7 +1,7 @@
 ActiveAdmin.register Sponsor do
 
   preserve_default_filters!
-  filter :gender, as: :select, collection: %w(Male Female)
+  filter :gender, as: :select, collection: Settings.lookup.gender
 
   actions :all, except: [:destroy]
 
@@ -41,6 +41,9 @@ ActiveAdmin.register Sponsor do
       row :contact1
       row :contact2
       row :additional_info
+      row :agent do
+        link_to sponsor.agent.user_name, admin_user_path(sponsor.agent) if sponsor.agent
+      end
     end
 
     panel "#{ pluralize(sponsor.sponsorships.all_active.count,
@@ -74,7 +77,7 @@ ActiveAdmin.register Sponsor do
     f.inputs do
       f.input :name
       f.input :status
-      f.input :gender, as: :select, collection: %w(Male Female)
+      f.input :gender, as: :select, collection: Settings.lookup.gender
       f.input :start_date, as: :datepicker
       f.input :requested_orphan_count
       unless f.object.new_record?
@@ -96,6 +99,9 @@ ActiveAdmin.register Sponsor do
       f.input :contact2
       f.input :additional_info
     end
+    f.inputs 'Assign OSRA employee' do
+      f.input :agent, member_label: :user_name
+    end
     f.actions
   end
 
@@ -103,6 +109,6 @@ ActiveAdmin.register Sponsor do
     link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.eligible_for_sponsorship?
   end
 
-  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled
+  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled, :agent_id
 
 end
