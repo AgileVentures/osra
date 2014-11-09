@@ -6,3 +6,8 @@ Given /^PENDING/ do
   pending
 end
 
+Then(/^show me the orphans$/) do
+  Orphan.all.each do |o|
+  puts o.awesome_inspect
+  end
+end
