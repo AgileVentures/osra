@@ -128,50 +128,12 @@ Feature:
     And I should not see "Unsponsored" before "Previously Sponsored"
     And I should see "Normal" before "High"
     And I should not see "High" before "Normal"
-    When I click the "Name" link
-    Then I should see "Second Orphan" before "First Orphan"
-    When I click the "Name" link
-    Then I should see "First Orphan" before "Second Orphan"
-    When I click the "OSRA No." link
-    And I click the "Father Name" link
-    And I click the "Gender" link
-    And I click the "Date Of Birth" link
-    And I click the "Original Province" link
+    When I click the "Original Province" link
     Then I should see "Second Orphan" before "First Orphan"
     And I should see "First Orphan" before "Third Orphan"
     And I click the "Original Province" link
     Then I should see "Third Orphan" before "First Orphan"
     And I should see "First Orphan" before "Second Orphan"
-    When I click the "Partner" link
-    And I click the "Father Is Martyr" link
-    And I click the "Father Alive" link
-    And I click the "Mother Alive" link
-    And I click the "Priority" link
-    Then I should see "Normal" before "High"
-    And I should not see "High" before "Normal"
-    When I click the "Priority" link
-    Then I should see "High" before "Normal"
-    And I should not see "Normal" before "High"
-    When I click the "Sponsorship" link
-    Then I should see "Unsponsored" before "Previously Sponsored"
-    And I should not see "Previously Sponsored" before "Unsponsored"
-    When I click the "Sponsorship" link
-    Then I should see "Previously Sponsored" before "Unsponsored"
-    And I should not see "Unsponsored" before "Previously Sponsored"
-
-  Scenario: Orphan ordering in Orphan index contains no bad links
-    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
-    And I click the "Link to Orphan" button
-    When I click the "All" button
-    When I click the "OSRA No." link
-    When I click the "Full Name" link
-    When I click the "Date Of Birth" link
-    When I click the "Gender" link
-    When I click the "Orphan Status" link
-    When I click the "Priority" link
-    When I click the "Father Alive" link
-    When I click the "Mother Alive" link
-    When I click the "Sponsorship" link
 
   Scenario: Sponsor visible in Orphan list
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
