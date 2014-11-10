@@ -413,10 +413,14 @@ describe Orphan, type: :model do
         end
         
         specify '.sort_by_eligibility should sort eligible orphans by sponsored_status, then priority' do
-          expect(Orphan.sort_by_eligibility.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
-                                                                  active_previously_sponsored_orphan,
-                                                                  active_unsponsored_high_priority_orphan,
-                                                                  active_unsponsored_orphan]
+          Orphan.sort_by_eligibility.to_a.each_with_index.map do |orphan, index|
+            expect([active_previously_sponsored_high_priority_orphan, active_previously_sponsored_orphan,
+                    active_unsponsored_high_priority_orphan, active_unsponsored_orphan][index]).to eq orphan
+          end
+          #expect(Orphan.sort_by_eligibility.to_a).to contain_exactly (active_previously_sponsored_orphan,
+                                                                  #active_previously_sponsored_high_priority_orphan,
+                                                                  #active_unsponsored_high_priority_orphan,
+                                                                  #active_unsponsored_orphan)
         end
       end
     end
