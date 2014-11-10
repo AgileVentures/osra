@@ -231,7 +231,14 @@ describe Orphan, type: :model do
         create :orphan, orphan_status: active_orphan_status,
                orphan_sponsorship_status: sponsored_status
       end
-      let!(:high_priority_orphan) { create :orphan, priority: 'High' }
+      let!(:active_previously_sponsored_high_priority_orphan) do
+        create :orphan, priority: 'High',  orphan_status: active_orphan_status,
+                orphan_sponsorship_status: previously_sponsored_status
+      end
+      let!(:active_unsponsored_high_priority_orphan) do
+        create :orphan, priority: 'High',  orphan_status: active_orphan_status,
+                orphan_sponsorship_status: unsponsored_status
+      end
 
       describe 'methods' do
 
@@ -260,7 +267,8 @@ describe Orphan, type: :model do
         specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do
           expect(active_unsponsored_orphan.eligible_for_sponsorship?).to eq true
           expect(active_previously_sponsored_orphan.eligible_for_sponsorship?).to eq true
-          expect(high_priority_orphan.eligible_for_sponsorship?).to eq true
+          expect(active_previously_sponsored_high_priority_orphan.eligible_for_sponsorship?).to eq true
+          expect(active_unsponsored_high_priority_orphan.eligible_for_sponsorship?).to eq true
           expect(active_on_hold_orphan.eligible_for_sponsorship?).to eq false
           expect(on_hold_sponsored_orphan.eligible_for_sponsorship?).to eq false
           expect(under_revision_unsponsored_orphan.eligible_for_sponsorship?).to eq false
@@ -375,7 +383,8 @@ describe Orphan, type: :model do
                                                      active_unsponsored_orphan,
                                                      active_previously_sponsored_orphan,
                                                      active_on_hold_orphan,
-                                                     high_priority_orphan]
+                                                     active_previously_sponsored_high_priority_orphan,
+                                                     active_unsponsored_high_priority_orphan]
         end
 
         specify '.currently_unsponsored should correctly select unsponsored orphans only' do
@@ -383,17 +392,27 @@ describe Orphan, type: :model do
                                                                     inactive_unsponsored_orphan,
                                                                     active_previously_sponsored_orphan,
                                                                     under_revision_unsponsored_orphan,
-                                                                    high_priority_orphan]
+                                                                    active_previously_sponsored_high_priority_orphan,
+                                                                    active_unsponsored_high_priority_orphan]
         end
 
         specify '.active.currently_unsponsored should correctly return active unsponsored orphans only' do
           expect(Orphan.active.currently_unsponsored.to_a).to match_array [active_unsponsored_orphan,
                                                                  active_previously_sponsored_orphan,
-                                                                 high_priority_orphan]
+                                                                 active_previously_sponsored_high_priority_orphan,
+                                                                 active_unsponsored_high_priority_orphan]
         end
 
         specify '.high_priority should correctly return high-priority orphans' do
-          expect(Orphan.high_priority.to_a).to eq [high_priority_orphan]
+          expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
+                                                            active_unsponsored_high_priority_orphan]
+        end
+        
+        specify '.sort_by_eligibility should sort eligible orphans by sponsored_status, then priority' do
+          expect(Orphan.sort_by_eligibility.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
+                                                                  active_previously_sponsored_orphan,
+                                                                  active_unsponsored_high_priority_orphan,
+                                                                  active_unsponsored_orphan]
         end
       end
     end
