@@ -104,7 +104,10 @@ ActiveAdmin.register Sponsor do
     f.inputs 'Assign OSRA employee' do
       f.input :agent, member_label: :user_name
     end
-    f.actions
+    f.actions do
+      f.action :submit
+      f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
+    end
   end
 
   action_item only: :show do
