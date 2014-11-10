@@ -17,6 +17,10 @@ describe Orphan, type: :model do
     expect(subject).to be_valid
   end
 
+  it 'should have default Orphan sort criteria' do
+    expect(Orphan::NEW_SPONSORSHIP_SORT_SQL).to be_present
+  end
+
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :father_name }
   it { is_expected.to_not allow_value(nil).for(:father_is_martyr) }
