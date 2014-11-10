@@ -417,11 +417,8 @@ describe Orphan, type: :model do
             expect([active_previously_sponsored_high_priority_orphan, active_previously_sponsored_orphan,
                     active_unsponsored_high_priority_orphan, active_unsponsored_orphan][index]).to eq orphan
           end
-          #expect(Orphan.sort_by_eligibility.to_a).to contain_exactly (active_previously_sponsored_orphan,
-                                                                  #active_previously_sponsored_high_priority_orphan,
-                                                                  #active_unsponsored_high_priority_orphan,
-                                                                  #active_unsponsored_orphan)
         end
+        
       end
     end
   end
