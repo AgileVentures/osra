@@ -1,6 +1,6 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
-  
+  NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
   attr_accessor :new_city_name
@@ -17,7 +17,7 @@ class Sponsor < ActiveRecord::Base
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :city, presence: true,
-            exclusion: { in: ['**Add New**'],
+            exclusion: { in: [NEW_CITY_MENU_OPTION],
                          message: 'Please enter city name below. &darr;' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
@@ -138,7 +138,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   def set_city
-    if (city == '**Add New**') && !new_city_name.blank?
+    if (city == NEW_CITY_MENU_OPTION) && new_city_name.present?
       self.city = new_city_name
     end
   end

@@ -20,7 +20,7 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
   it { is_expected.to validate_presence_of :city }
-  it { is_expected.not_to allow_value('**Add New**').for(:city).
+  it { is_expected.not_to allow_value(Sponsor::NEW_CITY_MENU_OPTION).for(:city).
                               with_message 'Please enter city name below. &darr;' }
   it { is_expected.to validate_presence_of :sponsor_type }
 
@@ -302,7 +302,7 @@ describe Sponsor, type: :model do
     let(:sponsor) { create :sponsor, city: 'London' }
 
     before do
-      sponsor.city = '**Add New**'
+      sponsor.city = Sponsor::NEW_CITY_MENU_OPTION
     end
 
     it 'sets city to new name' do

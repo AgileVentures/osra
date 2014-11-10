@@ -98,7 +98,8 @@ ActiveAdmin.register Sponsor do
       f.input :country, as: :country,
               priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
       f.input :city, as: :select,
-              collection: Sponsor.all_cities.unshift('**Add New**'), include_blank: false
+              collection: Sponsor.all_cities.unshift(Sponsor::NEW_CITY_MENU_OPTION),
+              include_blank: false
       f.input :new_city_name
       f.input :address
       f.input :email
