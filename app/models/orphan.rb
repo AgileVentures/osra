@@ -1,5 +1,7 @@
 class Orphan < ActiveRecord::Base
 
+  NEW_SPONSORSHIP_SORT_SQL = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+
   include Initializer
   after_initialize :default_orphan_status_active,
                    :default_sponsorship_status_unsponsored,
@@ -72,18 +74,10 @@ class Orphan < ActiveRecord::Base
         -> { joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
-  scope :sort_by_eligibility, -> { active.currently_unsponsored.order(eligibility_sort_criteria) }
+  scope :deep_joins, -> { joins(:orphan_sponsorship_status).joins(:original_address).joins(:partner) }
+  scope :sort_by_eligibility, -> { active.currently_unsponsored.joins(:original_address).joins(:partner).order(NEW_SPONSORSHIP_SORT_SQL) }
 
   acts_as_sequenced scope: :province_code
-
-  def self.sort_by_param param
-    if whitelist_sort param
-      self.joins(:original_address).joins(:partner).
-            joins(:orphan_sponsorship_status).order(transform_param param)
-    else
-      self.joins(:orphan_sponsorship_status).sort_by_eligibility
-    end
-  end
 
   def eligible_for_sponsorship?
     Orphan.active.currently_unsponsored.include? self
@@ -110,38 +104,6 @@ class Orphan < ActiveRecord::Base
   end
 
   private
-
-  def self.eligibility_sort_criteria
-    sql = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
-  end
-  
-  def self.transform_param param
-    #"name_asc" into "name ASC"
-    #"name_of_mum_desc" into "name_of_mum DESC"
-    #"Birth_Date_Asc" into "Birth_Date ASC"
-    first_half(param) + ' ' + second_half(param)
-  end
-  
-  def self.first_half param
-    param[:order].to_s.gsub(/_[^_]+$/, '')
-  end
-  
-  def self.second_half param
-    param[:order].gsub(/.*_/, '').upcase
-  end
-  
-  def self.whitelist_sort param
-    if (param.class== ActionController::Parameters.new().class) && param.has_key?(:order)
-      if ['ASC', 'DESC'].include?(second_half(param))
-        if ['addresses.province_id',
-                  'partners.name',
-                  'orphan_sponsorship_statuses.name'].include?(first_half(param)) ||
-                  Orphan.method_defined?(first_half(param).to_sym)
-          first_half(param)!= 'id'
-        end
-      end
-    end
-  end
 
   def default_sponsorship_status_unsponsored
     self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'

@@ -5,7 +5,7 @@ ActiveAdmin.register Orphan do
   filter :gender, as: :select, collection: Settings.lookup.gender
 
   new_sponsorship= Proc.new do |params|
-    params.has_key?(:sponsor_id) && (params[:scope]== 'eligible_for_sponsorship')
+    params.has_key?(:sponsor_id) && (params[:scope]== :eligible_for_sponsorship.to_s)
   end
 
   breadcrumb do
@@ -21,21 +21,9 @@ ActiveAdmin.register Orphan do
     end.flatten.compact
   end
 
-  borrow_binding= Proc.new do |statement, object|
-    class << object
-      def get_binding
-        return binding()
-      end
-    end
-    eval(statement.to_s, object.get_binding)
-  end
-
-  scope :all, default: true do |orphan|
-    Orphan.sort_by_param borrow_binding['params', self]
-  end
-  scope :eligible_for_sponsorship, :private, default: false do |orphan|
-    Orphan.currently_unsponsored.sort_by_param borrow_binding['params', self]
-  end
+  config.sort_order= ''
+  scope :all, :deep_joins, default: true, show_count: true
+  scope :eligible_for_sponsorship, :sort_by_eligibility, default: false, show_count: true
 
   permit_params :name, :father_name, :father_is_martyr, :father_occupation,
                 :father_place_of_death, :father_cause_of_death,
@@ -221,7 +209,9 @@ ActiveAdmin.register Orphan do
       column :father_is_martyr, sortable: :father_is_martyr
       column :father_alive, sortable: :father_alive
       column :mother_alive, sortable: :mother_alive
-      column :priority, sortable: :priority
+      column :priority, sortable: :priority do |orphan|
+        status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+      end
       column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
         orphan.orphan_sponsorship_status.name
       end
@@ -240,11 +230,11 @@ ActiveAdmin.register Orphan do
       column :date_of_birth, sortable: :date_of_birth
       column :gender, sortable: :gender
       column :orphan_status, sortable: :orphan_status_id
+      column :father_alive, sortable: :father_alive
+      column :mother_alive, sortable: :mother_alive
       column :priority, sortable: :priority do |orphan|
         status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
       end
-      column :father_alive, sortable: :father_alive
-      column :mother_alive, sortable: :mother_alive
       column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
         orphan.orphan_sponsorship_status.name
       end
