@@ -376,6 +376,20 @@ describe Sponsor, type: :model do
         end
       end
     end
+
+    describe 'scopes' do
+      let(:active_sponsor) { create :sponsor, status: active_status }
+      let(:inactive_sponsor) { create :sponsor, status: inactive_status }
+      let(:on_hold_sponsor) { create :sponsor, status: on_hold_status }
+
+      specify '.all_active should return sponsors with statuses Active & On Hold only' do
+        expect(Sponsor.all_active).to match_array [active_sponsor, on_hold_sponsor]
+      end
+
+      specify '.all_inactive should return sponsors with Inactive status only' do
+        expect(Sponsor.all_inactive).to match_array [inactive_sponsor]
+      end
+    end
   end
 
   describe '.all_cities' do

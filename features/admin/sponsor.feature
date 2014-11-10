@@ -107,8 +107,8 @@ Feature:
     Given an orphan "Orphan1" exists
     And an orphan "Orphan2" exists
     And sponsor "Sponsor1" has requested to sponsor 2 orphans
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
+    And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
+    And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
     When I go to the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see "Request Fulfilled" set to "Yes"
     When I click the "Edit Sponsor" button

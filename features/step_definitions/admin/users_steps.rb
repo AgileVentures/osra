@@ -22,3 +22,11 @@ end
 Given /^a user "([^"]*)" exists$/ do |user_name|
   FactoryGirl.create :user, user_name: user_name
 end
+
+Given /^an (in)?active sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |inactive, sponsor, user_name|
+  sponsor = Sponsor.find_by_name(sponsor) || FactoryGirl.create(:sponsor, name: sponsor)
+  status = inactive.present? ? Status.find_by_name('Inactive') : Status.find_by_name('Active')
+  sponsor.update!(status: status)
+  user = User.find_by_user_name(user_name) || FactoryGirl.create(:user, user_name: user_name)
+  sponsor.update!(agent: user)
+end

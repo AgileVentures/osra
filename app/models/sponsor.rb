@@ -56,6 +56,9 @@ class Sponsor < ActiveRecord::Base
     pluck(:city).uniq
   end
 
+  scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
+  scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
+
   private
 
   def date_not_beyond_first_of_next_month

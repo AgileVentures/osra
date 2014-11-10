@@ -17,8 +17,23 @@ ActiveAdmin.register User do
       row :email
     end
 
-    panel "#{pluralize(user.sponsors.count, 'Sponsor')}" do
-      table_for user.sponsors do
+    panel "#{pluralize(user.sponsors.all_active.count, 'Active Sponsor')}", id: 'active' do
+      table_for user.sponsors.all_active do
+        column :name do |sponsor|
+          link_to sponsor.name, admin_sponsor_path(sponsor)
+        end
+        column :gender
+        column :country
+        column :status
+        column :request_fulfilled
+        column 'Orphans sponsored' do |_sponsor|
+          _sponsor.orphans.count
+        end
+      end
+    end
+
+    panel "#{pluralize(user.sponsors.all_inactive.count, 'Inactive Sponsor')}", id: 'inactive' do
+      table_for user.sponsors.all_inactive do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)
         end
