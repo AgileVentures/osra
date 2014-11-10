@@ -52,6 +52,10 @@ class Sponsor < ActiveRecord::Base
     update!(request_fulfilled: request_is_fulfilled?)
   end
 
+  def currently_sponsored_orphans
+    sponsorships.all_active.map { |n| n.orphan }
+  end
+
   def self.all_cities
     pluck(:city).uniq
   end

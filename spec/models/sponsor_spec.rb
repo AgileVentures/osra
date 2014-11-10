@@ -377,6 +377,24 @@ describe Sponsor, type: :model do
       end
     end
 
+    describe '#currently_sponsored_orphans' do
+      let(:new_sponsor) { create :sponsor, status: active_status, requested_orphan_count: 5 }
+      let(:current_orphan) { create :orphan }
+      let(:past_orphan) { create :orphan }
+      let!(:current_sponsorship) { create :sponsorship,
+                                                sponsor: new_sponsor,
+                                                orphan: current_orphan }
+      let!(:past_sponsorship) { create :sponsorship,
+                                             sponsor: new_sponsor,
+                                             orphan: past_orphan }
+
+      before { past_sponsorship.inactivate }
+
+      it 'returns orphans that are currently sponsored' do
+        expect(new_sponsor.currently_sponsored_orphans).to match_array [current_orphan]
+      end
+    end
+
     describe 'scopes' do
       let(:active_sponsor) { create :sponsor, status: active_status }
       let(:inactive_sponsor) { create :sponsor, status: inactive_status }
