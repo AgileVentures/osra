@@ -30,3 +30,12 @@ Given /^an (in)?active sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |ina
   user = User.find_by_user_name(user_name) || FactoryGirl.create(:user, user_name: user_name)
   sponsor.update!(agent: user)
 end
+
+Then /^"([^"]*)" for sponsor "([^"]*)" should display "([^"]*)"$/ do |property, sponsor_name, value|
+  sponsor_id = Sponsor.find_by_name(sponsor_name).id
+  tr_id = "#sponsor_#{sponsor_id}"
+  column = "col-#{property.parameterize('_')}"
+  within(tr_id) do
+    expect(find("td.#{column}").text).to eq value.to_s
+  end
+end

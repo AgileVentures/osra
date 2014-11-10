@@ -61,3 +61,5 @@ Feature:
     Given an active sponsor "Sponsor1" is assigned to user "First User"
     And an inactive sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
     And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
+    And I am on the "Show User" page for user "First User"
+    Then "Orphans Sponsored" for sponsor "Sponsor1" should display "1"

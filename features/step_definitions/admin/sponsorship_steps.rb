@@ -12,8 +12,8 @@ Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
 end
 
 Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
-  sponsor = Sponsor.find_by_name sponsor_name
-  orphan = Orphan.find_by_name orphan_name
+  sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
+  orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
   sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id)
   if inactive
     sponsorship.inactivate
