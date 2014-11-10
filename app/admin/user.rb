@@ -18,7 +18,7 @@ ActiveAdmin.register User do
     end
 
     panel "#{pluralize(user.sponsors.all_active.count, 'Active Sponsor')}", id: 'active' do
-      table_for user.sponsors.all_active do
+      table_for user.active_sponsors do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)
         end
@@ -27,13 +27,13 @@ ActiveAdmin.register User do
         column :status
         column :request_fulfilled
         column 'Orphans sponsored' do |_sponsor|
-          _sponsor.orphans.count
+          _sponsor.currently_sponsored_orphans.count
         end
       end
     end
 
     panel "#{pluralize(user.sponsors.all_inactive.count, 'Inactive Sponsor')}", id: 'inactive' do
-      table_for user.sponsors.all_inactive do
+      table_for user.inactive_sponsors do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)
         end
@@ -41,9 +41,6 @@ ActiveAdmin.register User do
         column :country
         column :status
         column :request_fulfilled
-        column 'Orphans sponsored' do |_sponsor|
-          _sponsor.orphans.count
-        end
       end
     end
   end

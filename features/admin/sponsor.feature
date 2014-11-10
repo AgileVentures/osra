@@ -138,7 +138,7 @@ Feature:
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
     Given sponsor "Sponsor1" is assigned to user "Agent One"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
-    Then I should see "Agent One" linking to the "Show" page for user "Agent One"
+    Then "Agent One" should link to the "Show" page for user "Agent One"
 
  Scenario: Should return to sponsor show page when edit sponsor is cancelled
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"

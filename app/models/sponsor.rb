@@ -53,7 +53,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   def currently_sponsored_orphans
-    sponsorships.all_active.map { |n| n.orphan }
+    sponsorships.all_active.map(&:orphan)
   end
 
   def self.all_cities
