@@ -46,11 +46,4 @@ Then /^"([^"]*)" for (sponsor|partner|orphan|user) "([^"]*)" should display "([^
   within(tr_id) do
     expect(find("td.#{column}").text).to eq value.to_s
   end
-
-  # sponsor_id = Sponsor.find_by_name(obj_name).id
-  # tr_id = "#sponsor_#{sponsor_id}"
-  # column = "col-#{property.parameterize('_')}"
-  # within(tr_id) do
-  #   expect(find("td.#{column}").text).to eq value.to_s
-  # end
 end

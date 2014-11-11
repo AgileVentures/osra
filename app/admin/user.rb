@@ -20,7 +20,7 @@ ActiveAdmin.register User do
       row :email
     end
 
-    panel "#{pluralize(user.sponsors.all_active.count, 'Active Sponsor')}", id: 'active' do
+    panel "#{pluralize(user.sponsors.all_active.count, 'Active Sponsor')}", id: 'active_sponsors' do
       table_for user.active_sponsors do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)
@@ -35,7 +35,7 @@ ActiveAdmin.register User do
       end
     end
 
-    panel "#{pluralize(user.sponsors.all_inactive.count, 'Inactive Sponsor')}", id: 'inactive' do
+    panel "#{pluralize(user.sponsors.all_inactive.count, 'Inactive Sponsor')}", id: 'inactive_sponsors' do
       table_for user.inactive_sponsors do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)

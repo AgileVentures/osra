@@ -136,7 +136,7 @@ Feature:
     And I should not be able to change "Sponsor Type" for this sponsor
 
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
-    Given sponsor "Sponsor1" is assigned to user "Agent One"
+    Given an active sponsor "Sponsor1" is assigned to user "Agent One"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then "Agent One" should link to the "Show" page for user "Agent One"
 
