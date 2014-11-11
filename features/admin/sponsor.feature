@@ -137,3 +137,11 @@ Feature:
     Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"
+
+ Scenario: Should return to sponsor show page when edit sponsor is cancelled
+    Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I click the "Edit Sponsor" button
+    And I select "Canada" from the drop down box for "Country"
+    And I click the "Cancel" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should not see "Canada"
