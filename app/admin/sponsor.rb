@@ -37,6 +37,7 @@ ActiveAdmin.register Sponsor do
       row :country do
         ISO3166::Country.search(sponsor.country)
       end
+      row :city
       row :address
       row :email
       row :contact1
@@ -94,7 +95,12 @@ ActiveAdmin.register Sponsor do
         f.input :branch, :input_html => { :disabled => true }
       end
       f.input :payment_plan, as: :select, collection: Sponsor::PAYMENT_PLANS, include_blank: true
-      f.input :country, as: :country, priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
+      f.input :country, as: :country,
+              priority_countries: %w(SA TR AE GB), except: ['IL'], selected: 'SA'
+      f.input :city, as: :select,
+              collection: Sponsor.all_cities.unshift(Sponsor::NEW_CITY_MENU_OPTION),
+              include_blank: false
+      f.input :new_city_name
       f.input :address
       f.input :email
       f.input :contact1
@@ -114,6 +120,10 @@ ActiveAdmin.register Sponsor do
     link_to 'Link to Orphan', new_admin_sponsor_sponsorship_path(sponsor) if sponsor.eligible_for_sponsorship?
   end
 
-  permit_params :name, :country, :gender, :requested_orphan_count, :address, :email, :contact1, :contact2, :additional_info, :start_date, :status_id, :sponsor_type_id, :organization_id, :branch_id, :request_fulfilled, :agent_id, :payment_plan
+  permit_params :name, :country, :gender, :requested_orphan_count, :address,
+                :email, :contact1, :contact2, :additional_info, :start_date,
+                :status_id, :sponsor_type_id, :organization_id, :branch_id,
+                :request_fulfilled, :city, :new_city_name, :agent_id,
+                :payment_plan
 
 end

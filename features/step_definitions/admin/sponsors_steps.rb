@@ -21,7 +21,7 @@ Given(/^the following sponsors exist:$/) do |table|
                           address: hash[:address], email: hash[:email],
                           contact1: hash[:contact1], contact2: hash[:contact2],
                           additional_info: hash[:additional_info], branch: branch,
-                          organization: organization,
+                          organization: organization, city: hash[:city],
                           start_date: hash[:start_date], status: status,
                           payment_plan: hash[:payment_plan])
     sponsor.save!
@@ -65,4 +65,9 @@ Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (user|sponsor|or
   end
 
   expect(page).to have_link(link, href: eval(href))
+end
+
+Then /^the "([^"]*)" selector for this (sponsor|partner|orphan|user) should contain "([^"]*)"$/ do |selector_name, model, option|
+  selector = "#{model}_#{selector_name.parameterize}"
+  expect(page).to have_select(selector, with_options: [option])
 end

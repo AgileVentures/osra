@@ -7,6 +7,7 @@ Feature:
     Given the following sponsors exist:
       | name                   | Sponsor1           | Sponsor2            | Sponsor3            |
       | country                | GB                 | CA                  | EE                  |
+      | city                   | London             | Toronto             | Tartu               |
       | gender                 | Male               | Female              | Male                |
       | requested_orphan_count | 15                 | 1                   | 3                   |
       | sponsor_type           | Individual         | Organization        | Individual          |
@@ -39,15 +40,16 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
 
   Scenario: Should be able to add a sponsor from the sponsor index page
-    Given a user "Tarek Al Wafai" exists
+    Given a user "Agent One" exists
     And I am on the "New Sponsor" page for the "Admin" role
     And I fill in "Name" with "Sponsor4"
     And I fill in "Requested orphan count" with "22"
-    And I select "Spain" from the drop down box for "Country"
+    And I select "Canada" from the drop down box for "Country"
+    And I select "Toronto" from the drop down box for "City"
     And I select "Male" from the drop down box for "Gender"
     And I select "Jeddah" from the drop down box for "Branch"
     And I select "Individual" from the drop down box for "Sponsor type"
-    And I select "Tarek Al Wafai" from the drop down box for "Agent"
+    And I select "Agent One" from the drop down box for "Agent"
     And I select "Every Six Months" from the drop down box for "Payment plan"
     And I should not see "Request fulfilled"
     And I click the "Create Sponsor" button
@@ -134,9 +136,9 @@ Feature:
     And I should not be able to change "Sponsor Type" for this sponsor
 
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
-    Given sponsor "Sponsor1" is assigned to user "Tarek Al Wafai"
+    Given sponsor "Sponsor1" is assigned to user "Agent One"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
-    Then I should see "Tarek Al Wafai" linking to the "Show" page for user "Tarek Al Wafai"
+    Then I should see "Agent One" linking to the "Show" page for user "Agent One"
 
  Scenario: Should return to sponsor show page when edit sponsor is cancelled
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -145,3 +147,21 @@ Feature:
     And I click the "Cancel" button
     Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
     And I should not see "Canada"
+
+  Scenario: It should be possible to enter a new city name
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "**Add New**" from the drop down box for "City"
+    And I click the "Update Sponsor" button
+    Then I should see "Please enter city name below."
+    When I fill in "New city name" with "Timbuktu"
+    And I click the "Update Sponsor" button
+    Then I should be on the "Show Sponsor" page for sponsor "Sponsor1"
+    And I should see "Timbuktu"
+
+  Scenario: Newly entered city names should become available in the City drop down box
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    And I select "**Add New**" from the drop down box for "City"
+    And I fill in "New city name" with "Saint-Louis-du-Ha! Ha!"
+    And I click the "Update Sponsor" button
+    When I am on the "New Sponsor" page for the "Admin" role
+    Then the "City" selector for this sponsor should contain "Saint-Louis-du-Ha! Ha!"

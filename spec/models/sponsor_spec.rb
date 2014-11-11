@@ -19,6 +19,9 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :requested_orphan_count }
   it { is_expected.to validate_presence_of :country }
+  it { is_expected.to validate_presence_of :city }
+  it { is_expected.not_to allow_value(Sponsor::NEW_CITY_MENU_OPTION).for(:city).
+                              with_message 'Please enter city name below. &darr;' }
   it { is_expected.to validate_presence_of :sponsor_type }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
@@ -295,6 +298,24 @@ describe Sponsor, type: :model do
     end
   end
 
+  describe 'before_validation #set_city' do
+    let(:sponsor) { create :sponsor, city: 'London' }
+
+    before do
+      sponsor.city = Sponsor::NEW_CITY_MENU_OPTION
+    end
+
+    it 'sets city to new name' do
+      sponsor.new_city_name = 'Riyadh'
+      sponsor.save!
+      expect(sponsor.city).to eq 'Riyadh'
+    end
+
+    it 'raises an error if **Add New** is given as city without new_city_name' do
+      expect { sponsor.save! }.to raise_error ActiveRecord::RecordInvalid
+    end
+  end
+
   describe 'methods' do
     let(:active_sponsor) { build_stubbed :sponsor }
     let(:on_hold_sponsor) { build_stubbed :sponsor, status: on_hold_status }
@@ -354,6 +375,17 @@ describe Sponsor, type: :model do
             change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
         end
       end
+    end
+  end
+
+  describe '.all_cities' do
+    before do
+      2.times { create :sponsor, city: 'London' }
+      create :sponsor, city: 'Toronto'
+    end
+
+    it 'returns all unique city names' do
+      expect(Sponsor.all_cities).to match_array %w{London Toronto}
     end
   end
 end

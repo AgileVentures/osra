@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.boolean  "request_fulfilled",      default: false, null: false
     t.integer  "agent_id"
     t.string   "payment_plan",           default: "",    null: false
+    t.string   "city"
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
