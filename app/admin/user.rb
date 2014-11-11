@@ -9,6 +9,9 @@ ActiveAdmin.register User do
       link_to user.user_name, admin_user_path(user)
     end
     column :email, sortable: :email
+    column 'Assigned Active Sponsors' do |_user|
+      _user.active_sponsors.count
+    end
   end
 
   show title: :user_name do |user|

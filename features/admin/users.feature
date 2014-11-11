@@ -19,6 +19,12 @@ Feature:
     Then I should see "First User"
     And I should see "Second User"
 
+  Scenario: The index page should show the number of active sponsors assigned to a user
+    Given an active sponsor "Sponsor1" is assigned to user "First User"
+    And an inactive sponsor "Sponsor2" is assigned to user "First User"
+    And I am on the "Users" page for the "Admin" role
+    Then "Assigned Active Sponsors" for user "First User" should display "1"
+
   Scenario: It should be possible to visit a user from the users index page
     Given I am on the "Users" page for the "Admin" role
     When I click the "First User" link

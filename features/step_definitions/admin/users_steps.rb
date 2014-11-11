@@ -31,11 +31,26 @@ Given /^an (in)?active sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |ina
   sponsor.update!(agent: user)
 end
 
-Then /^"([^"]*)" for sponsor "([^"]*)" should display "([^"]*)"$/ do |property, sponsor_name, value|
-  sponsor_id = Sponsor.find_by_name(sponsor_name).id
-  tr_id = "#sponsor_#{sponsor_id}"
+Then /^"([^"]*)" for (sponsor|partner|orphan|user) "([^"]*)" should display "([^"]*)"$/ do |property, model, obj_name, value|
+  obj_class = model.classify.constantize
+  case model
+    when 'user'
+      object_id = User.find_by_user_name(obj_name).id
+    when 'sponsor', 'partner', 'orphan'
+      object_id = obj_class.find_by_name(obj_name).id
+    else
+      raise "This step is not defined for #{obj_class}. See #{__FILE__}."
+  end
+  tr_id = "##{model.parameterize('_')}_#{object_id}"
   column = "col-#{property.parameterize('_')}"
   within(tr_id) do
     expect(find("td.#{column}").text).to eq value.to_s
   end
+
+  # sponsor_id = Sponsor.find_by_name(obj_name).id
+  # tr_id = "#sponsor_#{sponsor_id}"
+  # column = "col-#{property.parameterize('_')}"
+  # within(tr_id) do
+  #   expect(find("td.#{column}").text).to eq value.to_s
+  # end
 end
