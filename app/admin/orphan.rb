@@ -1,18 +1,32 @@
 ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
-  preserve_default_filters!
+  filter :osra_num, as: :numeric, label: 'OSRA No.'
+  filter :name
+  filter :father_name
   filter :gender, as: :select, collection: Settings.lookup.gender
+  filter :date_of_birth, as: :date_range
+puts Province.all
+puts Province.all.order(:code).map(&:name)
+  filter :original_address_province_name, as: :select, collection: Province.all.order(:code).map(&:name),
+          label: 'Original address province'
+  filter :partner_name, as: :select, collection: Partner.order(:name).map(&:name)
+  filter :father_is_martyr, as: :boolean
 
+  sponsor_obj= Proc.new do |params|
+    if params[:sponsor_id]
+      Sponsor.find_by_id params[:sponsor_id]
+    end
+  end
   new_sponsorship= Proc.new do |params|
-    params.has_key?(:sponsor_id) && (params[:scope]== :eligible_for_sponsorship.to_s)
+    sponsor_obj[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
   end
 
   breadcrumb do
     [ link_to('Admin', admin_root_path) ].tap do |crumbs|
-      crumbs << if request.path =~ /^\/admin\/sponsors\/(\d+)\/sponsorships\/new$/
+      crumbs << if sponsor_obj[params]
         [ link_to('Sponsors', admin_sponsors_path) ] <<
-        link_to(Sponsor.find_by_id($1).name, admin_sponsor_path($1))
+        link_to(sponsor_obj[params].name, admin_sponsor_path(sponsor_obj[params]))
       end << if new_sponsorship[params]
         ['Sponsorship', 'New']
       else
