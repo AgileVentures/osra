@@ -144,7 +144,8 @@ Feature:
     And I click the "Filter" button
     Then I should see "First Orphan"
     And I should not see "Second Orphan"
-    When I click the "Clear Filters" button
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     And I select "Aleppo" from the drop down box for "Original address province"
     And I click the "Filter" button
     Then I should see "Second Orphan"
