@@ -6,11 +6,9 @@ ActiveAdmin.register Orphan do
   filter :father_name
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :date_of_birth, as: :date_range
-puts Province.all
-puts Province.all.order(:code).map(&:name)
-  filter :original_address_province_name, as: :select, collection: Province.all.order(:code).map(&:name),
-          label: 'Original address province'
-  filter :partner_name, as: :select, collection: Partner.order(:name).map(&:name)
+  filter :original_address_province_name, as: :select, label: 'Original address province',
+          collection: -> { Province.all.order(:code).map(&:name) }
+  filter :partner_name, as: :select, collection: -> { Partner.order(:name).map(&:name) }
   filter :father_is_martyr, as: :boolean
 
   sponsor_obj= Proc.new do |params|

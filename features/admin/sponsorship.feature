@@ -146,10 +146,6 @@ Feature:
     And I should not see "Second Orphan"
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
-
-Then show me the provinces
-Then show me the page
-    
     And I select "Aleppo" from the drop down box for "Original address province"
     And I click the "Filter" button
     Then I should see "Second Orphan"
