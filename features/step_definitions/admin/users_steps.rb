@@ -33,6 +33,7 @@ end
 
 Then /^"([^"]*)" for (sponsor|partner|orphan|user) "([^"]*)" should display "([^"]*)"$/ do |property, model, obj_name, value|
   obj_class = model.classify.constantize
+
   case model
     when 'user'
       object_id = User.find_by_user_name(obj_name).id
@@ -41,9 +42,11 @@ Then /^"([^"]*)" for (sponsor|partner|orphan|user) "([^"]*)" should display "([^
     else
       raise "This step is not defined for #{obj_class}. See #{__FILE__}."
   end
+
   tr_id = "##{model.parameterize('_')}_#{object_id}"
-  column = "col-#{property.parameterize('_')}"
+  column_class = "col-#{property.parameterize('_')}"
+
   within(tr_id) do
-    expect(find("td.#{column}").text).to eq value.to_s
+    expect(find("td.#{column_class}").text).to eq value.to_s
   end
 end

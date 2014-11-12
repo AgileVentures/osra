@@ -56,6 +56,8 @@ Feature:
     Given an active sponsor "Sponsor1" is assigned to user "First User"
     And an inactive sponsor "Sponsor2" is assigned to user "First User"
     And I am on the "Show User" page for user "First User"
+    Then I should see "1 Active Sponsor"
+    And I should see "1 Inactive Sponsor"
     Then I should see "Sponsor1" within "Active Sponsors"
     And I should not see "Sponsor2" within "Active Sponsors"
     And I should see "Sponsor2" within "Inactive Sponsors"
