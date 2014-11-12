@@ -111,7 +111,7 @@ Feature:
     Then I should see "Request Fulfilled" set to "No"
     And I should see the "Link to Orphan" link
 
-  Scenario: Allow ordering of orphans by attributes during sponsorship creation
+  Scenario: Allow ordering/filtering of orphans by attributes during sponsorship creation
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And the orphan "First Orphan" has attribute priority "High"
     And the orphan "First Orphan" has sponsorship_status "Unsponsored"
@@ -134,6 +134,21 @@ Feature:
     And I click the "Original Province" link
     Then I should see "Third Orphan" before "First Orphan"
     And I should see "First Orphan" before "Second Orphan"
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And the orphan "First Orphan" has attribute gender "Female"
+    And the orphan "First Orphan" has original province "Homs"
+    And the orphan "Second Orphan" has attribute gender "Male"
+    And the orphan "Second Orphan" has original province "Aleppo"
+    And I click the "Link to Orphan" button
+    And I select "Female" from the drop down box for "Gender"
+    And I click the "Filter" button
+    Then I should see "First Orphan"
+    And I should not see "Second Orphan"
+    When I click the "Clear Filters" button
+    And I select "Aleppo" from the drop down box for "Original address province"
+    And I click the "Filter" button
+    Then I should see "Second Orphan"
+    And I should not see "First Orphan"
 
   Scenario: Sponsor visible in Orphan list
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"

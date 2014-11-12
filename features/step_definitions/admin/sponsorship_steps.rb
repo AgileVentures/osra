@@ -16,6 +16,13 @@ Given(/^the orphan "([^"]*)" has attribute (.*) "([^"]*)"$/) do |orphan_name, at
   orphan.update_attribute attr, value
 end
 
+Given(/^the orphan "([^"]*)" has original province "([^"]*)"$/) do |orphan_name, value|
+  orphan = Orphan.find_by_name orphan_name
+  (orphan.original_address.province= Province.find_by_name(value)) ||
+          raise("Cannot change original province to '#{value}'")
+  orphan.original_address.save!
+end
+
 Given(/^the orphan "([^"]*)" has sponsorship_status "([^"]*)"$/) do |orphan_name, status_name|
   orphan = Orphan.find_by_name orphan_name
   status = OrphanSponsorshipStatus.find_by_name status_name
@@ -24,15 +31,14 @@ Given(/^the orphan "([^"]*)" has sponsorship_status "([^"]*)"$/) do |orphan_name
 end
 
 Given(/^the orphan "([^"]*)" has the (.*)-lowest original_province$/) do |orphan_name, qualifier|
-  orphan = Orphan.find_by_name orphan_name || raise("Cannot find orphan \"#{orphan_name}\"")
-  orig_addr = orphan.original_address || raise("Cannot find original_address \"#{orphan.original_address}\"")
+  orphan = Orphan.find_by_name(orphan_name) || raise("Cannot find orphan '#{orphan_name}'")
   unless ['first', 'second', 'third'].include? qualifier.to_s
     raise "Qualifier needs to be one of ['first', 'second', 'third']"
   end
-  new_prov = Province.all.order('id ASC')[eval("[0, 1, 2].#{qualifier.to_s}.to_i")] ||
-  raise("can't find #{qualifier}-lowest province")
-  orig_addr.province = new_prov || raise("Cannot change original_address \"#{orig_addr.province.name}\"")
-  orig_addr.save!
+  new_prov = eval("Province.all.order('id ASC').#{qualifier.to_s}") ||
+          raise("can't find #{qualifier}-lowest province")
+  (orphan.original_address.province = new_prov) || raise("Cannot change original_province '#{orig_addr.province.name}'")
+  orphan.original_address.save!
 end
 
 Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
