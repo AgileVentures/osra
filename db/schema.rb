@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141111222221) do
+ActiveRecord::Schema.define(version: 20141113135207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,10 @@ ActiveRecord::Schema.define(version: 20141111222221) do
     t.integer  "orphan_original_address_id"
     t.integer  "orphan_current_address_id"
   end
+
+  add_index "addresses", ["orphan_current_address_id"], name: "index_addresses_on_orphan_current_address_id", using: :btree
+  add_index "addresses", ["orphan_original_address_id"], name: "index_addresses_on_orphan_original_address_id", using: :btree
+  add_index "addresses", ["province_id"], name: "index_addresses_on_province_id", using: :btree
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -94,6 +98,7 @@ ActiveRecord::Schema.define(version: 20141111222221) do
   end
 
   add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
+  add_index "orphan_lists", ["sequential_id"], name: "index_orphan_lists_on_sequential_id", using: :btree
 
   create_table "orphan_sponsorship_statuses", force: true do |t|
     t.integer  "code"
@@ -151,6 +156,7 @@ ActiveRecord::Schema.define(version: 20141111222221) do
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
+  add_index "orphans", ["orphan_sponsorship_status_id"], name: "index_orphans_on_orphan_sponsorship_status_id", using: :btree
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
@@ -170,6 +176,7 @@ ActiveRecord::Schema.define(version: 20141111222221) do
 
   add_index "partners", ["name"], name: "index_partners_on_name", unique: true, using: :btree
   add_index "partners", ["province_id"], name: "index_partners_on_province_id", using: :btree
+  add_index "partners", ["sequential_id"], name: "index_partners_on_sequential_id", using: :btree
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
 
   create_table "pending_orphan_lists", force: true do |t|
@@ -219,6 +226,8 @@ ActiveRecord::Schema.define(version: 20141111222221) do
     t.string  "comments"
   end
 
+  add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree
+
   create_table "provinces", force: true do |t|
     t.integer  "code"
     t.string   "name"
@@ -266,6 +275,7 @@ ActiveRecord::Schema.define(version: 20141111222221) do
   add_index "sponsors", ["branch_id"], name: "index_sponsors_on_branch_id", using: :btree
   add_index "sponsors", ["organization_id"], name: "index_sponsors_on_organization_id", using: :btree
   add_index "sponsors", ["request_fulfilled"], name: "index_sponsors_on_request_fulfilled", using: :btree
+  add_index "sponsors", ["sequential_id"], name: "index_sponsors_on_sequential_id", using: :btree
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
   add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
 
