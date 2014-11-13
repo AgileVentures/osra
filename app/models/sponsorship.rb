@@ -22,7 +22,7 @@ class Sponsorship < ActiveRecord::Base
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   def inactivate
-    update_attributes!(active: false)
+    update_attributes!(active: false, end_date: '2014-01-31')
     set_orphan_status_to_previously_sponsored
   end
 
