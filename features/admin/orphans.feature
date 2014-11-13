@@ -49,7 +49,7 @@ Feature:
     And I fill in "Father occupation" with "Another Occupation"
     And I fill in "Father place of death" with "Another Place"
     And I fill in "Father cause of death" with "Another Cause"
-    And I fill in "Father date of death" with "2013-03-15"
+    And I fill in "Father date of death" with ""
     And I fill in "Mother name" with "Mother N"
     And I select "Male" from the drop down box for "Gender"
     And I uncheck the "Father is martyr" checkbox
@@ -89,7 +89,7 @@ Feature:
     And I should see "Father Occupation" set to "Another Occupation"
     And I should see "Father Place Of Death" set to "Another Place"
     And I should see "Father Cause Of Death" set to "Another Cause"
-    And I should see "Father Date Of Death" set to "March 15, 2013"
+    And I should see "Father Date Of Death" set to ""
     And I should see "Mother Name" set to "Mother N"
     And I should see "Gender" set to "Male"
     And I should see "Father Is Martyr" set to "No"
