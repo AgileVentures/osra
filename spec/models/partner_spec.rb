@@ -26,6 +26,14 @@ describe Partner, type: :model do
   it { is_expected.to have_many :orphan_lists }
   it { is_expected.to have_many(:orphans).through :orphan_lists }
 
+  describe 'methods & scopes' do
+
+    it 'should return a list sorted by name' do
+      expect(Partner.all.map(&:name).sort).to eq Partner.all_names
+    end
+
+  end
+
   describe 'callbacks' do
     describe 'after_initialize #set_defaults' do
       describe 'status' do

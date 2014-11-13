@@ -20,6 +20,10 @@ class Partner < ActiveRecord::Base
   def active?
     status && status.name == 'Active'
   end
+  
+  def self.all_names
+    Partner.order(:name).map(&:name)
+  end
 
   private
 
