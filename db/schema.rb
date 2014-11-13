@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110225318) do
+ActiveRecord::Schema.define(version: 20141111222221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,12 +68,17 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.datetime "updated_at"
   end
 
+  add_index "branches", ["code"], name: "index_branches_on_code", unique: true, using: :btree
+
   create_table "organizations", force: true do |t|
     t.integer  "code"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "organizations", ["code"], name: "index_organizations_on_code", unique: true, using: :btree
+  add_index "organizations", ["name"], name: "index_organizations_on_name", unique: true, using: :btree
 
   create_table "orphan_lists", force: true do |t|
     t.string   "osra_num"
@@ -97,10 +102,16 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.datetime "updated_at"
   end
 
+  add_index "orphan_sponsorship_statuses", ["code"], name: "index_orphan_sponsorship_statuses_on_code", unique: true, using: :btree
+  add_index "orphan_sponsorship_statuses", ["name"], name: "index_orphan_sponsorship_statuses_on_name", unique: true, using: :btree
+
   create_table "orphan_statuses", force: true do |t|
     t.integer "code"
     t.string  "name"
   end
+
+  add_index "orphan_statuses", ["code"], name: "index_orphan_statuses_on_code", unique: true, using: :btree
+  add_index "orphan_statuses", ["name"], name: "index_orphan_statuses_on_name", unique: true, using: :btree
 
   create_table "orphans", force: true do |t|
     t.string   "name"
@@ -157,6 +168,7 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.integer  "sequential_id"
   end
 
+  add_index "partners", ["name"], name: "index_partners_on_name", unique: true, using: :btree
   add_index "partners", ["province_id"], name: "index_partners_on_province_id", using: :btree
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
 
@@ -214,10 +226,16 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.datetime "updated_at"
   end
 
+  add_index "provinces", ["code"], name: "index_provinces_on_code", unique: true, using: :btree
+  add_index "provinces", ["name"], name: "index_provinces_on_name", unique: true, using: :btree
+
   create_table "sponsor_types", force: true do |t|
     t.integer "code"
     t.string  "name"
   end
+
+  add_index "sponsor_types", ["code"], name: "index_sponsor_types_on_code", unique: true, using: :btree
+  add_index "sponsor_types", ["name"], name: "index_sponsor_types_on_name", unique: true, using: :btree
 
   create_table "sponsors", force: true do |t|
     t.string   "name"
@@ -240,8 +258,8 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.integer  "requested_orphan_count"
     t.boolean  "request_fulfilled",      default: false, null: false
     t.integer  "agent_id"
-    t.string   "payment_plan",           default: "",    null: false
     t.string   "city"
+    t.string   "payment_plan",           default: "",    null: false
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
@@ -269,6 +287,9 @@ ActiveRecord::Schema.define(version: 20141110225318) do
     t.integer "code"
     t.string  "name"
   end
+
+  add_index "statuses", ["code"], name: "index_statuses_on_code", unique: true, using: :btree
+  add_index "statuses", ["name"], name: "index_statuses_on_name", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"
