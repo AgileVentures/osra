@@ -5,4 +5,12 @@ class User < ActiveRecord::Base
   validates_format_of :email, with: Devise.email_regexp, allow_blank: false
 
   has_many :sponsors, :foreign_key => 'agent_id'
+
+  def active_sponsors
+    sponsors.all_active
+  end
+
+  def inactive_sponsors
+    sponsors.all_inactive
+  end
 end

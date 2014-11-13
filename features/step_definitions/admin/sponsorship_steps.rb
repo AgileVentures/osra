@@ -11,9 +11,9 @@ Given(/^an orphan "([^"]*)" exists$/) do |orphan_name|
   FactoryGirl.create :orphan, name: orphan_name
 end
 
-Given(/^a(n inactive)? sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
-  sponsor = Sponsor.find_by_name sponsor_name
-  orphan = Orphan.find_by_name orphan_name
+Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
+  sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
+  orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
   sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id)
   if inactive
     sponsorship.inactivate
@@ -34,13 +34,7 @@ When(/I click the "End sponsorship" link for orphan "([^"]*)"/) do |orphan_name|
 end
 
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|
-  case panel
-    when 'Currently Sponsored Orphans' then
-      panel_id = '#active'
-    when 'Previously Sponsored Orphans' then
-      panel_id = '#inactive'
-    else raise 'Element not found on page'
-  end
+  panel_id = "##{panel.parameterize('_')}"
 
   if negative
     within(panel_id) { expect(page).not_to have_content orphan_name }

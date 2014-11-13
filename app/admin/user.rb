@@ -9,6 +9,9 @@ ActiveAdmin.register User do
       link_to user.user_name, admin_user_path(user)
     end
     column :email, sortable: :email
+    column 'Assigned Active Sponsors' do |_user|
+      _user.active_sponsors.count
+    end
   end
 
   show title: :user_name do |user|
@@ -17,8 +20,8 @@ ActiveAdmin.register User do
       row :email
     end
 
-    panel "#{pluralize(user.sponsors.count, 'Sponsor')}" do
-      table_for user.sponsors do
+    panel "#{pluralize(user.active_sponsors.count, 'Active Sponsor')}", id: 'active_sponsors' do
+      table_for user.active_sponsors do
         column :name do |sponsor|
           link_to sponsor.name, admin_sponsor_path(sponsor)
         end
@@ -27,8 +30,20 @@ ActiveAdmin.register User do
         column :status
         column :request_fulfilled
         column 'Orphans sponsored' do |_sponsor|
-          _sponsor.orphans.count
+          _sponsor.currently_sponsored_orphans.count
         end
+      end
+    end
+
+    panel "#{pluralize(user.inactive_sponsors.count, 'Inactive Sponsor')}", id: 'inactive_sponsors' do
+      table_for user.inactive_sponsors do
+        column :name do |sponsor|
+          link_to sponsor.name, admin_sponsor_path(sponsor)
+        end
+        column :gender
+        column :country
+        column :status
+        column :request_fulfilled
       end
     end
   end

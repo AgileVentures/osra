@@ -22,3 +22,31 @@ end
 Given /^a user "([^"]*)" exists$/ do |user_name|
   FactoryGirl.create :user, user_name: user_name
 end
+
+Given /^an (in)?active sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |inactive, sponsor, user_name|
+  sponsor = Sponsor.find_by_name(sponsor) || FactoryGirl.create(:sponsor, name: sponsor)
+  status = inactive.present? ? Status.find_by_name('Inactive') : Status.find_by_name('Active')
+  sponsor.update!(status: status)
+  user = User.find_by_user_name(user_name) || FactoryGirl.create(:user, user_name: user_name)
+  sponsor.update!(agent: user)
+end
+
+Then /^"([^"]*)" for (sponsor|partner|orphan|user) "([^"]*)" should display "([^"]*)"$/ do |property, model, obj_name, value|
+  obj_class = model.classify.constantize
+
+  case model
+    when 'user'
+      object_id = User.find_by_user_name(obj_name).id
+    when 'sponsor', 'partner', 'orphan'
+      object_id = obj_class.find_by_name(obj_name).id
+    else
+      raise "This step is not defined for #{obj_class}. See #{__FILE__}."
+  end
+
+  tr_id = "##{model.parameterize('_')}_#{object_id}"
+  column_class = "col-#{property.parameterize('_')}"
+
+  within(tr_id) do
+    expect(find("td.#{column_class}").text).to eq value.to_s
+  end
+end

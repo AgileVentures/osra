@@ -376,6 +376,38 @@ describe Sponsor, type: :model do
         end
       end
     end
+
+    describe '#currently_sponsored_orphans' do
+      let(:new_sponsor) { build_stubbed :sponsor, requested_orphan_count: 5 }
+      let(:current_orphan) { create :orphan }
+      let(:past_orphan) { create :orphan }
+      let!(:current_sponsorship) { create :sponsorship,
+                                                sponsor: new_sponsor,
+                                                orphan: current_orphan }
+      let!(:past_sponsorship) { create :sponsorship,
+                                             sponsor: new_sponsor,
+                                             orphan: past_orphan }
+
+      before { past_sponsorship.inactivate }
+
+      it 'returns only orphans that are currently sponsored' do
+        expect(new_sponsor.currently_sponsored_orphans).to match_array [current_orphan]
+      end
+    end
+
+    describe 'scopes' do
+      let(:active_sponsor) { create :sponsor, status: active_status }
+      let(:inactive_sponsor) { create :sponsor, status: inactive_status }
+      let(:on_hold_sponsor) { create :sponsor, status: on_hold_status }
+
+      specify '.all_active should return sponsors with statuses Active & On Hold only' do
+        expect(Sponsor.all_active).to match_array [active_sponsor, on_hold_sponsor]
+      end
+
+      specify '.all_inactive should return sponsors with Inactive status only' do
+        expect(Sponsor.all_inactive).to match_array [inactive_sponsor]
+      end
+    end
   end
 
   describe '.all_cities' do

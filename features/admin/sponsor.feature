@@ -107,8 +107,8 @@ Feature:
     Given an orphan "Orphan1" exists
     And an orphan "Orphan2" exists
     And sponsor "Sponsor1" has requested to sponsor 2 orphans
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
-    And a sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
+    And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
+    And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
     When I go to the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see "Request Fulfilled" set to "Yes"
     When I click the "Edit Sponsor" button
@@ -136,9 +136,9 @@ Feature:
     And I should not be able to change "Sponsor Type" for this sponsor
 
   Scenario: Page for Sponsor assigned to a User should have a link to user's page
-    Given sponsor "Sponsor1" is assigned to user "Agent One"
+    Given an active sponsor "Sponsor1" is assigned to user "Agent One"
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
-    Then I should see "Agent One" linking to the "Show" page for user "Agent One"
+    Then "Agent One" should link to the "Show" page for user "Agent One"
 
  Scenario: Should return to sponsor show page when edit sponsor is cancelled
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"

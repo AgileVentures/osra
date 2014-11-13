@@ -52,9 +52,16 @@ class Sponsor < ActiveRecord::Base
     update!(request_fulfilled: request_is_fulfilled?)
   end
 
+  def currently_sponsored_orphans
+    sponsorships.all_active.map(&:orphan)
+  end
+
   def self.all_cities
     pluck(:city).uniq
   end
+
+  scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
+  scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
   private
 

@@ -49,7 +49,7 @@ ActiveAdmin.register Sponsor do
     end
 
     panel "#{ pluralize(sponsor.sponsorships.all_active.count,
-                        'Currently Sponsored Orphan') }", id: 'active' do
+                        'Currently Sponsored Orphan') }", id: 'currently_sponsored_orphans' do
       table_for sponsor.sponsorships.all_active do
         column :orphan
         column :orphan_date_of_birth
@@ -63,7 +63,7 @@ ActiveAdmin.register Sponsor do
     end
 
     panel "#{ pluralize(sponsor.sponsorships.all_inactive.count,
-                       'Previously Sponsored Orphan') }", id: 'inactive' do
+                       'Previously Sponsored Orphan') }", id: 'previously_sponsored_orphans' do
       table_for sponsor.sponsorships.all_inactive do
         column :orphan
         column :orphan_date_of_birth

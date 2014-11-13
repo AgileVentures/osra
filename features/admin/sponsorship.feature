@@ -12,7 +12,7 @@ Feature:
     And I am a new, authenticated user
 
   Scenario: Viewing existing sponsorship links between sponsor and orphans
-    Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "1 Currently Sponsored Orphan"
     And I should see "First Orphan"
@@ -28,8 +28,8 @@ Feature:
 
   Scenario: Sponsorships cannot be created for sponsors whose requests have been fulfilled
     Given sponsor "First Sponsor" has requested to sponsor 2 orphans
-    And a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And a sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
+    And an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And an active sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
     And the status of sponsor "First Sponsor" is "Active"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should not see the "Link to Orphan" link
@@ -54,7 +54,7 @@ Feature:
     And I should see "Second Orphan" within "Currently Sponsored Orphans"
 
   Scenario: Ending a sponsorship
-    Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     When I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
@@ -63,7 +63,7 @@ Feature:
     And I should see "First Orphan" within "Previously Sponsored Orphans"
 
   Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
-    Given a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Link to Orphan" page for sponsor "First Sponsor"
     Then I should not see "First Orphan"
     When I am on the "Link to Orphan" page for sponsor "Second Sponsor"
@@ -86,7 +86,7 @@ Feature:
 
   Scenario: Verifying bug fix for sponsorship inactivation
     Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
@@ -94,10 +94,10 @@ Feature:
 
   Scenario: "Request fulfilled" should be automatically set
     Given sponsor "First Sponsor" has requested to sponsor 2 orphans
-    And a sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
+    And an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "No"
-    When a sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
+    When an active sponsorship link exists between sponsor "First Sponsor" and orphan "Second Orphan"
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "Yes"
     And I should not see the "Link to Orphan" link
