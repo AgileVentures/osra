@@ -43,6 +43,7 @@ Feature:
     And I should see "Prefer male orphans from Homs"
     And I should see "First Orphan"
     And I should see "Second Orphan"
+    And I fill in "Sponsorship Start Date" with "2014-01-31"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully created"
@@ -57,6 +58,7 @@ Feature:
   Scenario: Ending a sponsorship
     Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I fill in "on:" with "2014-03-30"
     When I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully terminated"
