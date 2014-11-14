@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113135207) do
+ActiveRecord::Schema.define(version: 20141114141037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,18 @@ ActiveRecord::Schema.define(version: 20141113135207) do
   add_index "organizations", ["code"], name: "index_organizations_on_code", unique: true, using: :btree
   add_index "organizations", ["name"], name: "index_organizations_on_name", unique: true, using: :btree
 
+  create_table "orphan_fathers", force: true do |t|
+    t.string   "name"
+    t.string   "occupation"
+    t.string   "place_of_death"
+    t.string   "cause_of_death"
+    t.boolean  "is_alive?"
+    t.boolean  "is_martyr?"
+    t.date     "date_of_death"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orphan_lists", force: true do |t|
     t.string   "osra_num"
     t.integer  "partner_id"
@@ -153,8 +165,10 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.integer  "orphan_list_id"
     t.integer  "province_code"
     t.boolean  "father_alive"
+    t.integer  "orphan_father_id",                null: false
   end
 
+  add_index "orphans", ["orphan_father_id"], name: "index_orphans_on_orphan_father_id", using: :btree
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
   add_index "orphans", ["orphan_sponsorship_status_id"], name: "index_orphans_on_orphan_sponsorship_status_id", using: :btree
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree

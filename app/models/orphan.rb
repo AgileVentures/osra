@@ -49,7 +49,7 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
   def full_name
-    [name, father_name].join(' ')
+    "#{name} #{father_name}"
   end
 
   def orphans_dob_within_1yr_of_fathers_death
