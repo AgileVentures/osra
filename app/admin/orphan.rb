@@ -13,24 +13,21 @@ ActiveAdmin.register Orphan do
 
   sponsor_obj= Proc.new do |params|
     if params[:sponsor_id]
-      Sponsor.find_by_id params[:sponsor_id]
+      sponsor= Sponsor.find_by_id params[:sponsor_id]
+      sponsor.eligible_for_sponsorship? && sponsor if sponsor
     end
   end
   new_sponsorship= Proc.new do |params|
-    sponsor_obj[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
+    !!sponsor_obj[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
   end
 
   breadcrumb do
     [ link_to('Admin', admin_root_path) ].tap do |crumbs|
-      crumbs << if sponsor_obj[params]
-        [ link_to('Sponsors', admin_sponsors_path) ] <<
-        link_to(sponsor_obj[params].name, admin_sponsor_path(sponsor_obj[params]))
-      end << if new_sponsorship[params]
-        ['Sponsorship', 'New']
-      else
-        ['View Orphans']
-      end
-    end.flatten.compact
+      crumbs << link_to('Sponsors', admin_sponsors_path) if sponsor_obj[params]
+      crumbs << link_to(sponsor_obj[params].name, admin_sponsor_path(sponsor_obj[params])) if sponsor_obj[params]
+      crumbs << 'Sponsorship' << 'New' if new_sponsorship[params]
+      crumbs << 'View Orphans' unless new_sponsorship[params]
+    end
   end
 
   config.sort_order= ''
@@ -197,59 +194,67 @@ ActiveAdmin.register Orphan do
   end
 
   index do
-    if new_sponsorship[params]
-      panel 'Sponsor' do
-        h3 Sponsor.find_by_id(params[:sponsor_id]).name
-        para Sponsor.find_by_id(params[:sponsor_id]).additional_info
-        para link_to 'Return to Sponsor page', admin_sponsor_path(Sponsor.find_by_id(params[:sponsor_id]))
+    class << self
+      def orphan_index
+        column 'OSRA No.', sortable: :osra_num do |orphan|
+          link_to orphan.osra_num, admin_orphan_path(orphan)
+        end
+        column :full_name, sortable: :name do |orphan|
+          link_to orphan.full_name, admin_orphan_path(orphan)
+        end
+        column :date_of_birth, sortable: :date_of_birth
+        column :gender, sortable: :gender
+        column :orphan_status, sortable: :orphan_status_id
+        column :father_alive, sortable: :father_alive
+        column :mother_alive, sortable: :mother_alive
+        column :priority, sortable: :priority do |orphan|
+          status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+        end
+        column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
+          orphan.orphan_sponsorship_status.name
+        end
       end
-      column 'OSRA No.', sortable: :osra_num do |orphan|
-        link_to orphan.osra_num, admin_orphan_path(orphan)
-      end
-      column :name, sortable: :name do |orphan|
-        link_to orphan.name, admin_orphan_path(orphan)
-      end
-      column :father_name, sortable: :father_name
-      column :date_of_birth, sortable: :date_of_birth
-      column :gender, sortable: :gender
-      column :original_province, sortable: 'addresses.province_id' do |orphan|
-        orphan.original_address.province.name
-      end
-      column :partner, sortable: 'partners.name' do |orphan|
-        orphan.partner.name
-      end
-      column :father_is_martyr, sortable: :father_is_martyr
-      column :father_alive, sortable: :father_alive
-      column :mother_alive, sortable: :mother_alive
-      column :priority, sortable: :priority do |orphan|
-        status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
-      end
-      column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
-      column '' do |orphan| link_to "Sponsor this orphan",
-            admin_sponsor_sponsorships_path(sponsor_id: params[:sponsor_id], orphan_id: orphan.id), method: :post
+      def new_sponsorship_form_for sponsor
+        panel 'Sponsor' do
+          h3 sponsor.name
+          para sponsor.additional_info
+          para link_to 'Return to Sponsor page', admin_sponsor_path(sponsor)
+        end
+        column 'OSRA No.', sortable: :osra_num do |orphan|
+          link_to orphan.osra_num, admin_orphan_path(orphan)
+        end
+        column :name, sortable: :name do |orphan|
+          link_to orphan.name, admin_orphan_path(orphan)
+        end
+        column :father_name, sortable: :father_name
+        column :date_of_birth, sortable: :date_of_birth
+        column :gender, sortable: :gender
+        column :original_province, sortable: 'addresses.province_id' do |orphan|
+          orphan.original_address.province.name
+        end
+        column :partner, sortable: 'partners.name' do |orphan|
+          orphan.partner.name
+        end
+        column :father_is_martyr, sortable: :father_is_martyr
+        column :father_alive, sortable: :father_alive
+        column :mother_alive, sortable: :mother_alive
+        column :priority, sortable: :priority do |orphan|
+          status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
+        end
+        column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
+          orphan.orphan_sponsorship_status.name
+        end
+        column '' do |orphan| link_to "Sponsor this orphan",
+              admin_sponsor_sponsorships_path(sponsor_id: sponsor.id, orphan_id: orphan.id), method: :post
+        end
       end
     end
 
     unless new_sponsorship[params]
-      column 'OSRA No.', sortable: :osra_num do |orphan|
-        link_to orphan.osra_num, admin_orphan_path(orphan)
-      end
-      column :full_name, sortable: :name do |orphan|
-        link_to orphan.full_name, admin_orphan_path(orphan)
-      end
-      column :date_of_birth, sortable: :date_of_birth
-      column :gender, sortable: :gender
-      column :orphan_status, sortable: :orphan_status_id
-      column :father_alive, sortable: :father_alive
-      column :mother_alive, sortable: :mother_alive
-      column :priority, sortable: :priority do |orphan|
-        status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
-      end
-      column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
-        orphan.orphan_sponsorship_status.name
-      end
+      orphan_index
+    else
+      new_sponsorship_form_for sponsor_obj[params]
     end
   end
+
 end
