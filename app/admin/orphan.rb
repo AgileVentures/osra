@@ -11,20 +11,21 @@ ActiveAdmin.register Orphan do
   filter :partner_name, as: :select, collection: -> { Partner.all_names }
   filter :father_is_martyr, as: :boolean
 
-  sponsor_obj= Proc.new do |params|
+  prospective_sponsor= Proc.new do |params|
     if params[:sponsor_id]
       sponsor= Sponsor.find_by_id params[:sponsor_id]
       sponsor.eligible_for_sponsorship? && sponsor if sponsor
     end
   end
   new_sponsorship= Proc.new do |params|
-    !!sponsor_obj[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
+    !!prospective_sponsor[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
   end
 
   breadcrumb do
     [ link_to('Admin', admin_root_path) ].tap do |crumbs|
-      crumbs << link_to('Sponsors', admin_sponsors_path) if sponsor_obj[params]
-      crumbs << link_to(sponsor_obj[params].name, admin_sponsor_path(sponsor_obj[params])) if sponsor_obj[params]
+      crumbs << link_to('Sponsors', admin_sponsors_path) if prospective_sponsor[params]
+      crumbs << link_to(prospective_sponsor[params].name,
+              admin_sponsor_path(prospective_sponsor[params])) if prospective_sponsor[params]
       crumbs << 'Sponsorship' << 'New' if new_sponsorship[params]
       crumbs << 'View Orphans' unless new_sponsorship[params]
     end
@@ -253,7 +254,7 @@ ActiveAdmin.register Orphan do
     unless new_sponsorship[params]
       orphan_index
     else
-      new_sponsorship_form_for sponsor_obj[params]
+      new_sponsorship_form_for prospective_sponsor[params]
     end
   end
 
