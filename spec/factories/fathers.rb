@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :father do
     name { Faker::Name.name }
-    is_alive? { [true, false].sample }
-    date_of_death { is_alive? ? nil : 6.months.ago }
+    status { %i(dead alive).sample }
+    martyr_status { status == :alive ? :not_martyr : %i(not_martyr martyr).sample }
+    date_of_death { status == :alive ? nil : 6.months.ago }
   end
 
 end
