@@ -1,6 +1,6 @@
-class CreateOrphanFathers < ActiveRecord::Migration
+class CreateFathers < ActiveRecord::Migration
   def change
-    create_table :orphan_fathers do |t|
+    create_table :fathers do |t|
         t.string :name
         t.string :occupation
         t.string :place_of_death
@@ -11,6 +11,6 @@ class CreateOrphanFathers < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_reference :orphans, :orphan_father, null: false, index: true
+    add_reference :orphans, :father, null: false, index: true
   end
 end

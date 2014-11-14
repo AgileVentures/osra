@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe OrphanFather, :type => :model do
+RSpec.describe Father, :type => :model do
 
   it 'should have a vaild factory' do
-    expect(build_stubbed :orphan_father).to be_valid
+    expect(build_stubbed :father).to be_valid
   end
 
   it { is_expected.to validate_presence_of :name }

@@ -29,7 +29,7 @@ class Orphan < ActiveRecord::Base
   validates :priority, presence: true, inclusion: { in: %w(Normal High) }
   validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
-  validates :orphan_father, presence: true
+  validates :father, presence: true
   validate :orphans_dob_within_1yr_of_fathers_death
   validate :less_than_22_yo_when_joined_osra
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
@@ -42,7 +42,7 @@ class Orphan < ActiveRecord::Base
   belongs_to :orphan_status
   belongs_to :orphan_sponsorship_status
   belongs_to :orphan_list
-  belongs_to :orphan_father
+  belongs_to :father
   has_one :partner, through: :orphan_list, autosave: false
 
   delegate :province_code, to: :partner, prefix: true
