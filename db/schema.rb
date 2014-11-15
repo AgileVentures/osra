@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114225923) do
+ActiveRecord::Schema.define(version: 20141115174709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20141114225923) do
     t.datetime "updated_at"
     t.integer  "status",         default: 0, null: false
     t.integer  "martyr_status",  default: 0, null: false
+    t.integer  "orphan_id"
   end
 
   create_table "organizations", force: true do |t|
@@ -165,10 +166,8 @@ ActiveRecord::Schema.define(version: 20141114225923) do
     t.integer  "orphan_list_id"
     t.integer  "province_code"
     t.boolean  "father_alive"
-    t.integer  "father_id",                       null: false
   end
 
-  add_index "orphans", ["father_id"], name: "index_orphans_on_father_id", using: :btree
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
   add_index "orphans", ["orphan_sponsorship_status_id"], name: "index_orphans_on_orphan_sponsorship_status_id", using: :btree
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree

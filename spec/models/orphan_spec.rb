@@ -57,7 +57,7 @@ describe Orphan, type: :model do
   it { is_expected.to belong_to :orphan_status }
   it { is_expected.to belong_to :orphan_sponsorship_status }
   it { is_expected.to belong_to :orphan_list }
-  it { is_expected.to belong_to :father }
+  it { is_expected.to have_one :father }
   it { is_expected.to validate_presence_of :orphan_status }
   it { is_expected.to validate_presence_of :father }
   it { is_expected.to validate_presence_of :priority }
