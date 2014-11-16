@@ -2,11 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Father, :type => :model do
 
-  # subject(:father) do
-  #   # (create :orphan).father
-  #   build_stubbed :father
-  # end
-
   it 'should have a valid factory' do
     expect(build_stubbed :father).to be_valid
   end
@@ -20,14 +15,10 @@ RSpec.describe Father, :type => :model do
   it { is_expected.to validate_uniqueness_of :orphan_id }
 
   describe 'validations' do
-    let(:father) { build_stubbed :father }
+    let(:father) { build_stubbed :father, status: :alive, martyr_status: :not_martyr }
 
     describe '#not_martyr_if_alive' do
       context 'when father is alive' do
-        before do
-          father.not_martyr!
-          father.alive!
-        end
 
         it 'cannot be martyr' do
           expect{ father.martyr! }.to raise_error ActiveRecord::RecordInvalid
@@ -50,7 +41,22 @@ RSpec.describe Father, :type => :model do
     end
 
     describe '#no_death_details_if_alive' do
+      let(:death_details) { { } }
 
+      it 'cannot have place_of_death' do
+        death_details.merge!(place_of_death: 'City Name')
+        expect{ father.update!(death_details) }.to raise_error ActiveRecord::RecordInvalid
+      end
+
+      it 'cannot have cause_of_death' do
+        death_details.merge!(cause_of_death: 'Unknown')
+        expect{ father.update!(death_details) }.to raise_error ActiveRecord::RecordInvalid
+        end
+
+      it 'cannot have date_of_death' do
+        death_details.merge!(date_of_death: 1.month.ago)
+        expect{ father.update!(death_details) }.to raise_error ActiveRecord::RecordInvalid
+      end
     end
   end
 end
