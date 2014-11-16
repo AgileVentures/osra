@@ -50,7 +50,7 @@ class Orphan < ActiveRecord::Base
   def full_name
     "#{name} #{father_name}"
   end
-  
+
   def update_sponsorship_status!(status_name)
     sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
     update!(orphan_sponsorship_status: sponsorship_status)
@@ -100,7 +100,7 @@ class Orphan < ActiveRecord::Base
      self.orphan_status ||= OrphanStatus.find_by_name 'Active'
   end
 
-  # Why is Orphan validating dates?
+  # TODO Why is Orphan validating dates?
   def valid_date? date
     begin 
       Date.parse(date.to_s)
@@ -113,7 +113,6 @@ class Orphan < ActiveRecord::Base
     self.priority ||= 'Normal'
   end
   
-
   def set_province_code
     self.province_code = partner_province_code
   end

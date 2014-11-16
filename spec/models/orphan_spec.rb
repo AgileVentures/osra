@@ -11,11 +11,9 @@ describe Orphan, type: :model do
   let(:previously_sponsored_status) { OrphanSponsorshipStatus.find_by_name 'Previously Sponsored' }
   let(:on_hold_sponsorship_status) { OrphanSponsorshipStatus.find_by_name 'On Hold' }
 
-  subject do
-    partner = create :partner
-    orphan_list = create :orphan_list, partner: partner
-    father = Father.new(name: 'Father')
-    Orphan.new(orphan_list: orphan_list, father: father)
+  before do
+    allow(subject).to receive(:partner_province_code)
+    allow(subject).to receive(:father_dead?)
   end
 
   it 'should have a valid factory' do
@@ -54,22 +52,12 @@ describe Orphan, type: :model do
   it { is_expected.to belong_to :orphan_list }
   it { is_expected.to have_one(:father).dependent(:destroy) }
   it { is_expected.to validate_presence_of :orphan_status }
+  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
+  it { is_expected.to validate_presence_of :orphan_list }
+  it { is_expected.to validate_presence_of :father }
+
   it { is_expected.to validate_presence_of :priority }
   it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
-  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
-
-  it 'validates presence of :father' do
-    # need to stub out orphan.father.dead? which gets called in a validation
-    allow(subject).to receive(:father_dead?)
-    expect(subject).to validate_presence_of :father
-  end
-
-  it 'validates presence of :orphan_list' do
-    # need to stub out orphan.orphan_list.partner.province association
-    # which gets called before_validation
-    allow(subject).to receive(:partner_province_code).at_least(:once)
-    expect(subject).to validate_presence_of :orphan_list
-  end
 
   it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
