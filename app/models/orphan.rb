@@ -42,7 +42,7 @@ class Orphan < ActiveRecord::Base
   belongs_to :orphan_status
   belongs_to :orphan_sponsorship_status
   belongs_to :orphan_list
-  has_one :father
+  has_one :father, dependent: :destroy
   has_one :partner, through: :orphan_list, autosave: false
 
   delegate :province_code, to: :partner, prefix: true

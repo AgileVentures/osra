@@ -11,5 +11,15 @@ class Father < ActiveRecord::Base
   validates :orphan_id, presence: true, uniqueness: true
 
   # alive / dead / martyr / dates validations
-  # invalid without at least one orphan - orphan before_destroy :destroy_father_if_no_orphans
+  # status (alive or dead) is taken as the basis for validations of related attributes
+  validate :not_martyr_if_alive
+  # validate :no_death_details_if_alive
+
+  private
+
+  def not_martyr_if_alive
+    if alive? && martyr?
+      errors[:martyr_status] << 'Father cannot be a martyr is he is alive.'
+    end
+  end
 end
