@@ -76,15 +76,34 @@ describe Orphan, type: :model do
 
   it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
 
-  describe '#orphans_dob_within_1yr_of_fathers_death' do
-    let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
+  # describe '#orphans_dob_within_1yr_of_fathers_death' do
+  #   let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
+  #
+  #   it "is valid when orphan is born a year after fathers death" do
+  #     orphan.date_of_birth = 1.day.ago
+  #     expect(orphan).to be_valid
+  #   end
+  #
+  #   it "is not valid when orphan is born more than a year after fathers death" do
+  #     orphan.date_of_birth = Date.current
+  #     expect(orphan).not_to be_valid
+  #   end
+  # end
 
-    it "is valid when orphan is born a year after fathers death" do
-      orphan.date_of_birth = 1.day.ago
+  describe '#dob_within_1yr_of_fathers_death' do
+    let(:orphan) { create :orphan }
+    before do
+      father = orphan.father
+      father.date_of_death = (1.year + 1.day).ago
+      father.dead!
+    end
+
+    it "is valid when dob is 1 year after father's death" do
+      orphan.date_of_birth = Date.yesterday
       expect(orphan).to be_valid
     end
 
-    it "is not valid when orphan is born more than a year after fathers death" do
+    it "is invalid when dob is more than 1 year after father's death" do
       orphan.date_of_birth = Date.current
       expect(orphan).not_to be_valid
     end

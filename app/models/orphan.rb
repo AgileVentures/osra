@@ -31,6 +31,7 @@ class Orphan < ActiveRecord::Base
   validates :orphan_list, presence: true
   validates :father, presence: true
   validate :orphans_dob_within_1yr_of_fathers_death
+  validate :dob_within_1yr_of_fathers_death
   validate :less_than_22_yo_when_joined_osra
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
@@ -46,6 +47,7 @@ class Orphan < ActiveRecord::Base
   has_one :partner, through: :orphan_list, autosave: false
 
   delegate :province_code, to: :partner, prefix: true
+  delegate :date_of_death, to: :father, prefix: true
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
@@ -54,13 +56,13 @@ class Orphan < ActiveRecord::Base
     "#{name} #{father_name}"
   end
 
-  def orphans_dob_within_1yr_of_fathers_death
-    # gestation is considered vaild if within 1 year of a fathers death
-    return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
-    if (father_date_of_death + 1.year) < date_of_birth
-      errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
-    end
-  end
+  # def orphans_dob_within_1yr_of_fathers_death
+  #   # gestation is considered vaild if within 1 year of a fathers death
+  #   return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
+  #   if (father_date_of_death + 1.year) < date_of_birth
+  #     errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
+  #   end
+  # end
 
   def update_sponsorship_status!(status_name)
     sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
@@ -184,6 +186,13 @@ class Orphan < ActiveRecord::Base
   def being_inactivated?
     unless orphan_status_id_was.nil?
       orphan_status_id_changed? && (OrphanStatus.find(orphan_status_id_was).name == 'Active')
+    end
+  end
+
+  def dob_within_1yr_of_fathers_death
+    return unless valid_date?(date_of_birth) && valid_date?(father_date_of_death)
+    if date_of_birth - father_date_of_death > 1.year
+      errors[:date_of_birth] << "Date of birth must be within 1yr of father's death."
     end
   end
 end
