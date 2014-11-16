@@ -12,12 +12,12 @@ class Orphan < ActiveRecord::Base
   before_create :generate_osra_num
 
   validates :name, presence: true
-  validates :father_name, presence: true
-  validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
-  validates :father_date_of_death, presence: true, date_not_in_future: true
+  # validates :father_name, presence: true
+  # validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
+  # validates :father_date_of_death, presence: true, date_not_in_future: true
   validates :mother_name, presence: true
   validates :mother_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
-  validates :father_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
+  # validates :father_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :date_of_birth, presence: true, date_not_in_future: true
   validates :gender, presence: true, inclusion: {in: Settings.lookup.gender }
   validates :contact_number, presence: true

@@ -31,7 +31,10 @@ RSpec.describe Father, :type => :model do
       end
 
       context 'when father is dead' do
-        before { father.dead! }
+        before do
+          father.date_of_death = 6.months.ago
+          father.dead!
+        end
 
         it 'can be martyr or not_martyr' do
           expect{ father.martyr! }.not_to raise_exception

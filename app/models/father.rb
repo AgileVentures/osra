@@ -9,6 +9,7 @@ class Father < ActiveRecord::Base
   validates :status, presence: true
   validates :martyr_status, presence: true
   validates :orphan_id, presence: true, uniqueness: true
+  validates :date_of_death, presence: true, date_not_in_future: true, if: :dead?
 
   # status (alive or dead) is taken as the basis for validations
   # of death-related attributes
