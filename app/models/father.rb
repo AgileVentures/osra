@@ -25,7 +25,7 @@ class Father < ActiveRecord::Base
 
   def no_death_details_if_alive
     if alive? && death_details_present?
-      errors[:status] << 'Cannot have details of death for live father.'
+      errors[:status] << 'Cannot have details of death for living father.'
     end
   end
 
