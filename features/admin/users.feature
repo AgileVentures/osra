@@ -19,6 +19,12 @@ Feature:
     Then I should see "First User"
     And I should see "Second User"
 
+  Scenario: The index page should show the number of active sponsors assigned to a user
+    Given an active sponsor "Sponsor1" is assigned to user "First User"
+    And an inactive sponsor "Sponsor2" is assigned to user "First User"
+    And I am on the "Users" page for the "Admin" role
+    Then "Assigned Active Sponsors" for user "First User" should display "1"
+
   Scenario: It should be possible to visit a user from the users index page
     Given I am on the "Users" page for the "Admin" role
     When I click the "First User" link
@@ -46,7 +52,22 @@ Feature:
     And I should see "User was successfully updated"
     And I should see "new_user@osra.org"
 
-  Scenario: Should be able to see links to assigned sponsors on an user's page
-    Given sponsor "Sponsor1" is assigned to user "First User"
+  Scenario: Should be able to see links to assigned sponsors on a user's page
+    Given an active sponsor "Sponsor1" is assigned to user "First User"
+    And an inactive sponsor "Sponsor2" is assigned to user "First User"
     And I am on the "Show User" page for user "First User"
-    Then I should see "Sponsor1" linking to the "Show" page for sponsor "Sponsor1"
+    Then I should see "1 Active Sponsor"
+    And I should see "1 Inactive Sponsor"
+    Then I should see "Sponsor1" within "Active Sponsors"
+    And I should not see "Sponsor2" within "Active Sponsors"
+    And I should see "Sponsor2" within "Inactive Sponsors"
+    And I should not see "Sponsor1" within "Inactive Sponsors"
+    And "Sponsor1" should link to the "Show" page for sponsor "Sponsor1"
+    And "Sponsor2" should link to the "Show" page for sponsor "Sponsor2"
+
+  Scenario: Sponsor info should only show the number of actively sponsored orphans
+    Given an active sponsor "Sponsor1" is assigned to user "First User"
+    And an inactive sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan1"
+    And an active sponsorship link exists between sponsor "Sponsor1" and orphan "Orphan2"
+    And I am on the "Show User" page for user "First User"
+    Then "Orphans Sponsored" for sponsor "Sponsor1" should display "1"

@@ -1,6 +1,9 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
+  NEW_CITY_MENU_OPTION = '**Add New**'
+  PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
 
+  attr_accessor :new_city_name
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
 
   after_initialize :default_status_to_active,
@@ -8,13 +11,18 @@ class Sponsor < ActiveRecord::Base
                    :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
   before_update :set_request_fulfilled
+  before_validation :set_city
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+  validates :city, presence: true,
+            exclusion: { in: [NEW_CITY_MENU_OPTION],
+                         message: 'Please enter city name below. &darr;' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
+  validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
   validate :belongs_to_one_branch_or_organization
@@ -43,6 +51,17 @@ class Sponsor < ActiveRecord::Base
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
   end
+
+  def currently_sponsored_orphans
+    sponsorships.all_active.map(&:orphan)
+  end
+
+  def self.all_cities
+    pluck(:city).uniq
+  end
+
+  scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
+  scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
   private
 
@@ -122,6 +141,12 @@ class Sponsor < ActiveRecord::Base
   def type_affiliation_mismatch
     if sponsor_type
       (sponsor_type.name == 'Individual' && branch.nil?) || (sponsor_type.name == 'Organization' && organization.nil?)
+    end
+  end
+
+  def set_city
+    if (city == NEW_CITY_MENU_OPTION) && new_city_name.present?
+      self.city = new_city_name
     end
   end
 end

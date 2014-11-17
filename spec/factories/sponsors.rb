@@ -10,9 +10,11 @@ FactoryGirl.define do
     name { Faker::Name.name }
     requested_orphan_count (1..10).to_a.sample
     country { generate :countries }
+    city { Faker::Address.city }
     gender { %w(Male Female).sample }
     sponsor_type { SponsorType.all[[0,1].sample] }
     branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
     organization { FactoryGirl.create(:organization) if sponsor_type.name == 'Organization' }
+    payment_plan { Sponsor::PAYMENT_PLANS.sample }
   end
 end

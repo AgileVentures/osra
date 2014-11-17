@@ -21,8 +21,9 @@ Given(/^the following sponsors exist:$/) do |table|
                           address: hash[:address], email: hash[:email],
                           contact1: hash[:contact1], contact2: hash[:contact2],
                           additional_info: hash[:additional_info], branch: branch,
-                          organization: organization,
-                          start_date: hash[:start_date], status: status)
+                          organization: organization, city: hash[:city],
+                          start_date: hash[:start_date], status: status,
+                          payment_plan: hash[:payment_plan])
     sponsor.save!
   end
 end
@@ -37,13 +38,7 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
 end
 
-Given /^sponsor "([^"]*)" is assigned to user "([^"]*)"$/ do |sponsor, user_name|
-  sponsor = Sponsor.find_by_name(sponsor) || FactoryGirl.create(:sponsor, name: sponsor)
-  user = User.find_by_user_name(user_name) || FactoryGirl.create(:user, user_name: user_name)
-  sponsor.update!(agent: user)
-end
-
-Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (user|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|
+Then /^"([^"]*)" should link to the "([^"]*)" page for (user|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|
   object_class = model.classify.constantize
   if object_class == User
     object_id = User.find_by_user_name(name).id
@@ -64,4 +59,9 @@ Then /^I should see "([^"]*)" linking to the "([^"]*)" page for (user|sponsor|or
   end
 
   expect(page).to have_link(link, href: eval(href))
+end
+
+Then /^the "([^"]*)" selector for this (sponsor|partner|orphan|user) should contain "([^"]*)"$/ do |selector_name, model, option|
+  selector = "#{model}_#{selector_name.parameterize}"
+  expect(page).to have_select(selector, with_options: [option])
 end

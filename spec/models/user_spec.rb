@@ -16,4 +16,20 @@ RSpec.describe User, :type => :model do
   end
 
   it { is_expected.to have_many :sponsors }
+
+  describe 'methods' do
+    let(:user) { build_stubbed :user }
+    let(:active_status) { Status.find_by_name 'Active' }
+    let(:inactive_status) { Status.find_by_name 'Inactive' }
+    let(:active_sponsor) { create :sponsor, agent: user, status: active_status }
+    let(:inactive_sponsor) { create :sponsor, agent: user, status: inactive_status }
+
+    specify '#active_sponsors returns active sponsors only' do
+      expect(user.active_sponsors).to match_array [active_sponsor]
+    end
+
+    specify '#inactive_sponsors returns inactive sponsors only' do
+      expect(user.inactive_sponsors).to match_array [inactive_sponsor]
+    end
+  end
 end
