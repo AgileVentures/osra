@@ -117,9 +117,7 @@ ActiveAdmin.register Sponsor do
   end
 
   action_item only: :show do
-    if sponsor.eligible_for_sponsorship?
-      link_to 'Link to Orphan', admin_orphans_path(sponsor_id: sponsor.id, scope: 'eligible_for_sponsorship')
-    end
+    link_to 'Link to Orphan', new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship') if sponsor.eligible_for_sponsorship?
   end
 
   permit_params :name, :country, :gender, :requested_orphan_count, :address,

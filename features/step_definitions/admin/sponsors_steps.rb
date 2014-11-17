@@ -41,7 +41,12 @@ Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, spo
   unless page_name== 'Link to Orphan'
     expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
   else
-    expect(current_path).to eq admin_orphans_path
+    if current_path== admin_orphans_path
+      expect(current_path).to eq admin_orphans_path
+      expect(page.current_url=~ /sponsor_id=\d+/).to_be > 0
+    else
+      expect(current_path).to eq new_sponsorship_path(sponsor)
+    end
   end
 end
 
