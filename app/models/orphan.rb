@@ -26,7 +26,7 @@ class Orphan < ActiveRecord::Base
   validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
   validates :father, presence: true
-  validate :dob_within_1yr_of_fathers_death, if: 'father_dead?'
+  validate :dob_within_1yr_of_fathers_death, if: :father_dead?
   validate :less_than_22_yo_when_joined_osra
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
@@ -112,7 +112,7 @@ class Orphan < ActiveRecord::Base
   def default_priority_to_normal
     self.priority ||= 'Normal'
   end
-  
+
   def set_province_code
     self.province_code = partner_province_code
   end
