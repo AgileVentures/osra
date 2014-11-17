@@ -65,3 +65,8 @@ Then /^the "([^"]*)" selector for this (sponsor|partner|orphan|user) should cont
   selector = "#{model}_#{selector_name.parameterize}"
   expect(page).to have_select(selector, with_options: [option])
 end
+
+Then /^the drop down box for "([^"]*)" should show "([^"]*)"$/ do |selector, value|
+  element_id = "sponsor_#{selector.parameterize('_')}"
+  expect(page).to have_select(element_id, selected: value)
+end

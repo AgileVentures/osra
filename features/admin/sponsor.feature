@@ -140,7 +140,7 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then "Agent One" should link to the "Show" page for user "Agent One"
 
- Scenario: Should return to sponsor show page when edit sponsor is cancelled
+  Scenario: Should return to sponsor show page when edit sponsor is cancelled
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     And I click the "Edit Sponsor" button
     And I select "Canada" from the drop down box for "Country"
@@ -165,3 +165,7 @@ Feature:
     And I click the "Update Sponsor" button
     When I am on the "New Sponsor" page for the "Admin" role
     Then the "City" selector for this sponsor should contain "Saint-Louis-du-Ha! Ha!"
+
+  Scenario: **Bug fix** When editing a sponsor, country selector defaults to sponsor's country
+    Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
+    Then the drop down box for "Country" should show "United Kingdom"
