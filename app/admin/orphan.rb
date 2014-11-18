@@ -197,23 +197,7 @@ ActiveAdmin.register Orphan do
   index do
     class << self
       def orphan_index
-        column 'OSRA No.', sortable: :osra_num do |orphan|
-          link_to orphan.osra_num, admin_orphan_path(orphan)
-        end
-        column :full_name, sortable: :name do |orphan|
-          link_to orphan.full_name, admin_orphan_path(orphan)
-        end
-        column :date_of_birth, sortable: :date_of_birth
-        column :gender, sortable: :gender
-        column :orphan_status, sortable: :orphan_status_id
-        column :father_alive, sortable: :father_alive
-        column :mother_alive, sortable: :mother_alive
-        column :priority, sortable: :priority do |orphan|
-          status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
-        end
-        column 'Sponsorship', sortable: 'orphan_sponsorship_status_id' do |orphan|
-          orphan.orphan_sponsorship_status.name
-        end
+        orphan_display_partial
       end
       def new_sponsorship_form_for sponsor
         panel 'Sponsor' do
@@ -221,11 +205,17 @@ ActiveAdmin.register Orphan do
           para sponsor.additional_info
           para link_to 'Return to Sponsor page', admin_sponsor_path(sponsor)
         end
+        orphan_display_partial
+        column '' do |orphan| link_to "Sponsor this orphan",
+              admin_sponsor_sponsorships_path(sponsor_id: sponsor.id, orphan_id: orphan.id), method: :post
+        end
+      end
+      def orphan_display_partial
         column 'OSRA No.', sortable: :osra_num do |orphan|
           link_to orphan.osra_num, admin_orphan_path(orphan)
         end
-        column :name, sortable: :name do |orphan|
-          link_to orphan.name, admin_orphan_path(orphan)
+        column :full_name, sortable: :name do |orphan|
+          link_to orphan.full_name, admin_orphan_path(orphan)
         end
         column :father_name, sortable: :father_name
         column :date_of_birth, sortable: :date_of_birth
@@ -242,11 +232,9 @@ ActiveAdmin.register Orphan do
         column :priority, sortable: :priority do |orphan|
           status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
         end
+        column :orphan_status, sortable: :orphan_status_id
         column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
           orphan.orphan_sponsorship_status.name
-        end
-        column '' do |orphan| link_to "Sponsor this orphan",
-              admin_sponsor_sponsorships_path(sponsor_id: sponsor.id, orphan_id: orphan.id), method: :post
         end
       end
     end
