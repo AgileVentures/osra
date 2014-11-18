@@ -14,11 +14,11 @@ ActiveAdmin.register Orphan do
   prospective_sponsor= Proc.new do |params|
     if params[:sponsor_id]
       sponsor= Sponsor.find_by_id params[:sponsor_id]
-      sponsor.eligible_for_sponsorship? && sponsor if sponsor
+      sponsor if sponsor.eligible_for_sponsorship?
     end
   end
   new_sponsorship= Proc.new do |params|
-    !!prospective_sponsor[params] && (params[:scope]== :eligible_for_sponsorship.to_s)
+    prospective_sponsor[params] && (params[:scope]== 'eligible_for_sponsorship')
   end
 
   breadcrumb do
@@ -26,7 +26,7 @@ ActiveAdmin.register Orphan do
       crumbs << link_to('Sponsors', admin_sponsors_path) if prospective_sponsor[params]
       crumbs << link_to(prospective_sponsor[params].name,
               admin_sponsor_path(prospective_sponsor[params])) if prospective_sponsor[params]
-      crumbs << 'Sponsorship' << 'New' if new_sponsorship[params]
+      crumbs << 'New Sponsorship' if new_sponsorship[params]
       crumbs << 'View Orphans' unless new_sponsorship[params]
     end
   end
