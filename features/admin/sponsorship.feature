@@ -68,7 +68,7 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
-    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    When I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
 

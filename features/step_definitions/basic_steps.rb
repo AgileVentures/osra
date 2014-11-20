@@ -117,11 +117,6 @@ Then /^I should( not)? see html "([^"]*)"$/ do |negative, string|
   end
 end
 
-Then /^I should see html "([^"]*)" 2 times$/ do |string|
-  expect(page.html.to_s.partition(string)[1]).to eq string
-  expect(page.html.to_s.partition(string)[2].partition(string)[1]).to eq string
-end
-
 Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
   #NOTE: this checks the FIRST instance of each string on the page. Use accordingly.
   unless negative
