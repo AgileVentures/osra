@@ -27,7 +27,7 @@ describe Province, type: :model do
   
   describe 'methods & scopes' do
   
-    it 'should return provinces sorted by code' do
+    specify '.all_names_by_code should return provinces sorted by code' do
       Province::PROVINCE_CODES.each_with_index do |code, index|
         expect(Province.all_names_by_code[index]).to eq Province.find_by_code(code).name
       end

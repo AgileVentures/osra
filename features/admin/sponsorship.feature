@@ -114,22 +114,22 @@ Feature:
   Scenario: Sponsor visible in Orphan list
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
-    Then I should see html "new_sponsor_panel"
+    Then I should see a New Sponsor panel
     When I click the "All" button
-    Then I should not see html "new_sponsor_panel"
+    Then I should not see a New Sponsor panel
     When I click the "Eligible For Sponsorship" button
-    Then I should see html "new_sponsor_panel"
+    Then I should see a New Sponsor panel
     When I click the "Orphans" link
-    Then I should not see html "new_sponsor_panel"
+    Then I should not see a New Sponsor panel
 
   Scenario: Breadcrumbs on orphan list
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
-    Then I should see html "admin_root_path_crumb"
-    And I should see html "sponsors_path_crumb"
-    And I should see html "sponsor_path_crumb"
+    Then I should see an Admin Root Path crumb
+    And I should see a Sponsors Path crumb
+    And I should see a Sponsor Path crumb
     Given I click the "Second Sponsor" link
     Then I should be on the "Show Sponsor" page for sponsor "Second Sponsor"
     Given I click the "Orphans" link
-    Then I should not see html "sponsors_path_crumb"
-    And I should not see html "sponsor_path_crumb"
+    Then I should not see a Sponsors Path crumb
+    And I should not see a Sponsor Path crumb

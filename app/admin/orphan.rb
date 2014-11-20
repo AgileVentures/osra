@@ -12,10 +12,8 @@ ActiveAdmin.register Orphan do
   filter :father_is_martyr, as: :boolean
 
   prospective_sponsor= Proc.new do |params|
-    if params[:sponsor_id]
-      if (sponsor= Sponsor.find_by_id params[:sponsor_id])
-        sponsor if sponsor.eligible_for_sponsorship?
-      end
+    if (sponsor= Sponsor.find_by_id params[:sponsor_id])
+      sponsor if sponsor.eligible_for_sponsorship?
     end
   end
   

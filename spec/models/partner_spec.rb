@@ -28,7 +28,7 @@ describe Partner, type: :model do
 
   describe 'methods & scopes' do
 
-    it 'should return a list sorted by name' do
+    specify '.all_names should return a list sorted by name' do
       Partner.all.map(&:name).sort.each_with_index do |name, index|
         expect(name).to eq Partner.all_names[index]
       end

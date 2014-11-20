@@ -101,30 +101,20 @@ Then /^I should( not)? see "([^"]*)"$/ do |negative, string|
   end
 end
 
-Then /^I should( not)? see the "([^"]*)" link$/ do |negative, button|
+Then /^I should( not)? see the "([^"]*)" link$/ do |negative, text|
   unless negative
-    expect(page).to have_link button
+    expect(page).to have_link text
   else
-    expect(page).not_to have_link button
+    expect(page).not_to have_link text
   end
 end
 
-Then /^I should( not)? see html "([^"]*)"$/ do |negative, string|
-  if negative
-    expect(page.html.to_s).to_not include string.to_s
-  else
-    expect(page.html.to_s).to include string.to_s
-  end
-end
-
-Then /^I should( not)? see "([^"]*)" before "([^"]*)"$/ do |negative, string1, string2|
-  #NOTE: this checks the FIRST instance of each string on the page. Use accordingly.
+Then /^I should( not)? see a(n)? ([^"]*)$/ do |negative, article, string|
+  css_id= ("##{string}").downcase.gsub(/ /, '_')
   unless negative
-    expect(page).to have_text string1
-    expect(/#{string1}/=~ page.html.to_s).to be < (/#{string2}/=~ page.html.to_s)
+    expect(page.find css_id).to_not be_nil
   else
-    expect(page).to have_text string2
-    expect(/#{string2}/=~ page.html.to_s).to be < (/#{string1}/=~ page.html.to_s)
+    expect{page.find css_id}.to raise_exception Capybara::ElementNotFound
   end
 end
 
