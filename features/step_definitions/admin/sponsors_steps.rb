@@ -30,12 +30,24 @@ end
 
 When(/^I (?:go to|am on) the "([^"]*)" page for sponsor "([^"]*)"$/) do |page, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
+  if page== 'Link to Orphan'
+    raise "You need to navigate to this page through the application's UI to build parameters."
+  end
   visit path_to_admin_role(page, sponsor.id)
+end
+
+Then(/^I should be on the Link to Orphan page for sponsor "(.*?)"$/) do |sponsor_name|
+  sponsor = Sponsor.find_by name: sponsor_name
+  expect(current_path).to eq new_sponsorship_path(sponsor)
 end
 
 Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
-  expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
+  unless page_name== 'Link to Orphan'
+    expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
+  else
+    raise 'Please remove the quotation marks: "Link to Orphan" => Link to Orphan'
+  end
 end
 
 Then /^"([^"]*)" should link to the "([^"]*)" page for (user|sponsor|orphan|partner) "([^"]*)"$/ do |link, view, model, name|

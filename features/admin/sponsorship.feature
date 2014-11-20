@@ -9,6 +9,7 @@ Feature:
     And the sponsor "First Sponsor" has attribute additional_info "Prefer male orphans from Homs"
     And an orphan "First Orphan" exists
     And an orphan "Second Orphan" exists
+    And an orphan "Third Orphan" exists
     And I am a new, authenticated user
 
   Scenario: Viewing existing sponsorship links between sponsor and orphans
@@ -37,7 +38,7 @@ Feature:
   Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
-    Then I should be on the "Link to Orphan" page for sponsor "First Sponsor"
+    Then I should be on the Link to Orphan page for sponsor "First Sponsor"
     And I should see "First Sponsor"
     And I should see "Prefer male orphans from Homs"
     And I should see "First Orphan"
@@ -64,19 +65,23 @@ Feature:
 
   Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
     Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    When I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    And I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
-    When I am on the "Link to Orphan" page for sponsor "Second Sponsor"
+    When I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
     Then I should not see "First Orphan"
 
   Scenario: Cancelling sponsorship creation
-    When I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     And I click the "Return to Sponsor page" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
 
   Scenario: A sponsor should be able to re-sponsor an orphan
     Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And I am on the "Link to Orphan" page for sponsor "First Sponsor"
+    And I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
     Then I should see "First Orphan"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
@@ -105,3 +110,26 @@ Feature:
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "No"
     And I should see the "Link to Orphan" link
+
+  Scenario: Sponsor visible in Orphan list
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    Then I should see a New Sponsor panel
+    When I click the "All" button
+    Then I should not see a New Sponsor panel
+    When I click the "Eligible For Sponsorship" button
+    Then I should see a New Sponsor panel
+    When I click the "Orphans" link
+    Then I should not see a New Sponsor panel
+
+  Scenario: Breadcrumbs on orphan list
+    Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
+    And I click the "Link to Orphan" button
+    Then I should see an Admin Root Path crumb
+    And I should see a Sponsors Path crumb
+    And I should see a Sponsor Path crumb
+    Given I click the "Second Sponsor" link
+    Then I should be on the "Show Sponsor" page for sponsor "Second Sponsor"
+    Given I click the "Orphans" link
+    Then I should not see a Sponsors Path crumb
+    And I should not see a Sponsor Path crumb
