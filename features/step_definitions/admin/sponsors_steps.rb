@@ -36,17 +36,17 @@ When(/^I (?:go to|am on) the "([^"]*)" page for sponsor "([^"]*)"$/) do |page, s
   visit path_to_admin_role(page, sponsor.id)
 end
 
+Then(/^I should be on the Link to Orphan page for sponsor "(.*?)"$/) do |sponsor_name|
+  sponsor = Sponsor.find_by name: sponsor_name
+  expect(current_path).to eq new_sponsorship_path(sponsor)
+end
+
 Then(/^I should be on the "(.*?)" page for sponsor "(.*?)"$/) do |page_name, sponsor_name|
   sponsor = Sponsor.find_by name: sponsor_name
   unless page_name== 'Link to Orphan'
     expect(current_path).to eq path_to_admin_role(page_name, sponsor.id)
   else
-    if current_path== admin_orphans_path
-      expect(current_path).to eq admin_orphans_path
-      expect(page.current_url=~ /sponsor_id=\d+/).to_be > 0
-    else
-      expect(current_path).to eq new_sponsorship_path(sponsor)
-    end
+    raise 'Please remove the quotation marks: "Link to Orphan" => Link to Orphan'
   end
 end
 

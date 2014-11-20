@@ -13,19 +13,21 @@ ActiveAdmin.register Orphan do
 
   prospective_sponsor= Proc.new do |params|
     if params[:sponsor_id]
-      sponsor= Sponsor.find_by_id params[:sponsor_id]
-      sponsor if sponsor.eligible_for_sponsorship?
+      if (sponsor= Sponsor.find_by_id params[:sponsor_id])
+        sponsor if sponsor.eligible_for_sponsorship?
+      end
     end
   end
+  
   new_sponsorship= Proc.new do |params|
     prospective_sponsor[params] && (params[:scope]== 'eligible_for_sponsorship')
   end
 
   breadcrumb do
-    [ link_to('Admin', admin_root_path) ].tap do |crumbs|
-      crumbs << link_to('Sponsors', admin_sponsors_path) if prospective_sponsor[params]
-      crumbs << link_to(prospective_sponsor[params].name,
-              admin_sponsor_path(prospective_sponsor[params])) if prospective_sponsor[params]
+    [ link_to('Admin', admin_root_path, id: 'admin_root_path_crumb') ].tap do |crumbs|
+      crumbs << link_to('Sponsors', admin_sponsors_path, id: 'sponsors_path_crumb') if prospective_sponsor[params]
+      crumbs << link_to(prospective_sponsor[params].name, admin_sponsor_path(prospective_sponsor[params]),
+              id: 'sponsor_path_crumb') if prospective_sponsor[params]
       crumbs << 'New Sponsorship' if new_sponsorship[params]
       crumbs << 'View Orphans' unless new_sponsorship[params]
     end
@@ -195,21 +197,26 @@ ActiveAdmin.register Orphan do
   end
 
   index do
-    class << self
+    class << self # instance_of ActiveAdmin::Views::IndexAsTable
+    
       def orphan_index
         orphan_display_partial
       end
+      
       def new_sponsorship_form_for sponsor
-        panel 'Sponsor' do
+        panel 'Sponsor', id: 'new_sponsor_panel' do
           h3 sponsor.name
           para sponsor.additional_info
           para link_to 'Return to Sponsor page', admin_sponsor_path(sponsor)
         end
+        
         orphan_display_partial
+        
         column '' do |orphan| link_to "Sponsor this orphan",
               admin_sponsor_sponsorships_path(sponsor_id: sponsor.id, orphan_id: orphan.id), method: :post
         end
       end
+      
       def orphan_display_partial
         column 'OSRA No.', sortable: :osra_num do |orphan|
           link_to orphan.osra_num, admin_orphan_path(orphan)
@@ -237,6 +244,7 @@ ActiveAdmin.register Orphan do
           orphan.orphan_sponsorship_status.name
         end
       end
+      
     end
 
     unless new_sponsorship[params]
@@ -244,6 +252,7 @@ ActiveAdmin.register Orphan do
     else
       new_sponsorship_form_for prospective_sponsor[params]
     end
+    
   end
 
 end
