@@ -1,5 +1,7 @@
 class Orphan < ActiveRecord::Base
 
+  NEW_SPONSORSHIP_SORT_SQL = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+
   include Initializer
   after_initialize :default_orphan_status_active,
                    :default_sponsorship_status_unsponsored,
@@ -72,6 +74,8 @@ class Orphan < ActiveRecord::Base
         -> { joins(:orphan_sponsorship_status).
             where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
   scope :high_priority, -> { where(priority: 'High') }
+  scope :deep_joins, -> { joins(:orphan_sponsorship_status).joins(:original_address).joins(:partner) }
+  scope :sort_by_eligibility, -> { active.currently_unsponsored.joins(:original_address).joins(:partner).order(NEW_SPONSORSHIP_SORT_SQL) }
 
   acts_as_sequenced scope: :province_code
 

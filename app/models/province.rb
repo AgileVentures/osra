@@ -6,5 +6,9 @@ class Province < ActiveRecord::Base
   validates :code, presence: true, uniqueness: true, inclusion: { in: PROVINCE_CODES}
 
   has_many :partners
+  
+  def self.all_names_by_code
+    Province.all.order(:code).map(&:name)
+  end
 
 end
