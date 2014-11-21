@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   COUNTRIES = ISO3166::Country.countries.map {|c| c[1]} - ['IL']
 
-  sequence :countries, (0..COUNTRIES.count).cycle do |n|
+  sequence :countries, (0..(COUNTRIES.count - 1)).cycle do |n|
     COUNTRIES[n]
   end
 
