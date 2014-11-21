@@ -1,0 +1,15 @@
+unsponsored:
+  name: 'Unsponsored'
+  code: 1
+
+sponsored:
+  name: 'Sponsored'
+  code: 2
+
+previously_sponsored:
+  name: 'Previously Sponsored'
+  code: 3
+
+on_hold:
+  name: 'On Hold'
+  code: 4
