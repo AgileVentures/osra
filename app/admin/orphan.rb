@@ -31,6 +31,7 @@ ActiveAdmin.register Orphan do
     end
   end
 
+  config.batch_actions = false
   config.sort_order= ''
   scope :all, :deep_joins, default: true, show_count: true
   scope :eligible_for_sponsorship, :sort_by_eligibility, default: false, show_count: true
@@ -202,6 +203,7 @@ ActiveAdmin.register Orphan do
       end
       
       def new_sponsorship_form_for sponsor
+        form_submit_route= admin_sponsor_sponsorships_path(sponsor_id: sponsor.id).to_s
         panel 'Sponsor', id: 'new_sponsor_panel' do
           h3 sponsor.name
           para sponsor.additional_info
@@ -210,8 +212,16 @@ ActiveAdmin.register Orphan do
         
         orphan_display_partial
         
-        column '' do |orphan| link_to "Sponsor this orphan",
-              admin_sponsor_sponsorships_path(sponsor_id: sponsor.id, orphan_id: orphan.id), method: :post
+        column '' do |orphan|
+          text_node ('<form action="' + form_submit_route + '" method="post">').html_safe
+            input '', name: :sponsor_this_orphan, type: :submit, value: 'Sponsor this orphan'
+            text_node '<label class="begin_sponsorship_button_label">beginning:</label>'.html_safe
+            input '', name: :sponsorship_start_date, type: :text, value: Date.current.to_s, :class => :sponsorship_start_date_text_input
+            input '', name: :orphan_id, type: :hidden, value: orphan.id.to_s
+            input '', name: 'utf8', type: :hidden, value: '&#x2713;'
+            input '', name: :authenticity_token, type: :hidden, value: form_authenticity_token
+            input '', name: :_method, type: :hidden, value: :post
+          text_node '</form>'.html_safe
         end
       end
       

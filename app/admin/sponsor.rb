@@ -56,20 +56,13 @@ ActiveAdmin.register Sponsor do
         column :orphan_gender
         column '' do |_sponsorship|
           form_submit_route= inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id)
-          output= "\n" + '<form action="' + form_submit_route.to_s + '" method="post">'
-          output+= '<input type="submit" name="end_sponsorship" value="End Sponsorship">'
-          output+= '<label class="end_sponsorship_button_label">on:</label></input>'
-          output+= '<input type="text" name="end_date" value="' + Date.current.to_s + '"></input>'
-          output+= '<input type="hidden" name="_method" value="put"></input>'
-          output+= '<input type="hidden" name="authenticity_token" value="' + form_authenticity_token + '"></input>'
-          output+= '</form>'
-          form_partial= text_node output
-          class << form_partial
-            def to_s
-              @content.to_s #override arbre & remove html escaping from only this instance of text_node
-            end
-          end
-          form_partial
+          text_node ("\n" + '<form action="' + form_submit_route.to_s + '" method="post">').html_safe
+            input '', type: :submit, name: :end_sponsorship, value: 'End Sponsorship'
+            text_node '<label class="end_sponsorship_button_label">on:</label>'.html_safe
+            input '', type: :text, name: :end_date, value: Date.current.to_s
+            input '', type: :hidden, name: :_method, value: :put
+            input '', type: :hidden, name: :authenticity_token, value: form_authenticity_token
+          text_node '</form>'.html_safe
         end
       end
     end
