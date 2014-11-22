@@ -48,16 +48,28 @@ ActiveAdmin.register Sponsor do
       end
     end
 
-    panel "#{ pluralize(sponsor.sponsorships.all_active.count,
-                        'Currently Sponsored Orphan') }", id: 'currently_sponsored_orphans' do
+    panel "#{ pluralize(sponsor.sponsorships.all_active.count, 'Currently Sponsored Orphan') }",
+                                                          id: 'currently_sponsored_orphans' do
       table_for sponsor.sponsorships.all_active do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender
         column '' do |_sponsorship|
-          link_to 'End sponsorship',
-                  inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id),
-                  method: :put
+          form_submit_route= inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id)
+          output= "\n" + '<form action="' + form_submit_route.to_s + '" method="post">'
+          output+= '<input type="submit" name="end_sponsorship" value="End Sponsorship">'
+          output+= '<label class="end_sponsorship_button_label">on:</label></input>'
+          output+= '<input type="text" name="end_date" value="' + Date.current.to_s + '"></input>'
+          output+= '<input type="hidden" name="_method" value="put"></input>'
+          output+= '<input type="hidden" name="authenticity_token" value="' + form_authenticity_token + '"></input>'
+          output+= '</form>'
+          form_partial= text_node output
+          class << form_partial
+            def to_s
+              @content.to_s #override arbre & remove html escaping from only this instance of text_node
+            end
+          end
+          form_partial
         end
       end
     end
@@ -69,7 +81,7 @@ ActiveAdmin.register Sponsor do
         column :orphan_date_of_birth
         column :orphan_gender
         column 'Sponsorship ended' do |_sponsorship|
-          _sponsorship.updated_at
+          _sponsorship.end_date
         end
       end
     end

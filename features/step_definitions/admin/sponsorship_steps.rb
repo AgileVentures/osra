@@ -30,7 +30,7 @@ When(/I click the "End sponsorship" link for orphan "([^"]*)"/) do |orphan_name|
   orphan = Orphan.find_by_name orphan_name
   sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first
   tr_id = "#sponsorship_#{sponsorship.id}"
-  within(tr_id) { click_link 'End sponsorship' }
+  within(tr_id) { click_button 'End Sponsorship' }
 end
 
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|
