@@ -73,6 +73,9 @@ ActiveAdmin.register Sponsor do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender
+        column 'Sponsorship began' do |_sponsorship|
+          _sponsorship.start_date
+        end
         column 'Sponsorship ended' do |_sponsorship|
           _sponsorship.end_date
         end
