@@ -13,7 +13,6 @@ ActiveAdmin.register Sponsorship do
 
   controller do
     def create
-      @orphan = Orphan.find(params[:orphan_id])
       @sponsor = Sponsor.find(params[:sponsor_id])
       warning= "Cannot understand Sponsorship Start Date: \"#{ params[:sponsorship_start_date] }\"" unless get_start_date
       warning||= '"Sponsorship Start Date" cannot be in the future.' if date_in_future?
@@ -29,6 +28,7 @@ ActiveAdmin.register Sponsorship do
     
     def create_sponsorship
       begin
+        @orphan = Orphan.find(params[:orphan_id])
         Sponsorship.create!(sponsor: @sponsor, orphan: @orphan, start_date: @start_date)
         false
       rescue

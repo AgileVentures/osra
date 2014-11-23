@@ -12,6 +12,7 @@ describe Admin::SponsorshipsController, type: :controller do
 
     allow(Sponsor).to receive(:find).with('1').and_return(sponsor)
     allow(Orphan).to receive(:find).with('1').and_return(orphan)
+    allow(Orphan).to receive(:find).with(nil).and_raise(ActiveRecord::RecordNotFound, "Couldn't find Orphan without an ID")
     allow(Sponsorship).to receive(:find).with('1').and_return(sponsorship)
   end
 
@@ -41,6 +42,11 @@ describe Admin::SponsorshipsController, type: :controller do
   end
 
   describe 'create' do
+
+    specify 'with invalid orphan id' do
+      post :create, { orphan_id: nil, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
+      expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+    end
 
     context 'with invalid date given' do
 
