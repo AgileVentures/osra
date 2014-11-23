@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113135207) do
+ActiveRecord::Schema.define(version: 20141115174709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,19 @@ ActiveRecord::Schema.define(version: 20141113135207) do
   end
 
   add_index "branches", ["code"], name: "index_branches_on_code", unique: true, using: :btree
+
+  create_table "fathers", force: true do |t|
+    t.string   "name"
+    t.string   "occupation"
+    t.string   "place_of_death"
+    t.string   "cause_of_death"
+    t.date     "date_of_death"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "status",         default: 0, null: false
+    t.integer  "martyr_status",  default: 0, null: false
+    t.integer  "orphan_id"
+  end
 
   create_table "organizations", force: true do |t|
     t.integer  "code"

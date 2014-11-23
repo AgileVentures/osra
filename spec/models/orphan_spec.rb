@@ -11,10 +11,13 @@ describe Orphan, type: :model do
   let(:previously_sponsored_status) { OrphanSponsorshipStatus.find_by_name 'Previously Sponsored' }
   let(:on_hold_sponsorship_status) { OrphanSponsorshipStatus.find_by_name 'On Hold' }
 
-  subject { build :orphan }
+  before do
+    allow(subject).to receive(:partner_province_code)
+    allow(subject).to receive(:father_dead?)
+  end
 
   it 'should have a valid factory' do
-    expect(subject).to be_valid
+    expect(build :orphan).to be_valid
   end
 
   it 'should have default Orphan sort criteria' do
@@ -22,19 +25,9 @@ describe Orphan, type: :model do
   end
 
   it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :father_name }
-  it { is_expected.to_not allow_value(nil).for(:father_is_martyr) }
-
-  it { is_expected.to validate_presence_of :father_date_of_death }
-  it { is_expected.to allow_value(Date.today - 5, Date.current).for(:father_date_of_death) }
-  it { is_expected.to_not allow_value(Date.today + 5).for(:father_date_of_death) }
-  [7, 'yes', true].each do |bad_date_value|
-    it { is_expected.to_not allow_value(bad_date_value).for :father_date_of_death }
-  end
 
   it { is_expected.to validate_presence_of :mother_name }
   it { is_expected.to_not allow_value(nil).for(:mother_alive) }
-  it { is_expected.to_not allow_value(nil).for(:father_alive) }
 
   it { is_expected.to allow_value(Date.today - 5, Date.current).for(:date_of_birth) }
   it { is_expected.to_not allow_value(Date.today + 5).for(:date_of_birth) }
@@ -61,32 +54,34 @@ describe Orphan, type: :model do
   it { is_expected.to belong_to :orphan_status }
   it { is_expected.to belong_to :orphan_sponsorship_status }
   it { is_expected.to belong_to :orphan_list }
+  it { is_expected.to have_one(:father).dependent(:destroy) }
   it { is_expected.to validate_presence_of :orphan_status }
+  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
+  it { is_expected.to validate_presence_of :orphan_list }
+  it { is_expected.to validate_presence_of :father }
+
   it { is_expected.to validate_presence_of :priority }
   it { is_expected.to validate_inclusion_of(:priority).in_array %w(Normal High) }
-  it { is_expected.to validate_presence_of :orphan_sponsorship_status }
-
-  it 'validates presence of :orphan_list' do
-    # need to stub out orphan.orphan_list.partner.province association
-    # which gets called before_validation
-    expect(subject).to receive(:partner_province_code).at_least(:once)
-    expect(subject).to validate_presence_of :orphan_list
-  end
 
   it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
   it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
 
-  describe '#orphans_dob_within_1yr_of_fathers_death' do
-    let(:orphan) { create :orphan, :father_date_of_death => (1.year + 1.day).ago }
+  describe '#dob_within_1yr_of_fathers_death' do
+    let(:orphan) { create :orphan }
+    before do
+      father = orphan.father
+      father.date_of_death = (1.year + 1.day).ago
+      father.dead!
+    end
 
-    it "is valid when orphan is born a year after fathers death" do
-      orphan.date_of_birth = 1.day.ago
+    it "is valid when dob is 1 year after father's death" do
+      orphan.date_of_birth = Date.yesterday
       expect(orphan).to be_valid
     end
 
-    it "is not valid when orphan is born more than a year after fathers death" do
+    it "is invalid when dob is more than 1 year after father's death" do
       orphan.date_of_birth = Date.current
       expect(orphan).not_to be_valid
     end
