@@ -85,6 +85,7 @@ describe ImportOrphanSettings do
 
       specify "DateColumn returns a date representation of the value" do
         date = Date.parse ('2014-08-08')
+        expect(settings).to receive(:mandatory).and_return(true)
         expect(ImportOrphanSettings::DateColumn.new("2014-08-08", settings).
           to_val).to eq date
       end
@@ -95,6 +96,7 @@ describe ImportOrphanSettings do
       end
 
       specify "IntegerColumn returns an int representation of the value" do
+        expect(settings).to receive(:mandatory).and_return(true)
         expect(ImportOrphanSettings::IntegerColumn.new("7", settings).
           to_val).to eq 7
       end
@@ -118,7 +120,7 @@ describe ImportOrphanSettings do
       end
 
       specify "it will raise and error if options are present but not valid"  do
-        expect(settings).to receive(:mandatory).and_return(true)
+        expect(settings).to receive(:mandatory).and_return(false)
         expect{ImportOrphanSettings::BooleanColumn.new("no", settings).
           parse_value}.to raise_error
       end

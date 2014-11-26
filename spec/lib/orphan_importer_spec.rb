@@ -120,6 +120,7 @@ describe OrphanImporter do
     end
 
     it 'will return an Integer if the column type is an integer' do
+      expect(column).to receive(:mandatory).and_return("false")
       expect(column).to receive(:type).and_return('Integer')
       expect(one_orphan_importer.send(:process_column, record, column, "8")).to eq 8
     end
@@ -132,6 +133,7 @@ describe OrphanImporter do
 
     it 'will return a Date if the column type is a date' do
       date = Date.current
+      expect(column).to receive(:mandatory).and_return("false")
       expect(column).to receive(:type).and_return("Date")
       expect(one_orphan_importer.send(:process_column, record,
                                       column, "#{date}")).to eq date
