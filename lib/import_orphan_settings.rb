@@ -32,6 +32,12 @@ class ImportOrphanSettings
       column_settings.mandatory
     end
 
+    def raise_error_if_mandatory_and_blank?
+      if mandatory? && @column_value.blank?
+        raise ImportConfigurationError, "mandatory field is blank"
+      end
+    end
+
     def permitted_options
       options.collect {|opt| opt.cell}
     end
@@ -62,15 +68,21 @@ class ImportOrphanSettings
   end
   class DateColumn < ImportOrphanSettings::DataColumn
     def to_val
+      raise_error_if_mandatory_and_blank?
+      return if @column_value.blank?
       Date.parse(@column_value.to_s)
     end
   end
   class IntegerColumn < ImportOrphanSettings::DataColumn
     def to_val
+      raise_error_if_mandatory_and_blank?
+      return if @column_value.blank?
       @column_value.to_i
     end
   end
   class BooleanColumn < ImportOrphanSettings::DataColumn
+  end
+  class FatherColumn < ImportOrphanSettings::DataColumn
   end
   class MotherColumn < ImportOrphanSettings::DataColumn
   end

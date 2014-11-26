@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.string  "minor_siblings_count"
     t.string  "sponsored_minor_siblings_count"
     t.string  "comments"
+    t.boolean "father_alive"
   end
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree
@@ -267,8 +268,8 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.integer  "requested_orphan_count"
     t.boolean  "request_fulfilled",      default: false, null: false
     t.integer  "agent_id"
-    t.string   "payment_plan",           default: "",    null: false
     t.string   "city"
+    t.string   "payment_plan",           default: "",    null: false
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree

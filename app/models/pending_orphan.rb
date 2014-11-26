@@ -20,7 +20,7 @@ class PendingOrphan < ActiveRecord::Base
   end
 
   def pending_attrs_to_orphan
-    orphan.attributes = attributes.reject do |key, _|
+    @orphan.attributes = attributes.reject do |key, _|
       key['address'] || key['pending'] || key['id']
     end
   end
