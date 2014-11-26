@@ -25,6 +25,8 @@ class Orphan < ActiveRecord::Base
   validates :contact_number, presence: true
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :minor_siblings_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :sponsored_minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :sponsored_siblings_not_exceeding_siblings_count
   validates :original_address, presence: true
   validates :current_address, presence: true
   validates :orphan_status, presence: true
@@ -59,6 +61,12 @@ class Orphan < ActiveRecord::Base
     return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
     if (father_date_of_death + 1.year) < date_of_birth
       errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
+    end
+  end
+
+  def sponsored_siblings_not_exceeding_siblings_count
+    if sponsored_minor_siblings_count > minor_siblings_count
+      errors.add(:sponsored_minor_siblings_count, "cannot exceed the minor siblings count")
     end
   end
 
