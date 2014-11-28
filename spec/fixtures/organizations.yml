@@ -1,0 +1,9 @@
+org1:
+  code: 91
+  name: Organization 1
+org2:
+  code: 92
+  name: مجموعة السراج للتنمية والرعاية الصحية
+org3:
+  code: 93
+  name: <%= "#{Faker::Company.name}" %>
