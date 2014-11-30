@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-  <div class="title_bar" id="title_bar">
-    <div id="titlebar_left">
-      <span class="breadcrumb">
-        <%- @crumbs.each do |crumb| %>
-          <%= crumb %><span class="breadcrumb_sep">/</span>
-        <%- end %>
-      </span>
-      <h2 id="page_title"><%= @page_title.to_s %></h2>
-    </div>
-    <div id="titlebar_right"><%= @temp %>
-      <div class="action_items">
-        <%- @action_item_links.each do |item| %>
-          <span class="action_item"><%= item %></span>
-        <%- end if @action_item_links %>
+    <div class="title_bar" id="title_bar">
+      <div id="titlebar_left">
+        <span class="breadcrumb">
+          <%- @crumbs.each do |crumb| %>
+            <%= crumb %><span class="breadcrumb_sep">/</span>
+          <%- end %>
+        </span>
+        <h2 id="page_title"><%= @page_title.to_s %></h2>
+      </div>
+      <div id="titlebar_right"><%= @temp %>
+        <div class="action_items">
+          <%- @action_item_links.each do |item| %>
+            <span class="action_item"><%= item %></span>
+          <%- end if @action_item_links %>
+        </div>
       </div>
     </div>
-  </div>

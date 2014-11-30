@@ -1,6 +1,6 @@
 class PartnersController < RailsController
 
-  before_filter :get_title
+  before_filter :get_title, :make_sort_sql
 
   def create
     partner= Partner.new @request_params[:partner].symbolize_keys
@@ -13,7 +13,7 @@ class PartnersController < RailsController
   end
 
   def index
-    @partners= Partner.all
+    @partners= Partner.all.order(@sort_sql)
     @action_item_links= [ ActionController::Base.helpers.link_to('New Partner', new_admin_partner_path) ]
   end
 
@@ -47,9 +47,6 @@ class PartnersController < RailsController
     redirect_to admin_partner_path(@partner) and return
   end
 
-  #def destroy
-  #end
-
   private
 
   def get_form_options
@@ -82,7 +79,7 @@ class PartnersController < RailsController
   end
 
   def get_title
-    super 'Partner'
+    super controller_name.singularize.titlecase
   end
 
 end

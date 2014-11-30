@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-  <div class="header" id="header">
-    <h1 class="site_title" id="site_title">Osra</h1>
-    <ul class="header-item tabs" id="tabs">
-      <li id="dashboard"><a href="<%= admin_dashboard_path %>">Dashboard</a></li>
-      <li id="admin_users"><a href="<%= admin_users_path %>">Admin Users</a></li>
-      <li id="comments"><a href="<%= admin_comments_path %>">Comments</a></li>
-      <li id="orphans"><a href="<%= admin_orphans_path %>">Orphans</a></li>
-      <li class="current" id="partners"><a href="<%= admin_partners_path %>">Partners</a></li>
-      <li id="sponsors"><a href="<%= admin_sponsors_path %>">Sponsors</a></li>
-      <li id="users"><a href="<%= admin_users_path %>">Users</a></li>
-    </ul>
-    <ul class="header-item tabs" id="utility_nav">
-      <li id="current_user"><a href="<%= admin_user_path(@user) %>"><%= @user.email %></a></li>
-      <li id="logout"><a data-method="get" href="<%= destroy_admin_user_session_path %>">Logout</a></li>
-    </ul>
-  </div>
+    <div class="header" id="header">
+      <h1 class="site_title" id="site_title">Osra</h1>
+      <ul class="header-item tabs" id="tabs">
+        <%- ['dashboard', 'orphans', 'partners', 'sponsors', 'users', 'admin_users'].each do |section| %>
+          <li <%= 'class="current" '.html_safe if @model.name== section.camelcase.gsub('_', '').singularize %>id="<%= section %>">
+            <a href="<%= eval "admin_#{section}_path" %>">
+              <%= section.titlecase.gsub('_', ' ').pluralize.gsub('Dashboards', 'Dashboard') %>
+            </a>
+          </li>
+        <%- end %>
+      </ul>
+      <ul class="header-item tabs" id="utility_nav">
+        <li id="current_user">
+          <a href="<%= admin_user_path(@user) %>"><%= @user.email %></a>
+        </li>
+        <li id="logout">
+          <a data-method="get" href="<%= destroy_admin_user_session_path %>">Logout</a>
+        </li>
+      </ul>
+    </div>

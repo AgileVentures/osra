@@ -1,11 +1,14 @@
 class RailsController < ApplicationController
 
-  before_filter :get_crumbs, :get_user, :get_path, :get_request_params, :get_flashes
+  DEFAULT_SORT_SQL = '"id" ASC'
+
+  before_filter :get_crumbs, :get_user, :get_request_params, :get_flashes
   layout 'application'
 
   def get_title name
-    #first try to find an instance of a model, then a model, then default to name.to_s
-    @model= ActiveRecord::Base.descendants.to_a.map do |model|
+    #first try to find a model instance, then a model, then default to name.to_s
+    @models= ActiveRecord::Base.descendants.to_a
+    @model= @models.map do |model|
       model if model.name== name
     end.compact.first
     @page_title= if @model && params.has_key?(:id)
@@ -17,17 +20,12 @@ class RailsController < ApplicationController
 
   private
 
-  def get_path
-    @path= request.path.to_s
-  end
-
   def get_request_params
-    #@new_separator= @path.include?('?') ? '&' : '?'
     @request_params= params.except(*request.path_parameters.keys)
   end
 
   def get_flashes
-    @flashes ||= flash.to_hash.with_indifferent_access
+    @flashes= flash.to_hash.with_indifferent_access
   end
 
   def get_user
@@ -42,6 +40,32 @@ class RailsController < ApplicationController
         ActionController::Base.helpers.link_to(part.titlecase, '/' + parts[0..index].join('/'))
       end
     end.flatten.compact
+  end
+
+  def make_sort_sql
+    @sort_sql= DEFAULT_SORT_SQL
+    @new_direction= 'asc'
+    if whitelist @request_params[:order]
+      @sort_sql= first_half(@request_params[:order]) +
+              ' ' + second_half(@request_params[:order])
+      @new_direction= 'desc' if second_half(@request_params[:order])== 'ASC'
+    end
+  end
+
+  def first_half sort_criteria
+    sort_criteria.to_s.gsub(/_[^_]+$/, '')
+  end
+
+  def second_half sort_criteria
+    sort_criteria.gsub(/.*_/, '').upcase
+  end
+
+  def whitelist param
+    if param && @model && ['ASC', 'DESC'].include?(second_half(param))
+      ['addresses.province_id', 'orphan_sponsorship_statuses.name',
+              'partners.name'].include?(first_half(param)) ||
+              @model.method_defined?(first_half(param).to_sym)
+    end
   end
 
 end
