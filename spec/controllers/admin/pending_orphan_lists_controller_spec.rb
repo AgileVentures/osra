@@ -80,35 +80,61 @@ describe Admin::PendingOrphanListsController, type: :controller do
   end
 
   describe 'import' do
+    let(:orphan) { instance_double Orphan, :save! => true }
+    let(:orphans_to_import) { [orphan] }
     before do
       allow(orphan_list).to receive :orphan_count=
+      allow(orphan_list).to receive(:orphans).and_return orphans_to_import
       allow(orphan_list).to receive :save!
       allow(pending_orphan_list).to receive :destroy
       allow(pending_orphans).to receive :each
       allow(orphan_list).to receive :osra_num
       allow(pending_orphan_list).to receive(:pending_orphans).and_return pending_orphans
-      post :import, partner_id: 1, orphan_list: { pending_id: 1 }
     end
 
-    it 'sets instance variables' do
-      expect(assigns :partner).to eq partner
-      expect(assigns :pending_orphan_list).to eq pending_orphan_list
+   context 'when orphan records are valid' do
+      before do
+        allow(orphans_to_import).to receive_message_chain(:map, :all?).and_return true
+        post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      end
+
+      it 'sets instance variables' do
+        expect(assigns :partner).to eq partner
+        expect(assigns :pending_orphan_list).to eq pending_orphan_list
+      end
+
+      it 'saves orphan_list' do
+        expect(orphan_list).to (have_received :save!)
+      end
+
+      it 'destroys pending_orphan_list' do
+        expect(pending_orphan_list).to have_received :destroy
+      end
+
+      it 'sets flash message' do
+        expect(flash[:notice]).to include('was successfully imported.')
+      end
+
+      it 'redirects to partner' do
+        expect(response).to redirect_to admin_partner_path(partner)
+      end
     end
 
-    it 'saves orphan_list' do
-      expect(orphan_list).to (have_received :save!).twice
-    end
+    context 'when orphan records are invalid' do
+      before do
+        allow(orphans_to_import).to receive_message_chain(:map, :all?).and_return false
+        allow(orphans_to_import).to receive :each_with_index
+        allow(orphan).to receive_message_chain(:errors, :full_messages, :each)
+        post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      end
 
-    it 'destroys pending_orphan_list' do
-      expect(pending_orphan_list).to have_received :destroy
-    end
+      it 'iterates through error messages' do
+        expect(orphans_to_import).to have_received :each_with_index
+      end
 
-    it 'sets flash message' do
-      expect(flash[:notice]).to include('was successfully imported.')
-    end
-
-    it 'redirects to partner' do
-      expect(response).to redirect_to admin_partner_path(partner)
+      it 'sets flash error' do
+        expect(flash[:error]).to be_present
+      end
     end
   end
 

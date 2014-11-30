@@ -151,4 +151,4 @@ Feature:
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
     Then I should be on the "Show Partner" page for partner "Partner1"
-    And I should see "Records were not imported. At least one record is invalid."
+    And I should see "Records were not imported!"

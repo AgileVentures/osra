@@ -53,20 +53,29 @@ ActiveAdmin.register PendingOrphanList do
     orphan_count = 0
     orphan_list  = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet,
                                                orphan_count: orphan_count)
+    orphans_to_import = orphan_list.orphans
 
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
       orphan = OrphanImporter.to_orphan pending_orphan
       orphan.partner = @partner
-      orphan_list.orphans << orphan
+      orphans_to_import << orphan
     end
 
-    orphan_list.orphans.each do |orphan|
-      unless orphan.valid?
-        flash[:error] = 'Records were not imported. At least one record is invalid.'
-        redirect_to admin_partner_path @partner and return
+    errors_list = []
+    if orphans_to_import.map(&:valid?).all?
+      orphans_to_import.each do |orphan|
+        orphan.save!
+        orphan_count += 1
       end
-      orphan.save!
-      orphan_count += 1
+    else
+      orphans_to_import.each_with_index do |orphan, index|
+        orphan.errors.full_messages.each do |message|
+          errors_list << "Record ##{index+1}: #{message}"
+        end
+      end
+      errors_list.unshift 'Records were not imported!'
+      flash[:error] = errors_list.join('<br />').html_safe
+      redirect_to admin_partner_path @partner and return
     end
 
     orphan_list.orphan_count = orphan_count
