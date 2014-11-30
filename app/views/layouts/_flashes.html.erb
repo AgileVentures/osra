@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+      <div class="flashes">
+        <%- unless flash.nil? %>
+          <%- flash.each_with_index do |key, value, index| %>
+            <%= (index.to_i > 0) ? '<br />' : nil %>
+            <%= key.to_s.titleize + ': ' + value.to_s %>
+          <%- end %>
+        <%- end %>
+      </div>
