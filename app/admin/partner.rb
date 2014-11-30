@@ -1,6 +1,6 @@
 ActiveAdmin.register Partner do
 
-  actions :all, except: [:index, :show, :destroy]
+  actions :all, except: [:create, :new, :index, :show, :edit, :update, :destroy]
 
   index do
     column :osra_num, sortable: :osra_num do |partner|
@@ -56,3 +56,4 @@ ActiveAdmin.register Partner do
 
   permit_params :name, :region, :contact_details, :province_id, :status_id, :start_date
 end
+

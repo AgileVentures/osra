@@ -1,8 +1,11 @@
 Osra::Application.routes.draw do
 
-  scope :admin do #views moved into rails from activeadmin
-    resources :partners, :except => [:new, :create, :edit, :update, :destroy]
+  # as: link_to_helper_prefix, path: URI_prefix, module: controller_path_prefix
+  scope as: :admin, path: :admin, module: false do
+    resources :partners, except: [:destroy]
   end
+
+  #[:create, :new, :index, :show, :edit, :update, :destroy]
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

@@ -1,9 +1,10 @@
 class RailsController < ApplicationController
 
-  before_filter :get_user, :get_crumbs, :get_path, :get_request_params
+  before_filter :get_crumbs, :get_user, :get_path, :get_request_params, :get_flashes
   layout 'application'
 
   def get_title name
+    #first try to find an instance of a model, then a model, then default to name.to_s
     @model= ActiveRecord::Base.descendants.to_a.map do |model|
       model if model.name== name
     end.compact.first
@@ -11,7 +12,7 @@ class RailsController < ApplicationController
       @model.find_by_id(params[:id]).to_s
     else
       @model.name.pluralize if @model
-    end || name
+    end || name.to_s
   end
 
   private
@@ -25,9 +26,13 @@ class RailsController < ApplicationController
     @request_params= params.except(*request.path_parameters.keys)
   end
 
+  def get_flashes
+    @flashes ||= flash.to_hash.with_indifferent_access
+  end
+
   def get_user
-    #@user= env['warden'].user
     @user= current_admin_user
+    @body_class= (@user && 'active_admin logged_in admin_namespace') || 'active_admin logged_out new'
   end
 
   def get_crumbs(path= request.path)

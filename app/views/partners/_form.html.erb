@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+          <div style="display:none">
+            <input name="utf8" type="hidden" value="&#x2713;" />
+          </div>
+          <fieldset class="inputs">
+            <ol>
+              <li class="string input required stringish" id="partner_name_input">
+                <label class="label" for="partner_name">Name<abbr title="required">*</abbr></label>
+                <input id="partner_name" maxlength="255" name="partner[name]" type="text" value="<%= @partner.name %>" />
+              </li>
+              <li class="select input optional" id="partner_status_input">
+                <label class="label" for="partner_status_id">Status</label>
+                <select id="partner_status_id" name="partner[status_id]">
+                  <option value=""></option>
+                  <option selected="selected" value="1">Active</option>
+                  <option value="2">Inactive</option>
+                  <option value="3">On Hold</option>
+                </select>
+              </li>
+              <li class="datepicker input optional stringish" id="partner_start_date_input">
+                <label class="label" for="partner_start_date">Start date</label>
+                <input class="datepicker" data-datepicker-options="{}" id="partner_start_date" name="partner[start_date]" type="text" value="<%= @partner.start_date %>" />
+              </li>
+              <li class="select input required" id="partner_province_input">
+                <label class="label" for="partner_province_id">Province<abbr title="required">*</abbr></label>
+                <select id="partner_province_id" name="partner[province_id]">
+                  <option value=""></option>
+                  <option value="1">Damascus &amp; Rif Dimashq</option>
+                  <option value="2">Aleppo</option>
+                  <option value="3">Homs</option>
+                  <option value="4">Hama</option>
+                  <option value="5">Latakia</option>
+                  <option value="6">Deir Al-Zor</option>
+                  <option value="7">Daraa</option>
+                  <option value="8">Idlib</option>
+                  <option value="9">Ar Raqqah</option>
+                  <option value="10">Al Ḥasakah</option>
+                  <option value="11">Tartous</option>
+                  <option value="12">Al-Suwayada</option>
+                  <option value="13">Al-Quneitera</option>
+                  <option value="14">Outside Syria</option>
+                </select>
+              </li>
+              <li class="string input optional stringish" id="partner_region_input"><label class="label" for="partner_region">Region</label><input id="partner_region" maxlength="255" name="partner[region]" type="text" value="<%= @partner.region %>" />
+              </li>
+              <li class="string input optional stringish" id="partner_contact_details_input"><label class="label" for="partner_contact_details">Contact details</label><input id="partner_contact_details" maxlength="255" name="partner[contact_details]" type="text" value="<%= @partner.contact_details %>" />
+              </li>
+            </ol>
+          </fieldset>

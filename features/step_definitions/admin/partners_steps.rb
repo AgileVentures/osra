@@ -2,8 +2,8 @@ Given(/^the following partners exist:$/) do |table|
   table.hashes.each do |hash|
     status = Status.find_by_name(hash[:status])
     province = Province.find_by_name(hash[:province])
-    partner = Partner.new(name: hash[:name], 
-                          region: hash[:region], 
+    partner = Partner.new(name: hash[:name],
+                          region: hash[:region],
                           start_date: hash[:start_date],
                           contact_details: hash[:contact_details],
                           province: province,
@@ -19,6 +19,9 @@ end
 
 Then(/^I should be on the "(.*?)" page for partner "(.*?)"$/) do |page_name, partner_name|
   partner = Partner.find_by name: partner_name
+  puts '****************'
+  puts partner
+  puts '****&&********'
   expect(current_path).to eq path_to_admin_role(page_name, partner.id)
 end
 
