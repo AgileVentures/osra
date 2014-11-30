@@ -19,9 +19,6 @@ end
 
 Then(/^I should be on the "(.*?)" page for partner "(.*?)"$/) do |page_name, partner_name|
   partner = Partner.find_by name: partner_name
-  puts '****************'
-  puts partner
-  puts '****&&********'
   expect(current_path).to eq path_to_admin_role(page_name, partner.id)
 end
 

@@ -2,14 +2,14 @@ class PartnersController < RailsController
 
   before_filter :get_title
 
-  def new
-    @partner= Partner.new
-  end
-
   def create
     partner= Partner.new @request_params[:partner].symbolize_keys
-    partner.save!
-    redirect_to admin_partner_path partner
+    if partner.save
+      flash[:notice]= 'Partner was successfully created'
+    else
+      flash[:warning]= 'Partner was not created'
+    end
+    redirect_to admin_partner_path partner and return
   end
 
   def index
@@ -26,8 +26,15 @@ class PartnersController < RailsController
     end
   end
 
+  def new
+    @partner= Partner.new
+    get_form_options
+  end
+
   def edit
     @partner= Partner.find params[:id]
+    get_form_options
+    @edit= true
   end
 
   def update
@@ -44,6 +51,35 @@ class PartnersController < RailsController
   #end
 
   private
+
+  def get_form_options
+    get_form_statuses
+    get_form_provinces
+  end
+
+  def get_form_statuses
+    @form_statuses= []
+    Status.all.each do |status|
+      @form_statuses << {name: status.name, id: status.id}.merge(
+      if @partner.id && (@partner.status.name== status.name)
+        {selected: true}
+      else
+        {selected: false}
+      end)
+    end
+  end
+
+  def get_form_provinces
+    @form_provinces= []
+    Province.all.each do |province|
+      @form_provinces << {name: province.name, id: province.id}.merge(
+      if @partner.id && (@partner.province.name== province.name)
+        {selected: true}
+      else
+        {selected: false}
+      end)
+    end
+  end
 
   def get_title
     super 'Partner'

@@ -5,8 +5,6 @@ Osra::Application.routes.draw do
     resources :partners, except: [:destroy]
   end
 
-  #[:create, :new, :index, :show, :edit, :update, :destroy]
-
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
