@@ -5,22 +5,22 @@ Feature:
 
   Background:
     Given the following sponsors exist:
-      | name                   | Sponsor1           | Sponsor2            | Sponsor3            |
-      | country                | GB                 | CA                  | EE                  |
-      | city                   | London             | Toronto             | Tartu               |
-      | gender                 | Male               | Female              | Male                |
-      | requested_orphan_count | 15                 | 1                   | 3                   |
-      | sponsor_type           | Individual         | Organization        | Individual          |
-      | branch                 | Jeddah             |                     | Jeddah              |
-      | organization           |                    | Organization 1      |                     |
-      | address                | Address1           | Address2            | Address3            |
-      | email                  | email1@example.com | email2@example.com  | email3@example.com  |
-      | contact1               | cd1                | cs2                 | cs3                 |
-      | contact2               | cd21               | cd22                | cd32                |
-      | additional_info        | additional1        | additional2         | addtional3          |
-      | start_date             | 2013-09-25         | 2013-09-25          | 2013-09-25          |
-      | status                 | Active             | Active              | Active              |
-      | payment_plan           | Every Two Months   |                     | Other               |
+      | name                   | Sponsor1           | Sponsor2              | Sponsor3            |
+      | country                | GB                 | CA                    | EE                  |
+      | city                   | London             | Toronto               | Tartu               |
+      | gender                 | Male               | Female                | Male                |
+      | requested_orphan_count | 15                 | 1                     | 3                   |
+      | sponsor_type           | Individual         | Organization          | Individual          |
+      | branch                 | Jeddah             |                       | Jeddah              |
+      | organization           |                    | أهل الغربة وقت الكربة |                     |
+      | address                | Address1           | Address2              | Address3            |
+      | email                  | email1@example.com | email2@example.com    | email3@example.com  |
+      | contact1               | cd1                | cs2                   | cs3                 |
+      | contact2               | cd21               | cd22                  | cd32                |
+      | additional_info        | additional1        | additional2           | addtional3          |
+      | start_date             | 2013-09-25         | 2013-09-25            | 2013-09-25          |
+      | status                 | Active             | Active                | Active              |
+      | payment_plan           | Every Two Months   |                       | Other               |
 
     And I am a new, authenticated user
 
@@ -123,7 +123,7 @@ Feature:
     And I select "Organization" from the drop down box for "Sponsor type"
     And I click the "Create Sponsor" button
     Then I should see "Sponsor type must match affiliation"
-    When I select "Organization 1" from the drop down box for "Organization"
+    When I select "أهل الغربة وقت الكربة" from the drop down box for "Organization"
     And I select "Individual" from the drop down box for "Sponsor type"
     And I select "" from the drop down box for "Branch"
     And I click the "Create Sponsor" button
