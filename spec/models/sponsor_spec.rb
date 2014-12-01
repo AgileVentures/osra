@@ -87,9 +87,9 @@ describe Sponsor, type: :model do
   end
 
   describe 'branch or organization affiliation' do
+    let(:branch) { Branch.all.sample }
     let(:organization) { Organization.all.sample }
-    let(:branch) { build_stubbed(:branch) }
-
+    
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
 
@@ -246,8 +246,9 @@ describe Sponsor, type: :model do
   end
 
   describe 'before_create #generate_osra_num' do
-    let(:branch) { build_stubbed :branch }
+    let(:branch) { Branch.all.sample }
     let(:organization) { Organization.all.sample }
+
     let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
 
     it 'sets osra_num' do
