@@ -26,6 +26,7 @@ class PartnersController < RailsController
       @action_item_links <<
       link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(@partner))
     end
+    @list= !!OrphanList.find_by(partner_id: @partner)
   end
 
   def new

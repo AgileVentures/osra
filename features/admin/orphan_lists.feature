@@ -5,9 +5,10 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name     | region   | status   | province | contact_details | start_date |
-      | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 |
-      | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 |
+      | name     | region   | status   | province | contact_details | start_date | id |
+      | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 | 1  |
+      | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 | 2  |
+      | Partner3 | Region3  | Active   |Hama      | 98465           | 2012-09-25 | 3  |
 
     And I am a new, authenticated user
 
@@ -23,16 +24,6 @@ Feature:
     Given I am on the "Show Partner" page for partner "Partner2"
     Then I should not see the "Upload Orphan List" link
 
-  Scenario: I should not see a button for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "All orphan lists" link
-    Then I should not see the "New Orphan List" link
-
-  Scenario: I should not see a link for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "All orphan lists" link
-    Then I should not see the "Create one" link
-
   Scenario: I should see the new orphan list form for an active partner
     Given I visit the new orphan list page for partner "Partner1"
     Then I should see "Spreadsheet"
@@ -41,13 +32,17 @@ Feature:
     Given I visit the new orphan list page for partner "Partner2"
     Then I should not see "Spreadsheet"
 
-  Scenario: I should be able to upload a valid .xlsx orphan list file
+  Scenario: I should be able to upload a valid .xlsx orphan list file, then view it
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_orphans_xlsx.xlsx" file
     Then I click the "Upload" button
     Then I click the "Import" button
     Then I should see "was successfully imported"
     And I should see "Registered 3 new orphans"
+    Given I am on the "Show Partner" page for partner "Partner1"
+    And I click the "All orphan lists" link
+    Then I should not see the "New Orphan List" link
+    And I should not see the "Create one" link
 
   Scenario: I should not be able to upload an invalid orphan list file
     Given I visit the new orphan list page for partner "Partner1"
@@ -70,6 +65,8 @@ Feature:
     Then I click the "Import" button
     Then I should see "was successfully imported"
     And I should see "Registered 1 new orphan"
+    Given I am on the "Show Partner" page for partner "Partner1"
+    Then I should see "All orphan lists"
 
   Scenario: I should not be able to upload an orphan list file with an invalid extension
     Given I visit the new orphan list page for partner "Partner1"
@@ -78,7 +75,9 @@ Feature:
     Then I should see "is invalid"
     And I should not see the "Import" link
 
-  Scenario: I should be able to see the uploaded orphan list file
+  Scenario: I should be able to see the uploaded orphan list file only if present
+    Given I am on the "Show Partner" page for partner "Partner1"
+    Then I should not see the "All orphan lists" link
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_orphans_xlsx.xlsx" file
     Then I click the "Upload" button

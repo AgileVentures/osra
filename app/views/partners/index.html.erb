@@ -3,6 +3,11 @@
       <div id="active_admin_content" class="with_sidebar">
         <div id="main_content_wrapper">
           <div id="main_content">
+            <%- if @partner.empty? %>
+              <div class="blank_slate_container">
+                <span class="blank_slate">No Partners found</span>
+              </div>
+            <%- else %>
               <div class="paginated_collection">
                 <div class="paginated_collection_contents">
                   <div class="index_content">
@@ -36,6 +41,7 @@
                   <div class="pagination_information">Displaying <b>all <%= @partners.count %></b> <%= 'Partner'.pluralize(@partners.count) %></div>
                 </div>
               </div>
+            <%- end %>
           </div>
         </div>
         <div id="sidebar">

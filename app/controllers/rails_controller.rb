@@ -16,7 +16,7 @@ class RailsController < ApplicationController
       model if model.name== name
     end.compact.first
     @page_title= if @model && params.has_key?(:id)
-      @model.find_by_id params[:id].to_s
+      @model.find_by_id(params[:id]).to_s
     else
       @model.name.pluralize if @model
     end || name.to_s

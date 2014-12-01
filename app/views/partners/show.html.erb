@@ -34,7 +34,13 @@
                     </tr>
                     <tr class="row row-orphan_lists">
                       <th>Orphan Lists</th>
-                      <td><a href="<%= admin_partner_orphan_lists_path(@partner) %>">All orphan lists</a></td>
+                      <td>
+                        <%- if @list %>
+                          <a href="<%= admin_partner_orphan_lists_path(@partner) %>">All orphan lists</a>
+                        <%- else %>
+                          <i>none</i>
+                        <%- end %>
+                      </td>
                     </tr>
                   </table>
                 </div>
