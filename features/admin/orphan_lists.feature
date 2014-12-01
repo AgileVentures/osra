@@ -5,10 +5,9 @@ Feature:
 
   Background:
     Given the following partners exist:
-      | name     | region   | status   | province | contact_details | start_date | id |
-      | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 | 1  |
-      | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 | 2  |
-      | Partner3 | Region3  | Active   |Hama      | 98465           | 2012-09-25 | 3  |
+      | name     | region   | status   | province | contact_details | start_date |
+      | Partner1 | Region1  | Active   |Homs      | 12345           | 2013-09-25 |
+      | Partner2 | Region2  | Inactive |Hama      | 98765           | 2012-09-25 |
 
     And I am a new, authenticated user
 
@@ -65,8 +64,6 @@ Feature:
     Then I click the "Import" button
     Then I should see "was successfully imported"
     And I should see "Registered 1 new orphan"
-    Given I am on the "Show Partner" page for partner "Partner1"
-    Then I should see "All orphan lists"
 
   Scenario: I should not be able to upload an orphan list file with an invalid extension
     Given I visit the new orphan list page for partner "Partner1"
