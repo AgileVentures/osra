@@ -111,5 +111,5 @@ class OrphanImporter
     end
     @pending_orphans << PendingOrphan.new(fields) if valid?
   end
-
 end
+

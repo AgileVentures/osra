@@ -22,6 +22,15 @@ describe Orphan, type: :model do
   end
 
   it { is_expected.to validate_presence_of :name }
+
+  it 'validates record uniqueness based on name, father_name & mother_name' do
+    orphan = create :orphan
+    duplicate_orphan = orphan.dup
+    expect(duplicate_orphan).not_to be_valid
+    expect(duplicate_orphan.errors[:name]).
+      to include 'An orphan with this name, mother & father already exists.'
+  end
+
   it { is_expected.to validate_presence_of :father_name }
   it { is_expected.to_not allow_value(nil).for(:father_is_martyr) }
 

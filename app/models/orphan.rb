@@ -13,7 +13,9 @@ class Orphan < ActiveRecord::Base
 
   before_create :generate_osra_num
 
-  validates :name, presence: true
+  validates :name, presence: true,
+            uniqueness: { scope: [:father_name, :mother_name],
+                          message: 'An orphan with this name, mother & father already exists.' }
   validates :father_name, presence: true
   validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :father_date_of_death, presence: true, date_not_in_future: true
