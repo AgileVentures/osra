@@ -1,24 +1,32 @@
 class RailsController < ApplicationController
 
   DEFAULT_SORT_SQL = '"id" ASC'
+  WHITELISTED_SORT_DEEP_JOINS = [ 'addresses.province_id',
+                                  'orphan_sponsorship_statuses.name',
+                                  'partners.name'
+                                ]
 
   before_filter :get_crumbs, :get_user, :get_request_params, :get_flashes
   layout 'application'
 
   def get_title name
-    #first try to find a model instance, then a model, then default to name.to_s
+    #first try to find a model instance, then a model, then fall back to name.to_s
     @models= ActiveRecord::Base.descendants.to_a
     @model= @models.map do |model|
       model if model.name== name
     end.compact.first
     @page_title= if @model && params.has_key?(:id)
-      @model.find_by_id(params[:id]).to_s
+      @model.find_by_id params[:id].to_s
     else
       @model.name.pluralize if @model
     end || name.to_s
   end
 
-  private
+  def link_to *args
+    ActionController::Base.helpers.link_to *args
+  end
+
+private
 
   def get_request_params
     @request_params= params.except(*request.path_parameters.keys)
@@ -35,36 +43,36 @@ class RailsController < ApplicationController
 
   def get_crumbs(path= request.path)
     parts= path.split('/').select(&:present?)[0..-2]
-    @crumbs= [ ActionController::Base.helpers.link_to('Osra', root_path) ].tap do |crumbs|
+    @crumbs= [ link_to('Osra', root_path) ].tap do |crumbs|
       crumbs << parts.each_with_index.map do |part, index|
-        ActionController::Base.helpers.link_to(part.titlecase, '/' + parts[0..index].join('/'))
+        link_to(part.titlecase, '/' + parts[0..index].join('/'))
       end
     end.flatten.compact
   end
 
   def make_sort_sql
     @sort_sql= DEFAULT_SORT_SQL
-    @new_direction= 'asc'
+    @new_direction= 'desc'
     if whitelist @request_params[:order]
-      @sort_sql= first_half(@request_params[:order]) +
-              ' ' + second_half(@request_params[:order])
-      @new_direction= 'desc' if second_half(@request_params[:order])== 'ASC'
+      @sort_sql= field(@request_params[:order]) +
+              ' ' + direction(@request_params[:order])
+      @new_direction= 'asc' if direction(@request_params[:order])== 'DESC'
     end
   end
 
-  def first_half sort_criteria
+  def field sort_criteria
     sort_criteria.to_s.gsub(/_[^_]+$/, '')
   end
 
-  def second_half sort_criteria
-    sort_criteria.gsub(/.*_/, '').upcase
+  def direction sort_criteria
+    sort_criteria.to_s.gsub(/.*_/, '').upcase
   end
 
-  def whitelist param
-    if param && @model && ['ASC', 'DESC'].include?(second_half(param))
-      ['addresses.province_id', 'orphan_sponsorship_statuses.name',
-              'partners.name'].include?(first_half(param)) ||
-              @model.method_defined?(first_half(param).to_sym)
+  def whitelist sort_param
+    if sort_param && @model && ['ASC', 'DESC'].include?(direction(sort_param))
+      #TODO: investigate whether the next line might introduce a symbol overflow vulnerbility (param[:foo].to_sym)
+      WHITELISTED_SORT_DEEP_JOINS.include?(field(sort_param)) ||
+              @model.method_defined?(field(sort_param).to_sym)
     end
   end
 

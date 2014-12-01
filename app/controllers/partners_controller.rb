@@ -3,26 +3,28 @@ class PartnersController < RailsController
   before_filter :get_title, :make_sort_sql
 
   def create
+    #TODO: investigate whether the next line might introduce a symbol overflow vulnerbility (param[:foo].to_sym)
     partner= Partner.new @request_params[:partner].symbolize_keys
     if partner.save
       flash[:notice]= 'Partner was successfully created'
+      redirect_to admin_partner_path partner and return
     else
-      flash[:warning]= 'Partner was not created'
+      flash[:warning]= 'Partner was not created' #TODO: add a more graceful failure, maybe with reason
+      redirect_to admin_partners_path and return
     end
-    redirect_to admin_partner_path partner and return
   end
 
   def index
     @partners= Partner.all.order(@sort_sql)
-    @action_item_links= [ ActionController::Base.helpers.link_to('New Partner', new_admin_partner_path) ]
+    @action_item_links= [ link_to('New Partner', new_admin_partner_path) ]
   end
 
   def show
     @partner= Partner.find params[:id]
-    @action_item_links= [ ActionController::Base.helpers.link_to('Edit Partner', edit_admin_partner_path(@partner)) ]
+    @action_item_links= [ link_to('Edit Partner', edit_admin_partner_path(@partner)) ]
     if @partner.active?
       @action_item_links <<
-      ActionController::Base.helpers.link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(@partner))
+      link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(@partner))
     end
   end
 
@@ -47,7 +49,7 @@ class PartnersController < RailsController
     redirect_to admin_partner_path(@partner) and return
   end
 
-  private
+private
 
   def get_form_options
     get_form_statuses
