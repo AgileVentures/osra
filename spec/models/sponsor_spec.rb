@@ -87,7 +87,7 @@ describe Sponsor, type: :model do
   end
 
   describe 'branch or organization affiliation' do
-    let(:organization) { Organization.first }
+    let(:organization) { Organization.all.sample }
     let(:branch) { build_stubbed(:branch) }
 
     describe 'must be affiliated to 1 branch or 1 organization' do
@@ -167,7 +167,7 @@ describe Sponsor, type: :model do
       end
 
       describe 'should not be able to change affiliation-related info for persisted sponsors' do
-        let(:organization) { Organization.last }
+        let(:organization) { Organization.all.sample }
 
         before { sponsor.save! }
 
@@ -247,7 +247,7 @@ describe Sponsor, type: :model do
 
   describe 'before_create #generate_osra_num' do
     let(:branch) { build_stubbed :branch }
-    let(:organization) { Organization.all[(0..Organization.count-1).to_a.sample] }
+    let(:organization) { Organization.all.sample }
     let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
 
     it 'sets osra_num' do
