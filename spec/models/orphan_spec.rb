@@ -22,6 +22,15 @@ describe Orphan, type: :model do
   end
 
   it { is_expected.to validate_presence_of :name }
+
+  it 'validates record uniqueness based on name, father_name & mother_name' do
+    orphan = create :orphan
+    duplicate_orphan = orphan.dup
+    expect(duplicate_orphan).not_to be_valid
+    expect(duplicate_orphan.errors[:name]).
+      to include 'An orphan with this name, mother & father already exists.'
+  end
+
   it { is_expected.to validate_presence_of :father_name }
   it { is_expected.to_not allow_value(nil).for(:father_is_martyr) }
 
@@ -50,6 +59,7 @@ describe Orphan, type: :model do
   it { is_expected.to_not allow_value(nil).for(:sponsored_by_another_org) }
 
   it { is_expected.to validate_numericality_of(:minor_siblings_count).only_integer.is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:sponsored_minor_siblings_count).only_integer.is_greater_than_or_equal_to(0).allow_nil }
 
   it { is_expected.to validate_presence_of :original_address }
   it { is_expected.to validate_presence_of :current_address }
@@ -89,6 +99,25 @@ describe Orphan, type: :model do
     it "is not valid when orphan is born more than a year after fathers death" do
       orphan.date_of_birth = Date.current
       expect(orphan).not_to be_valid
+    end
+  end
+
+  describe 'cross validation of sponsored siblings against siblings count' do
+    let(:orphan) { create :orphan, :minor_siblings_count => 2 }
+
+    it "is valid when sponsored siblings is less than siblings count" do
+      orphan.sponsored_minor_siblings_count = 1
+      expect(orphan).to be_valid
+    end
+
+    it "is not valid when sponsored siblings exceeds siblings count" do
+      orphan.sponsored_minor_siblings_count = 3
+      expect(orphan).not_to be_valid
+    end
+
+    it 'is valid when sponsored_minor_siblings_count is not specified (bug fix)' do
+      orphan.sponsored_minor_siblings_count = nil
+      expect(orphan).to be_valid
     end
   end
 
