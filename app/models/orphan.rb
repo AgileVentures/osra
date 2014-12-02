@@ -27,7 +27,7 @@ class Orphan < ActiveRecord::Base
   validates :contact_number, presence: true
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :minor_siblings_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :sponsored_minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :sponsored_minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
   validate :sponsored_siblings_does_not_exceed_siblings_count
   validates :original_address, presence: true
   validates :current_address, presence: true
@@ -110,7 +110,7 @@ class Orphan < ActiveRecord::Base
   private
 
   def sponsored_siblings_does_not_exceed_siblings_count
-    if sponsored_minor_siblings_count > minor_siblings_count
+    if sponsored_minor_siblings_count && (sponsored_minor_siblings_count > minor_siblings_count)
       errors.add(:sponsored_minor_siblings_count, "cannot exceed minor siblings count")
     end
   end
