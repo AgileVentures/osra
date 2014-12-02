@@ -31,12 +31,12 @@ class PartnersController < RailsController
 
   def new
     @partner= Partner.new
-    get_form_options
+    get_form_lists
   end
 
   def edit
     @partner= Partner.find params[:id]
-    get_form_options
+    get_form_lists
     @edit= true
   end
 
@@ -52,12 +52,8 @@ class PartnersController < RailsController
 
 private
 
-  def get_form_options
-    get_form_statuses
-    get_form_provinces
-  end
-
-  def get_form_statuses
+=begin
+  def get_form_list_of_statuses
     @form_statuses= []
     Status.all.each do |status|
       @form_statuses << {name: status.name, id: status.id}.merge(
@@ -69,7 +65,7 @@ private
     end
   end
 
-  def get_form_provinces
+  def get_form_list_of_provinces
     @form_provinces= []
     Province.all.each do |province|
       @form_provinces << {name: province.name, id: province.id}.merge(
@@ -78,6 +74,26 @@ private
       else
         {selected: false}
       end)
+    end
+  end
+=end
+  def get_form_lists
+    get_form_lists_for ['statuses', 'provinces']
+  end
+
+  def get_form_lists_for array
+    array.map(&:to_s).each do |things|
+      eval %{
+        @form_#{things}= []
+        #{things.singularize.titlecase}.all.each do |thing|
+          @form_#{things} << {name: thing.name, id: thing.id}.merge(
+          if @partner.id && (@partner.#{things.singularize}.name== thing.name)
+            {selected: true}
+          else
+            {selected: false}
+          end)
+        end
+      }
     end
   end
 

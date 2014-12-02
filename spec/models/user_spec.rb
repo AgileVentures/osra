@@ -31,5 +31,10 @@ RSpec.describe User, :type => :model do
     specify '#inactive_sponsors returns inactive sponsors only' do
       expect(user.inactive_sponsors).to match_array [inactive_sponsor]
     end
+
+    it 'should not return a memory pointer as its instance.to_s' do
+      expect((build_stubbed :user).to_s=~ /#<\w+:0x([a-f]|[A-F]|[0-9])+>/).to be_nil
+    end
+
   end
 end
