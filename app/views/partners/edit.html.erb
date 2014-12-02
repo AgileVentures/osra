@@ -6,7 +6,11 @@
             <%= render 'form' %>
             <fieldset class="actions">
               <ol>
-                <li class="action input_action " id="partner_submit_action"><input name="commit" type="submit" value="Update Partner" /></li><li class="action link_action cancel" id="partner_cancel_action"><a href="<%= admin_partner_path(@partner) %>">Cancel</a>
+                <li class="action input_action " id="partner_submit_action">
+                  <input name="commit" type="submit" value="Update Partner" />
+                </li>
+                <li class="action link_action cancel" id="partner_cancel_action">
+                  <a href="<%= admin_partner_path(@partner) %>">Cancel</a>
                 </li>
               </ol>
             </fieldset>

@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 describe "partners/show.html.erb", type: :view do
-
-  context 'partner exists' do
+  let(:partner) do
+    FactoryGirl.create(:partner)
+  end
+  context '@partner exists' do
     before :each do
-      assign(:partner, FactoryGirl.create(:partner))
+      assign(:partner, partner)
     end
 
     context 'with orphan lists' do
@@ -26,6 +28,6 @@ describe "partners/show.html.erb", type: :view do
         render and expect(rendered).to_not match /All orphan lists/
       end
     end
-
   end
+
 end

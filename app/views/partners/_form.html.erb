@@ -19,7 +19,7 @@
                   <select id="partner_status_id" name="partner[status_id]">
                     <option value=""></option>
                     <%- @form_statuses.each do |hash| %>
-                      <option <%= 'selected="selected"'.html_safe if hash[:selected] %> value="<%= hash[:id] %>"><%= hash[:name] %></option>
+                      <option <%= 'selected="selected" '.html_safe if hash[:selected]== true %>value="<%= hash[:id] %>"><%= hash[:name] %></option>
                     <%- end %>
                   </select>
                 </li>
@@ -32,7 +32,7 @@
                   <select <%= 'disabled="disabled"'.html_safe if @edit %> id="partner_province_id" name="partner[province_id]">
                     <option value=""></option>
                     <%- @form_provinces.each do |hash| %>
-                      <option <%= 'selected="selected"'.html_safe if hash[:selected] %> value="<%= hash[:id].to_s %>"><%= hash[:name] %></option>
+                      <option <%= 'selected="selected" '.html_safe if hash[:selected]== true %>value="<%= hash[:id].to_s %>"><%= hash[:name] %></option>
                     <%- end %>
                   </select>
                 </li>
