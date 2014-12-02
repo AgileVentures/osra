@@ -20,3 +20,18 @@ And(/^I should find "([^"]*)" pending orphans for the "([^"]*)" list in the data
     expect(pending_list.pending_orphans.count).to eq count
   end
 end
+
+Given /^I have already uploaded the "([^"]*)" file for partner "([^"]*)"$/ do |file, partner|
+  steps %Q{
+    Given I visit the new orphan list page for partner "#{partner}"
+    And I upload the "#{file}" file
+    Then I click the "Upload" button
+    Then I click the "Import" button
+  }
+end
+
+And /^I try to upload the "([^"]*)" file for partner "([^"]*)" again$/ do |file, partner|
+  steps %Q{
+    Given I have already uploaded the "#{file}" file for partner "#{partner}"
+  }
+end
