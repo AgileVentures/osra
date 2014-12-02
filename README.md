@@ -5,7 +5,7 @@ OSRA
 [![Code Climate](https://codeclimate.com/github/AgileVentures/osra/badges/gpa.svg)](https://codeclimate.com/github/AgileVentures/osra)
 [![Test Coverage](https://codeclimate.com/github/AgileVentures/osra/badges/coverage.svg)](https://codeclimate.com/github/AgileVentures/osra)
 
-[![Build Status](https://semaphoreapp.com/api/v1/projects/2eb67c59-2954-4909-9fdb-abb666331a25/300789/badge.png)](https://semaphoreapp.com/nikita_avvakumov/osra--4)
+[![Build Status](https://semaphoreapp.com/api/v1/projects/2eb67c59-2954-4909-9fdb-abb666331a25/268952/badge.png)](https://semaphoreapp.com/nikita_avvakumov/osra--4)
 
 [![Coverage Status](https://coveralls.io/repos/AgileVentures/osra/badge.png?branch=develop)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
 
