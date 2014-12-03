@@ -3,12 +3,12 @@
       <div id="titlebar_left">
         <span class="breadcrumb">
           <%- @crumbs.each do |crumb| %>
-            <%= crumb %><span class="breadcrumb_sep"> /</span>
+            <%= crumb %>&nbsp;<span class="breadcrumb_sep">/</span>
           <%- end %>
         </span>
         <h2 id="page_title"><%= @page_title.to_s %></h2>
       </div>
-      <div id="titlebar_right"><%= @temp %>
+      <div id="titlebar_right">
         <div class="action_items">
           <%- @action_item_links.each do |item| %>
             <span class="action_item"><%= item %></span>

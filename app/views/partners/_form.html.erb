@@ -36,9 +36,13 @@
                     <%- end %>
                   </select>
                 </li>
-                <li class="string input optional stringish" id="partner_region_input"><label class="label" for="partner_region">Region</label><input id="partner_region" maxlength="255" name="partner[region]" type="text" value="<%= @partner.region %>" />
+                <li class="string input optional stringish" id="partner_region_input">
+                  <label class="label" for="partner_region">Region</label>
+                  <input id="partner_region" maxlength="255" name="partner[region]" type="text" value="<%= @partner.region %>" />
                 </li>
-                <li class="string input optional stringish" id="partner_contact_details_input"><label class="label" for="partner_contact_details">Contact details</label><input id="partner_contact_details" maxlength="255" name="partner[contact_details]" type="text" value="<%= @partner.contact_details %>" />
+                <li class="string input optional stringish" id="partner_contact_details_input">
+                  <label class="label" for="partner_contact_details">Contact details</label>
+                  <input id="partner_contact_details" maxlength="255" name="partner[contact_details]" type="text" value="<%= @partner.contact_details %>" />
                 </li>
               </ol>
             </fieldset>

@@ -15,21 +15,41 @@
                       <table border="0" cellspacing="0" cellpadding="0" id="<%= "index_table_#{@model.name.downcase}" %>" class="index_table index" paginator="true">
                         <thead>
                           <tr>
-                            <th class="sortable col col-osra_num"><a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "osra_num_#{@new_direction}")) %>">Osra Num</a></th>
-                            <th class="sortable col col-name"><a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "name_#{@new_direction}")) %>">Name</a></th>
-                            <th class="sortable col col-status"><a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "status_id_#{@new_direction}")) %>">Status</a></th>
-                            <th class="sortable col col-start_date"><a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "start_date_#{@new_direction}")) %>">Start Date</a></th>
-                            <th class="sortable col col-province"><a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "province_id_#{@new_direction}")) %>">Province</a></th>
+                            <th class="sortable col col-osra_num">
+                              <a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "osra_num_#{@new_direction}")) %>">Osra Num</a>
+                            </th>
+                            <th class="sortable col col-name">
+                              <a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "name_#{@new_direction}")) %>">Name</a>
+                            </th>
+                            <th class="sortable col col-status">
+                              <a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "status_id_#{@new_direction}")) %>">Status</a>
+                            </th>
+                            <th class="sortable col col-start_date">
+                              <a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "start_date_#{@new_direction}")) %>">Start Date</a>
+                            </th>
+                            <th class="sortable col col-province">
+                              <a href="<%= admin_partners_path(@request_params.except(:order).to_h.merge(order: "province_id_#{@new_direction}")) %>">Province</a>
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           <%- @partners.each_with_index do |partner, index| %>
                             <tr class="<%= index.next.parity %>" id="partner_<%= partner.id.to_s %>">
-                              <td class="col col-osra_num"><a href="<%= admin_partner_path(partner) %>"><%= partner.osra_num %></a></td>
-                              <td class="col col-name"><a href="<%= admin_partner_path(partner) %>"><%= partner.name %></a></td>
-                              <td class="col col-status"><%= partner.status.name %></td>
-                              <td class="col col-start_date"><%= partner.start_date.strftime('%B %d, %Y') %></td>
-                              <td class="col col-province"><%= partner.province.name %></td>
+                              <td class="col col-osra_num">
+                                <a href="<%= admin_partner_path(partner) %>"><%= partner.osra_num %></a>
+                              </td>
+                              <td class="col col-name">
+                                <a href="<%= admin_partner_path(partner) %>"><%= partner.name %></a>
+                              </td>
+                              <td class="col col-status">
+                                <%= partner.status.name %>
+                              </td>
+                              <td class="col col-start_date">
+                                <%= partner.start_date.strftime('%B %d, %Y') %>
+                              </td>
+                              <td class="col col-province">
+                                <%= partner.province.name %>
+                              </td>
                             </tr>
                           <%- end %>
                         </tbody>
