@@ -5,9 +5,16 @@ class RailsController < ApplicationController
                                   'orphan_sponsorship_statuses.name',
                                   'partners.name'
                                 ]
+  HEADER_BUTTONS = ['dashboard', 'orphans', 'partners', 'sponsors', 'users', 'admin_users']
 
   before_filter :get_crumbs, :get_user, :get_request_params, :get_flashes
   layout 'application'
+
+  def link_to *args
+    ActionController::Base.helpers.link_to *args
+  end
+
+private
 
   def get_title name
     #first try to find a model instance, then a model, then fall back to name.to_s
@@ -21,12 +28,6 @@ class RailsController < ApplicationController
       @model.name.pluralize if @model
     end || name.to_s
   end
-
-  def link_to *args
-    ActionController::Base.helpers.link_to *args
-  end
-
-private
 
   def get_request_params
     @request_params= params.except(*request.path_parameters.keys)

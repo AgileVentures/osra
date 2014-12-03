@@ -63,7 +63,9 @@ describe PartnersController, type: :controller do
       end
 
       context 'with list' do
-        before :each do allow(OrphanList).to receive(:find_by).and_return(true) end
+        before :each do
+          allow(OrphanList).to receive(:find_by).and_return(true)
+        end
 
         it 'shows a list' do
           get :show, id: partner.id
@@ -72,7 +74,9 @@ describe PartnersController, type: :controller do
       end
 
       context 'without list' do
-        before :each do allow(OrphanList).to receive(:find_by).and_return(nil) end
+        before :each do
+          allow(OrphanList).to receive(:find_by).and_return(nil)
+        end
 
         it 'hides a list' do
           get :show, id: partner.id
@@ -101,14 +105,20 @@ describe PartnersController, type: :controller do
   end
 
   describe 'GET #new' do
-    it "populates an empty partner" do
+    before :each do
       get :new
+    end
+
+    it "populates an empty partner" do
       expect(assigns(:partner)).to have_same_attributes_as Partner.new
     end
 
     it "doesn't set edit flag" do
-      get :new
       expect(assigns(:edit)).to_not eq true
+    end
+
+    it 'renders the new form' do
+      expect(response).to render_template :new
     end
   end
 
@@ -116,43 +126,54 @@ describe PartnersController, type: :controller do
     before :each do
       FactoryGirl.create :partner, name: 'Partner1', status: Status.find_by_name('Active'),
                           province: Province.first
-    end
-    it "populates the partner" do
       get :edit, id: Partner.first.id
+    end
+
+    it "populates the partner" do
       expect(assigns(:partner)).to have_same_attributes_as Partner.first
     end
 
     it 'sets edit flag' do
-      get :edit, id: Partner.first.id
       expect(assigns(:edit)).to eq true
+    end
+
+    it 'renders the edit form' do
+      expect(response).to render_template :edit
     end
   end
 
   describe 'POST #update' do
     before :each do
-      FactoryGirl.create :partner, name: 'Partner1', status: Status.find_by_name('Active'),
-                          province: Province.first
-    end
-
-    it 'redirects to GET#show' do
-      post :update, id: Partner.first.id, partner: {name: 'notPartner1'}
-      expect(response).to redirect_to admin_partner_path(Partner.first.id)
+      FactoryGirl.create :partner, name: 'Partner1', province: Province.first
     end
 
     context 'invalid partner' do
+      before :each do
+        post :update, id: Partner.first.id, partner: {name: 'test', province_id: nil}
+      end
+
       it 'discards changes' do
-        post :update, id: Partner.first.id, partner: {province: nil}
-        expect(Partner.first.province).to_not be_nil
+        expect(Partner.first.name).to_not eq 'test'
+      end
+
+      it 'rerenders the GET#edit template' do
+        expect(response).to render_template :edit
       end
     end
 
     context 'valid partner' do
-      it 'saves the record' do
+      before :each do
         post :update, id: Partner.first.id, partner: {name: 'something_new'}
+      end
+
+      it 'saves the record' do
         expect(Partner.first.name).to eq 'something_new'
+      end
+
+      it 'redirects to GET#show' do
+        expect(response).to redirect_to admin_partner_path(Partner.first.id)
       end
     end
   end
-
 
 end

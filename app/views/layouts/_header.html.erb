@@ -2,8 +2,8 @@
     <div class="header" id="header">
       <h1 class="site_title" id="site_title">Osra</h1>
       <ul class="header-item tabs" id="tabs">
-        <%- ['dashboard', 'orphans', 'partners', 'sponsors', 'users', 'admin_users'].each do |section| %>
-          <li <%= 'class="current" '.html_safe if @model.name== section.camelcase.gsub('_', '').singularize %>id="<%= section %>">
+        <%- RailsController::HEADER_BUTTONS.each do |section| %>
+          <li <%= 'class="current" '.html_safe if @model && @model.name== section.camelcase.gsub('_', '').singularize %>id="<%= section %>">
             <a href="<%= eval "admin_#{section}_path" %>">
               <%= section.titlecase.gsub('_', ' ').pluralize.gsub('Dashboards', 'Dashboard') %>
             </a>
@@ -12,7 +12,7 @@
       </ul>
       <ul class="header-item tabs" id="utility_nav">
         <li id="current_user">
-          <a href="<%= admin_user_path(@user) %>"><%= @user.email %></a>
+          <a href="<%= admin_user_path(@user) %>"><%= @user.to_s %></a>
         </li>
         <li id="logout">
           <a data-method="get" href="<%= destroy_admin_user_session_path %>">Logout</a>

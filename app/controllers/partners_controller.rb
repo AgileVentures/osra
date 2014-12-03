@@ -7,11 +7,11 @@ class PartnersController < RailsController
     partner= Partner.new @request_params[:partner].symbolize_keys
     if partner.save
       flash[:notice]= 'Partner was successfully created'
-      redirect_to admin_partner_path partner and return
+      redirect_to admin_partner_path partner
     else
       flash[:warning]= 'Partner was not created' #TODO: add a more graceful failure, maybe with reason
-      redirect_to admin_partners_path and return
-    end
+      redirect_to admin_partners_path
+    end and return
   end
 
   def index
@@ -32,28 +32,31 @@ class PartnersController < RailsController
   def new
     @partner= Partner.new
     get_form_lists
+    render :new
   end
 
   def edit
     @partner= Partner.find params[:id]
     get_form_lists
     @edit= true
+    render :edit
   end
 
   def update
     @partner= Partner.find params[:id]
     if @partner.update @request_params[:partner].symbolize_keys
       flash[:notice]= 'Partner was successfully updated'
+      redirect_to admin_partner_path(@partner)
     else
       flash[:warning]= 'Partner was not updated'
-    end
-    redirect_to admin_partner_path(@partner) and return
+      edit
+    end and return
   end
 
 private
 
 =begin
-  def get_form_list_of_statuses
+  def get_form_list_for_statuses
     @form_statuses= []
     Status.all.each do |status|
       @form_statuses << {name: status.name, id: status.id}.merge(
@@ -65,7 +68,7 @@ private
     end
   end
 
-  def get_form_list_of_provinces
+  def get_form_list_for_provinces
     @form_provinces= []
     Province.all.each do |province|
       @form_provinces << {name: province.name, id: province.id}.merge(
