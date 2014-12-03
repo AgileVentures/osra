@@ -15,7 +15,6 @@ ActiveAdmin.register Sponsorship do
     def create
       @sponsor = Sponsor.find(params[:sponsor_id])
       warning= "Cannot understand Sponsorship Start Date: \"#{ params[:sponsorship_start_date] }\"" unless get_start_date
-      warning||= '"Sponsorship Start Date" cannot be in the future.' if date_in_future?
       warning||= create_sponsorship
       if warning
         flash[:warning]= warning
@@ -25,7 +24,7 @@ ActiveAdmin.register Sponsorship do
         redirect_to admin_sponsor_path(@sponsor)
       end
     end
-    
+
     def create_sponsorship
       begin
         @orphan = Orphan.find(params[:orphan_id])
@@ -35,17 +34,20 @@ ActiveAdmin.register Sponsorship do
         'Unable to create sponsorship'
       end
     end
-    
+
     def get_start_date
       begin
-        @start_date= Date.parse params[:sponsorship_start_date].to_s
+        if params[:sponsorship_start_date]
+          @start_date= if params[:sponsorship_start_date].to_s== ''
+            nil
+          else
+            Date.parse(params[:sponsorship_start_date].to_s)
+          end
+          true
+        end
       rescue
         false
       end
-    end
-    
-    def date_in_future?
-      @start_date && (@start_date > Date.current)
     end
 
   end

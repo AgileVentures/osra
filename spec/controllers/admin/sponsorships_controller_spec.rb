@@ -55,14 +55,8 @@ describe Admin::SponsorshipsController, type: :controller do
       end
 
       it 'rejects invalid dates' do
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: nil }
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '' }
+        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: 7 }
         post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: 'LoremIpsum' }
-        expect(Sponsorship).to_not have_received(:create!)
-      end
-
-      it 'rejects a future date' do
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: Date.tomorrow }
         expect(Sponsorship).to_not have_received(:create!)
       end
 
@@ -91,9 +85,9 @@ describe Admin::SponsorshipsController, type: :controller do
       it 'redirects to sponsor show view' do
         expect(response).to redirect_to admin_sponsor_path(sponsor)
       end
-      
+
     end
-    
+
   end
 
 end
