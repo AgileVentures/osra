@@ -1,13 +1,13 @@
 class RailsController < ApplicationController
 
+  HEADER_BUTTONS = ['dashboard', 'partners', 'sponsors', 'orphans', 'users', 'admin_users']
   DEFAULT_SORT_SQL = '"id" ASC'
   WHITELISTED_SORT_DEEP_JOINS = [ 'addresses.province_id',
                                   'orphan_sponsorship_statuses.name',
                                   'partners.name'
                                 ]
-  HEADER_BUTTONS = ['dashboard', 'orphans', 'partners', 'sponsors', 'users', 'admin_users']
 
-  before_filter :get_crumbs, :get_user, :get_request_params, :get_flashes
+  before_filter :authenticate_admin_user!, :get_user, :get_crumbs, :get_request_params, :get_flashes
   layout 'application'
 
   def link_to *args
