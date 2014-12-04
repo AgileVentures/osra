@@ -31,7 +31,7 @@ ActiveAdmin.register PendingOrphanList do
       return
     end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
-    importer             = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
+    importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'], @partner)
     result               = importer.extract_orphans
     if importer.valid?
       @pending_orphan_list.pending_orphans = result
@@ -53,29 +53,12 @@ ActiveAdmin.register PendingOrphanList do
     orphan_count = 0
     orphan_list  = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet,
                                                orphan_count: orphan_count)
-    orphans_to_import = orphan_list.orphans
-
+    orphan_list.save!
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
       orphan = OrphanImporter.to_orphan pending_orphan
-      orphan.partner = @partner
-      orphans_to_import << orphan
-    end
-
-    errors_list = []
-    if orphans_to_import.map(&:valid?).all?
-      orphans_to_import.each do |orphan|
-        orphan.save!
-        orphan_count += 1
-      end
-    else
-      orphans_to_import.each_with_index do |orphan, index|
-        orphan.errors.full_messages.each do |message|
-          errors_list << "Record ##{index+1}: #{message}"
-        end
-      end
-      errors_list.unshift 'Records were not imported!'
-      flash[:error] = errors_list.join('<br />').html_safe
-      redirect_to admin_partner_path @partner and return
+      orphan_list.orphans << orphan
+      orphan.save!
+      orphan_count += 1
     end
 
     orphan_list.orphan_count = orphan_count

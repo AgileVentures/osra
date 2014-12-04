@@ -2,11 +2,14 @@ require 'rails_helper'
 require 'orphan_importer'
 
 describe OrphanImporter do
+  before :each do
+    @partner = create(:partner)
+  end
 
-  let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx') }
-  let (:one_orphan_importer) { OrphanImporter.new('spec/fixtures/one_orphan_xlsx.xlsx') }
-  let (:three_orphans_importer) { OrphanImporter.new('spec/fixtures/three_orphans_xlsx.xlsx') }
-  let (:three_invalid_orphans_importer) { OrphanImporter.new('spec/fixtures/three_invalid_orphans_xlsx.xlsx') }
+  let (:empty_importer) { OrphanImporter.new('spec/fixtures/empty_xlsx.xlsx', @partner) }
+  let (:one_orphan_importer) { OrphanImporter.new('spec/fixtures/one_orphan_xlsx.xlsx', @partner) }
+  let (:three_orphans_importer) { OrphanImporter.new('spec/fixtures/three_orphans_xlsx.xlsx', @partner) }
+  let (:three_invalid_orphans_importer) { OrphanImporter.new('spec/fixtures/three_invalid_orphans_xlsx.xlsx', @partner) }
 
   let (:empty_results) { empty_importer.extract_orphans }
 
@@ -16,14 +19,14 @@ describe OrphanImporter do
 
   describe '.extract_orphans' do
     it 'should reject opening a non Excel file with an error' do
-      importer = OrphanImporter.new('spec/fixtures/not_an_excel_file.txt')
+      importer = OrphanImporter.new('spec/fixtures/not_an_excel_file.txt', @partner)
       importer.extract_orphans
       expect(importer).not_to be_valid
       expect(importer.import_errors[0][:error]).to include('not a valid Excel file')
     end
 
     it 'should open an .xls file with no errors' do
-      importer = OrphanImporter.new('spec/fixtures/empty_xls.xls')
+      importer = OrphanImporter.new('spec/fixtures/empty_xls.xls', @partner)
       expect(importer).to be_valid
     end
 
@@ -33,7 +36,7 @@ describe OrphanImporter do
     end
 
     it 'should reject opening a non Excel file even if it has an Excel extension' do
-      importer = OrphanImporter.new('spec/fixtures/fake_excel_file.png.xls')
+      importer = OrphanImporter.new('spec/fixtures/fake_excel_file.png.xls', @partner)
       importer.extract_orphans
       expect(importer).not_to be_valid
       expect(importer.import_errors[0][:error]).to include 'not a valid Excel file'

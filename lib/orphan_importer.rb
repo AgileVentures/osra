@@ -4,11 +4,12 @@ require_relative 'import_orphan_settings'
 class OrphanImporter
   attr_accessor :import_errors, :settings
 
-  def initialize(file)
+  def initialize(file, partner)
     @settings = ImportOrphanSettings.settings
     @pending_orphans = []
     @import_errors = []
     @file = file
+    @partner = partner
   end
 
   def self.to_orphan(pending_orphan)
@@ -44,7 +45,18 @@ class OrphanImporter
       cell_val = doc.cell(row, col_settings.column)
       fields[col_settings.field] = process_column row, col_settings, cell_val
     end
+    check_orphan_validity(fields, row)
     add_to_pending_orphans_if_valid(fields)
+  end
+
+  def check_orphan_validity(fields, row)
+    pending_orphan = PendingOrphan.new fields
+    orphan = pending_orphan.to_orphan
+    orphan.partner = @partner
+    unless orphan.valid?
+      @import_errors << {ref: "invalid orphan attributes for row #{row}",
+                         error: orphan.errors.full_messages}
+    end
   end
 
   def add_to_pending_orphans_if_valid(fields)
