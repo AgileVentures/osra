@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+    <div id="wrapper">
+      <div id="active_admin_content" class="without_sidebar">
+        <div id="main_content_wrapper">
+          <div id="main_content">
+            <div class="panel">
+              <h3>Partner Details</h3>
+              <div class="panel_contents">
+                <div class="attributes_table partner" id="attributes_table_partner_<%= @partner.id %>">
+                  <table border="0" cellspacing="0" cellpadding="0">
+                    <tr class="row row-osra_num">
+                      <th>Osra Num</th>
+                      <td><%= @partner.osra_num %></td>
+                    </tr>
+                    <tr class="row row-status">
+                      <th>Status</th>
+                      <td><%= @partner.status.name %></td>
+                    </tr>
+                    <tr class="row row-start_date">
+                      <th>Start Date</th>
+                      <td><%= @partner.start_date.nil? ? '' : @partner.start_date.strftime('%B %d, %Y') %></td>
+                    </tr>
+                    <tr class="row row-province">
+                      <th>Province</th>
+                      <td><%= @partner.province.name %></td>
+                    </tr>
+                    <tr class="row row-region">
+                      <th>Region</th>
+                      <td><%= @partner.region %></td>
+                    </tr>
+                    <tr class="row row-contact_details">
+                      <th>Contact Details</th>
+                      <td><%= @partner.contact_details %></td>
+                    </tr>
+                    <tr class="row row-orphan_lists">
+                      <th>Orphan Lists</th>
+                      <td>
+                        <%- if @list %>
+                          <a href="<%= admin_partner_orphan_lists_path(@partner) %>">All orphan lists</a>
+                        <%- else %>
+                          <i>none</i>
+                        <%- end %>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

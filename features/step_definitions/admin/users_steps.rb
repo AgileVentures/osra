@@ -5,8 +5,8 @@ Given(/^the following users exist:$/) do |table|
 end
 
 Then(/^I should see "([^"]*)" linking to the admin (.*) index page$/) do |link_text, link_path|
-  path = "admin_#{link_path.gsub(' ', '_')}_path"
-  expect(page).to have_link(link_text, href: eval(path))
+  path = path_to_admin_role link_path
+  expect(page).to have_link(link_text, href: path)
 end
 
 Then /^I should be on the "([^"]*)" page for user "([^"]*)"$/ do |page, user_name|

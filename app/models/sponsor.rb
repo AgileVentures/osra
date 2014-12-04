@@ -63,7 +63,11 @@ class Sponsor < ActiveRecord::Base
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
-  private
+  def to_s
+    name
+  end
+
+private
 
   def date_not_beyond_first_of_next_month
     if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)

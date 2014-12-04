@@ -52,7 +52,7 @@ Feature:
 
   Scenario: Should be able to visit a partner from the partner index page
     Given I am on the "Partners" page for the "Admin" role
-    When I click the "Partner1" link 
+    When I click the "Partner1" link
     Then I should be on the "Show Partner" page for partner "Partner1"
 
   Scenario: Should be able to add a partner from the partner index page

@@ -34,6 +34,10 @@ describe Partner, type: :model do
       end
     end
 
+    it 'should not return a memory pointer as its instance.to_s' do
+      expect((build_stubbed :partner).to_s=~ /#<\w+:0x([a-f]|[A-F]|[0-9])+>/).to be_nil
+    end
+
   end
 
   describe 'callbacks' do

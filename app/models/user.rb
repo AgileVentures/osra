@@ -13,4 +13,8 @@ class User < ActiveRecord::Base
   def inactive_sponsors
     sponsors.all_inactive
   end
+
+  def to_s
+    email
+  end
 end

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+    <div id="active_admin_content" class="without_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <form accept-charset="UTF-8" action="<%= admin_partner_path(@partner) %>" class="formtastic partner" id="edit_partner" method="post" novalidate="novalidate">
+            <input name="_method" type="hidden" value="patch" />
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+            <%= render 'form' %>
+            <fieldset class="actions">
+              <ol>
+                <li class="action input_action " id="partner_submit_action">
+                  <input name="commit" type="submit" value="Update Partner" />
+                </li>
+                <li class="action link_action cancel" id="partner_cancel_action">
+                  <a href="<%= admin_partner_path(@partner) %>">Cancel</a>
+                </li>
+              </ol>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>

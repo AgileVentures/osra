@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+    <div class="flashes">
+      <%- @flashes.each do |type, message| %>
+        <div class="flash flash_<%= type.to_s.downcase %>"><%= type.to_s.titlecase %>: <%= message.to_s %></div>
+      <%- end %>
+    </div>
