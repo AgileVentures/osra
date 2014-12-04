@@ -11,7 +11,7 @@ class Orphan < ActiveRecord::Base
 
   before_validation :set_province_code
 
-  before_create :generate_osra_num
+  before_save :generate_osra_num
 
   validates :name, presence: true,
             uniqueness: { scope: [:father_name, :mother_name],
@@ -124,7 +124,7 @@ class Orphan < ActiveRecord::Base
   end
 
   def valid_date? date
-    begin 
+    begin
       Date.parse(date.to_s)
     rescue ArgumentError
       return false
@@ -134,7 +134,7 @@ class Orphan < ActiveRecord::Base
   def default_priority_to_normal
     self.priority ||= 'Normal'
   end
-  
+
 
   def set_province_code
     self.province_code = partner_province_code
