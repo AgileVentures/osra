@@ -9,8 +9,7 @@ Given(/^the following sponsors exist:$/) do |table|
     end
 
     unless hash[:organization].blank?
-      organization = Organization.find_by_name(hash[:organization]) ||
-          FactoryGirl.create(:organization, name: hash[:organization])
+      organization = Organization.find_by_name(hash[:organization]) 
     end
     
     status= Status.find_by_name(hash[:status])
