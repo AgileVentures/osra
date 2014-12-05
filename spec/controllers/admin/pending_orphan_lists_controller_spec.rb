@@ -104,6 +104,11 @@ describe Admin::PendingOrphanListsController, type: :controller do
         expect(assigns :pending_orphan_list).to eq pending_orphan_list
       end
 
+      it 'recalculates sequential_id then saves orphan' do
+        expect(orphan).to have_received(:reset_seq_id).ordered
+        expect(orphan).to have_received(:save!).ordered
+      end
+
       it 'saves orphan_list' do
         expect(orphan_list).to (have_received :save!)
       end
