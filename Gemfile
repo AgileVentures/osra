@@ -9,7 +9,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
 gem 'activeadmin', github: 'activeadmin'
-gem 'sequenced' # Sequential IDs in Models
+gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
