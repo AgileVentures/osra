@@ -64,6 +64,12 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
+  def ==(another_orphan)
+    name == another_orphan.name &&
+      father_name == another_orphan.father_name &&
+      mother_name == another_orphan.mother_name
+  end
+
   def full_name
     [name, father_name].join(' ')
   end
