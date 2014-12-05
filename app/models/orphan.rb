@@ -11,7 +11,7 @@ class Orphan < ActiveRecord::Base
 
   before_validation :set_province_code
 
-  before_save :generate_osra_num
+  before_create :generate_osra_num
 
   validates :name, presence: true,
             uniqueness: { scope: [:father_name, :mother_name],
@@ -105,10 +105,6 @@ class Orphan < ActiveRecord::Base
 
   def current_sponsor
     current_sponsorship.sponsor if currently_sponsored?
-  end
-
-  def reset_seq_id
-    self.sequential_id= nil
   end
 
 private

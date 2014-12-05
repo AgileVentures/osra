@@ -176,7 +176,7 @@ describe Orphan, type: :model do
           expect(orphan.province_code).to eq orphan.partner_province_code
         end
 
-        it 'generates osra_num on save' do
+        it 'generates osra_num' do
           orphan.save!
           expect(orphan.osra_num).not_to be_nil
         end

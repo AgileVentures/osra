@@ -83,7 +83,6 @@ describe Admin::PendingOrphanListsController, type: :controller do
     let(:orphan) { instance_double Orphan, :save! => true }
     let(:orphans_to_import) { [orphan] }
     before do
-      allow(orphan).to receive(:reset_seq_id)
       allow(orphan_list).to receive :orphan_count=
       allow(orphan_list).to receive(:orphans).and_return orphans_to_import
       allow(orphan_list).to receive :save!
@@ -104,9 +103,8 @@ describe Admin::PendingOrphanListsController, type: :controller do
         expect(assigns :pending_orphan_list).to eq pending_orphan_list
       end
 
-      it 'recalculates sequential_id then saves orphan' do
-        expect(orphan).to have_received(:reset_seq_id).ordered
-        expect(orphan).to have_received(:save!).ordered
+      it 'saves orphan' do
+        expect(orphan).to have_received(:save!)
       end
 
       it 'saves orphan_list' do
