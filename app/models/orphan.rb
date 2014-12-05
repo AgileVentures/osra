@@ -107,7 +107,11 @@ class Orphan < ActiveRecord::Base
     current_sponsorship.sponsor if currently_sponsored?
   end
 
-  private
+  def reset_seq_id
+    self.sequential_id= nil
+  end
+
+private
 
   def sponsored_siblings_does_not_exceed_siblings_count
     if sponsored_minor_siblings_count && (sponsored_minor_siblings_count > minor_siblings_count)

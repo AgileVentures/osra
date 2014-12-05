@@ -64,7 +64,7 @@ ActiveAdmin.register PendingOrphanList do
     errors_list = []
     if orphans_to_import.map(&:valid?).all?
       orphans_to_import.each do |orphan|
-        orphan.sequential_id= nil
+        orphan.reset_seq_id
         orphan.save!
         orphan_count += 1
       end

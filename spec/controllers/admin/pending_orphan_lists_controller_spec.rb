@@ -83,6 +83,7 @@ describe Admin::PendingOrphanListsController, type: :controller do
     let(:orphan) { instance_double Orphan, :save! => true }
     let(:orphans_to_import) { [orphan] }
     before do
+      allow(orphan).to receive(:reset_seq_id)
       allow(orphan_list).to receive :orphan_count=
       allow(orphan_list).to receive(:orphans).and_return orphans_to_import
       allow(orphan_list).to receive :save!
