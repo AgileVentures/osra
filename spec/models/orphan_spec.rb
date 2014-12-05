@@ -176,7 +176,7 @@ describe Orphan, type: :model do
           expect(orphan.province_code).to eq orphan.partner_province_code
         end
 
-        it 'generates osra_num' do
+        it 'generates osra_num on create' do
           orphan.save!
           expect(orphan.osra_num).not_to be_nil
         end
@@ -274,20 +274,6 @@ describe Orphan, type: :model do
       end
 
       describe 'methods' do
-
-        describe '#generate_osra_num' do
-          let!(:modifiable_orphan) do
-            create :orphan, mother_alive: true
-          end
-
-          it 'does not change osra_num on edit' do
-            modifiable_orphan.save!
-            old_osra_num=  modifiable_orphan.osra_num
-            modifiable_orphan.update_attributes(mother_alive: false)
-            modifiable_orphan.save!
-            expect(modifiable_orphan.osra_num).to eq old_osra_num
-          end
-        end
 
         specify '#full_name combines name + father_name' do
           orphan = active_unsponsored_orphan
@@ -454,14 +440,14 @@ describe Orphan, type: :model do
           expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
                                                             active_unsponsored_high_priority_orphan]
         end
-
+        
         specify '.sort_by_eligibility should sort eligible orphans by sponsored_status, then priority' do
           Orphan.sort_by_eligibility.to_a.each_with_index.map do |orphan, index|
             expect([active_previously_sponsored_high_priority_orphan, active_previously_sponsored_orphan,
                     active_unsponsored_high_priority_orphan, active_unsponsored_orphan][index]).to eq orphan
           end
         end
-
+        
       end
     end
   end
