@@ -13,7 +13,7 @@ FactoryGirl.define do
     city { Faker::Address.city }
     gender { %w(Male Female).sample }
     sponsor_type { SponsorType.all[[0,1].sample] }
-    branch { FactoryGirl.create(:branch) if sponsor_type.name == 'Individual' }
+    branch { Branch.all.sample if sponsor_type.name == 'Individual' }
     organization { Organization.all.sample if sponsor_type.name == 'Organization' }
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
   end
