@@ -1,0 +1,15 @@
+Riyadh:
+  name: Riyadh
+  code: 1
+Jeddah:
+  name: Jeddah
+  code: 2
+Dammam:
+  name: Dammam
+  code: 3
+Dubai:
+  name: Dubai
+  code: 11
+London:
+  name: London
+  code: 21

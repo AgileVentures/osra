@@ -107,7 +107,7 @@ class Orphan < ActiveRecord::Base
     current_sponsorship.sponsor if currently_sponsored?
   end
 
-  private
+private
 
   def sponsored_siblings_does_not_exceed_siblings_count
     if sponsored_minor_siblings_count && (sponsored_minor_siblings_count > minor_siblings_count)
@@ -124,7 +124,7 @@ class Orphan < ActiveRecord::Base
   end
 
   def valid_date? date
-    begin 
+    begin
       Date.parse(date.to_s)
     rescue ArgumentError
       return false
@@ -134,7 +134,7 @@ class Orphan < ActiveRecord::Base
   def default_priority_to_normal
     self.priority ||= 'Normal'
   end
-  
+
 
   def set_province_code
     self.province_code = partner_province_code
