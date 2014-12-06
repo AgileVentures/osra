@@ -55,48 +55,23 @@ ActiveAdmin.register PendingOrphanList do
   collection_action :import, method: :post do
     get_partner
     get_pending_orphan_list
-    orphan_count = 0
-    orphan_list  = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet,
-                                               orphan_count: orphan_count)
-    orphans_to_import = orphan_list.orphans
+    @orphan_list = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet)
 
-    @pending_orphan_list.pending_orphans.each do |pending_orphan|
-      orphan = OrphanImporter.to_orphan pending_orphan
-      orphan.partner = @partner
-      orphans_to_import << orphan
-    end
+    @orphan_list.orphans = get_orphans_from @pending_orphan_list
 
     errors_list = []
+    errors_list << check_for_duplicates(@orphan_list.orphans)
+    errors_list << check_for_object_validity(@orphan_list.orphans)
 
-    orphans_attributes = orphans_to_import.map(&:attributes)
-    unless orphans_attributes == orphans_attributes.uniq
-      errors_list << 'File contains duplicate records.'
-    end
-
-    orphans_to_import.each_with_index do |orphan, index|
-      orphan.valid?
-      orphan.errors.full_messages.each do |message|
-        errors_list << "Record ##{index+1}: #{message}"
-      end
-    end
-
-    if errors_list.empty?
-      orphans_to_import.each do |orphan|
-        orphan.save!
-        orphan_count += 1
-      end
-      orphan_list.orphan_count = orphan_count
-      orphan_list.save!
-
-      @pending_orphan_list.destroy
-      flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
-                        Registered #{orphan_count} new #{'orphan'.pluralize orphan_count}."
-      redirect_to admin_partner_path(@partner)
+    if errors_list.flatten.empty?
+      db_persist @orphan_list.orphans
+      successful_redirect
     else
       errors_list.unshift 'No records were imported.'
       flash[:error] = errors_list.join('<br />').html_safe
-      redirect_to admin_partner_path @partner and return
+      redirect_to admin_partner_path @partner
     end
+    @pending_orphan_list.destroy
   end
 
   controller do
@@ -120,5 +95,43 @@ ActiveAdmin.register PendingOrphanList do
       @pending_orphan_list = PendingOrphanList.find(params[:orphan_list][:pending_id])
     end
 
+    def get_orphans_from(pending_orphan_list)
+      orphans = []
+      pending_orphan_list.pending_orphans.each do |pending_orphan|
+        orphan = OrphanImporter.to_orphan pending_orphan
+        orphan.assign_attributes(partner: @partner, orphan_list: @orphan_list)
+        orphans << orphan
+      end
+      orphans
+    end
+
+    def check_for_duplicates(orphans_to_import)
+      orphans_attributes = orphans_to_import.map(&:attributes)
+      no_duplicates = orphans_attributes == orphans_attributes.uniq
+      no_duplicates ? [] : 'File contains duplicate records.'
+    end
+
+    def check_for_object_validity(orphans_to_import)
+      validation_errors = []
+      orphans_to_import.each_with_index do |orphan, index|
+        orphan.valid?
+        orphan.errors.full_messages.each do |message|
+          validation_errors << "Record ##{index}: #{message}"
+        end
+      end
+      validation_errors
+    end
+
+    def db_persist(orphans_to_import)
+      orphans_to_import.each(&:save!)
+      @orphan_list.orphan_count = orphans_to_import.size
+      @orphan_list.save!
+    end
+
+    def successful_redirect
+      flash[:notice] = "Orphan List (#{@orphan_list.osra_num}) was successfully imported.
+                        Registered #{@orphan_list.orphan_count} new #{'orphan'.pluralize @orphan_list.orphan_count}."
+      redirect_to admin_partner_path(@partner)
+    end
   end
 end
