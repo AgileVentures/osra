@@ -107,6 +107,10 @@ class Orphan < ActiveRecord::Base
     current_sponsorship.sponsor if currently_sponsored?
   end
 
+  def to_s
+    name
+  end
+
 private
 
   def sponsored_siblings_does_not_exceed_siblings_count

@@ -274,6 +274,9 @@ describe Orphan, type: :model do
       end
 
       describe 'methods' do
+        it 'should not return a memory pointer as its instance.to_s' do
+          expect((build_stubbed :orphan).to_s=~ /#<\w+:0x([a-f]|[A-F]|[0-9])+>/).to be_nil
+        end
 
         specify '#full_name combines name + father_name' do
           orphan = active_unsponsored_orphan
@@ -440,14 +443,14 @@ describe Orphan, type: :model do
           expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
                                                             active_unsponsored_high_priority_orphan]
         end
-        
+
         specify '.sort_by_eligibility should sort eligible orphans by sponsored_status, then priority' do
           Orphan.sort_by_eligibility.to_a.each_with_index.map do |orphan, index|
             expect([active_previously_sponsored_high_priority_orphan, active_previously_sponsored_orphan,
                     active_unsponsored_high_priority_orphan, active_unsponsored_orphan][index]).to eq orphan
           end
         end
-        
+
       end
     end
   end
