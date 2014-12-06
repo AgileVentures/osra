@@ -53,25 +53,26 @@ ActiveAdmin.register PendingOrphanList do
   end
 
   collection_action :import, method: :post do
-    get_partner
-    get_pending_orphan_list
-    @orphan_list = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet)
+    begin
+      get_partner
+      get_pending_orphan_list
+      @orphan_list = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet)
 
-    @orphan_list.orphans = get_orphans_from @pending_orphan_list
+      @orphan_list.orphans = get_orphans_from @pending_orphan_list
 
-    errors_list = []
-    errors_list << check_for_duplicates(@orphan_list.orphans)
-    errors_list << check_for_object_validity(@orphan_list.orphans)
+      errors_list = []
+      errors_list << check_for_duplicates(@orphan_list.orphans)
+      errors_list << check_for_object_validity(@orphan_list.orphans)
 
-    if errors_list.flatten.empty?
-      db_persist @orphan_list.orphans
-      successful_redirect
-    else
-      errors_list.unshift 'No records were imported.'
-      flash[:error] = errors_list.join('<br />').html_safe
-      redirect_to admin_partner_path @partner
+      if errors_list.flatten.empty?
+        db_persist @orphan_list.orphans
+        successful_redirect
+      else
+        unsuccessful_redirect_and_render errors_list
+      end
+    ensure
+      @pending_orphan_list.destroy
     end
-    @pending_orphan_list.destroy
   end
 
   controller do
@@ -132,6 +133,12 @@ ActiveAdmin.register PendingOrphanList do
       flash[:notice] = "Orphan List (#{@orphan_list.osra_num}) was successfully imported.
                         Registered #{@orphan_list.orphan_count} new #{'orphan'.pluralize @orphan_list.orphan_count}."
       redirect_to admin_partner_path(@partner)
+    end
+
+    def unsuccessful_redirect_and_render(errors_list)
+      errors_list.unshift 'No records were imported.'
+      flash[:error] = errors_list.join('<br />').html_safe
+      redirect_to admin_partner_path @partner
     end
   end
 end

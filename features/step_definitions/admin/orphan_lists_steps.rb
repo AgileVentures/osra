@@ -36,10 +36,11 @@ And /^I try to upload the "([^"]*)" file for partner "([^"]*)"(?: again)?$/ do |
   }
 end
 
-Given /^I expect that importing the "([^"]*)" for "([^"]*)" does not change the count of "([^"]*)"$/ do |file, partner, objects|
+Given /^I expect that importing the "([^"]*)" does not change the count of "([^"]*)"$/ do |file, objects|
+  partner_name = Partner.first.name
   initial_count = objects.classify.constantize.all.count
   steps %Q{
-    Given I have already uploaded the "#{file}" file for partner "#{partner}"
+    Given I have already uploaded the "#{file}" file for partner "#{partner_name}"
   }
   final_count = objects.classify.constantize.all.count
   expect(final_count).to eq initial_count

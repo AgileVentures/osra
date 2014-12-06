@@ -166,10 +166,10 @@ Feature:
     And I should see "Record #1:"
 
   Scenario: I should not be able to import orphan lists that contain duplicate records
-    Given I try to upload the "four_orphans_with_internal_dup_xlsx.xlsx" file for partner "Partner1" again
+    Given I try to upload the "four_orphans_with_internal_dup_xlsx.xlsx" file for partner "Partner1"
     Then I should be on the "Show Partner" page for partner "Partner1"
     And I should see "File contains duplicate records."
 
   Scenario: Pending object should not be retained in the db after import
-    Given I expect that importing the "three_orphans_xlsx.xlsx" for "Partner1" does not change the count of "PendingOrphanList"
-    Given I expect that importing the "three_orphans_xlsx.xlsx" for "Partner1" does not change the count of "PendingOrphan"
+    Given I expect that importing the "three_orphans_xlsx.xlsx" does not change the count of "PendingOrphanList"
+    Given I expect that importing the "three_orphans_xlsx.xlsx" does not change the count of "PendingOrphan"
