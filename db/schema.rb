@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.string  "minor_siblings_count"
     t.string  "sponsored_minor_siblings_count"
     t.string  "comments"
+    t.boolean "father_alive"
   end
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree

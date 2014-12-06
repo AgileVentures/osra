@@ -2,12 +2,12 @@ FactoryGirl.define do
   factory :orphan do
     name { Faker::Name.name }
     father_name { Faker::Name.name }
-    father_is_martyr { [true, false].sample }
-    father_date_of_death { 4.days.ago }
+    date_of_birth { 10.years.ago }
+    father_is_martyr { false }
     mother_name { Faker::Name.name  }
     mother_alive { [true, false].sample }
-    father_alive { [true, false].sample }
-    date_of_birth { 10.years.ago }
+    #TODO return father_alive back to [true, false].sample
+    father_alive { true }
     gender { %w(Male Female).sample }
     contact_number { Faker::PhoneNumber.phone_number }
     sponsored_by_another_org { [true, false].sample }
