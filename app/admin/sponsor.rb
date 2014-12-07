@@ -117,7 +117,7 @@ ActiveAdmin.register Sponsor do
     end
   end
 
-  action_item only: :show do
+  action_item :link_to_orphan, only: :show do
     link_to 'Link to Orphan', new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship') if sponsor.eligible_for_sponsorship?
   end
 
