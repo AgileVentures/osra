@@ -53,9 +53,9 @@ ActiveAdmin.register PendingOrphanList do
   end
 
   collection_action :import, method: :post do
+    get_partner
+    get_pending_orphan_list
     begin
-      get_partner
-      get_pending_orphan_list
       @orphan_list = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet)
 
       @orphan_list.orphans = get_orphans_from @pending_orphan_list
