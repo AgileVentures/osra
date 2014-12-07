@@ -8,11 +8,13 @@ gem 'pg'
 gem 'sass-rails', '~> 4.0.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin',
+        git: 'https://github.com/activeadmin/activeadmin.git',
+        ref: 'e4f8dbbbb8046b719e100fddf83319b9e6cb8796' #bump to edge: 2811_preserve_params_on_clearfilter: PR#3623
 gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
-gem 'paperclip'
+gem 'paperclip', '~> 4.2.0'
 gem 'aws-sdk'
 gem 'coveralls', require: false
 gem 'country_select', github: 'stefanpenner/country_select'
