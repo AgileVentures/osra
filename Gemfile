@@ -9,7 +9,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
 gem 'activeadmin', github: 'activeadmin'
-gem 'sequenced' # Sequential IDs in Models
+gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
 gem 'paperclip'
@@ -28,6 +28,7 @@ group :test do
   gem 'headless' # gem that allows capybara-webkit to run without calling xvfb directly
   gem 'database_cleaner'
   gem 'shoulda-matchers', require: false # one-line tests for common Rails validations
+  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :development, :test do
@@ -45,5 +46,5 @@ end
 
 group :production do
   gem 'rails_12factor'
-  gem 'unicorn'
+  gem 'passenger'
 end
