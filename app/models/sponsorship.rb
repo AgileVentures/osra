@@ -29,33 +29,33 @@ class Sponsorship < ActiveRecord::Base
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
-  private
+private
 
-    def set_orphan_status_to_sponsored
-      self.orphan.update_sponsorship_status! 'Sponsored'
-    end
+  def set_orphan_status_to_sponsored
+    self.orphan.update_sponsorship_status! 'Sponsored'
+  end
 
-    def update_sponsor_request_fulfilled
-      self.sponsor.update_request_fulfilled!
-    end
+  def update_sponsor_request_fulfilled
+    self.sponsor.update_request_fulfilled!
+  end
 
-    def set_orphan_status_to_previously_sponsored
-      self.orphan.update_sponsorship_status! 'Previously Sponsored'
-    end
+  def set_orphan_status_to_previously_sponsored
+    self.orphan.update_sponsorship_status! 'Previously Sponsored'
+  end
 
-    def set_active_to_true
-      self.active = true
-    end
+  def set_active_to_true
+    self.active = true
+  end
 
-    def sponsor_is_eligible_for_new_sponsorship
-      unless sponsor && sponsor.eligible_for_sponsorship?
-        errors[:sponsor] << 'is ineligible for a new sponsorship'
-      end
+  def sponsor_is_eligible_for_new_sponsorship
+    unless sponsor && sponsor.eligible_for_sponsorship?
+      errors[:sponsor] << 'is ineligible for a new sponsorship'
     end
+  end
 
-    def orphan_is_eligible_for_new_sponsorship
-      unless orphan && orphan.eligible_for_sponsorship?
-        errors[:orphan] << 'is ineligible for a new sponsorship'
-      end
+  def orphan_is_eligible_for_new_sponsorship
+    unless orphan && orphan.eligible_for_sponsorship?
+      errors[:orphan] << 'is ineligible for a new sponsorship'
     end
+  end
 end

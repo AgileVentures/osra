@@ -9,10 +9,8 @@ describe Admin::SponsorshipsController, type: :controller do
 
   before(:each) do
     sign_in instance_double(AdminUser)
-
+    allow(sponsor).to receive(:id).and_return(1)
     allow(Sponsor).to receive(:find).with('1').and_return(sponsor)
-    allow(Orphan).to receive(:find).with('1').and_return(orphan)
-    allow(Orphan).to receive(:find).with(nil).and_raise(ActiveRecord::RecordNotFound, "Couldn't find Orphan without an ID")
     allow(Sponsorship).to receive(:find).with('1').and_return(sponsorship)
   end
 
@@ -42,52 +40,25 @@ describe Admin::SponsorshipsController, type: :controller do
   end
 
   describe 'create' do
-
-    specify 'with invalid orphan id' do
-      post :create, { orphan_id: nil, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
-      expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+    before :each do
+      allow(Sponsorship).to receive(:new).and_return(sponsorship)
     end
 
-    context 'with invalid date given' do
-
-      before :each do
-        allow(Sponsorship).to receive(:create!)
-      end
-
-      it 'rejects invalid dates' do
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: 7 }
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: 'LoremIpsum' }
-        expect(Sponsorship).to_not have_received(:create!)
-      end
-
+    it 'is successful' do
+      allow(sponsorship).to receive(:save).and_return(true)
+      post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
+      expect(flash[:warning]).to be_nil
+      expect(flash[:success]).to eq 'Sponsorship link was successfully created.'
+      expect(response).to redirect_to admin_sponsor_path(sponsor.id)
     end
 
-    context 'with valid date given' do
-
-      before(:each) do
-        allow(Sponsorship).to receive(:create!)
-        post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
-      end
-
-      it 'assigns instance variables' do
-        expect(assigns :orphan).to eq orphan
-        expect(assigns :sponsor).to eq sponsor
-      end
-
-      it 'calls .create on Sponsorship' do
-        expect(Sponsorship).to have_received(:create!).with(sponsor: sponsor, orphan: orphan, start_date: Date.parse('2002-02-02'))
-      end
-
-      it 'sets flash[:success] message' do
-        expect(flash[:success]).to eq 'Sponsorship link was successfully created'
-      end
-
-      it 'redirects to sponsor show view' do
-        expect(response).to redirect_to admin_sponsor_path(sponsor)
-      end
-
+    it 'is unsuccessful' do
+      allow(sponsorship).to receive(:save).and_return(false)
+      allow(sponsorship).to receive_message_chain(:errors, :full_messages).and_return('custom message 42')
+      post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
+      expect(flash[:warning]).to eq 'custom message 42'
+      expect(flash[:success]).to be_nil
+      expect(response).to redirect_to new_sponsorship_path(sponsor.id, scope: 'eligible_for_sponsorship')
     end
-
   end
-
 end
