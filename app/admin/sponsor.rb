@@ -21,8 +21,9 @@ ActiveAdmin.register Sponsor do
     end
   end
 
-  show do |sponsor|
+  show title: :name do |sponsor|
     attributes_table do
+      row :name
       row :osra_num
       row :status
       row :gender
