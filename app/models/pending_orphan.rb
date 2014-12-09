@@ -8,9 +8,7 @@ class PendingOrphan < ActiveRecord::Base
   end
 
   def to_orphan
-    ['current_address', 'original_address'].each do |address|
-      extract_and_create_address address
-    end
+    extract_and_create_addresses
     pending_attrs_to_orphan
     orphan
   end
@@ -20,8 +18,14 @@ class PendingOrphan < ActiveRecord::Base
   end
 
   def pending_attrs_to_orphan
-    @orphan.attributes = attributes.reject do |key, _|
+    orphan.attributes = attributes.reject do |key, _|
       key['address'] || key['pending'] || key['id']
+    end
+  end
+
+  def extract_and_create_addresses
+    ['current_address', 'original_address'].each do |address|
+      extract_and_create_address address
     end
   end
 
