@@ -23,15 +23,6 @@ Feature:
     Given I am on the "Show Partner" page for partner "Partner2"
     Then I should not see the "Upload Orphan List" link
 
-  Scenario: I should not see a button for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "Click here for all orphan lists" link
-    Then I should not see the "New Orphan List" link
-
-  Scenario: I should not see a link for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "Click here for all orphan lists" link
-    Then I should not see the "Create one" link
 
   Scenario: I should see the new orphan list form for an active partner
     Given I visit the new orphan list page for partner "Partner1"
@@ -40,7 +31,7 @@ Feature:
   Scenario: I should not see the new orphan list form for an inactive partner
     Given I visit the new orphan list page for partner "Partner2"
     Then I should not see "Spreadsheet"
-
+    
   Scenario: I should be able to upload a valid .xlsx orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_orphans_xlsx.xlsx" file
@@ -48,6 +39,25 @@ Feature:
     Then I click the "Import" button
     Then I should see "was successfully imported"
     And I should see "Registered 3 new orphans"
+
+  Scenario: I should not have a link to see orphan lists for partners with no orphan lists
+    Given I visit the new orphan list page for partner "Partner2"
+    Then I should not see the "Click here for all orphan lists" link
+
+  Scenario: I should have a link to see orphan lists for partners with orphan lists
+    Given "Partner1" has the following orphan lists: "three_orphans_xlsx.xlsx", "one_orphan_xlsx.xlsx"
+    And I am on the "Show Partner" page for partner "Partner1"
+    Then I should see the "Click here for all orphan lists" link
+
+  Scenario: I should not see a button for creating a new orphan list
+    Given "Partner1" has the following orphan list: "three_orphans_xlsx.xlsx"
+    And I visit the new orphan list page for partner "Partner1"
+    Then I should not see the "New Orphan List" link
+
+  Scenario: I should not see a link for creating a new orphan list
+    Given "Partner1" has the following orphan list: "three_orphans_xlsx.xlsx"
+    And I visit the new orphan list page for partner "Partner1"
+    Then I should not see the "Create one" link
 
   Scenario: I should not be able to upload an invalid orphan list file
     Given I visit the new orphan list page for partner "Partner1"
