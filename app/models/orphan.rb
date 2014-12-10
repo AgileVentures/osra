@@ -17,11 +17,21 @@ class Orphan < ActiveRecord::Base
             uniqueness: { scope: [:father_name, :mother_name],
                           message: 'An orphan with this name, mother & father already exists.' }
   validates :father_name, presence: true
-  validates :father_is_martyr, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
-  validates :father_date_of_death, presence: true, date_not_in_future: true
+
+  # TODO NEEDS REFACTOR
+  validates :father_alive, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
+  validates :father_alive, inclusion: { in: [false] }, exclusion: { in: [true] }, if: :father_is_martyr
+  validates :father_alive, inclusion: { in: [true] }, exclusion: { in: [false] }, if: 'father_date_of_death.nil?'
+  validates :father_alive, inclusion: { in: [false] }, exclusion: { in: [true] }, unless: 'father_date_of_death.nil?'
+  validates :father_is_martyr, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
+  validates :father_is_martyr, inclusion: { in: [false] }, exclusion: { in: [true] }, if: :father_alive
+  validates :father_is_martyr, inclusion: { in: [false] }, exclusion: { in: [true] }, if: 'father_date_of_death.nil?'
+  validates :father_date_of_death, presence: true, date_not_in_future: true, unless: :father_alive
+  validates :father_date_of_death, absence: true, if: :father_alive
+  # END REFACTOR
+
   validates :mother_name, presence: true
   validates :mother_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
-  validates :father_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :date_of_birth, presence: true, date_not_in_future: true
   validates :gender, presence: true, inclusion: {in: Settings.lookup.gender }
   validates :contact_number, presence: true
@@ -35,7 +45,7 @@ class Orphan < ActiveRecord::Base
   validates :priority, presence: true, inclusion: { in: %w(Normal High) }
   validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
-  validate :orphans_dob_within_1yr_of_fathers_death
+  validate :orphans_dob_within_1yr_of_fathers_death, unless: :father_alive
   validate :less_than_22_yo_when_joined_osra
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
