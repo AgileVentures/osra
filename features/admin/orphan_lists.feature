@@ -152,3 +152,8 @@ Feature:
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
     Then I should be on the "Show Partner" page for partner "Partner1"
     And I should see "Records were not imported!"
+
+  Scenario: Records should be imported in correct order for easy error tracing
+    Given I try to upload the "two_orphans_first_invalid_xlsx.xlsx" file for partner "Partner1"
+    Then I should see "Records were not imported!"
+    And I should see "Record #1:"
