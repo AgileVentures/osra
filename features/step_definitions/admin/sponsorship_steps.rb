@@ -23,14 +23,20 @@ end
 When(/I click the "Sponsor this orphan" link for orphan "([^"]*)"/) do |orphan_name|
   orphan = Orphan.find_by_name orphan_name
   tr_id = "#orphan_#{orphan.id}"
-  within(tr_id) { click_link 'Sponsor this orphan' }
+  within(tr_id) { click_button 'Sponsor this orphan' }
 end
 
 When(/I click the "End sponsorship" link for orphan "([^"]*)"/) do |orphan_name|
   orphan = Orphan.find_by_name orphan_name
   sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first
   tr_id = "#sponsorship_#{sponsorship.id}"
-  within(tr_id) { click_link 'End sponsorship' }
+  within(tr_id) { click_button 'End Sponsorship' }
+end
+
+When(/^I fill in Sponsorship Start Date for "([^"]*)" with "([^"]*)"$/) do |orphan_name, value|
+  orphan = Orphan.find_by_name orphan_name
+  tr_id = "#orphan_#{orphan.id}"
+  within(tr_id) { fill_in :sponsorship_start_date, with: value }
 end
 
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|

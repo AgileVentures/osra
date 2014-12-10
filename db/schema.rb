@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113135207) do
+ActiveRecord::Schema.define(version: 20141205092742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.datetime "spreadsheet_updated_at"
   end
 
+  add_index "orphan_lists", ["osra_num"], name: "index_orphan_lists_on_osra_num", unique: true, using: :btree
   add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
   add_index "orphan_lists", ["sequential_id"], name: "index_orphan_lists_on_sequential_id", using: :btree
 
@@ -158,6 +159,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
   add_index "orphans", ["orphan_sponsorship_status_id"], name: "index_orphans_on_orphan_sponsorship_status_id", using: :btree
   add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
+  add_index "orphans", ["osra_num"], name: "index_orphans_on_osra_num", unique: true, using: :btree
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
 
@@ -175,6 +177,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
   end
 
   add_index "partners", ["name"], name: "index_partners_on_name", unique: true, using: :btree
+  add_index "partners", ["osra_num"], name: "index_partners_on_osra_num", unique: true, using: :btree
   add_index "partners", ["province_id"], name: "index_partners_on_province_id", using: :btree
   add_index "partners", ["sequential_id"], name: "index_partners_on_sequential_id", using: :btree
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
@@ -224,6 +227,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
     t.string  "minor_siblings_count"
     t.string  "sponsored_minor_siblings_count"
     t.string  "comments"
+    t.boolean "father_alive"
   end
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree
@@ -274,6 +278,7 @@ ActiveRecord::Schema.define(version: 20141113135207) do
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
   add_index "sponsors", ["branch_id"], name: "index_sponsors_on_branch_id", using: :btree
   add_index "sponsors", ["organization_id"], name: "index_sponsors_on_organization_id", using: :btree
+  add_index "sponsors", ["osra_num"], name: "index_sponsors_on_osra_num", unique: true, using: :btree
   add_index "sponsors", ["request_fulfilled"], name: "index_sponsors_on_request_fulfilled", using: :btree
   add_index "sponsors", ["sequential_id"], name: "index_sponsors_on_sequential_id", using: :btree
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree

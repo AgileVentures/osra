@@ -21,8 +21,9 @@ ActiveAdmin.register Sponsor do
     end
   end
 
-  show do |sponsor|
+  show title: :name do |sponsor|
     attributes_table do
+      row :name
       row :osra_num
       row :status
       row :gender
@@ -48,16 +49,21 @@ ActiveAdmin.register Sponsor do
       end
     end
 
-    panel "#{ pluralize(sponsor.sponsorships.all_active.count,
-                        'Currently Sponsored Orphan') }", id: 'currently_sponsored_orphans' do
+    panel "#{ pluralize(sponsor.sponsorships.all_active.count, 'Currently Sponsored Orphan') }",
+                                                          id: 'currently_sponsored_orphans' do
       table_for sponsor.sponsorships.all_active do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender
         column '' do |_sponsorship|
-          link_to 'End sponsorship',
-                  inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id),
-                  method: :put
+          form_submit_route= inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id)
+          text_node ("\n" + '<form action="' + form_submit_route.to_s + '" method="post">').html_safe
+            input '', type: :submit, name: :end_sponsorship, value: 'End Sponsorship'
+            text_node '<label class="end_sponsorship_button_label">on:</label>'.html_safe
+            input '', type: :text, name: :end_date, value: Date.current.to_s
+            input '', type: :hidden, name: :_method, value: :put
+            input '', type: :hidden, name: :authenticity_token, value: form_authenticity_token
+          text_node '</form>'.html_safe
         end
       end
     end
@@ -68,8 +74,11 @@ ActiveAdmin.register Sponsor do
         column :orphan
         column :orphan_date_of_birth
         column :orphan_gender
+        column 'Sponsorship began' do |_sponsorship|
+          _sponsorship.start_date
+        end
         column 'Sponsorship ended' do |_sponsorship|
-          _sponsorship.updated_at
+          _sponsorship.end_date
         end
       end
     end

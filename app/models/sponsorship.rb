@@ -21,41 +21,41 @@ class Sponsorship < ActiveRecord::Base
   delegate :name, :additional_info, :id, to: :sponsor, prefix: true
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
-  def inactivate
-    update_attributes!(active: false)
+  def inactivate(end_date= Date.current)
+    update_attributes!(active: false, end_date: end_date)
     set_orphan_status_to_previously_sponsored
   end
 
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
-  private
+private
 
-    def set_orphan_status_to_sponsored
-      self.orphan.update_sponsorship_status! 'Sponsored'
-    end
+  def set_orphan_status_to_sponsored
+    self.orphan.update_sponsorship_status! 'Sponsored'
+  end
 
-    def update_sponsor_request_fulfilled
-      self.sponsor.update_request_fulfilled!
-    end
+  def update_sponsor_request_fulfilled
+    self.sponsor.update_request_fulfilled!
+  end
 
-    def set_orphan_status_to_previously_sponsored
-      self.orphan.update_sponsorship_status! 'Previously Sponsored'
-    end
+  def set_orphan_status_to_previously_sponsored
+    self.orphan.update_sponsorship_status! 'Previously Sponsored'
+  end
 
-    def set_active_to_true
-      self.active = true
-    end
+  def set_active_to_true
+    self.active = true
+  end
 
-    def sponsor_is_eligible_for_new_sponsorship
-      unless sponsor && sponsor.eligible_for_sponsorship?
-        errors[:sponsor] << 'is ineligible for a new sponsorship'
-      end
+  def sponsor_is_eligible_for_new_sponsorship
+    unless sponsor && sponsor.eligible_for_sponsorship?
+      errors[:sponsor] << 'is ineligible for a new sponsorship'
     end
+  end
 
-    def orphan_is_eligible_for_new_sponsorship
-      unless orphan && orphan.eligible_for_sponsorship?
-        errors[:orphan] << 'is ineligible for a new sponsorship'
-      end
+  def orphan_is_eligible_for_new_sponsorship
+    unless orphan && orphan.eligible_for_sponsorship?
+      errors[:orphan] << 'is ineligible for a new sponsorship'
     end
+  end
 end
