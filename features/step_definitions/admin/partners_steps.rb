@@ -14,10 +14,12 @@ end
 
 Given(/^"([^"]*)" has the following orphan lists?: (.*?)$/) do |partner_name, orphan_list_files|
   orphan_list_files.gsub('"','').split(', ').each do |file|
-    step("I visit the new orphan list page for partner \"#{partner_name}\"")  #Given
-    step("I upload the \"#{file}\" file")                                     #And
-    step("I click the \"Upload\" button")                                     #Then
-    step("I click the \"Import\" button")                                     #Then
+    steps %Q{
+      Given I visit the new orphan list page for partner "#{partner_name}"
+      And I upload the "#{file}" file
+      Then I click the "Upload" button
+      Then I click the "Import" button
+    }
   end
 end
 
