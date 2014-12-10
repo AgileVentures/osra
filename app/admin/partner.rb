@@ -23,7 +23,11 @@ ActiveAdmin.register Partner do
       row :region
       row :contact_details
       row 'Orphan Lists' do
-        link_to("Click here for all orphan lists", admin_partner_orphan_lists_path(partner)) if !partner.orphan_lists.empty?
+        if partner.orphan_lists.empty?
+          "none"
+        else
+          link_to("All orphan lists", admin_partner_orphan_lists_path(partner)) 
+        end
       end
     end
   end
