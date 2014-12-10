@@ -119,7 +119,7 @@ describe ImportOrphanSettings do
           parse_value).to be true
       end
 
-      specify "it will raise and error if options are present but not valid"  do
+      specify "it will raise an error if options are present but not valid"  do
         expect(settings).to receive(:mandatory).and_return(false)
         expect{ImportOrphanSettings::BooleanColumn.new("no", settings).
           parse_value}.to raise_error
