@@ -18,7 +18,7 @@ class Orphan < ActiveRecord::Base
                           message: 'An orphan with this name, mother & father already exists.' }
   validates :father_name, presence: true
 
-  # TODO NEEDS REFACTO
+  # TODO NEEDS REFACTOR
   validates :father_alive, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
   validates :father_alive, inclusion: { in: [false] }, exclusion: { in: [true] }, if: :father_is_martyr
   validates :father_alive, inclusion: { in: [true] }, exclusion: { in: [false] }, if: 'father_date_of_death.nil?'

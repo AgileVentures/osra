@@ -90,7 +90,7 @@ describe ImportOrphanSettings do
           to_val).to eq date
       end
 
-      specify "DateColumn to raise an error with an invalid date" do
+      specify "DateColumn raises an error with an invalid date" do
         expect{ImportOrphanSettings::DateColumn.new("not a date", settings).
           to_val}.to raise_error
       end

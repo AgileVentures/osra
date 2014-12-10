@@ -39,7 +39,7 @@ describe ExcelUpload do
   end
 
   describe '.empty_file?' do
-    it 'should return true for an file without orphan records' do
+    it 'should return true for a file without orphan records' do
       doc = Roo::Spreadsheet.open('spec/fixtures/empty_xls.xls')
       expect(ExcelUpload.empty_file?(doc, @settings.first_row)).to be true
     end

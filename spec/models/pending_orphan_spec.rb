@@ -26,13 +26,6 @@ describe PendingOrphan, type: :model do
   end
 
   describe '#to_orphan' do
-    it 'returns an orphan' do
-      pending_orphan.attributes = attributes
-      orphan = pending_orphan.to_orphan
-      expect(orphan.class.name).to eq 'Orphan'
-      expect(orphan.is_a?(Orphan)).to be true
-    end
-
     it 'should get an address' do
       expect(pending_orphan.orphan.original_address).to be nil
       pending_orphan.attributes = attributes

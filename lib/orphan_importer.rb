@@ -53,7 +53,7 @@ class OrphanImporter
 
   def process_column(row, col_settings, cell_val)
     log_exceptions(row, col_settings) do
-      class_name = col_settings.type.split.first.capitalize
+      class_name = col_settings.type.split.first.classify
       full_class = ("ImportOrphanSettings::" + class_name + \
         "Column").constantize
       parsed_value = full_class.new(cell_val, col_settings).parse_value
@@ -66,7 +66,9 @@ class OrphanImporter
     rescue => e
       message = e.to_s
       message += " Error at row #{row}" if row
-      message += " for column #{col_settings.field}" if col_settings
+      if col_settings
+        message += " for column #{col_settings.column}--#{col_settings.field}"
+      end
       add_import_errors(e.class.name.split('::').last, message)
     end
   end

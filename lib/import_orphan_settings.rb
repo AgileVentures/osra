@@ -33,7 +33,7 @@ class ImportOrphanSettings
     end
 
     def raise_error_if_mandatory_and_blank?
-      if mandatory? && @column_value.blank?
+      if mandatory? && column_value.blank?
         raise ImportConfigurationError, "mandatory field is blank"
       end
     end
@@ -48,7 +48,7 @@ class ImportOrphanSettings
     end
 
     def to_val
-      @column_value
+      column_value
     end
 
     def convert_option_value

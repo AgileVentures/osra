@@ -197,7 +197,8 @@ describe OrphanImporter do
   end
 
   describe '#process_column' do
-    let(:col_settings) {double "col_settings", field: "name", mandatory: false}
+    let(:col_settings) {double "col_settings", field: "name",
+                        column: "B", mandatory: false}
 
     it 'creates a new instance of a DataColumn subclass' do
       expect(col_settings).to receive(:type).and_return("String")
