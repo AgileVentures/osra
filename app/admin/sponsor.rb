@@ -56,7 +56,7 @@ ActiveAdmin.register Sponsor do
         column :orphan_date_of_birth
         column :orphan_gender
         column 'Sponsorship began' do |_sponsorship|
-          _sponsorship.start_date
+          _sponsorship.start_date.strftime("%B %Y")
         end
         column '' do |_sponsorship|
           form_submit_route= inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id)
@@ -78,10 +78,10 @@ ActiveAdmin.register Sponsor do
         column :orphan_date_of_birth
         column :orphan_gender
         column 'Sponsorship began' do |_sponsorship|
-          _sponsorship.start_date
+          _sponsorship.start_date.strftime("%B %Y")
         end
         column 'Sponsorship ended' do |_sponsorship|
-          _sponsorship.end_date
+          _sponsorship.end_date.strftime("%B %Y")
         end
       end
     end
