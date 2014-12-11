@@ -70,5 +70,23 @@ describe Admin::PendingOrphanListsController, type: :controller do
         expect(flash[:notice]).to be_nil
       end
     end
+
+    context 'when the import process raises an exception' do
+      before(:each) do
+        allow(controller).to receive(:get_orphans_from).and_raise('KABOOOOOM!!!!')
+        expect(controller).not_to receive(:check_for_duplicates)
+        expect(controller).not_to receive(:check_for_object_validity)
+        expect(controller).not_to receive(:db_persist)
+        post :import, partner_id: 1, orphan_list: { pending_id: 1 }
+      end
+
+      it 'returns the exeption message' do
+        expect(flash[:error]).to eq 'KABOOOOOM!!!!'
+      end
+
+      it 'redirects to the partner page' do
+        expect(response).to redirect_to admin_partner_path(partner)
+      end
+    end
   end
 end

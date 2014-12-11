@@ -70,6 +70,9 @@ ActiveAdmin.register PendingOrphanList do
       else
         unsuccessful_redirect_and_render errors_list
       end
+    rescue => e
+      flash[:error] = e.message
+      redirect_to admin_partner_path @partner
     ensure
       @pending_orphan_list.destroy
     end
@@ -117,7 +120,7 @@ ActiveAdmin.register PendingOrphanList do
       orphans_to_import.each_with_index do |orphan, index|
         orphan.valid?
         orphan.errors.full_messages.each do |message|
-          validation_errors << "Record ##{index}: #{message}"
+          validation_errors << "Record ##{index+1}: #{message}"
         end
       end
       validation_errors

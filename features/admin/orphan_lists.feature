@@ -162,7 +162,7 @@ Feature:
 
   Scenario: Records should be imported in correct order for easy error tracing
     Given I try to upload the "two_orphans_first_invalid_xlsx.xlsx" file for partner "Partner1"
-    Then I should see "Records were not imported!"
+    Then I should see "No records were imported."
     And I should see "Record #1:"
 
   Scenario: I should not be able to import orphan lists that contain duplicate records
