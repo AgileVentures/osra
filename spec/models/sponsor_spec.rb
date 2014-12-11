@@ -11,7 +11,7 @@ describe Sponsor, type: :model do
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
-  
+
   it 'should have payment plans' do
     expect(Sponsor::PAYMENT_PLANS).to be_present
   end
@@ -89,7 +89,7 @@ describe Sponsor, type: :model do
   describe 'branch or organization affiliation' do
     let(:branch) { Branch.all.sample }
     let(:organization) { Organization.all.sample }
-    
+
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
 
@@ -326,6 +326,10 @@ describe Sponsor, type: :model do
       expect(active_sponsor.eligible_for_sponsorship?).to eq true
       expect(on_hold_sponsor.eligible_for_sponsorship?).to eq false
       expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
+    end
+
+    it 'should not return a memory pointer as its instance.to_s' do
+      expect((build_stubbed :sponsor).to_s=~ /#<\w+:0x([a-f]|[A-F]|[0-9])+>/).to be_nil
     end
 
     describe 'sponsorship requests' do

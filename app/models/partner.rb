@@ -20,12 +20,16 @@ class Partner < ActiveRecord::Base
   def active?
     status && status.name == 'Active'
   end
-  
+
   def self.all_names
     Partner.order(:name).map(&:name)
   end
 
-  private
+  def to_s
+    name
+  end
+
+private
 
   def generate_osra_num
     self.osra_num = province.code.to_s + "%03d" % sequential_id
