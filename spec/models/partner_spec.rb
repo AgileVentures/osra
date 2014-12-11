@@ -85,8 +85,16 @@ describe Partner, type: :model do
     end
   end
 
-  describe 'should not change info about associated province' do
-    it 'should not update province' do
+  describe 'create' do
+    it 'should accept a province' do
+      province = Province.all.sample
+      partner = Partner.create!(name: "Some Name", region: "Some Region", contact_details: "Some Details", province: province)
+      expect(partner.province.id).to eq(province.id)
+    end
+  end
+
+  describe 'update' do
+    it 'should not change province' do
       partner = FactoryGirl.create(:partner)
       remaining_provinces = Province.where.not(id: partner.province.id)
       new_province = remaining_provinces.sample
