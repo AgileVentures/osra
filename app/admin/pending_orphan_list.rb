@@ -30,6 +30,11 @@ ActiveAdmin.register PendingOrphanList do
       redirect_to admin_partner_path(params[:partner_id])
       return
     end
+    if params['pending_orphan_list'].nil?  # no spreadsheet has been specified
+      flash[:error] = 'Please specify the spreadsheet to be uploaded'
+      redirect_to upload_admin_partner_pending_orphan_lists_path(params[:partner_id]) # ie same page
+      return
+    end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
     importer             = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
     result               = importer.extract_orphans

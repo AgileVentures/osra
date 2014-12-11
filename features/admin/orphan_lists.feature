@@ -63,6 +63,13 @@ Feature:
     Then I should see "is invalid"
     And I should not see the "Import" link
 
+  Scenario: I should not be able to upload if I haven't specified an orphan list file
+    Given I visit the new orphan list page for partner "Partner1"
+    And I click the "Upload" button    
+    Then I should see "Upload"
+    And I should see "Please specify"
+    And I should not see the "Import" link
+
   Scenario: I should be able to upload a valid .xls orphan list file
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "one_orphan_xls.xls" file

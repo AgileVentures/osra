@@ -54,6 +54,19 @@ describe Admin::PendingOrphanListsController, type: :controller do
       end
     end
 
+    context 'when no spreadsheet is specified' do
+
+      before do
+        allow(partner).to receive(:active?).and_return true
+        post :validate, partner_id: 1
+      end
+
+      it 'redirects back to the current page' do
+        expect(response).to redirect_to upload_admin_partner_pending_orphan_lists_path(1)
+      end
+      
+    end
+
     context 'when partner is active' do
       let(:orphan_list_params) { { spreadsheet: fixture_file_upload('one_orphan_xls.xls') } }
 
