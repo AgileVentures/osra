@@ -50,18 +50,14 @@ ActiveAdmin.register PendingOrphanList do
   collection_action :import, method: :post do
     get_partner
     get_pending_orphan_list
-    orphan_count = 0
-    orphan_list  = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet,
-                                               orphan_count: orphan_count)
-    orphan_list.save!
+    orphan_list  = @partner.orphan_lists.create!(spreadsheet:  @pending_orphan_list.spreadsheet,
+                                               orphan_count: 0)
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
       orphan = OrphanImporter.to_orphan pending_orphan
       orphan_list.orphans << orphan
-      orphan.save!
-      orphan_count += 1
     end
 
-    orphan_list.orphan_count = orphan_count
+    orphan_count = orphan_list.orphan_count = orphan_list.orphans.count
     orphan_list.save!
 
     @pending_orphan_list.destroy
