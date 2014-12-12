@@ -64,7 +64,7 @@ Feature:
     And I should see "Sponsorship link was successfully terminated"
     And I should not see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "First Orphan" within "Previously Sponsored Orphans"
-    And I should see "2014-03-30" within "Previously Sponsored Orphans"
+    And I should see "03/2014" within "Previously Sponsored Orphans"
 
   Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
     Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
