@@ -157,10 +157,19 @@ Feature:
   Scenario: I should not be able to import orphan records that fail validations
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
-    Then I should be on the "Show Partner" page for partner "Partner1"
-    And I should see "Records were not imported!"
+    Then I should be on the "Show Partner" page for partner "Partner1"    
+    And I should see "An orphan with this name, mother & father already exists."
 
   Scenario: Records should be imported in correct order for easy error tracing
     Given I try to upload the "two_orphans_first_invalid_xlsx.xlsx" file for partner "Partner1"
-    Then I should see "Records were not imported!"
+    Then I should see "No records were imported."
     And I should see "Record #1:"
+
+  Scenario: I should not be able to import orphan lists that contain duplicate records
+    Given I try to upload the "four_orphans_with_internal_dup_xlsx.xlsx" file for partner "Partner1"
+    Then I should be on the "Show Partner" page for partner "Partner1"
+    And I should see "File contains duplicate records."
+
+  Scenario: Pending object should not be retained in the db after import
+    Given I expect that importing the "three_orphans_xlsx.xlsx" does not change the count of "PendingOrphanList"
+    Given I expect that importing the "three_orphans_xlsx.xlsx" does not change the count of "PendingOrphan"
