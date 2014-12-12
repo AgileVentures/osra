@@ -50,7 +50,7 @@ ActiveAdmin.register Partner do
     end
   end
 
-  action_item :only => :show do
+  action_item :upload_orphan_list, only: :show do
     link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(partner)) if partner.active?
   end
 

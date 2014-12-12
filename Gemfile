@@ -12,7 +12,7 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
-gem 'paperclip'
+gem 'paperclip', '~> 4.2.0'
 gem 'aws-sdk'
 gem 'coveralls', require: false
 gem 'country_select', github: 'stefanpenner/country_select'
