@@ -91,8 +91,6 @@ GEM
     cliver (0.3.2)
     cocaine (0.5.4)
       climate_control (>= 0.0.3, < 1.0)
-    codeclimate-test-reporter (0.4.2)
-      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -327,7 +325,6 @@ DEPENDENCIES
   binding_of_caller
   capybara
   capybara-webkit
-  codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
   country_select!
   coveralls
