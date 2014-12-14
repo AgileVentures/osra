@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <%- if @partners.empty? %>
+      No Partners found
+    <%- else %>
+      <table>
+        <thead>
+          <tr>
+            <th class="nonsortable col col-osra_num">
+              Osra Num
+            </th>
+            <th class="nonsortable col col-name">
+              Name
+            </th>
+            <th class="nonsortable col col-status">
+              Status
+            </th>
+            <th class="nonsortable col col-start_date">
+              Start Date
+            </th>
+            <th class="nonsortable col col-province">
+              Province
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- @partners.each do |partner| %>
+            <tr>
+              <td>
+                <a href="<%= admin_partner_path(partner) %>"><%= partner.osra_num %></a>
+              </td>
+              <td>
+                <a href="<%= admin_partner_path(partner) %>"><%= partner.name %></a>
+              </td>
+              <td>
+                <%= partner.status.name %>
+              </td>
+              <td>
+                <%= partner.start_date.strftime('%B %d, %Y') %>
+              </td>
+              <td>
+                <%= partner.province.name %>
+              </td>
+            </tr>
+          <%- end %>
+        </tbody>
+      </table>
+        Displaying <b>all <%= @partners.count %></b> <%= 'Partner'.pluralize(@partners.count) %>
+    <%- end %>
