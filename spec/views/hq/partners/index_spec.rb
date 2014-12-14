@@ -11,20 +11,16 @@ describe "partners/index.html.erb", type: :view do
   context 'partners' do
     before :each do
       assign(:partners, partners)
-      assign(:request_params, {})
       assign(:model, Partner)
     end
 
     it 'should contain the number of partners' do
       render and expect(rendered).to have_text 'Displaying all 67 Partners'
     end
-
-
   end
   context 'no partners' do
     before :each do
       assign(:partners, [])
-      assign(:request_params, {})
     end
 
     it 'should indicate no partners were found' do
