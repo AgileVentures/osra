@@ -51,13 +51,9 @@ Feature:
 
   Scenario: I should not see a button for creating a new orphan list
     Given "Partner1" has the following orphan list: "three_orphans_xlsx.xlsx"
-    And I visit the new orphan list page for partner "Partner1"
+    And I am on the "Show Partner" page for partner "Partner1"
+    Then I click the "All orphan lists" link
     Then I should not see the "New Orphan List" link
-
-  Scenario: I should not see a link for creating a new orphan list
-    Given "Partner1" has the following orphan list: "three_orphans_xlsx.xlsx"
-    And I visit the new orphan list page for partner "Partner1"
-    Then I should not see the "Create one" link
 
   Scenario: I should not be able to upload an invalid orphan list file
     Given I visit the new orphan list page for partner "Partner1"
