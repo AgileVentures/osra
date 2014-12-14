@@ -57,12 +57,12 @@ ActiveAdmin.register PendingOrphanList do
       orphan_list.orphans << orphan
     end
 
-    orphan_count = orphan_list.orphan_count = orphan_list.orphans.count
     orphan_list.save!
 
     @pending_orphan_list.destroy
     flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
-                      Registered #{orphan_count} new #{'orphan'.pluralize orphan_count}."
+                      Registered #{orphan_list.orphan_count}
+                      new #{'orphan'.pluralize orphan_list.orphan_count}."
     redirect_to admin_partner_path(@partner)
   end
 

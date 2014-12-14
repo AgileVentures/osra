@@ -90,6 +90,7 @@ describe Admin::PendingOrphanListsController, type: :controller do
       allow(orphan_list).to receive :orphan_count=
       allow(orphan_list).to receive(:orphans).and_return orphans_to_import
       allow(orphan_list).to receive :save!
+      allow(orphan_list).to receive :orphan_count
       allow(pending_orphan_list).to receive :destroy
       allow(pending_orphans).to receive(:each).and_yield(orphan)
       allow(orphan_list).to receive :osra_num
