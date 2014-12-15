@@ -47,6 +47,12 @@ ActiveAdmin.register Sponsor do
       row :agent do
         link_to sponsor.agent.user_name, admin_user_path(sponsor.agent) if sponsor.agent
       end
+      row :created_at do
+        format_date(sponsor.created_at)
+      end
+      row :updated_at do
+        format_date(sponsor.updated_at)
+      end
     end
 
     panel "#{ pluralize(sponsor.sponsorships.all_active.count, 'Currently Sponsored Orphan') }",
