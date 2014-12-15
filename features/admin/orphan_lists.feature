@@ -23,16 +23,6 @@ Feature:
     Given I am on the "Show Partner" page for partner "Partner2"
     Then I should not see the "Upload Orphan List" link
 
-  Scenario: I should not see a button for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "Click here for all orphan lists" link
-    Then I should not see the "New Orphan List" link
-
-  Scenario: I should not see a link for creating a new orphan list
-    Given I am on the "Show Partner" page for partner "Partner1"
-    And I click the "Click here for all orphan lists" link
-    Then I should not see the "Create one" link
-
   Scenario: I should see the new orphan list form for an active partner
     Given I visit the new orphan list page for partner "Partner1"
     Then I should see "Spreadsheet"
@@ -48,6 +38,22 @@ Feature:
     Then I click the "Import" button
     Then I should see "was successfully imported"
     And I should see "Registered 3 new orphans"
+
+  Scenario: I should not have a link to see orphan lists for partners with no orphan lists
+    Given I visit the new orphan list page for partner "Partner2"
+    Then I should see "none"
+    And I should not see the "All orphan lists" link
+
+  Scenario: I should have a link to see orphan lists for partners with orphan lists
+    Given "Partner1" has the following orphan lists: "three_orphans_xlsx.xlsx", "one_orphan_xlsx.xlsx"
+    And I am on the "Show Partner" page for partner "Partner1"
+    Then I should see the "All orphan lists" link
+
+  Scenario: I should not see a button for creating a new orphan list
+    Given "Partner1" has the following orphan list: "three_orphans_xlsx.xlsx"
+    And I am on the "Show Partner" page for partner "Partner1"
+    Then I click the "All orphan lists" link
+    Then I should not see the "New Orphan List" link
 
   Scenario: I should not be able to upload an invalid orphan list file
     Given I visit the new orphan list page for partner "Partner1"
@@ -90,7 +96,7 @@ Feature:
     And I upload the "three_orphans_xlsx.xlsx" file
     Then I click the "Upload" button
     Then I click the "Import" button
-    Then I click the "Click here for all orphan lists" link
+    Then I click the "All orphan lists" link
     Then I should see "three_orphans_xlsx.xlsx"
 
   Scenario: Pending orphan list should be saved to the db when uploading a valid file
