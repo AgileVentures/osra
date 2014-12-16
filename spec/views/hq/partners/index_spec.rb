@@ -2,9 +2,25 @@ require 'rails_helper'
 
 RSpec.describe "hq/partners/index.html.erb", type: :view do
   context 'partners exist' do
+    let(:partners) do
+      31.times do
+        FactoryGirl.create :partner, province: Province.find_by_name('Aleppo')
+      end
+      Partner.paginate(:page => 2)
+    end
+
+    before :each do
+      assign(:partners, partners)
+    end
+
     it 'should not indicate no partners were found' do
-      assign(:partners, [ FactoryGirl.create(:partner) ] )
       render and expect(rendered).to_not match /No Partners found/
+    end
+
+    it "calls will_paginate gem " do
+      allow(view).to receive(:will_paginate).and_return('success')
+      render
+      expect(rendered).to match /success/
     end
   end
 

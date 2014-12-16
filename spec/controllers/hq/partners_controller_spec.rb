@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'will_paginate/array'
 class NyuksController < Hq::PartnersController; end
 
 RSpec.describe Hq::PartnersController, type: :controller do
@@ -16,11 +17,9 @@ RSpec.describe Hq::PartnersController, type: :controller do
       get :foobar_action
     end
   end
-
 end
 
 RSpec.describe Hq::PartnersController, type: :controller do
-
   before :each do
     sign_in instance_double(AdminUser)
   end
@@ -43,11 +42,9 @@ RSpec.describe Hq::PartnersController, type: :controller do
       post :create, partner: {}
       expect(response).to render_template 'new'
     end
-
   end
 
   context '#edit and #update' do 
-
     before :each do
       @partner = build_stubbed :partner
       expect(Partner).to receive(:find).and_return(@partner)
@@ -69,6 +66,12 @@ RSpec.describe Hq::PartnersController, type: :controller do
       patch :update, id: @partner.id
       expect(response).to redirect_to(hq_partner_path(@partner))
     end
+  end
 
+  describe 'index' do
+    specify 'pagination' do
+      expect(Partner).to receive_message_chain(:all, :paginate).with(page: "2").and_return([].paginate)
+      get :index, page: "2"
+    end
   end
 end
