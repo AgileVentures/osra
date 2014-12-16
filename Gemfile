@@ -26,6 +26,8 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
+gem 'will_paginate', '~> 3.0.7'
+ 
 
 group :test do
   gem 'capybara'
