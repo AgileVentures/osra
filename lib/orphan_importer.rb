@@ -64,7 +64,7 @@ class OrphanImporter
   end
 
   def check_for_duplicates
-    @duplicates_hash.each do |k, v|
+    @duplicates_hash.each do |_, v|
       if v.size > 1
         @import_errors << { ref: "duplicate entries found on rows #{v.join(', ')}",
                             error: "Orphan's name, mother's name & father's name are the same." }
