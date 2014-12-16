@@ -10,12 +10,14 @@ describe OrphanImporter do
   let (:one_orphan_importer) { OrphanImporter.new('spec/fixtures/one_orphan_xlsx.xlsx', @partner) }
   let (:three_orphans_importer) { OrphanImporter.new('spec/fixtures/three_orphans_xlsx.xlsx', @partner) }
   let (:three_invalid_orphans_importer) { OrphanImporter.new('spec/fixtures/three_invalid_orphans_xlsx.xlsx', @partner) }
+  let (:four_orphans_with_duplicates_importer) { OrphanImporter.new('spec/fixtures/four_orphans_with_internal_duplicate_xlsx.xlsx', @partner) }
 
   let (:empty_results) { empty_importer.extract_orphans }
 
   let (:one_orphan_result) { one_orphan_importer.extract_orphans }
   let (:three_orphans_result) { three_orphans_importer.extract_orphans }
   let (:three_invalid_orphans_result) { three_invalid_orphans_importer.extract_orphans }
+  let (:four_orphans_with_duplicates_result) { four_orphans_with_duplicates_importer.extract_orphans }
 
   describe '.extract_orphans' do
     it 'should reject opening a non Excel file with an error' do
@@ -58,6 +60,11 @@ describe OrphanImporter do
     it 'should parse three invalid records and return errors' do
       expect(three_invalid_orphans_result.empty?).to eq false
       expect(three_invalid_orphans_importer).not_to be_valid
+    end
+
+    it 'should parse four valid records with duplication and return errors' do
+      expect(four_orphans_with_duplicates_result).not_to be_empty
+      expect(four_orphans_with_duplicates_importer).not_to be_valid
     end
 
     it 'should return valid pending orphan objects' do
@@ -191,7 +198,7 @@ describe OrphanImporter do
         size}.from(0).to(1)
     end
 
-    it 'should no change pending orphans if not valid' do
+    it 'should not change pending orphans if not valid' do
       expect(one_orphan_importer).to receive(:valid?).and_return(false)
       expect{one_orphan_importer.add_to_pending_orphans_if_valid(Hash.new)}.
         not_to change{one_orphan_importer.

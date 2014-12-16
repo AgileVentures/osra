@@ -151,3 +151,7 @@ Feature:
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
     And I should see "Orphan list is invalid"
+
+  Scenario: I should not be able to upload orphan lists with duplicate records
+    Given I try to upload the "four_orphans_with_internal_duplicate_xlsx.xlsx" file for partner "Partner1"
+    Then I should see "duplicate entries found"
