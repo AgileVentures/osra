@@ -120,7 +120,7 @@ ActiveAdmin.register Sponsor do
       f.input :additional_info
     end
     f.inputs 'Assign OSRA employee' do
-      f.input :agent, member_label: :user_name
+      f.input :agent, :as => :select, :collection => User.pluck(:user_name, :id)
     end
     f.actions do
       f.action :submit
