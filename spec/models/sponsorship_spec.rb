@@ -46,6 +46,22 @@ describe Sponsorship, type: :model do
       it "allows creation of sponsorship with valid start_date" do
         expect{ create :sponsorship, start_date: "5-12-2014"}.not_to raise_error
       end
+
+      it "disallows creation of sponsorship which starts later than the 1st day of next month" do
+        date = Date.today + 2.months
+        expect{ create :sponsorship, start_date: date.to_s}.to raise_error ActiveRecord::RecordInvalid
+      end
+
+      it "allows creation of sponsorship in future but before the 1st day of next month" do
+        allow(Date).to receive(:current).and_return( Date.parse "15-12-2014" )
+        date = Date.current + 5.days
+        expect{ create :sponsorship, start_date: date.to_s}.not_to raise_error
+      end
+
+      it "allows creation of sponsorship that starts in the past" do
+        date = Date.current - 5.months
+        expect{ create :sponsorship, start_date: date.to_s}.not_to raise_error
+      end
     end
 
     describe 'disallow concurrent active sponsorships' do

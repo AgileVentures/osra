@@ -9,7 +9,7 @@ class Sponsorship < ActiveRecord::Base
   validates :sponsor, presence: true
   validates :orphan, presence: true
   
-  validates :start_date, date_not_in_future: true, if: :start_date
+  validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
   validates :start_date, presence: { scope: true, message: "is invalid"}
   
   validates :orphan, uniqueness: { scope: :active,
@@ -32,6 +32,14 @@ class Sponsorship < ActiveRecord::Base
   scope :all_inactive, -> { where(active: false) }
 
 private
+  
+  def start_date_no_later_than_1st_of_next_month
+    today = Date.current
+    first_of_next_month = (today - today.day+1) + 1.month
+    if (self.start_date > first_of_next_month)
+      errors[:start_date] << "can not be later than the first of next month"
+    end
+  end
 
   def set_orphan_status_to_sponsored
     self.orphan.update_sponsorship_status! 'Sponsored'

@@ -42,6 +42,13 @@ Feature:
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should see "Start date is invalid"
 
+  Scenario: Sponsorship can not start later than the 1st of next month
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
+    And I fill in Sponsorship Start Date for "First Orphan" with date in distant future
+    When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should see "Start date can not be later than the first of next month"
+
   Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button

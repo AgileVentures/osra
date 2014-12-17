@@ -39,6 +39,13 @@ When(/^I fill in Sponsorship Start Date for "([^"]*)" with "([^"]*)"$/) do |orph
   within(tr_id) { fill_in :sponsorship_start_date, with: value }
 end
 
+When(/^I fill in Sponsorship Start Date for "([^"]*)" with date in distant future$/) do |orphan_name|
+  date = Date.today + 2.months
+  steps %Q{ When I fill in Sponsorship Start Date for "First Orphan" with "#{date.to_s}" }
+end
+
+
+
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|
   panel_id = "##{panel.parameterize('_')}"
 
