@@ -35,6 +35,13 @@ Feature:
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should not see the "Link to Orphan" link
 
+  Scenario: Sponsorship can not be created if date is invalid
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
+    And I fill in Sponsorship Start Date for "First Orphan" with "yesterday"
+    When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should see "Start date is invalid"
+
   Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button

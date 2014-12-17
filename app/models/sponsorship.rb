@@ -2,14 +2,16 @@ class Sponsorship < ActiveRecord::Base
 
   include Initializer
 
-  after_initialize :default_start_date_to_today
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
   after_save :update_sponsor_request_fulfilled
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
-  validates :start_date, date_not_in_future: true
+  
+  validates :start_date, date_not_in_future: true, if: :start_date
+  validates :start_date, presence: { scope: true, message: "is invalid"}
+  
   validates :orphan, uniqueness: { scope: :active,
                                        message: 'is already actively sponsored' }, if: :active
   validate :sponsor_is_eligible_for_new_sponsorship, on: :create
