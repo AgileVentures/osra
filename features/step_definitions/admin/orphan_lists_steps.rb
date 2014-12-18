@@ -32,6 +32,8 @@ end
 
 And /^I try to upload the "([^"]*)" file for partner "([^"]*)"(?: again)?$/ do |file, partner|
   steps %Q{
-    Given I have already uploaded the "#{file}" file for partner "#{partner}"
+    Given I visit the new orphan list page for partner "#{partner}"
+    And I upload the "#{file}" file
+    Then I click the "Upload" button
   }
 end

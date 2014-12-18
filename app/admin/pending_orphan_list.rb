@@ -30,8 +30,13 @@ ActiveAdmin.register PendingOrphanList do
       redirect_to admin_partner_path(params[:partner_id])
       return
     end
+    if params['pending_orphan_list'].nil?  # no spreadsheet has been specified
+      flash[:error] = 'Please specify the spreadsheet to be uploaded'
+      redirect_to upload_admin_partner_pending_orphan_lists_path(params[:partner_id]) # ie same page
+      return
+    end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
-    importer             = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'])
+    importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'], @partner)
     result               = importer.extract_orphans
     if importer.valid?
       @pending_orphan_list.pending_orphans = result
@@ -50,40 +55,19 @@ ActiveAdmin.register PendingOrphanList do
   collection_action :import, method: :post do
     get_partner
     get_pending_orphan_list
-    orphan_count = 0
-    orphan_list  = @partner.orphan_lists.build(spreadsheet:  @pending_orphan_list.spreadsheet,
-                                               orphan_count: orphan_count)
-    orphans_to_import = orphan_list.orphans
-
+    orphan_list  = @partner.orphan_lists.create!(spreadsheet:  @pending_orphan_list.spreadsheet,
+                                               orphan_count: 0)
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
-      orphan = OrphanImporter.to_orphan pending_orphan
-      orphan.partner = @partner
-      orphans_to_import << orphan
+      orphan = pending_orphan.to_orphan
+      orphan_list.orphans << orphan
     end
 
-    errors_list = []
-    if orphans_to_import.map(&:valid?).all?
-      orphans_to_import.each do |orphan|
-        orphan.save!
-        orphan_count += 1
-      end
-    else
-      orphans_to_import.each_with_index do |orphan, index|
-        orphan.errors.full_messages.each do |message|
-          errors_list << "Record ##{index+1}: #{message}"
-        end
-      end
-      errors_list.unshift 'Records were not imported!'
-      flash[:error] = errors_list.join('<br />').html_safe
-      redirect_to admin_partner_path @partner and return
-    end
-
-    orphan_list.orphan_count = orphan_count
     orphan_list.save!
 
     @pending_orphan_list.destroy
     flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
-                      Registered #{orphan_count} new #{'orphan'.pluralize orphan_count}."
+                      Registered #{orphan_list.orphan_count}
+                      new #{'orphan'.pluralize orphan_list.orphan_count}."
     redirect_to admin_partner_path(@partner)
   end
 
