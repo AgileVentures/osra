@@ -35,7 +35,7 @@ Feature:
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should not see the "Link to Orphan" link
 
-  Scenario: Sponsorship can not be created if date is invalid
+  Scenario: Sponsorship can not be created if date is invalid because of an ambiguous or fuzzy match
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button
     And I fill in Sponsorship Start Date for "First Orphan" with "yesterday"
