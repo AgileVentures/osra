@@ -128,6 +128,12 @@ ActiveAdmin.register Orphan do
         row :orphan_sponsorship_status
         row :current_sponsor if orphan.currently_sponsored?
         row :priority
+        row :created_at do
+              format_date(orphan.created_at)
+            end
+        row :updated_at do
+              format_date(orphan.updated_at)
+            end
       end
     end
 

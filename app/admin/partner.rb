@@ -29,6 +29,12 @@ ActiveAdmin.register Partner do
           link_to("All orphan lists", admin_partner_orphan_lists_path(partner)) 
         end
       end
+      row :created_at do
+        format_date(partner.created_at)
+      end
+      row :updated_at do
+        format_date(partner.updated_at)
+      end
     end
   end
 
