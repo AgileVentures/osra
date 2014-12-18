@@ -122,7 +122,7 @@ import:
     - field: guardian_relationship
       column: R
       mandatory: true
-      type: Integer
+      type: String
     - field: guardian_id_num
       column: S
       mandatory: true
