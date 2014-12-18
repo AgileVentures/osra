@@ -163,10 +163,8 @@ Feature:
   Scenario: I should not be able to import orphan records that fail validations
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
-    Then I should be on the "Show Partner" page for partner "Partner1"
-    And I should see "Records were not imported!"
+    And I should see "Orphan list is invalid"
 
-  Scenario: Records should be imported in correct order for easy error tracing
-    Given I try to upload the "two_orphans_first_invalid_xlsx.xlsx" file for partner "Partner1"
-    Then I should see "Records were not imported!"
-    And I should see "Record #1:"
+  Scenario: I should not be able to upload orphan lists with duplicate records
+    Given I try to upload the "four_orphans_with_internal_duplicate_xlsx.xlsx" file for partner "Partner1"
+    Then I should see "duplicate entries found"

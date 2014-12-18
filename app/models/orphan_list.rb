@@ -13,7 +13,8 @@ class OrphanList < ActiveRecord::Base
                        file_name: { matches: [/xls\Z/, /xlsx\Z/] }
 
   belongs_to :partner
-  has_many :orphans
+  has_many :orphans, after_add: :set_orphan_count,
+                     after_remove: :set_orphan_count
 
   def partner_is_active
     unless partner && partner.active?
@@ -22,6 +23,10 @@ class OrphanList < ActiveRecord::Base
   end
 
   private
+
+  def set_orphan_count orphan
+    self.orphan_count = self.orphans.count
+  end
 
   def generate_osra_num
     self.osra_num = "%04d" % sequential_id

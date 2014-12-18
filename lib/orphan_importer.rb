@@ -4,20 +4,19 @@ require_relative 'import_orphan_settings'
 class OrphanImporter
   attr_accessor :import_errors, :settings
 
-  def initialize(file)
+  def initialize(file, partner)
     @settings = ImportOrphanSettings.settings
     @pending_orphans = []
     @import_errors = []
     @file = file
-  end
-
-  def self.to_orphan(pending_orphan)
-    pending_orphan.to_orphan
+    @partner = partner
+    @duplicates_hash = Hash.new([])
   end
 
   def extract_orphans
     spreadsheet = log_exceptions{ExcelUpload.upload(@file, settings.first_row)}
     orphan_list = import_orphans(spreadsheet) if spreadsheet
+    check_for_duplicates
     return error_or_orphans
   end
 
@@ -44,7 +43,29 @@ class OrphanImporter
       cell_val = doc.cell(row, col_settings.column)
       fields[col_settings.field] = process_column row, col_settings, cell_val
     end
+    hash_key = fields.select{ |k, _| ['name', 'father_name', 'mother_name'].include? k }
+    @duplicates_hash[hash_key] += [row]
+    check_orphan_validity(fields, row)
     add_to_pending_orphans_if_valid(fields)
+  end
+
+  def check_orphan_validity(fields, row)
+    pending_orphan = PendingOrphan.new fields
+    orphan = pending_orphan.to_orphan
+    orphan.partner = @partner
+    unless orphan.valid?
+      @import_errors << {ref: "invalid orphan attributes for row #{row}",
+                         error: orphan.errors.full_messages}
+    end
+  end
+
+  def check_for_duplicates
+    @duplicates_hash.each do |_, v|
+      if v.size > 1
+        @import_errors << { ref: "duplicate entries found on rows #{v.join(', ')}",
+                            error: "Orphan's name, mother's name & father's name are the same." }
+      end
+    end
   end
 
   def add_to_pending_orphans_if_valid(fields)
