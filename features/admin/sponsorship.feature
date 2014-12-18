@@ -70,15 +70,31 @@ Feature:
     And I should see "Second Orphan" within "Currently Sponsored Orphans"
 
   Scenario: Ending a sponsorship
-    Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And I am on the "Show Sponsor" page for sponsor "First Sponsor"
-    And I fill in "end_date" with "2014-03-30"
-    When I click the "End sponsorship" link for orphan "First Orphan"
+    Given "First Sponsor" started a sponsorship for "First Orphan" on "2011-03-15"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I fill in Sponsorship End Date for "First Orphan" with "2014-03-15"
+    And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully terminated"
     And I should not see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "First Orphan" within "Previously Sponsored Orphans"
     And I should see "03/2014" within "Previously Sponsored Orphans"
+
+  Scenario: Ending a sponsorship without provinding an end date
+    Given "First Sponsor" started a sponsorship for "First Orphan" on "2011-03-15"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I fill in Sponsorship End Date for "First Orphan" with ""
+    And I click the "End sponsorship" link for orphan "First Orphan"
+    Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I should see "End date is invalid"
+
+  Scenario: Ending a sponsorship with an end date prior to the start date
+    Given "First Sponsor" started a sponsorship for "First Orphan" on "2011-03-15"
+    When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I fill in Sponsorship End Date for "First Orphan" with "2008-01-31"
+    And I click the "End sponsorship" link for orphan "First Orphan"
+    Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I should see "End date can't be before the starting date (2011-03-15)"
 
   Scenario: Currently sponsored orphans should not be eligible for any new sponsorships
     Given an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
@@ -108,8 +124,11 @@ Feature:
 
   Scenario: Verifying bug fix for sponsorship inactivation
     Given an inactive sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
-    And an active sponsorship link exists between sponsor "First Sponsor" and orphan "First Orphan"
     When I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
+    And I fill in Sponsorship Start Date for "First Orphan" with "2010-01-31"
+    And I click the "Sponsor this orphan" link for orphan "First Orphan"
+    And I fill in "end_date" with "2014-01-01"
     And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully terminated"
@@ -123,7 +142,8 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "Yes"
     And I should not see the "Link to Orphan" link
-    When I click the "End sponsorship" link for orphan "First Orphan"
+    When I fill in "end_date" with date in distant future for orphan "First Orphan"
+    And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "No"
     And I should see the "Link to Orphan" link

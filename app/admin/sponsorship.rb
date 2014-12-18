@@ -4,11 +4,14 @@ ActiveAdmin.register Sponsorship do
   belongs_to :sponsor
 
   member_action :inactivate, method: :put do
-    @sponsorship = Sponsorship.find(params[:id])
-    @sponsor = Sponsor.find(params[:sponsor_id])
-    @sponsorship.inactivate params[:end_date]
-    flash[:success] = 'Sponsorship link was successfully terminated'
-    redirect_to admin_sponsor_path(@sponsor)
+    sponsorship = Sponsorship.find(params[:id])
+    sponsor = Sponsor.find(params[:sponsor_id])
+    if sponsorship.inactivate params[:end_date]
+      flash[:success] = 'Sponsorship link was successfully terminated'
+    else
+      flash[:warning] = sponsorship.errors.full_messages || 'Sponsorship not terminated'
+    end
+    redirect_to admin_sponsor_path(sponsor)
   end
 
   controller do
