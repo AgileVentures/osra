@@ -13,10 +13,6 @@ class OrphanImporter
     @duplicates_hash = Hash.new([])
   end
 
-  def self.to_orphan(pending_orphan)
-    pending_orphan.to_orphan
-  end
-
   def extract_orphans
     spreadsheet = log_exceptions{ExcelUpload.upload(@file, settings.first_row)}
     orphan_list = import_orphans(spreadsheet) if spreadsheet

@@ -77,19 +77,6 @@ describe OrphanImporter do
 
   end
 
-  describe '#to_orphan' do
-    it 'should return valid orphan objects' do
-      [one_orphan_result, three_orphans_result].each do |result|
-        result.each do |fields|
-          orphan             = OrphanImporter.to_orphan fields
-          orphan.orphan_list = create :orphan_list
-          expect(orphan).to be_valid
-        end
-      end
-    end
-
-  end
-
   describe '#valid?' do
     it 'will return true if there are no import errors' do
       one_orphan_importer.instance_variable_set(:@import_errors, [])

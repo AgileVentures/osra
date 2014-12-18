@@ -85,6 +85,7 @@ describe Admin::PendingOrphanListsController, type: :controller do
 
   describe 'import' do
     let(:orphan) { instance_double Orphan, :save! => true }
+    let(:pending_orphan) { instance_double PendingOrphan, :save! => true }
     let(:orphans_to_import) { [orphan] }
     before do
       allow(orphan_list).to receive :orphan_count=
@@ -92,10 +93,10 @@ describe Admin::PendingOrphanListsController, type: :controller do
       allow(orphan_list).to receive :save!
       allow(orphan_list).to receive :orphan_count
       allow(pending_orphan_list).to receive :destroy
-      allow(pending_orphans).to receive(:each).and_yield(orphan)
+      allow(pending_orphans).to receive(:each).and_yield(pending_orphan)
       allow(orphan_list).to receive :osra_num
       allow(pending_orphan_list).to receive(:pending_orphans).and_return pending_orphans
-      allow(OrphanImporter).to receive(:to_orphan).and_return orphan
+      allow(pending_orphan).to receive(:to_orphan).and_return orphan
     end
 
     context 'when orphan records are valid' do

@@ -53,7 +53,7 @@ ActiveAdmin.register PendingOrphanList do
     orphan_list  = @partner.orphan_lists.create!(spreadsheet:  @pending_orphan_list.spreadsheet,
                                                orphan_count: 0)
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
-      orphan = OrphanImporter.to_orphan pending_orphan
+      orphan = pending_orphan.to_orphan
       orphan_list.orphans << orphan
     end
 
