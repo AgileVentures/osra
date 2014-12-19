@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ActiveSupport::Testing::TimeHelpers
 
 describe Sponsorship, type: :model do
 
@@ -30,6 +31,29 @@ describe Sponsorship, type: :model do
       expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
     end
 
+    describe 'start_date' do
+      before(:all) { travel_to Date.parse "15-12-2011" }
+      after(:all) { travel_back }
+      
+      let (:today) { Date.current }
+      let (:yesterday) { today.yesterday }
+      let (:first_of_next_month) { today.beginning_of_month.next_month }
+      let (:last_day_of_the_month) { first_of_next_month - 1.day }
+      let (:second_of_next_month) { first_of_next_month + 1.day }
+      let (:two_months_ahead) { today + 2.months }
+
+      it { is_expected.to_not allow_value("").for :start_date }
+      it { is_expected.to_not allow_value("42").for :start_date }
+      it { is_expected.to_not allow_value("5-12").for :start_date }
+      it { is_expected.to_not allow_value(second_of_next_month).for :start_date }
+      it { is_expected.to_not allow_value(two_months_ahead).for :start_date }
+
+      it { is_expected.to allow_value(today).for :start_date }
+      it { is_expected.to allow_value(first_of_next_month).for :start_date }
+      it { is_expected.to allow_value(yesterday).for :start_date }
+      it { is_expected.to allow_value(last_day_of_the_month).for :start_date }
+    end 
+
     describe 'disallow concurrent active sponsorships' do
       let(:orphan) { create :orphan }
       let(:sponsor) { create :sponsor }
@@ -48,19 +72,6 @@ describe Sponsorship, type: :model do
   end
 
   describe 'callbacks' do
-    describe 'after_initialize #set_defaults' do
-      describe 'start_date' do
-        it 'defaults start_date to current date' do
-          expect(Sponsorship.new.start_date).to eq Date.current
-        end
-
-        it 'sets non-default start_date if provided' do
-          options = { start_date: Date.yesterday }
-          expect(Sponsorship.new(options).start_date).to eq Date.yesterday
-        end
-      end
-    end
-
     describe 'before_create & after_save' do
       let(:sponsorship) { build :sponsorship }
       before(:each) do

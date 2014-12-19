@@ -14,7 +14,7 @@ end
 Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
   sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
   orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
-  sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id)
+  sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id, start_date: Date.current)
   if inactive
     sponsorship.inactivate
   end
@@ -38,6 +38,13 @@ When(/^I fill in Sponsorship Start Date for "([^"]*)" with "([^"]*)"$/) do |orph
   tr_id = "#orphan_#{orphan.id}"
   within(tr_id) { fill_in :sponsorship_start_date, with: value }
 end
+
+When(/^I fill in Sponsorship Start Date for "([^"]*)" with date in distant future$/) do |orphan_name|
+  date = Date.today + 2.months
+  steps %Q{ When I fill in Sponsorship Start Date for "First Orphan" with "#{date.to_s}" }
+end
+
+
 
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|
   panel_id = "##{panel.parameterize('_')}"
