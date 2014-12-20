@@ -51,6 +51,11 @@ When(/^I fill in Sponsorship Start Date for "([^"]*)" with date in distant futur
   steps %Q{ When I fill in Sponsorship Start Date for "First Orphan" with "#{date.to_s}" }
 end
 
+When(/^I fill in Sponsorship End Date for "([^"]*)" with date in distant future$/) do |orphan_name|
+  date = Date.today + 2.months
+  steps %Q{ When I fill in Sponsorship End Date for "First Orphan" with "#{date.to_s}" }
+end
+
 When(/^I fill in Sponsorship End Date for "([^"]*)" with "([^"]*)"$/) do |orphan_name, value|
   orphan = Orphan.find_by_name orphan_name
   sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first

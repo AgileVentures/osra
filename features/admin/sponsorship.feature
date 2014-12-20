@@ -128,7 +128,7 @@ Feature:
     And I click the "Link to Orphan" button
     And I fill in Sponsorship Start Date for "First Orphan" with "2010-01-31"
     And I click the "Sponsor this orphan" link for orphan "First Orphan"
-    And I fill in "end_date" with "2014-01-01"
+    And I fill in Sponsorship End Date for "First Orphan" with "2014-01-01"
     And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "Sponsorship link was successfully terminated"
@@ -142,7 +142,7 @@ Feature:
     And I am on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "Yes"
     And I should not see the "Link to Orphan" link
-    When I fill in "end_date" with date in distant future for orphan "First Orphan"
+    And I fill in Sponsorship End Date for "First Orphan" with date in distant future
     And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     Then I should see "Request Fulfilled" set to "No"
