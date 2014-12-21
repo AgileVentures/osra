@@ -15,27 +15,35 @@ describe Admin::SponsorshipsController, type: :controller do
   end
 
   describe 'inactivate' do
+    describe 'is successful' do
+      before(:each) do
+        allow(sponsorship).to receive(:inactivate).and_return(sponsorship)
+        put :inactivate, { id: 1, sponsor_id: 1, end_date: "1-1-2017" }
+      end  
 
-    before(:each) do
-      allow(sponsorship).to receive(:inactivate)
-      put :inactivate, { id: 1, sponsor_id: 1 }
+      it 'calls #inactivate on sponsorship' do
+        expect(sponsorship).to have_received :inactivate
+      end
+
+      it 'sets flash[:success] message' do
+        expect(flash[:success]).to eq 'Sponsorship link was successfully terminated'
+      end
+
+      it 'redirects to sponsor show view' do
+        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      end
     end
 
-    it 'assigns instance variables' do
-      expect(assigns :sponsor).to eq sponsor
-      expect(assigns :sponsorship).to eq sponsorship
-    end
+    describe 'is unsuccessful' do
+      before(:each) do
+        allow(sponsorship).to receive(:inactivate).and_return(false)
+        allow(sponsorship).to receive_message_chain(:errors, :full_messages).and_return("Something wrong")
+        put :inactivate, { id: 1, sponsor_id: 1, end_date: "1-1-2010" }
+      end  
 
-    it 'calls #inactivate on sponsorship' do
-      expect(sponsorship).to have_received :inactivate
-    end
-
-    it 'sets flash[:success] message' do
-      expect(flash[:success]).to eq 'Sponsorship link was successfully terminated'
-    end
-
-    it 'redirects to sponsor show view' do
-      expect(response).to redirect_to admin_sponsor_path(sponsor)
+      it 'sets flash[:warning] message' do
+        expect(flash[:warning]).to eq 'Something wrong'
+      end
     end
   end
 
