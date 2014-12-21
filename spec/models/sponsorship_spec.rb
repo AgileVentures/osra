@@ -4,7 +4,7 @@ include ActiveSupport::Testing::TimeHelpers
 describe Sponsorship, type: :model do
 
   it 'should have a valid factory' do
-    expect(FactoryGirl.build(:sponsorship)).to be_valid
+    expect(build_stubbed :sponsorship).to be_valid
   end
 
   it { is_expected.to validate_presence_of :sponsor }
@@ -55,18 +55,17 @@ describe Sponsorship, type: :model do
     end
     
     describe 'end_date' do
-      subject(:sponsorship) { build_stubbed :sponsorship, active: true}
+      subject(:sponsorship) { build_stubbed :sponsorship }
 
       before(:each) do
         sponsorship.active = false
-        @start_date = sponsorship.start_date
-        @after_start_date = @start_date + 1.month
-        @before_start_date = @start_date - 1.month
       end 
+
+      let(:start_date) { sponsorship.start_date }
  
-      it { is_expected.to allow_value(@after_start_date).for :end_date }
-      it { is_expected.to_not allow_value(@before_start_date).for :end_date }
-      it { is_expected.to allow_value(@start_date).for :end_date }
+      it { is_expected.to allow_value(start_date + 1).for :end_date }
+      it { is_expected.to_not allow_value(start_date - 1).for :end_date }
+      it { is_expected.to allow_value(start_date).for :end_date }
  
       ["", "42", "5-12"].each do |bad_date|
         it { is_expected.to_not allow_value(bad_date).for :end_date }
@@ -115,17 +114,17 @@ describe Sponsorship, type: :model do
 
   describe 'methods' do
     context '#inactivate' do
-      example 'sets attribs' do
-        sponsorship = create :sponsorship
+      let(:sponsorship) { create :sponsorship }
+      
+      it 'sets attributes for the sponsorship and it\'s orphan' do
         future_date = sponsorship.start_date + 1.month
         sponsorship.inactivate future_date
         expect(sponsorship.reload.active).to eq false
+        expect(sponsorship.end_date).to eq future_date
         expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Previously Sponsored'
-        expect(sponsorship.end_date).to_not be_nil
       end
 
       it 'returns false if end_date precedes the start_date' do
-        sponsorship = create :sponsorship
         end_date = sponsorship.start_date - 1.month
         expect(sponsorship.inactivate end_date).to eq false
       end

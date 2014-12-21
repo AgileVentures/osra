@@ -9,11 +9,11 @@ class Sponsorship < ActiveRecord::Base
   validates :sponsor, presence: true
   validates :orphan, presence: true
   
-  validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
   validates :start_date, presence: { scope: true, message: "is invalid"}
+  validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
   
-  validate  :end_date_not_before_start_date, on: :update, if: :end_date
   validates :end_date, presence: {scope: true, message: 'is invalid' }, if: '!active', if: 'active_changed?'
+  validate  :end_date_not_before_start_date, on: :update, if: :end_date
 
   validates :orphan, uniqueness: { scope: :active,
                                        message: 'is already actively sponsored' }, if: :active
