@@ -16,8 +16,15 @@ Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orp
   orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
   sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id, start_date: Date.current)
   if inactive
-    sponsorship.inactivate
+    future_date = sponsorship.start_date + 2.months
+    sponsorship.inactivate future_date
   end
+end
+
+Given (/^"([^"]*)" started a sponsorship for "([^"]*)" on "([^"]*)"$/) do |sponsor_name, orphan_name, start_date|
+  sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
+  orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
+  sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id, start_date: start_date)
 end
 
 When(/I click the "Sponsor this orphan" link for orphan "([^"]*)"/) do |orphan_name|
@@ -40,11 +47,29 @@ When(/^I fill in Sponsorship Start Date for "([^"]*)" with "([^"]*)"$/) do |orph
 end
 
 When(/^I fill in Sponsorship Start Date for "([^"]*)" with date in distant future$/) do |orphan_name|
-  date = Date.today + 2.months
+  date = Date.current + 2.months
   steps %Q{ When I fill in Sponsorship Start Date for "First Orphan" with "#{date.to_s}" }
 end
 
+When(/^I fill in Sponsorship End Date for "([^"]*)" with date in distant future$/) do |orphan_name|
+  date = Date.current + 2.months
+  steps %Q{ When I fill in Sponsorship End Date for "First Orphan" with "#{date.to_s}" }
+end
 
+When(/^I fill in Sponsorship End Date for "([^"]*)" with "([^"]*)"$/) do |orphan_name, value|
+  orphan = Orphan.find_by_name orphan_name
+  sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first
+  tr_id = "#sponsorship_#{sponsorship.id}"
+  within(tr_id) { fill_in :end_date, with: value }
+end
+
+When(/^I fill in "([^"]*)" with date in distant future for orphan "([^"]*)"$/) do |field, orphan_name|
+  orphan = Orphan.find_by_name orphan_name
+  sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first
+  tr_id = "#sponsorship_#{sponsorship.id}"
+  future_date = Date.current + 2.months
+  within(tr_id) { fill_in field, with: future_date }
+end
 
 Then(/I should( not)? see "([^"]*)" within "([^"]*)"/) do |negative, orphan_name, panel|
   panel_id = "##{panel.parameterize('_')}"

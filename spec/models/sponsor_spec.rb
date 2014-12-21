@@ -388,8 +388,11 @@ describe Sponsor, type: :model do
       let!(:past_sponsorship) { create :sponsorship,
                                              sponsor: new_sponsor,
                                              orphan: past_orphan }
-
-      before { past_sponsorship.inactivate }
+      
+      before(:each) do 
+        future_date = past_sponsorship.start_date + 1.month                                           
+        past_sponsorship.inactivate future_date 
+      end
 
       it 'returns only orphans that are currently sponsored' do
         expect(new_sponsor.currently_sponsored_orphans).to match_array [current_orphan]
