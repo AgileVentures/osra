@@ -81,9 +81,8 @@ class OrphanImporter
   def process_column(row, col_settings, cell_val)
     log_exceptions(row, col_settings) do
       class_name = col_settings.type.split.first.classify
-      full_class = ("ImportOrphanSettings::" + class_name + \
-        "Column").constantize
-      parsed_value = full_class.new(cell_val, col_settings).parse_value
+      full_class = ("ImportOrphanSettings::#{class_name}Column").constantize
+      full_class.new(cell_val, col_settings).parse_value
     end
   end
 
