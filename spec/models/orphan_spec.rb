@@ -317,9 +317,11 @@ describe Orphan, type: :model do
 
       describe 'methods' do
 
-        specify '#full_name combines name & family_name' do
-          orphan = Orphan.new(name: 'Bart', family_name: 'Simpson')
-          expect(orphan.full_name).to eq 'Bart Simpson'
+        specify '#full_name combines name, father_given_name & family_name' do
+          orphan = Orphan.new(name: 'Bart',
+                              father_given_name: 'Homer',
+                              family_name: 'Simpson')
+          expect(orphan.full_name).to eq 'Bart Homer Simpson'
         end
 
         describe '#update_sponsorship_status!' do
