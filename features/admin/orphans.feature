@@ -16,7 +16,7 @@ Feature:
 
   Scenario: There should be a list of orphans on the admin index page
     Given I am on the "Orphans" page for the "Admin" role
-    Then I should see "Orphan 1 Father 1"
+    Then I should see "Orphan 1 1"
     And I should see the OSRA number for "Orphan 1"
     And I should see "Orphan Status" for "Orphan 1" set to "Active"
     And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
@@ -25,8 +25,8 @@ Feature:
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
     And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
-    And I should see "Orphan 2 Father 2"
- 
+    And I should see "Orphan 2 2"
+
   Scenario: Should not be able to create new orphans directly via the UI
     When I am on the "Orphans" page for the "Admin" role
     Then I should not see the "New Orphan" link
@@ -83,7 +83,7 @@ Feature:
     Then I should be on the "Show Orphan" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
     And I should see the OSRA number for "Orphan N"
-    And I should see "Orphan N Father N"
+    And I should see "Orphan N N"
     And I should see "Date Of Birth" set to "January 01, 2010"
     And I should see "Goes To School" set to "No"
     And I should see "Father Occupation" set to "Another Occupation"
@@ -129,7 +129,7 @@ Feature:
     And I fill in "Date of birth" with "1950-01-01"
     And I click the "Update Orphan" button
     Then I should see "Orphan must be younger than 22 years old."
-    
+
   Scenario: Should return to orphan show page if editing an orphan is cancelled
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button

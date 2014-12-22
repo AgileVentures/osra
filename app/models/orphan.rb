@@ -79,7 +79,7 @@ class Orphan < ActiveRecord::Base
   # end TODO
 
   def full_name
-    [name, father_name].join(' ')
+    "#{name} #{family_name}"
   end
 
   def orphans_dob_within_1yr_of_fathers_death
