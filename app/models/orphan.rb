@@ -13,10 +13,13 @@ class Orphan < ActiveRecord::Base
 
   before_create :generate_osra_num
 
+  # TODO OSRA-308 awaiting client clarification on new uniqueness validation
   validates :name, presence: true,
-            uniqueness: { scope: [:father_name, :mother_name],
+            uniqueness: { scope: [:family_name, :mother_name],
                           message: 'An orphan with this name, mother & father already exists.' }
-  validates :father_name, presence: true
+
+  validates :father_given_name, presence: true
+  validates :family_name, presence: true
 
   # TODO NEEDS REFACTOR
   validates :father_alive, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
@@ -63,6 +66,17 @@ class Orphan < ActiveRecord::Base
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
+
+  # begin TODO remove temporary methods after OSRA-300 finished
+  def father_name
+    "#{father_given_name} #{family_name}"
+  end
+
+  def father_name= (full_name)
+    return false unless full_name
+    self.father_given_name, self.family_name = full_name.split(' ', 2)
+  end
+  # end TODO
 
   def full_name
     [name, father_name].join(' ')

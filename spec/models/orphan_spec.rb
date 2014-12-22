@@ -23,6 +23,7 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :name }
 
+  # TODO OSRA-308 awaiting client clarification on new uniqueness validation
   it 'validates record uniqueness based on name, father_name & mother_name' do
     orphan = create :orphan
     duplicate_orphan = orphan.dup
@@ -31,7 +32,27 @@ describe Orphan, type: :model do
       to include 'An orphan with this name, mother & father already exists.'
   end
 
-  it { is_expected.to validate_presence_of :father_name }
+  # begin TODO remove temporary code after OSRA-300 finished
+  # it { is_expected.to validate_presence_of :father_name }
+  describe 'temporary methods' do
+    let(:orphan) { Orphan.new }
+
+    specify '#father_name composes full name' do
+      orphan.father_given_name = 'Homer Jay'
+      orphan.family_name = 'Simpson'
+      expect(orphan.father_name).to eq 'Homer Jay Simpson'
+    end
+
+    specify '#father_name= decomposes full name into first & last' do
+      orphan.father_name = 'Homer Jay Simpson'
+      expect(orphan.father_given_name).to eq 'Homer'
+      expect(orphan.family_name).to eq 'Jay Simpson'
+    end
+  end
+  # end TODO
+
+  it { is_expected.to validate_presence_of :father_given_name }
+  it { is_expected.to validate_presence_of :family_name }
   it { is_expected.to_not allow_value(nil).for(:father_is_martyr) }
 
   it { is_expected.to validate_presence_of :mother_name }
