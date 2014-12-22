@@ -25,7 +25,6 @@ class OrphanImporter
 
   def add_import_errors(ref, error)
     @import_errors << { ref: ref, error: error }
-    false
   end
 
   def valid?
@@ -95,6 +94,7 @@ class OrphanImporter
         message += " for column #{col_settings.column}--#{col_settings.field}"
       end
       add_import_errors(e.class.name.split('::').last, message)
+      false
     end
   end
 end
