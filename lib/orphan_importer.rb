@@ -23,7 +23,7 @@ class OrphanImporter
     log_exceptions { ExcelUpload.upload(@file, settings.first_row) }
   end
 
-  def add_import_errors(ref, error)
+  def add_import_errors(ref, error = nil)
     @import_errors << { ref: ref, error: error }
   end
 
@@ -41,33 +41,36 @@ class OrphanImporter
   end
 
   def import_orphan(doc, row)
-    fields = Hash.new
-    settings.columns.each do |col_settings|
+    fields = parse_orphan(doc, row)
+    add_to_duplicates(fields, row)
+    check_orphan_validity(fields, row) and add_to_pending_orphans_if_valid(fields)
+  end
+
+  def parse_orphan(doc, row)
+    settings.columns.inject({}) do |memo, col_settings|
       cell_val = doc.cell(row, col_settings.column)
-      fields[col_settings.field] = process_column row, col_settings, cell_val
+      memo[col_settings.field] = process_column row, col_settings, cell_val
+      memo
     end
-    hash_key = fields.select{ |k, _| ['name', 'father_name', 'mother_name'].include? k }
+  end
+
+  def add_to_duplicates(fields, row)
+    hash_key = fields.select{ |k, _| %w[name father_name mother_name].include? k }
     @duplicates_hash[hash_key] += [row]
-    check_orphan_validity(fields, row)
-    add_to_pending_orphans_if_valid(fields)
   end
 
   def check_orphan_validity(fields, row)
-    pending_orphan = PendingOrphan.new fields
-    orphan = pending_orphan.to_orphan
+    orphan = PendingOrphan.new(fields).to_orphan
     orphan.partner = @partner
-    unless orphan.valid?
-      @import_errors << {ref: "invalid orphan attributes for row #{row}",
-                         error: orphan.errors.full_messages}
-    end
+    return true if orphan.valid?
+    add_import_errors(ref: "invalid orphan attributes for row #{row}",
+                      error: orphan.errors.full_messages)
   end
 
   def check_for_duplicates
-    @duplicates_hash.each do |_, v|
-      if v.size > 1
-        @import_errors << { ref: "duplicate entries found on rows #{v.join(', ')}",
-                            error: "Orphan's name, mother's name & father's name are the same." }
-      end
+    @duplicates_hash.values.select { |v| v.size > 1 }.each do |v|
+      add_import_errors "duplicate entries found on rows #{v.join(', ')}",
+                        "Orphan's name, mother's name & father's name are the same."
     end
   end
 
