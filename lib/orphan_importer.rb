@@ -14,10 +14,13 @@ class OrphanImporter
   end
 
   def extract_orphans
-    spreadsheet = log_exceptions{ExcelUpload.upload(@file, settings.first_row)}
-    orphan_list = import_orphans(spreadsheet) if spreadsheet
-    check_for_duplicates
-    return error_or_orphans
+    spreadsheet = upload_spreadsheet
+    import_orphans(spreadsheet) and check_for_duplicates
+    error_or_orphans
+  end
+
+  def upload_spreadsheet
+    log_exceptions { ExcelUpload.upload(@file, settings.first_row) }
   end
 
   def add_import_errors(ref, error)
@@ -34,6 +37,7 @@ class OrphanImporter
   end
 
   def import_orphans(doc)
+    return unless doc
     settings.first_row.upto(doc.last_row){ |row| import_orphan(doc, row) }
   end
 
