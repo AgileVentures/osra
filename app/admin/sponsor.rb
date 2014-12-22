@@ -1,7 +1,21 @@
 ActiveAdmin.register Sponsor do
 
-  preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
+  # In Sponsor show the branch is called Affiliate. Unify?
+  filter :branch, as: :select, collection: proc {Branch.all}
+  filter :organization, as: :select, collection: proc {Organization.all}
+  filter :status, as: :select, collection: proc {Status.all}
+  filter :sponsor_type, as: :select, collection: proc {SponsorType.all}
+  filter :agent, as: :select, collection: proc {User.pluck :user_name}
+  filter :country, as: :select,
+         collection: proc {Sponsor.distinct.pluck :country}
+  filter :city, as: :select, collection: proc {Sponsor.distinct.pluck :city}
+  filter :created_at, as: :date_range
+  filter :updated_at, as: :date_range
+  filter :start_date, as: :date_range
+  filter :request_fulfilled, as: :boolean
+  # what are the number of sponsorships above and number of sponsorphips below?
+
 
   actions :all, except: [:destroy]
 
