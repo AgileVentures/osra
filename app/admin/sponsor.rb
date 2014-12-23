@@ -1,7 +1,6 @@
 ActiveAdmin.register Sponsor do
 
   filter :gender, as: :select, collection: Settings.lookup.gender
-  # In Sponsor show the branch is called Affiliate. Unify?
   filter :branch, as: :select, collection: proc {Branch.all}
   filter :organization, as: :select, collection: proc {Organization.all}
   filter :status, as: :select, collection: proc {Status.all}
