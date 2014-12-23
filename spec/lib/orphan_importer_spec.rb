@@ -205,7 +205,7 @@ describe OrphanImporter do
   end
 
   specify '#log_exceptions logs to import errors if an error is raised' do
-    expect{one_orphan_importer.log_exceptions {raise ArgumnetError} }.
+    expect{one_orphan_importer.log_exceptions {raise ArgumentError} }.
      to change{one_orphan_importer.import_errors.size}.from(0).to(1)
   end
 end
