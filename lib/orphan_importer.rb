@@ -91,9 +91,9 @@ class OrphanImporter
       yield
     rescue => e
       message = e.to_s
-      message += " Error at row #{row}" if row
+      message << " Error at row #{row}" if row
       if col_settings
-        message += " for column #{col_settings.column}--#{col_settings.field}"
+        message << " for column #{col_settings.column}--#{col_settings.field}"
       end
       add_import_errors(e.class.name.split('::').last, message)
       false
