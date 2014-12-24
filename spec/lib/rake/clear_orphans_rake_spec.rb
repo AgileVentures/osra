@@ -14,7 +14,9 @@ describe 'rake db:clear_orphans' do
     2.times { FactoryGirl.create :sponsorship, sponsor: two_sponsor }
     FactoryGirl.create :sponsorship, sponsor: one_sponsor
 
-    Rake::Task['db:clear_orphans'].invoke
+    silence_stream(STDOUT) do
+      Rake::Task['db:clear_orphans'].invoke
+    end
   end
 
   it 'deletes all relevant records and resets request_fulfilled attributes' do
