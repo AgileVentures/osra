@@ -23,13 +23,12 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :name }
 
-  # TODO OSRA-308 awaiting client clarification on new uniqueness validation
-  it 'validates record uniqueness based on name, father_name & mother_name' do
+  it 'validates orphan uniqueness' do
     orphan = create :orphan
     duplicate_orphan = orphan.dup
     expect(duplicate_orphan).not_to be_valid
     expect(duplicate_orphan.errors[:name]).
-      to include 'An orphan with this name, mother & father already exists.'
+      to include 'An orphan with this name, father, mother & family name is already in the database.'
   end
 
   # begin TODO remove temporary code after OSRA-300 finished
@@ -105,7 +104,7 @@ describe Orphan, type: :model do
   describe 'validate father_alive, father_is_martyr, father_date_of_death values' do
     let(:orphan) { create :orphan }
 
-    context 'when father is alive' do 
+    context 'when father is alive' do
       specify 'father_is_martyr must be false & father_date_of_birth must be blank' do
         orphan.father_alive = true
 
@@ -483,14 +482,14 @@ describe Orphan, type: :model do
           expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
                                                             active_unsponsored_high_priority_orphan]
         end
-        
+
         specify '.sort_by_eligibility should sort eligible orphans by sponsored_status, then priority' do
           Orphan.sort_by_eligibility.to_a.each_with_index.map do |orphan, index|
             expect([active_previously_sponsored_high_priority_orphan, active_previously_sponsored_orphan,
                     active_unsponsored_high_priority_orphan, active_unsponsored_orphan][index]).to eq orphan
           end
         end
-        
+
       end
     end
   end
