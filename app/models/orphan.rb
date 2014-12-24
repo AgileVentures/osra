@@ -13,10 +13,9 @@ class Orphan < ActiveRecord::Base
 
   before_create :generate_osra_num
 
-  # TODO OSRA-308 awaiting client clarification on new uniqueness validation
   validates :name, presence: true,
-            uniqueness: { scope: [:family_name, :mother_name],
-                          message: 'An orphan with this name, mother & father already exists.' }
+            uniqueness: { scope: [:family_name, :mother_name, :father_given_name],
+                          message: 'An orphan with this name, father, mother & family name is already in the database.' }
 
   validates :father_given_name, presence: true
   validates :family_name, presence: true
