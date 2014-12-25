@@ -3,7 +3,8 @@ require 'rails_helper'
 describe PendingOrphan, type: :model do
   let(:pending_orphan) {PendingOrphan.new}
   let(:attributes) { {id: nil, pending_orphan_list_id: nil, name: "الطفل",
-    father_name: "الأب", father_is_martyr: true, father_occupation: "مهنة الأب",
+    family_name: "الأ",father_given_name: "ب", father_is_martyr: true,
+    father_occupation: "مهنة الأب",
     father_place_of_death: "مكان الوفاة", father_cause_of_death: "سبب الوفاة",
     father_date_of_death: "2011-03-15", mother_name: "الأم", mother_alive: true,
     date_of_birth: "2009-03-15", gender: "Male", health_status: "معافى",
