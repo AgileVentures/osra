@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141205092742) do
+ActiveRecord::Schema.define(version: 20141224154115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,7 +121,6 @@ ActiveRecord::Schema.define(version: 20141205092742) do
 
   create_table "orphans", force: true do |t|
     t.string   "name"
-    t.string   "father_name"
     t.boolean  "father_is_martyr"
     t.string   "father_occupation"
     t.string   "father_place_of_death"
@@ -154,6 +153,8 @@ ActiveRecord::Schema.define(version: 20141205092742) do
     t.integer  "orphan_list_id"
     t.integer  "province_code"
     t.boolean  "father_alive"
+    t.string   "father_given_name",               null: false
+    t.string   "family_name",                     null: false
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
@@ -194,7 +195,6 @@ ActiveRecord::Schema.define(version: 20141205092742) do
   create_table "pending_orphans", force: true do |t|
     t.integer "pending_orphan_list_id"
     t.string  "name"
-    t.string  "father_name"
     t.string  "father_is_martyr"
     t.string  "father_occupation"
     t.string  "father_place_of_death"
@@ -228,6 +228,8 @@ ActiveRecord::Schema.define(version: 20141205092742) do
     t.string  "sponsored_minor_siblings_count"
     t.string  "comments"
     t.boolean "father_alive"
+    t.string  "father_given_name"
+    t.string  "family_name"
   end
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree

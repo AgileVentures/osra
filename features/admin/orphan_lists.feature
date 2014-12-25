@@ -158,7 +158,7 @@ Feature:
     Then I click the "Upload" button
     Then I click the "Import" button
     Then I go to the "Orphans" page for the "Admin" role
-    Then I should see "الطفل الثاني"
+    Then I should see "الكركيري"
 
   Scenario: I should not be able to import orphan records that fail validations
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"

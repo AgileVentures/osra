@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following orphans exist:
-      | name     | father   | spon_status | death_date | mother   | birth_date | contact   | o_city  | o_province | o_hood  | c_city  | c_province | c_hood  |
-      | Orphan 1 | Father 1 | Sponsored   | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | OHood 1 | CCity 1 | Homs       | CHood 1 |
-      | Orphan 2 | Father 2 | Unsponsored | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | OHood 2 | CCity 2 | Latakia    | CHood 1 |
+      | name     | father_given_name | family_name | spon_status | death_date | mother   | birth_date | contact   | o_city  | o_province | o_hood  | c_city  | c_province | c_hood  |
+      | Orphan 1 | Father 1          | Familia1    | Sponsored   | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | OHood 1 | CCity 1 | Homs       | CHood 1 |
+      | Orphan 2 | Father 2          | Familia2    | Unsponsored | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | OHood 2 | CCity 2 | Latakia    | CHood 1 |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the orphans page on the navbar
@@ -26,7 +26,7 @@ Feature:
     And I should see "Priority" for "Orphan 1" set to "Normal"
     And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
     And I should see "Orphan 2 Father 2"
- 
+
   Scenario: Should not be able to create new orphans directly via the UI
     When I am on the "Orphans" page for the "Admin" role
     Then I should not see the "New Orphan" link
@@ -44,7 +44,8 @@ Feature:
     And I should not be able to change "Orphan Sponsorship Status" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
-    And I fill in "Father name" with "Father N"
+    And I fill in "Father given name" with "Father N"
+    And I fill in "Family name" with "FamiliaN"
     And I uncheck the "Goes to school" checkbox
     And I fill in "Father occupation" with "Another Occupation"
     And I fill in "Father place of death" with "Another Place"
@@ -83,7 +84,7 @@ Feature:
     Then I should be on the "Show Orphan" page for orphan "Orphan N"
     And I should see "Orphan was successfully updated"
     And I should see the OSRA number for "Orphan N"
-    And I should see "Orphan N Father N"
+    And I should see "Orphan N Father N FamiliaN"
     And I should see "Date Of Birth" set to "January 01, 2010"
     And I should see "Goes To School" set to "No"
     And I should see "Father Occupation" set to "Another Occupation"
@@ -129,7 +130,7 @@ Feature:
     And I fill in "Date of birth" with "1950-01-01"
     And I click the "Update Orphan" button
     Then I should see "Orphan must be younger than 22 years old."
-    
+
   Scenario: Should return to orphan show page if editing an orphan is cancelled
     Given I am on the "Show Orphan" page for orphan "Orphan 1"
     And I click the "Edit Orphan" button

@@ -3,7 +3,7 @@ ActiveAdmin.register Orphan do
   actions :all, except: [:new, :destroy]
   filter :osra_num, as: :numeric, label: 'OSRA No.'
   filter :name
-  filter :father_name
+  filter :father_given_name, label: 'Father Name'
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :date_of_birth, as: :date_range
   filter :original_address_province_name, as: :select, label: 'Original address province',
@@ -16,7 +16,7 @@ ActiveAdmin.register Orphan do
       sponsor if sponsor.eligible_for_sponsorship?
     end
   end
-  
+
   new_sponsorship= Proc.new do |params|
     prospective_sponsor[params] && (params[:scope]== 'eligible_for_sponsorship')
   end
@@ -36,8 +36,8 @@ ActiveAdmin.register Orphan do
   scope :all, :deep_joins, default: true, show_count: true
   scope :eligible_for_sponsorship, :sort_by_eligibility, default: false, show_count: true
 
-  permit_params :name, :father_name, :father_is_martyr, :father_occupation,
-                :father_place_of_death, :father_cause_of_death,
+  permit_params :name, :father_name, :father_given_name, :family_name, :father_is_martyr,
+                :father_occupation, :father_place_of_death, :father_cause_of_death,
                 :father_date_of_death, :mother_name, :mother_alive, :father_alive,
                 :date_of_birth, :gender, :health_status, :schooling_status,
                 :goes_to_school, :guardian_name, :guardian_relationship,
@@ -65,8 +65,9 @@ ActiveAdmin.register Orphan do
       f.input :priority, as: :select,
               collection: %w(Normal High), include_blank: false
     end
-    f.inputs 'Parents Details' do
-      f.input :father_name
+    f.inputs "Parents' Details" do
+      f.input :father_given_name
+      f.input :family_name
       f.input :father_alive
       f.input :mother_name
       f.input :mother_alive
@@ -117,6 +118,7 @@ ActiveAdmin.register Orphan do
     panel 'Orphan Details' do
       attributes_table_for orphan do
         row :osra_num
+        row :name
         row :date_of_birth
         row :gender
         row :health_status
@@ -137,9 +139,10 @@ ActiveAdmin.register Orphan do
       end
     end
 
-    panel 'Parents Details' do
+    panel "Parents' Details" do
       attributes_table_for orphan do
-        row :father_name
+        row :father_given_name
+        row :family_name
         row :father_alive do
           orphan.father_alive ? 'Yes' : 'No'
         end
@@ -203,11 +206,11 @@ ActiveAdmin.register Orphan do
 
   index do
     class << self # instance_of ActiveAdmin::Views::IndexAsTable
-    
+
       def orphan_index
         orphan_display_partial
       end
-      
+
       def new_sponsorship_form_for sponsor
         form_submit_route= admin_sponsor_sponsorships_path(sponsor_id: sponsor.id).to_s
         panel 'Sponsor', id: 'new_sponsor_panel' do
@@ -215,9 +218,9 @@ ActiveAdmin.register Orphan do
           para sponsor.additional_info
           para link_to 'Return to Sponsor page', admin_sponsor_path(sponsor)
         end
-        
+
         orphan_display_partial
-        
+
         column '' do |orphan|
           text_node ('<form action="' + form_submit_route + '" method="post">').html_safe
             input '', name: :sponsor_this_orphan, type: :submit, value: 'Sponsor this orphan'
@@ -230,15 +233,17 @@ ActiveAdmin.register Orphan do
           text_node '</form>'.html_safe
         end
       end
-      
+
       def orphan_display_partial
         column 'OSRA No.', sortable: :osra_num do |orphan|
           link_to orphan.osra_num, admin_orphan_path(orphan)
         end
-        column :full_name, sortable: :name do |orphan|
+        column :full_name, sortable: :name do |orphan| #TODO: AA removed support for multiple-column-sort, sortable: [:name, :family_name]
           link_to orphan.full_name, admin_orphan_path(orphan)
         end
-        column :father_name, sortable: :father_name
+        column :father_name, sortable: :father_given_name do |orphan| #TODO: AA removed support for multiple-column-sort sortable: [:father_given_name, :family_name]
+          orphan.father_name
+        end
         column :date_of_birth, sortable: :date_of_birth
         column :gender, sortable: :gender
         column :original_province, sortable: 'addresses.province_id' do |orphan|
@@ -258,7 +263,7 @@ ActiveAdmin.register Orphan do
           orphan.orphan_sponsorship_status.name
         end
       end
-      
+
     end
 
     unless new_sponsorship[params]
@@ -266,7 +271,7 @@ ActiveAdmin.register Orphan do
     else
       new_sponsorship_form_for prospective_sponsor[params]
     end
-    
+
   end
 
 end
