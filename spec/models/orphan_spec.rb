@@ -31,24 +31,6 @@ describe Orphan, type: :model do
       to include 'An orphan with this name, father, mother & family name is already in the database.'
   end
 
-  # begin TODO remove temporary code after OSRA-300 finished
-  # it { is_expected.to validate_presence_of :father_name }
-  describe 'temporary methods' do
-    let(:orphan) { Orphan.new }
-
-    specify '#father_name composes full name' do
-      orphan.father_given_name = 'Homer Jay'
-      orphan.family_name = 'Simpson'
-      expect(orphan.father_name).to eq 'Homer Jay Simpson'
-    end
-
-    specify '#father_name= decomposes full name into first & last' do
-      orphan.father_name = 'Homer Jay Simpson'
-      expect(orphan.father_given_name).to eq 'Homer'
-      expect(orphan.family_name).to eq 'Jay Simpson'
-    end
-  end
-  # end TODO
 
   it { is_expected.to validate_presence_of :father_given_name }
   it { is_expected.to validate_presence_of :family_name }
@@ -316,11 +298,20 @@ describe Orphan, type: :model do
 
       describe 'methods' do
 
-        specify '#full_name combines name, father_given_name & family_name' do
-          orphan = Orphan.new(name: 'Bart',
-                              father_given_name: 'Homer',
-                              family_name: 'Simpson')
-          expect(orphan.full_name).to eq 'Bart Homer Simpson'
+        describe 'name methods' do
+          let(:orphan) do
+            Orphan.new(name: 'Bart',
+                       father_given_name: 'Homer',
+                       family_name: 'Simpson')
+          end
+
+          specify '#father_name combines father_given_name & family_name' do
+            expect(orphan.father_name).to eq 'Homer Simpson'
+          end
+
+          specify '#full_name combines name, father_given_name & family_name' do
+            expect(orphan.full_name).to eq 'Bart Homer Simpson'
+          end
         end
 
         describe '#update_sponsorship_status!' do

@@ -66,16 +66,9 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
-  # begin TODO remove temporary methods after OSRA-300 finished
   def father_name
     "#{father_given_name} #{family_name}"
   end
-
-  def father_name= (full_name)
-    return false unless full_name
-    self.father_given_name, self.family_name = full_name.split(' ', 2)
-  end
-  # end TODO
 
   def full_name
     "#{name} #{father_given_name} #{family_name}"
