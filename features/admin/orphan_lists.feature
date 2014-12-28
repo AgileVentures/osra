@@ -160,6 +160,13 @@ Feature:
     Then I go to the "Orphans" page for the "Admin" role
     Then I should see "الكركيري"
 
+  Scenario: Contact numbers should not be stored as floats
+    Given I have already uploaded the "three_orphans_xlsx.xlsx" file for partner "Partner1"
+    When I go to the "Orphans" page for the "Admin" role
+    And I click the "1300001" link
+    Then I should see "963943235556"
+    And I should not see "963943235556.0"
+
   Scenario: I should not be able to import orphan records that fail validations
     Given I have already uploaded the "one_orphan_xlsx.xlsx" file for partner "Partner1"
     And I try to upload the "one_orphan_xlsx.xlsx" file for partner "Partner1" again
