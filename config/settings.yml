@@ -178,11 +178,11 @@ import:
     - field: contact_number
       column: AE
       mandatory: true
-      type: String
+      type: NotAFloat
     - field: alt_contact_number
       column: AF
       mandatory: false
-      type: String
+      type: NotAFloat
     - field: sponsored_by_another_org
       column: AG
       mandatory: true

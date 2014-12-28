@@ -90,6 +90,13 @@ class ImportOrphanSettings
   end
   class ProvinceColumn < ImportOrphanSettings::DataColumn
   end
+  class NotAFloatColumn < ImportOrphanSettings::DataColumn
+    def to_val
+      raise_error_if_mandatory_and_blank?
+      return if @column_value.blank?
+      @column_value.to_s.gsub(/\A(\d+)\.0\z/, '\1')
+    end
+  end
 
   def self.settings
     Settings.import
