@@ -385,7 +385,7 @@ describe Orphan, type: :model do
 
             describe 'for orphans with sponsorships' do
               let(:orphan) { on_hold_sponsored_orphan }
-              let(:sponsorships) { ['not empty'] }
+              let(:sponsorships) { double(:empty? => false) }
 
               it 'sets sponsorship_status to Previously Sponsored when status -> Active for previously sponsored orphan' do
                 expect(orphan).to receive(:sponsorships).at_least(:once).and_return sponsorships
