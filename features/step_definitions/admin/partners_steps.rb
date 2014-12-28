@@ -12,6 +12,17 @@ Given(/^the following partners exist:$/) do |table|
   end
 end
 
+Given(/^"([^"]*)" has the following orphan lists?: (.*?)$/) do |partner_name, orphan_list_files|
+  orphan_list_files.gsub('"','').split(', ').each do |file|
+    steps %Q{
+      Given I visit the new orphan list page for partner "#{partner_name}"
+      And I upload the "#{file}" file
+      Then I click the "Upload" button
+      Then I click the "Import" button
+    }
+  end
+end
+
 When(/^I (?:go to|am on) the "([^"]*)" page for partner "([^"]*)"$/) do |page, partner_name|
   partner = Partner.find_by name: partner_name
   visit path_to_admin_role(page, partner.id)

@@ -2,14 +2,19 @@ class Sponsorship < ActiveRecord::Base
 
   include Initializer
 
-  after_initialize :default_start_date_to_today
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
   after_save :update_sponsor_request_fulfilled
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
-  validates :start_date, date_not_in_future: true
+  
+  validates :start_date, presence: { scope: true, message: "is invalid"}
+  validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
+  
+  validates :end_date, presence: {scope: true, message: 'is invalid' }, if: '!active', if: 'active_changed?'
+  validate  :end_date_not_before_start_date, on: :update, if: :end_date
+
   validates :orphan, uniqueness: { scope: :active,
                                        message: 'is already actively sponsored' }, if: :active
   validate :sponsor_is_eligible_for_new_sponsorship, on: :create
@@ -21,41 +26,55 @@ class Sponsorship < ActiveRecord::Base
   delegate :name, :additional_info, :id, to: :sponsor, prefix: true
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
-  def inactivate
-    update_attributes!(active: false)
-    set_orphan_status_to_previously_sponsored
+  def inactivate(end_date)
+    updated = update_attributes(active: false, end_date: end_date)
+    set_orphan_status_to_previously_sponsored if updated
+    updated  
   end
 
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
-  private
-
-    def set_orphan_status_to_sponsored
-      self.orphan.update_sponsorship_status! 'Sponsored'
+private
+  
+  def start_date_no_later_than_1st_of_next_month
+    first_of_next_month = Date.current.beginning_of_month.next_month
+    if (self.start_date > first_of_next_month)
+      errors[:start_date] << "can not be later than the first of next month"
     end
+  end
 
-    def update_sponsor_request_fulfilled
-      self.sponsor.update_request_fulfilled!
+  def end_date_not_before_start_date
+    unless end_date >= start_date
+      errors[:end_date] << "can't be before the starting date (#{self.start_date})"
     end
+  end
 
-    def set_orphan_status_to_previously_sponsored
-      self.orphan.update_sponsorship_status! 'Previously Sponsored'
-    end
+  def set_orphan_status_to_sponsored
+    self.orphan.update_sponsorship_status! 'Sponsored'
+  end
 
-    def set_active_to_true
-      self.active = true
-    end
+  def update_sponsor_request_fulfilled
+    self.sponsor.update_request_fulfilled!
+  end
 
-    def sponsor_is_eligible_for_new_sponsorship
-      unless sponsor && sponsor.eligible_for_sponsorship?
-        errors[:sponsor] << 'is ineligible for a new sponsorship'
-      end
-    end
+  def set_orphan_status_to_previously_sponsored
+    self.orphan.update_sponsorship_status! 'Previously Sponsored'
+  end
 
-    def orphan_is_eligible_for_new_sponsorship
-      unless orphan && orphan.eligible_for_sponsorship?
-        errors[:orphan] << 'is ineligible for a new sponsorship'
-      end
+  def set_active_to_true
+    self.active = true
+  end
+
+  def sponsor_is_eligible_for_new_sponsorship
+    unless sponsor && sponsor.eligible_for_sponsorship?
+      errors[:sponsor] << 'is ineligible for a new sponsorship'
     end
+  end
+
+  def orphan_is_eligible_for_new_sponsorship
+    unless orphan && orphan.eligible_for_sponsorship?
+      errors[:orphan] << 'is ineligible for a new sponsorship'
+    end
+  end
 end

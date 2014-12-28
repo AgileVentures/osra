@@ -1,18 +1,18 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.1.5'
 
-gem 'rails', '~> 4.1.6'
+gem 'rails', '~> 4.1.8'
 
 gem 'pg'
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 5.0.0'
 gem 'coffee-rails', '~> 4.1.0'
-gem 'uglifier', '>= 1.3.0' # compressor for JavaScript assets
+gem 'uglifier', '>= 2.6.0' # compressor for JavaScript assets
 gem 'activeadmin', github: 'activeadmin'
 gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
 gem 'jquery-rails'
-gem 'paperclip'
+gem 'paperclip', '~> 4.2.1'
 gem 'aws-sdk'
 gem 'coveralls', require: false
 gem 'country_select', github: 'stefanpenner/country_select'
@@ -28,7 +28,6 @@ group :test do
   gem 'headless' # gem that allows capybara-webkit to run without calling xvfb directly
   gem 'database_cleaner'
   gem 'shoulda-matchers', require: false # one-line tests for common Rails validations
-  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :development, :test do

@@ -10,7 +10,8 @@ Given(/^the following orphans exist:$/) do |table|
                                      neighborhood: hash[:c_hood])
 
     orphan = Orphan.new(name: hash[:name],
-                        father_name: hash[:father],
+                        father_given_name: hash[:father_given_name],
+                        family_name: hash[:family_name],
                         orphan_sponsorship_status: sponsorship_status,
                         father_date_of_death: hash[:death_date], mother_name: hash[:mother],
                         date_of_birth: hash[:birth_date],

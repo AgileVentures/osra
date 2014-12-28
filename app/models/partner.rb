@@ -1,6 +1,8 @@
 class Partner < ActiveRecord::Base
   include Initializer
 
+  attr_readonly :province_id
+
   after_initialize :default_status_to_active, :default_start_date_to_today
   before_create :generate_osra_num
 

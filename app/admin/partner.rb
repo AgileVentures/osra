@@ -2,7 +2,7 @@ ActiveAdmin.register Partner do
 
   actions :all, except: [:destroy]
 
-  index do 
+  index do
     column :osra_num, sortable: :osra_num do |partner|
       link_to partner.osra_num, admin_partner_path(partner)
     end
@@ -10,11 +10,11 @@ ActiveAdmin.register Partner do
       link_to partner.name, admin_partner_path(partner)
     end
     column :status, sortable: :status_id
-    column :start_date, sortable: :start_date 
+    column :start_date, sortable: :start_date
     column :province, sortable: :province_id
   end
 
-  show do |partner|
+  show title: :name do |partner|
     attributes_table do
       row :osra_num
       row :status
@@ -23,7 +23,17 @@ ActiveAdmin.register Partner do
       row :region
       row :contact_details
       row 'Orphan Lists' do
-        link_to("Click here for all orphan lists", admin_partner_orphan_lists_path(partner))
+        if partner.orphan_lists.empty?
+          "none"
+        else
+          link_to("All orphan lists", admin_partner_orphan_lists_path(partner)) 
+        end
+      end
+      row :created_at do
+        format_date(partner.created_at)
+      end
+      row :updated_at do
+        format_date(partner.updated_at)
       end
     end
   end
@@ -50,9 +60,13 @@ ActiveAdmin.register Partner do
     end
   end
 
-  action_item :only => :show do
+  action_item :upload_orphan_list, only: :show do
     link_to('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(partner)) if partner.active?
   end
 
-  permit_params :name, :region, :contact_details, :province_id, :status_id, :start_date
+  permit_params do
+    params = [:name, :region, :contact_details, :province_id, :status_id, :start_date]
+    params.delete(:province_id) if action_name == "update"
+    params
+  end
 end
