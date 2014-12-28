@@ -135,6 +135,27 @@ describe OrphanImporter do
       expect(one_orphan_importer.send(:process_column, record,
                                       column, "#{date}")).to eq date
     end
+
+    describe 'NotAFloat' do
+      before(:each) do
+        expect(column).to receive(:mandatory).and_return('false').at_least(:once)
+        expect(column).to receive(:type).and_return('NotAFloat').at_least(:once)
+      end
+
+      it 'will strip trailing .0 from values that should be integers' do
+        [1.0, 123.0, 1234567890.0].each do |float|
+          expect(one_orphan_importer.send(:process_column, record,
+                                          column, float)).to eq float.to_i.to_s
+        end
+      end
+
+      it 'will let strings pass through unaltered' do
+        %w{1.01 1.10 a1.0 a.1.0}.each do |string|
+          expect(one_orphan_importer.send(:process_column, record,
+                                          column, string)).to eq string
+        end
+      end
+    end
   end
 
   describe '#error_or_orphans' do
