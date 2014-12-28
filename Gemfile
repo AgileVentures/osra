@@ -27,6 +27,8 @@ gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
 gem 'will_paginate', '~> 3.0.7'
+#gem 'kaminari'
+gem 'mocha', '~> 1.1.0' 
  
 
 group :test do

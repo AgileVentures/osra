@@ -13,9 +13,9 @@ describe PartnersController, type: :controller do
     end
 
     it "sends a paginated array" do
-      #allow(Partner).to receive(:paginate).with(page: '2', per_page: '3').and_return('foo', 'bar', 'now')
-      #get :index, page: 2, per_page: 3
-     # expect(assigns(:partners)).to match_array ('foo', 'bar', 'now')
+      allow(Partner).to receive(:paginate).with(page: '2', per_page: '3').and_return(['foo', 'bar', 'now'])
+      get :index, page: 2, per_page: 3
+      expect(assigns(:partners)).to match_array (['foo', 'bar', 'now'])
     end
 
     it "populates an array of partners" do
