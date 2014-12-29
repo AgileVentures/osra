@@ -1,6 +1,8 @@
-class Hq::PartnersController < HqController
+class Hq::PartnersController < ApplicationController
+  before_filter :authenticate_admin_user!
+  layout 'application'
+
   def index
     @partners= Partner.all
-    #render 'partners/index'
   end
 end
