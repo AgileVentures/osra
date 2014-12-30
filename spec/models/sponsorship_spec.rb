@@ -95,6 +95,7 @@ describe Sponsorship, type: :model do
       let(:sponsorship) { build :sponsorship }
       before(:each) do
         allow(sponsorship.sponsor).to receive :update_request_fulfilled!
+        allow(sponsorship.sponsor).to receive :update_active_sponsorship_count!
         sponsorship.save!
       end
 
@@ -108,6 +109,10 @@ describe Sponsorship, type: :model do
 
       it 'calls Sponsor#set_request_fulfilled' do
         expect(sponsorship.sponsor).to have_received(:update_request_fulfilled!)
+      end
+
+      it 'calls Sponsor#update_active_sponsorship_count' do
+        expect(sponsorship.sponsor).to have_received(:update_active_sponsorship_count!)
       end
     end
   end

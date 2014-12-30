@@ -376,6 +376,24 @@ describe Sponsor, type: :model do
             change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
         end
       end
+
+      describe '#update_active_sponsorship_count!' do
+        let(:new_sponsor) { build_stubbed :sponsor }
+        let(:current_orphan) { create :orphan }
+        let(:sponsorship) { create :sponsorship,
+                                     sponsor: new_sponsor,
+                                     orphan: current_orphan }
+        
+        it 'should add 1 to active sponsorship count if a sponsorship is created' do
+          expect{ sponsorship }.to change {new_sponsor.active_sponsorship_count}.by(1)
+        end
+
+        it 'should subtract 1 from active sponsorship count if a sponsorship is ended' do
+          sponsorship
+          expect{ sponsorship.inactivate (Date.current + 1.month) }.to change {new_sponsor.active_sponsorship_count}.by(-1)
+        end
+      end
+
     end
 
     describe '#currently_sponsored_orphans' do

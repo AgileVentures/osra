@@ -13,7 +13,7 @@ ActiveAdmin.register Sponsor do
   filter :updated_at, as: :date_range
   filter :start_date, as: :date_range
   filter :request_fulfilled, as: :boolean
-  # what are the number of sponsorships above and number of sponsorphips below?
+  filter :active_sponsorship_count, label: "Number of active sponsorships", as: :numeric
 
 
   actions :all, except: [:destroy]

@@ -52,6 +52,11 @@ class Sponsor < ActiveRecord::Base
     update!(request_fulfilled: request_is_fulfilled?)
   end
 
+  def update_active_sponsorship_count!
+    number_of_active_sponsorships = self.sponsorships.where(active: true).length
+    update!(active_sponsorship_count: number_of_active_sponsorships)
+  end
+
   def currently_sponsored_orphans
     sponsorships.all_active.map(&:orphan)
   end
