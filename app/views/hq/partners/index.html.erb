@@ -26,10 +26,10 @@
           <%- @partners.each do |partner| %>
             <tr>
               <td>
-                <%= link_to partner.osra_num, admin_partner_path(partner) %>
+                <%= link_to partner.osra_num, hq_partner_path(partner) %>
               </td>
               <td>
-                <%= link_to partner.name, admin_partner_path(partner) %>
+                <%= link_to partner.name, hq_partner_path(partner) %>
               </td>
               <td>
                 <%= partner.status.name %>

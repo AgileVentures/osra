@@ -1,8 +1,7 @@
 Osra::Application.routes.draw do
 
-  # as: link_to_helper_prefix, path: URI_prefix, module: controller namespace
-  scope as: :hq, path: :hq, module: :hq do
-    resources :partners, except: [:create, :new, :show, :edit, :update, :destroy]
+  namespace :hq do
+    resources :partners, except: [:destroy]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
