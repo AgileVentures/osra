@@ -31,7 +31,8 @@ class OrphanImporter
   def import_orphan(doc, row)
     fields = parse_orphan(doc, row)
     add_to_duplicates(fields, row)
-    check_orphan_validity(fields, row) and add_to_pending_orphans_if_valid(fields)
+    check_orphan_validity(fields, row)
+    add_to_pending_orphans_if_valid(fields)
   end
 
   def parse_orphan(doc, row)
@@ -67,9 +68,10 @@ class OrphanImporter
   def check_orphan_validity(fields, row)
     orphan = PendingOrphan.new(fields).to_orphan
     orphan.partner = @partner
-    return true if orphan.valid?
-    add_import_errors(ref: "invalid orphan attributes for row #{row}",
-                      error: orphan.errors.full_messages)
+    unless orphan.valid?
+      add_import_errors(ref: "invalid orphan attributes for row #{row}",
+                        error: orphan.errors.full_messages)
+    end
   end
 
   def error_or_orphans
