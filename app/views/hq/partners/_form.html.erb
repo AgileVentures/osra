@@ -1,0 +1,32 @@
+<%= form_for [:hq, @partner] do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :region %>
+    <%= f.text_field :region, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :contact_details %>
+    <%= f.text_field :contact_details, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :province_id %>
+    <%= f.collection_select :province_id,
+     @provinces, :id, :name , {},  class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :status_id %>
+    <%= f.collection_select :status_id,
+      @statuses, :id, :name, {}, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :start_date %>
+    <%= f.text_field :start_date, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: "btn btn-default" %>
+  </div>
+<% end %>
+
