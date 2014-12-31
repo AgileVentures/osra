@@ -37,7 +37,7 @@ ActiveAdmin.register PendingOrphanList do
     end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
     importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'], @partner)
-    spreadsheet_all_ok, pending_orphans, import_errors = importer.extract_orphans  # with this ruby construct the 2 entry
+    spreadsheet_all_ok, pending_orphans, import_errors = importer.extract_orphans  # with this ruby construct the 3 entry
     # array returned is split into the 3 variables spreadsheet_all_ok, pending_orphans and import_errors
     if spreadsheet_all_ok
       @pending_orphan_list.pending_orphans = pending_orphans

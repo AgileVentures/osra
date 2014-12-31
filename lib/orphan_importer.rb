@@ -1,32 +1,7 @@
 require_relative 'excel_upload'
 
-class String 
-#
-# These are utility methods added to convert between the string held in a spreadsheet cell
-# and the format required in the orphan record (eg to convert from Arabic)
-# In general, these routines don't expect a blank to be passed, 
-# and a nil being returned indicates that it didn't match what was expected (ie error)
-#
-# This extension of String should be changed to use a Ruby Refinement, once they're a bit more stable.
-#
-
-  def cell_to_date
-    Date.parse(self) rescue nil
-  end
-
-
-
-end
-
-class Float
-  def cell_to_int
-    self.to_s.to_i rescue nil
-  end
-end
-
 class OrphanImporter
-  class ImportConfigurationError < StandardError
-  end
+
 #
 # This is the class which handles the importing of orphan rows from the spreadsheet. 
 # The rows are read in from the spreadsheet using the roo gem, and the information in each spreadsheet cell
@@ -44,54 +19,55 @@ class OrphanImporter
 #      duplicate entries in the rows read in from the spreadsheet.
 # Steps 1 to 3 above are governed through the @@mapper class variable below.
 # If any errors are identified then details of these are added to the @import_errors array. 
-# The output from the extract_orphans method below is:
+# The output from the extract_orphans method below is an array of 3 entries:
 #   - a boolean specifying if the spreadsheet was clean or not (ie no validation errors found)
-#   - an array of the orphan records
-# The instance variable @import_errors is also set so that the view can display these
+#   - an array of the (pending) orphan records
+#   - an array of the import errors identified
 #  
   @@yn_to_bool = { 'y' => true, 'Y' => true, 'n' => false, 'N' => false }
-  @@father_alive_to_bool = { 'موجود' => true, 'متوفى' => false }
-  @@mother_alive_to_bool = { 'موجودة' => true, 'متوفاة' => false }
+  @@male_arabic_yn_to_bool = { 'موجود' => true, 'متوفى' => false, 'y' => true, 'Y' => true, 'n' => false, 'N' => false }
+  @@female_arabic_yn_to_bool = { 'موجودة' => true, 'متوفاة' => false, 'y' => true, 'Y' => true, 'n' => false, 'N' => false }
   @@gender = { 'ذكر' => 'Male', 'أنثى' => 'Female'}
-  @@province_to_code = { 'دمشق و ريف دمشق' => 11, 'حلب' => 12, 'حمص' => 13, 'حماة' => 14, 'اللاذقية' => 15,
+  @@province_to_code = { 'دمشق وريف دمشق' => 11, 'حلب' => 12, 'حمص' => 13, 'حماة' => 14, 'اللاذقية' => 15,
     'دير الزور' => 16, 'درعا' => 17, 'إدلب' => 18, 'الرقة' => 19, 'الحسكة' => 20, 'طرطوس' => 21,
-    'السويداء' => 22, 'القنيطرة' => 23, 'خارج سوريا' => 29 }
+    'السويداء' => 22, 'القنيطرة' => 23, 'خارج سوريا' => 29 } 
   @@mapper = 
     [{ orphan_attribute: :name,                 spreadsheet_column: 'B',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :father_name,          spreadsheet_column: 'C',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :father_is_martyr,     spreadsheet_column: 'D',  expected_type: :string,  converter: @@yn_to_bool }, 
-     { orphan_attribute: :father_occupation,    spreadsheet_column: 'E',  expected_type: :string,  converter: nil },
-     { orphan_attribute: :father_alive,         spreadsheet_column: 'F',  expected_type: :string,  converter: @@father_alive_to_bool }, 
-     { orphan_attribute: :father_place_of_death,spreadsheet_column: 'G',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :father_cause_of_death,spreadsheet_column: 'H',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :father_date_of_death, spreadsheet_column: 'I',  expected_type: :date,    converter: nil }, 
-     { orphan_attribute: :mother_name,          spreadsheet_column: 'J',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :mother_alive,         spreadsheet_column: 'K',  expected_type: :string,  converter: @@mother_alive_to_bool }, 
-     { orphan_attribute: :date_of_birth,        spreadsheet_column: 'L',  expected_type: :date,    converter: nil }, 
-     { orphan_attribute: :gender,               spreadsheet_column: 'M',  expected_type: :string,  converter: @@gender }, 
-     { orphan_attribute: :health_status,        spreadsheet_column: 'N',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :schooling_status,     spreadsheet_column: 'O',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :goes_to_school,       spreadsheet_column: 'P',  expected_type: :string,  converter: @@yn_to_bool }, 
-     { orphan_attribute: :guardian_name,        spreadsheet_column: 'Q',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :guardian_relationship,spreadsheet_column: 'R',  expected_type: :string,  converter: nil }, 
-     { orphan_attribute: :guardian_id_num,      spreadsheet_column: 'S',  expected_type: :float,   converter: nil }, 
-     { orphan_attribute: :original_address_province,spreadsheet_column: 'T',  expected_type: :string,     converter: @@province_to_code }, 
-     { orphan_attribute: :original_address_city,spreadsheet_column: 'U',      expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :original_address_neighborhood,spreadsheet_column: 'V',  expected_type: :string, converter: nil }, 
-     { orphan_attribute: :original_address_street,spreadsheet_column: 'W',    expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :original_address_details,spreadsheet_column: 'X',   expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :current_address_province,spreadsheet_column: 'Y',   expected_type: :string,     converter: @@province_to_code }, 
-     { orphan_attribute: :current_address_city, spreadsheet_column: 'Z',      expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :current_address_neighborhood,spreadsheet_column: 'AA',  expected_type: :string, converter: nil }, 
-     { orphan_attribute: :current_address_street,spreadsheet_column: 'AB',    expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :current_address_details,spreadsheet_column: 'AC',   expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :contact_number,       spreadsheet_column: 'AD',     expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :alt_contact_number,   spreadsheet_column: 'AE',     expected_type: :string,     converter: nil }, 
-     { orphan_attribute: :sponsored_by_another_org,spreadsheet_column: 'AF',  expected_type: :string,     converter: @@yn_to_bool }, 
-     { orphan_attribute: :another_org_sponsorship_details,spreadsheet_column: 'AG', expected_type: :string, converter: nil }, 
-     { orphan_attribute: :minor_siblings_count, spreadsheet_column: 'AH',     expected_type: :float,      converter: nil }, 
-     { orphan_attribute: :sponsored_minor_siblings_count,spreadsheet_column: 'AI', expected_type: :float, converter: nil }, 
-     { orphan_attribute: :comments,             spreadsheet_column: 'AM',     expected_type: :string,     converter: nil }]
+     { orphan_attribute: :father_given_name,    spreadsheet_column: 'C',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :family_name,          spreadsheet_column: 'D',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :father_is_martyr,     spreadsheet_column: 'E',  expected_type: :string,  converter: @@yn_to_bool }, 
+     { orphan_attribute: :father_occupation,    spreadsheet_column: 'F',  expected_type: :string,  converter: nil },
+     { orphan_attribute: :father_alive,         spreadsheet_column: 'G',  expected_type: :string,  converter: @@male_arabic_yn_to_bool }, 
+     { orphan_attribute: :father_place_of_death,spreadsheet_column: 'H',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :father_cause_of_death,spreadsheet_column: 'I',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :father_date_of_death, spreadsheet_column: 'J',  expected_type: :date,    converter: nil }, 
+     { orphan_attribute: :mother_name,          spreadsheet_column: 'K',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :mother_alive,         spreadsheet_column: 'L',  expected_type: :string,  converter: @@female_arabic_yn_to_bool }, 
+     { orphan_attribute: :date_of_birth,        spreadsheet_column: 'M',  expected_type: :date,    converter: nil }, 
+     { orphan_attribute: :gender,               spreadsheet_column: 'N',  expected_type: :string,  converter: @@gender }, 
+     { orphan_attribute: :health_status,        spreadsheet_column: 'O',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :schooling_status,     spreadsheet_column: 'P',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :goes_to_school,       spreadsheet_column: 'Q',  expected_type: :string,  converter: @@yn_to_bool }, 
+     { orphan_attribute: :guardian_name,        spreadsheet_column: 'R',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :guardian_relationship,spreadsheet_column: 'S',  expected_type: :string,  converter: nil }, 
+     { orphan_attribute: :guardian_id_num,      spreadsheet_column: 'T',  expected_type: :float,   converter: nil }, 
+     { orphan_attribute: :original_address_province,spreadsheet_column: 'U',  expected_type: :string,     converter: @@province_to_code }, 
+     { orphan_attribute: :original_address_city,spreadsheet_column: 'V',      expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :original_address_neighborhood,spreadsheet_column: 'W',  expected_type: :string, converter: nil }, 
+     { orphan_attribute: :original_address_street,spreadsheet_column: 'X',    expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :original_address_details,spreadsheet_column: 'Y',   expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :current_address_province,spreadsheet_column: 'Z',   expected_type: :string,     converter: @@province_to_code }, 
+     { orphan_attribute: :current_address_city, spreadsheet_column: 'AA',      expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :current_address_neighborhood,spreadsheet_column: 'AB',  expected_type: :string, converter: nil }, 
+     { orphan_attribute: :current_address_street,spreadsheet_column: 'AC',    expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :current_address_details,spreadsheet_column: 'AD',   expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :contact_number,       spreadsheet_column: 'AE',     expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :alt_contact_number,   spreadsheet_column: 'AF',     expected_type: :string,     converter: nil }, 
+     { orphan_attribute: :sponsored_by_another_org,spreadsheet_column: 'AG',  expected_type: :string,     converter: @@yn_to_bool }, 
+     { orphan_attribute: :another_org_sponsorship_details,spreadsheet_column: 'AH', expected_type: :string, converter: nil }, 
+     { orphan_attribute: :minor_siblings_count, spreadsheet_column: 'AI',     expected_type: :float,      converter: nil }, 
+     { orphan_attribute: :sponsored_minor_siblings_count,spreadsheet_column: 'AJ', expected_type: :float, converter: nil }, 
+     { orphan_attribute: :comments,             spreadsheet_column: 'AN',     expected_type: :string,     converter: nil }]
   @@first_row = 4;  # first row of the spreadsheet which contains data
 
 
@@ -140,7 +116,7 @@ private
       if cell_val.nil?  # just set attribute to blank - orphan model validation will catch mandatory aspects
         fields[mapper_entry[:orphan_attribute]] = ""  
       else
-        if cell_type == mapper_entry[:expected_type]
+        if cell_type == mapper_entry[:expected_type]  # then copy cell to attribute, doing any necessary conversion
           if mapper_entry[:converter].nil?
             fields[mapper_entry[:orphan_attribute]] = cell_val
             # The Roo gem returns numbers as Float, which will result in failing the orphan validation
@@ -216,12 +192,12 @@ private
         message << " for column #{col_settings.column}--#{col_settings.field}"
       end
       add_import_errors(e.class.name.split('::').last, message)
-      false
+      false # set so that the calling function knows that the block passed in caused an exception
     end
   end
 
   def upload_spreadsheet
-    log_exceptions { ExcelUpload.upload(@file, settings.first_row) }
+    log_exceptions { ExcelUpload.upload(@file, @@first_row) }
   end
 
 end
