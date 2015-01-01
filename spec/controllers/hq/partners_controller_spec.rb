@@ -24,20 +24,23 @@ RSpec.describe Hq::PartnersController, type: :controller do
 
     describe 'GET #show' do
       before :each do
-        FactoryGirl.create(:partner)
+        @id= FactoryGirl.create(:partner).id
       end
 
-      example 'invalid :id should redirect & set flash' do
-        get :show, id: (Partner.all.count + 1)
-        expect(response.status).to be 302
-        expect(response).to redirect_to hq_partners_path
-        expect(flash[:error]).to match /Cannot find Partner/
-      end
+      describe 'redirect & flash' do
+        example 'with invalid :id' do
+          get :show, id: 0
+          expect(response.status).to be 302
+          expect(response).to redirect_to hq_partners_path
+          expect(flash[:error]).to match /Cannot find Partner/
+        end
 
-      example 'valid :id should not redirect nor set flash' do
-        get :show, id: Partner.first.id
-        expect(response.status).to_not be 302
-        expect(flash[:error]).to_not match /Cannot find Partner/
+        example 'with valid :id' do
+          get :show, id: @id
+          expect(response.status).to be 200
+          expect(controller).to render_template :show
+          expect(flash[:error]).to_not match /Cannot find Partner/
+        end
       end
     end
   end
