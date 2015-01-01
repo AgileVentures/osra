@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "hq/partners/show.html.erb", type: :view do
   let(:partner) do
-    FactoryGirl.create(:partner)
+    FactoryGirl.build_stubbed :partner, created_at: Date.current, updated_at: Date.current
   end
 
   context 'orphan lists link' do
@@ -18,7 +18,7 @@ RSpec.describe "hq/partners/show.html.erb", type: :view do
     end
 
     it 'appears when lists present' do
-      FactoryGirl.create(:orphan_list, partner_id: partner.id)
+      allow(partner).to receive_message_chain(:orphan_lists, :empty?).and_return false
       render
       expect(rendered).to have_link('All orphan lists',
               href: hq_partner_orphan_lists_path(partner.id))
