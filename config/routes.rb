@@ -1,7 +1,9 @@
 Osra::Application.routes.draw do
 
   namespace :hq do
-    resources :partners, except: [:destroy]
+    resources :partners, except: [:destroy] do
+      resources :orphan_lists, only: [:index]
+    end
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
