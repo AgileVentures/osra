@@ -5,7 +5,7 @@ RSpec.describe "hq/partners/show.html.erb", type: :view do
     FactoryGirl.build_stubbed :partner, created_at: Date.current, updated_at: Date.current
   end
 
-  context 'orphan lists link' do
+  describe 'orphan lists link' do
     before :each do
       assign :partner, partner
     end

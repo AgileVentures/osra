@@ -17,31 +17,4 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
   end
 
-  describe 'while signed-in' do
-    before :each do
-      sign_in instance_double(AdminUser)
-    end
-
-    describe 'GET #show' do
-      before :each do
-        @id= FactoryGirl.create(:partner).id
-      end
-
-      describe 'redirect & flash' do
-        example 'with invalid :id' do
-          get :show, id: 0
-          expect(response.status).to be 302
-          expect(response).to redirect_to hq_partners_path
-          expect(flash[:error]).to match /Cannot find Partner/
-        end
-
-        example 'with valid :id' do
-          get :show, id: @id
-          expect(response.status).to be 200
-          expect(controller).to render_template :show
-          expect(flash[:error]).to_not match /Cannot find Partner/
-        end
-      end
-    end
-  end
 end

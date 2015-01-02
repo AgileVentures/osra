@@ -7,9 +7,6 @@ class Hq::PartnersController < ApplicationController
   end
 
   def show
-    if not (@partner= Partner.find_by_id(params[:id]))
-      flash[:error]= 'Cannot find Partner'
-      redirect_to(action: 'index') and return
-    end
+    @partner= Partner.find(params[:id])
   end
 end
