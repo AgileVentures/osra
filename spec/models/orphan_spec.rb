@@ -28,7 +28,7 @@ describe Orphan, type: :model do
     duplicate_orphan = orphan.dup
     expect(duplicate_orphan).not_to be_valid
     expect(duplicate_orphan.errors[:name]).
-      to include 'An orphan with this name, father, mother & family name is already in the database.'
+      to include 'taken: an orphan with this name, father, mother & family name is already in the database.'
   end
 
 
