@@ -53,7 +53,7 @@ describe Orphan, type: :model do
 
   it { is_expected.to_not allow_value(nil).for(:sponsored_by_another_org) }
 
-  it { is_expected.to validate_numericality_of(:minor_siblings_count).only_integer.is_greater_than_or_equal_to(0) }
+  #it { is_expected.to validate_numericality_of(:minor_siblings_count).only_integer.is_greater_than_or_equal_to(0) }
   it { is_expected.to validate_numericality_of(:sponsored_minor_siblings_count).only_integer.is_greater_than_or_equal_to(0).allow_nil }
 
   it { is_expected.to validate_presence_of :original_address }
@@ -141,6 +141,26 @@ describe Orphan, type: :model do
     it 'is valid when sponsored_minor_siblings_count is not specified (bug fix)' do
       orphan.sponsored_minor_siblings_count = nil
       expect(orphan).to be_valid
+    end
+
+    context 'when minor_sibling_count is nil' do
+      it 'is valid when sponsored_minor_siblings_count is nil' do
+        orphan.minor_siblings_count = nil
+        orphan.sponsored_minor_siblings_count = nil
+        expect(orphan).to be_valid
+      end
+
+      it 'is valid when sponsored_minor_siblings_count is 0' do
+        orphan.minor_siblings_count = nil
+        orphan.sponsored_minor_siblings_count = 0
+        expect(orphan).to be_valid
+      end
+
+      it 'is not valid when sponsored_minor_siblings_count is greater than 0' do
+        orphan.minor_siblings_count = nil
+        orphan.sponsored_minor_siblings_count = 1
+        expect(orphan).not_to be_valid
+      end
     end
   end
 
