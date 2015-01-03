@@ -6,10 +6,10 @@ ActiveAdmin.register Orphan do
   filter :province_code, as: :select,
          collection: proc { Province.distinct.map { |p| [p.name, p.code] } }
   filter :original_address, label: 'City of origin', as: :select,
-         collection: proc { Address.original.map{ |a| [a.city, a.id]} }
+         collection: proc { Address.original.map { |a| [a.city, a.id] } }
   filter :priority, as: :select
   filter :orphan_sponsorship_status, as: :select,
-         collection: proc { OrphanSponsorshipStatus.all.map{ |oss| [oss.name, oss.id]} }
+         collection: proc { OrphanSponsorshipStatus.all.map { |oss| [oss.name, oss.id] } }
   filter :orphan_status, as: :select
   filter :partner_name, as: :select, collection: -> { Partner.all_names }
   filter :family_name

@@ -328,22 +328,13 @@ describe Sponsor, type: :model do
       expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
     end
 
-    describe '#sponsorship_changed!', :mytest => true do
+    describe '#sponsorship_changed!' do
 
-      before(:each) do
-        allow(active_sponsor).to receive(:update_request_fulfilled!)
-        allow(active_sponsor).to receive(:update_active_sponsorship_count!)
+      specify '#sponsorship_changed! should call update methods' do
+        expect(active_sponsor).to receive(:update_request_fulfilled!)
+        expect(active_sponsor).to receive(:update_active_sponsorship_count!)
         active_sponsor.sponsorship_changed!
       end
-
-      it 'should call #update_request_fulfilled!' do
-        expect(active_sponsor).to have_received(:update_request_fulfilled!)
-      end
-      
-      it 'should call #update_active_sponsorship_count!' do
-        expect(active_sponsor).to have_received(:update_active_sponsorship_count!)
-      end
-
     end
 
     describe 'sponsorship requests' do
