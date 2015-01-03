@@ -167,11 +167,11 @@ describe OrphanImporter do
     end
 
     it 'will return orphans if valid' do
-      expect(one_orphan_importer.error_or_orphans).to eq orphans
+      expect(one_orphan_importer.send(:error_or_orphans)).to eq orphans
     end
 
     it 'will return errors if not valid' do
-      expect(one_orphan_importer.error_or_orphans).to eq orphans
+      expect(one_orphan_importer.send(:error_or_orphans)).to eq orphans
     end
   end
 
@@ -201,14 +201,14 @@ describe OrphanImporter do
   describe '#add_to_pending_orphan_if_valid' do
     it 'increases pending_orphans by 1 if valid' do
       expect(one_orphan_importer).to receive(:valid?).and_return(true)
-      expect{one_orphan_importer.add_to_pending_orphans_if_valid(Hash.new)}.
+      expect{one_orphan_importer.send(:add_to_pending_orphans_if_valid,Hash.new)}.
         to change{one_orphan_importer.instance_variable_get(:@pending_orphans).
         size}.from(0).to(1)
     end
 
     it 'should not change pending orphans if not valid' do
       expect(one_orphan_importer).to receive(:valid?).and_return(false)
-      expect{one_orphan_importer.add_to_pending_orphans_if_valid(Hash.new)}.
+      expect{one_orphan_importer.send(:add_to_pending_orphans_if_valid,Hash.new)}.
         not_to change{one_orphan_importer.
         instance_variable_get(:@pending_orphans).size}
     end
@@ -221,12 +221,12 @@ describe OrphanImporter do
     it 'creates a new instance of a DataColumn subclass' do
       expect(col_settings).to receive(:type).and_return("String")
       expect(ImportOrphanSettings::StringColumn).to receive(:new)
-      one_orphan_importer.process_column(4, col_settings, "Y")
+      one_orphan_importer.send(:process_column, 4, col_settings, "Y")
     end
   end
 
   specify '#log_exceptions logs to import errors if an error is raised' do
-    expect{one_orphan_importer.log_exceptions {raise ArgumnetError} }.
+    expect{one_orphan_importer.send(:log_exceptions) {raise ArgumentError} }.
      to change{one_orphan_importer.import_errors.size}.from(0).to(1)
   end
 end

@@ -133,7 +133,7 @@ import:
       type: String
     - field: guardian_id_num
       column: T
-      mandatory: true
+      mandatory: false
       type: Integer
     - field: original_address_province
       column: U
@@ -145,7 +145,7 @@ import:
       type: String
     - field: original_address_neighborhood
       column: W
-      mandatory: true
+      mandatory: false
       type: String
     - field: original_address_street
       column: X
@@ -165,7 +165,7 @@ import:
       type: String
     - field: current_address_neighborhood
       column: AB
-      mandatory: true
+      mandatory: false
       type: String
     - field: current_address_street
       column: AC
@@ -193,7 +193,7 @@ import:
       type: String
     - field: minor_siblings_count
       column: AI
-      mandatory: true
+      mandatory: false
       type: Integer
     - field: sponsored_minor_siblings_count
       column: AJ

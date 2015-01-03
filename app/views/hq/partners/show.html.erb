@@ -1,0 +1,44 @@
+<dl class="dl-horizontal">
+  <dt>Partner Name</dt>
+  <dd><%= @partner.name %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>OSRA Num</dt>
+  <dd><%= @partner.osra_num %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Status</dt>
+  <dd><%= @partner.status.name %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Start Date</dt>
+  <dd><%= @partner.start_date.strftime('%d %B %Y') %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Province</dt>
+  <dd><%= @partner.province.name %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Region</dt>
+  <dd><%= @partner.region %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Contact Details</dt>
+  <dd><%= @partner.contact_details %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Orphan Lists</dt>
+  <dd><%- if @partner.orphan_lists.empty? %>
+    <i>none</i>
+  <%- else %>
+    <%= link_to('All orphan lists', hq_partner_orphan_lists_path(@partner)) %>
+  <%- end %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Created at</dt>
+  <dd><%= @partner.created_at.strftime('%d %B %Y') %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Updated at</dt>
+  <dd><%= @partner.updated_at.strftime('%d %B %Y') %></dd>
+</dl>

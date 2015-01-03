@@ -14,71 +14,68 @@ class OrphanImporter
   end
 
   def extract_orphans
-    spreadsheet = log_exceptions{ExcelUpload.upload(@file, settings.first_row)}
-    orphan_list = import_orphans(spreadsheet) if spreadsheet
-    check_for_duplicates
-    return error_or_orphans
-  end
-
-  def add_import_errors(ref, error)
-    @import_errors << { ref: ref, error: error }
-    false
+    spreadsheet = upload_spreadsheet
+    import_orphans(spreadsheet) and check_for_duplicates
+    error_or_orphans
   end
 
   def valid?
     import_errors.empty?
   end
 
-  def error_or_orphans
-    valid? ? @pending_orphans : @import_errors
-  end
-
   def import_orphans(doc)
+    return unless doc
     settings.first_row.upto(doc.last_row){ |row| import_orphan(doc, row) }
   end
 
   def import_orphan(doc, row)
-    fields = Hash.new
-    settings.columns.each do |col_settings|
-      cell_val = doc.cell(row, col_settings.column)
-      fields[col_settings.field] = process_column row, col_settings, cell_val
-    end
-    hash_key = fields.select{ |k, _| ['name', 'father_name', 'mother_name'].include? k }
-    @duplicates_hash[hash_key] += [row]
+    fields = parse_orphan(doc, row)
+    add_to_duplicates(fields, row)
     check_orphan_validity(fields, row)
     add_to_pending_orphans_if_valid(fields)
   end
 
-  def check_orphan_validity(fields, row)
-    pending_orphan = PendingOrphan.new fields
-    orphan = pending_orphan.to_orphan
-    orphan.partner = @partner
-    unless orphan.valid?
-      @import_errors << {ref: "invalid orphan attributes for row #{row}",
-                         error: orphan.errors.full_messages}
+  def parse_orphan(doc, row)
+    settings.columns.inject({}) do |memo, col_settings|
+      cell_val = doc.cell(row, col_settings.column)
+      memo[col_settings.field] = process_column row, col_settings, cell_val
+      memo
     end
   end
 
-  def check_for_duplicates
-    @duplicates_hash.each do |_, v|
-      if v.size > 1
-        @import_errors << { ref: "duplicate entries found on rows #{v.join(', ')}",
-                            error: "Orphan's name, mother's name & father's name are the same." }
-      end
-    end
+  private
+
+  def add_import_errors(ref, error = nil)
+    @import_errors << { ref: ref, error: error }
+  end
+
+  def add_to_duplicates(fields, row)
+    hash_key = fields.select{ |k, _| %w[name father_name mother_name].include? k }
+    @duplicates_hash[hash_key] += [row]
   end
 
   def add_to_pending_orphans_if_valid(fields)
     @pending_orphans << PendingOrphan.new(fields) if valid?
   end
 
-  def process_column(row, col_settings, cell_val)
-    log_exceptions(row, col_settings) do
-      class_name = col_settings.type.split.first.classify
-      full_class = ("ImportOrphanSettings::" + class_name + \
-        "Column").constantize
-      parsed_value = full_class.new(cell_val, col_settings).parse_value
+  def check_for_duplicates
+    @duplicates_hash.values.select { |v| v.size > 1 }.each do |v|
+      add_import_errors "duplicate entries found on rows #{v.join(', ')}",
+                        "Orphan's name, mother's name & father's name are the same."
     end
+  end
+
+  def check_orphan_validity(fields, row)
+    orphan = PendingOrphan.new(fields).to_orphan
+    orphan.partner = @partner
+    unless orphan.valid?
+      add_import_errors(ref: "invalid orphan attributes for row #{row}",
+                        error: orphan.errors.full_messages)
+    end
+  end
+
+  def error_or_orphans
+    valid? ? @pending_orphans : @import_errors
   end
 
   def log_exceptions(row=nil,col_settings=nil)
@@ -86,12 +83,26 @@ class OrphanImporter
       yield
     rescue => e
       message = e.to_s
-      message += " Error at row #{row}" if row
+      message << " Error at row #{row}" if row
       if col_settings
-        message += " for column #{col_settings.column}--#{col_settings.field}"
+        message << " for column #{col_settings.column}--#{col_settings.field}"
       end
       add_import_errors(e.class.name.split('::').last, message)
+      false
     end
   end
+
+  def process_column(row, col_settings, cell_val)
+    log_exceptions(row, col_settings) do
+      class_name = col_settings.type.split.first.classify
+      full_class = ("ImportOrphanSettings::#{class_name}Column").constantize
+      full_class.new(cell_val, col_settings).parse_value
+    end
+  end
+
+  def upload_spreadsheet
+    log_exceptions { ExcelUpload.upload(@file, settings.first_row) }
+  end
+
 end
 
