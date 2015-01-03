@@ -9,7 +9,7 @@ class FormErrorsBuilder < ActionView::Helpers::FormBuilder
 
 private
   def list_of_errors
-    @template.content_tag(:ul, class: "bg-danger") do
+    @template.content_tag(:ul, class: "text-danger") do
       object.errors.full_messages.map { |message|
         @template.content_tag(:li, message) }.join("\n").html_safe
     end
