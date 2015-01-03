@@ -143,20 +143,20 @@ describe Orphan, type: :model do
       expect(orphan).to be_valid
     end
 
-    describe 'if sibling count nil then sponsored sibling count is nil or 0' do
-      it 'is valid when sibling count nil' do
+    context 'when minor_sibling_count is nil' do
+      it 'is valid when sponsored_minor_siblings_count is nil' do
         orphan.minor_siblings_count = nil
         orphan.sponsored_minor_siblings_count = nil
         expect(orphan).to be_valid
       end
 
-      it 'is valid when sibling count 0' do
+      it 'is valid when sponsored_minor_siblings_count is 0' do
         orphan.minor_siblings_count = nil
         orphan.sponsored_minor_siblings_count = 0
         expect(orphan).to be_valid
       end
 
-      it 'is not valid when sibling count greater than 0' do
+      it 'is not valid when sponsored_minor_siblings_count is greater than 0' do
         orphan.minor_siblings_count = nil
         orphan.sponsored_minor_siblings_count = 1
         expect(orphan).not_to be_valid

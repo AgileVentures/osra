@@ -127,15 +127,10 @@ class Orphan < ActiveRecord::Base
 private
 
   def sponsored_siblings_does_not_exceed_siblings_count
-    if minor_siblings_count.nil?
-      unless sponsored_minor_siblings_count == 0 or sponsored_minor_siblings_count.nil?
-        errors.add(:sponsored_minor_siblings_count, "cannot exceed minor siblings count")
-      end
-      return
-    end
-    if sponsored_minor_siblings_count && (sponsored_minor_siblings_count > minor_siblings_count)
-      errors.add(:sponsored_minor_siblings_count, "cannot exceed minor siblings count")
-    end
+   return if sponsored_minor_siblings_count.nil? || sponsored_minor_siblings_count == 0
+   if minor_siblings_count.nil? || sponsored_minor_siblings_count > minor_siblings_count
+     errors.add(:sponsored_minor_siblings_count, 'cannot exceed minor siblings count')
+   end
   end
 
   def default_sponsorship_status_unsponsored
