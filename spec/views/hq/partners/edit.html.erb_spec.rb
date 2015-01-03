@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/partners/edit.html.erb", type: :view do
+RSpec.describe 'hq/partners/edit.html.erb', type: :view do
   before :each do
     assign :partner, build_stubbed(:partner)
     assign :statuses, Status.all
@@ -10,7 +10,7 @@ RSpec.describe "hq/partners/edit.html.erb", type: :view do
   it 'renders the form partial' do
     render
 
-    expect(view).to render_template(partial: "_form")
+    expect(view).to render_template(partial: '_form')
   end
 
 end

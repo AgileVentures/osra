@@ -26,18 +26,18 @@ RSpec.describe Hq::PartnersController, type: :controller do
     expect(Partner).to receive(:find).and_return(@partner)
   end
 
-  it 'editing renders the edit view' do
+  specify 'editing renders the edit view' do
     get :edit, id: @partner.id
     expect(response).to render_template 'edit'
   end
 
-  it 'unsuccessful update renders the edit view' do
+  specify 'unsuccessful update renders the edit view' do
     expect(@partner).to receive(:save).and_return(false)
-    patch :update, id: @partner.id, partner: {name: ""}
+    patch :update, id: @partner.id
     expect(response).to render_template 'edit'
   end
 
-  it 'successful update redirects to the show view' do
+  specify 'successful update redirects to the show view' do
     expect(@partner).to receive(:save).and_return(true)
     patch :update, id: @partner.id
     expect(response).to redirect_to(hq_partner_path(@partner))

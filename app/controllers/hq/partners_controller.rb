@@ -17,13 +17,14 @@ class Hq::PartnersController < ApplicationController
 
   def update
     load_partner
+    load_associations
     build_partner
     save_partner or render 'edit'
   end
 
-  private
+private
   def load_partner
-    @partner ||= Partner.find(params[:id])
+    @partner = Partner.find(params[:id])
   end
 
   def load_associations
@@ -38,6 +39,7 @@ class Hq::PartnersController < ApplicationController
 
   def save_partner
     if @partner.save
+      flash[:success] = 'Partner successfuly saved'
       redirect_to hq_partner_url(@partner)
     end
   end
