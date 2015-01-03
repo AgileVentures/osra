@@ -48,12 +48,17 @@ class Sponsor < ActiveRecord::Base
     self.status.active? && !self.request_fulfilled?
   end
 
+  def sponsorship_changed!
+    update_request_fulfilled!
+    update_active_sponsorship_count!
+  end
+
   def update_request_fulfilled!
     update!(request_fulfilled: request_is_fulfilled?)
   end
 
   def update_active_sponsorship_count!
-    number_of_active_sponsorships = self.sponsorships.where(active: true).length
+    number_of_active_sponsorships = sponsorships.all_active.count
     update!(active_sponsorship_count: number_of_active_sponsorships)
   end
 

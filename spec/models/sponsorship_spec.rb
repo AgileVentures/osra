@@ -94,8 +94,7 @@ describe Sponsorship, type: :model do
     describe 'before_create & after_save' do
       let(:sponsorship) { build :sponsorship }
       before(:each) do
-        allow(sponsorship.sponsor).to receive :update_request_fulfilled!
-        allow(sponsorship.sponsor).to receive :update_active_sponsorship_count!
+        allow(sponsorship.sponsor).to receive :sponsorship_changed!
         sponsorship.save!
       end
 
@@ -107,12 +106,8 @@ describe Sponsorship, type: :model do
         expect(sponsorship.orphan.orphan_sponsorship_status.name).to eq 'Sponsored'
       end
 
-      it 'calls Sponsor#set_request_fulfilled' do
-        expect(sponsorship.sponsor).to have_received(:update_request_fulfilled!)
-      end
-
-      it 'calls Sponsor#update_active_sponsorship_count' do
-        expect(sponsorship.sponsor).to have_received(:update_active_sponsorship_count!)
+      it 'calls Sponsor#sponsorship_changed' do
+        expect(sponsorship.sponsor).to have_received(:sponsorship_changed!)
       end
     end
   end

@@ -1,11 +1,11 @@
 ActiveAdmin.register Sponsor do
 
   filter :gender, as: :select, collection: Settings.lookup.gender
-  filter :branch, as: :select, collection: proc {Branch.all}
-  filter :organization, as: :select, collection: proc {Organization.all}
-  filter :status, as: :select, collection: proc {Status.all}
-  filter :sponsor_type, as: :select, collection: proc {SponsorType.all}
-  filter :agent, as: :select, collection: proc {User.pluck :user_name}
+  filter :branch, as: :select, collection: proc { Branch.pluck(:name, :id) }
+  filter :organization, as: :select, collection: proc { Organization.pluck(:name, :id) }
+  filter :status, as: :select, collection: proc { Status.pluck(:name, :id) }
+  filter :sponsor_type, as: :select, collection: proc { Sponsor.pluck(:name, :id) }
+  filter :agent, as: :select, collection: proc { User.pluck(:user_name, :id) }
   filter :country, as: :select,
          collection: proc {Sponsor.distinct.pluck :country}
   filter :city, as: :select, collection: proc {Sponsor.distinct.pluck :city}
