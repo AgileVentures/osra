@@ -1,15 +1,24 @@
 ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
-  filter :osra_num, as: :numeric, label: 'OSRA No.'
-  filter :name
-  filter :father_given_name, label: 'Father Name'
+
   filter :gender, as: :select, collection: Settings.lookup.gender
-  filter :date_of_birth, as: :date_range
-  filter :original_address_province_name, as: :select, label: 'Original address province',
-          collection: -> { Province.all_names_by_code }
+  filter :province_code, as: :select,
+         collection: proc { Province.distinct.map { |p| [p.name, p.code] } }
+  filter :original_address, label: 'City of origin', as: :select,
+         collection: proc { Address.original.map { |a| [a.city, a.id] } }
+  filter :priority, as: :select
+  filter :orphan_sponsorship_status, as: :select,
+         collection: proc { OrphanSponsorshipStatus.all.map { |oss| [oss.name, oss.id] } }
+  filter :orphan_status, as: :select
   filter :partner_name, as: :select, collection: -> { Partner.all_names }
+  filter :family_name
   filter :father_is_martyr, as: :boolean
+  filter :mother_alive, as: :boolean
+  filter :health_status, as: :select
+  filter :goes_to_school, as: :boolean
+  filter :created_at, as: :date_range
+  filter :updated_at, as: :date_range
 
   prospective_sponsor= Proc.new do |params|
     if (sponsor= Sponsor.find_by_id params[:sponsor_id])

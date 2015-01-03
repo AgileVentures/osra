@@ -1,5 +1,7 @@
 ActiveAdmin.register Partner do
 
+  config.filters = false
+
   actions :all, except: [:destroy]
 
   index do

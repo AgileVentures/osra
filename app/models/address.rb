@@ -5,4 +5,7 @@ class Address < ActiveRecord::Base
   #validates :neighborhood, presence: true
 
   belongs_to :province
+
+  scope :original, -> { where.not(orphan_original_address_id: nil) }
+
 end

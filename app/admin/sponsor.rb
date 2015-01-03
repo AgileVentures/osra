@@ -1,7 +1,20 @@
 ActiveAdmin.register Sponsor do
 
-  preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
+  filter :branch, as: :select, collection: proc { Branch.pluck(:name, :id) }
+  filter :organization, as: :select, collection: proc { Organization.pluck(:name, :id) }
+  filter :status, as: :select, collection: proc { Status.pluck(:name, :id) }
+  filter :sponsor_type, as: :select, collection: proc { Sponsor.pluck(:name, :id) }
+  filter :agent, as: :select, collection: proc { User.pluck(:user_name, :id) }
+  filter :country, as: :select,
+         collection: proc {Sponsor.distinct.pluck :country}
+  filter :city, as: :select, collection: proc {Sponsor.distinct.pluck :city}
+  filter :created_at, as: :date_range
+  filter :updated_at, as: :date_range
+  filter :start_date, as: :date_range
+  filter :request_fulfilled, as: :boolean
+  filter :active_sponsorship_count, label: "Number of active sponsorships", as: :numeric
+
 
   actions :all, except: [:destroy]
 
