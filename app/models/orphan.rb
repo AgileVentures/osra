@@ -15,7 +15,7 @@ class Orphan < ActiveRecord::Base
 
   validates :name, presence: true,
             uniqueness: { scope: [:family_name, :mother_name, :father_given_name],
-                          message: 'An orphan with this name, father, mother & family name is already in the database.' }
+                          message: 'taken: an orphan with this name, father, mother & family name is already in the database.' }
 
   validates :father_given_name, presence: true
   validates :family_name, presence: true
