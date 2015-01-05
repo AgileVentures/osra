@@ -6,6 +6,19 @@ class Hq::PartnersController < ApplicationController
     @partners= Partner.all
   end
 
+  def new
+    @partner = Partner.new
+    load_associations
+  end
+  
+  def create 
+    build_partner
+    unless save_partner
+      load_associations
+      render 'new'
+    end
+  end
+
   def show
     @partner= Partner.find(params[:id])
   end
@@ -33,7 +46,7 @@ private
   end
 
   def build_partner
-    @partner ||= Partner.build
+    @partner ||= Partner.new
     @partner.attributes = partner_params
   end
 
