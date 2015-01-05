@@ -4,10 +4,10 @@ require 'rails_helper'
 RSpec.describe "hq/partners/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partners) do
-      67.times do
+      17.times do
         FactoryGirl.create :partner, province: Province.find_by_name('Aleppo')
       end
-      Partner.paginate(:page => 2, :per_page => 30)
+      Partner.paginate(:page => 2, :per_page => 6)
     end
 
     before :each do
@@ -15,7 +15,6 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
     end
 
     it 'should not indicate no partners were found' do
-      assign(:partners, [ FactoryGirl.create(:partner) ] )
       render and expect(rendered).to_not match /No Partners found/
     end
 
