@@ -2,16 +2,15 @@ class Sponsorship < ActiveRecord::Base
 
   include Initializer
 
-  before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
-  after_save :update_sponsor
+  after_create :update_sponsor, :set_orphan_status_to_sponsored
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
-  
+
   validates :start_date, presence: { scope: true, message: "is invalid"}
   validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
-  
+
   validates :end_date, presence: {scope: true, message: 'is invalid' }, if: '!active', if: 'active_changed?'
   validate  :end_date_not_before_start_date, on: :update, if: :end_date
 
@@ -27,16 +26,21 @@ class Sponsorship < ActiveRecord::Base
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   def inactivate(end_date)
-    updated = update_attributes(active: false, end_date: end_date)
-    set_orphan_status_to_previously_sponsored if updated
-    updated  
+    ActiveRecord::Base.transaction do
+      update_attributes!(active: false, end_date: end_date)
+      set_orphan_status_to_previously_sponsored
+      update_sponsor
+    end
+  rescue
+    errors.add(:base, 'Sponsorship was not inactivated! Please try again.')
+    false
   end
 
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
 private
-  
+
   def start_date_no_later_than_1st_of_next_month
     first_of_next_month = Date.current.beginning_of_month.next_month
     if (self.start_date > first_of_next_month)

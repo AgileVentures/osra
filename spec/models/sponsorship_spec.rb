@@ -34,7 +34,7 @@ describe Sponsorship, type: :model do
     describe 'start_date' do
       before(:all) { travel_to Date.parse "15-12-2011" }
       after(:all) { travel_back }
-      
+
       let (:today) { Date.current }
       let (:yesterday) { today.yesterday }
       let (:first_of_next_month) { today.beginning_of_month.next_month }
@@ -53,24 +53,24 @@ describe Sponsorship, type: :model do
       it { is_expected.to allow_value(yesterday).for :start_date }
       it { is_expected.to allow_value(last_day_of_the_month).for :start_date }
     end
-    
+
     describe 'end_date' do
       subject(:sponsorship) { build_stubbed :sponsorship }
 
       before(:each) do
         sponsorship.active = false
-      end 
+      end
 
       let(:start_date) { sponsorship.start_date }
- 
+
       it { is_expected.to allow_value(start_date + 1).for :end_date }
       it { is_expected.to_not allow_value(start_date - 1).for :end_date }
       it { is_expected.to allow_value(start_date).for :end_date }
- 
+
       ["", "42", "5-12"].each do |bad_date|
         it { is_expected.to_not allow_value(bad_date).for :end_date }
-      end 
-    end 
+      end
+    end
 
     describe 'disallow concurrent active sponsorships' do
       let(:orphan) { create :orphan }
@@ -115,7 +115,7 @@ describe Sponsorship, type: :model do
   describe 'methods' do
     context '#inactivate' do
       let(:sponsorship) { create :sponsorship }
-      
+
       it 'sets attributes for the sponsorship and it\'s orphan' do
         future_date = sponsorship.start_date + 1.month
         sponsorship.inactivate future_date
@@ -127,6 +127,47 @@ describe Sponsorship, type: :model do
       it 'returns false if end_date precedes the start_date' do
         end_date = sponsorship.start_date - 1.month
         expect(sponsorship.inactivate end_date).to eq false
+      end
+
+      describe 'atomicity' do
+        let(:sponsor) { create :sponsor }
+        let(:orphan) { create :orphan }
+        let!(:sponsorship) do
+          create :sponsorship, sponsor: sponsor, orphan: orphan
+        end
+
+        def relevant_attributes
+          [
+            sponsorship.active,
+            sponsorship.end_date,
+            orphan.orphan_sponsorship_status.name,
+            sponsor.active_sponsorship_count
+          ]
+        end
+
+        def inactivate_sponsorship
+          sponsorship.inactivate Date.tomorrow
+          sponsorship.reload and sponsor.reload and orphan.reload
+        end
+
+        it 'makes changes when no exceptions are raised' do
+          expect { inactivate_sponsorship }.to change { relevant_attributes }
+        end
+
+        it 'makes no changes when sponsor update fails' do
+          expect(sponsor).to receive(:sponsorship_changed!).and_raise
+          expect { inactivate_sponsorship }.not_to change { relevant_attributes }
+        end
+
+        it 'makes no changes when orphan update fails' do
+          expect(orphan).to receive(:update_sponsorship_status!).and_raise
+          expect { inactivate_sponsorship }.not_to change { relevant_attributes }
+        end
+
+        it 'makes no changes when sponsorship update fails' do
+          expect(sponsorship).to receive(:update_attributes!).and_raise
+          expect { inactivate_sponsorship }.not_to change { relevant_attributes }
+        end
       end
     end
 
