@@ -3,7 +3,7 @@ require 'excel_upload'
 
 describe ExcelUpload do
   before :each do
-    @first_row = 4
+    @first_row = OrphanImporter.class_variable_get(:@@first_row)
   end
 
   describe '.upload' do

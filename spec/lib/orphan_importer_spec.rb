@@ -92,7 +92,7 @@ describe OrphanImporter do
   end
 
   describe '#import_orphan' do
-    let!(:col_count) {OrphanImporter.class_variable_get(:@@mapper).size}
+    let!(:col_count) {one_orphan_importer.instance_variable_get(:@mapper).size}
     let!(:doc) { double("docs") }
 
     it 'should get a cell and celltype from the spreadsheet' do
