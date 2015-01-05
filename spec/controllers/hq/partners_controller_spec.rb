@@ -21,16 +21,19 @@ end
 
 RSpec.describe Hq::PartnersController, type: :controller do
 
+  before :each do
+    sign_in instance_double(AdminUser)
+  end
+
   context '#new and #create' do
     
     before :each do
-      sign_in instance_double(AdminUser)
       @partner = FactoryGirl.build_stubbed(:partner)
     end
     
     specify 'successful create redirects to the show view' do
-      allow_any_instance_of(Partner).to receive(:save) do |obj|
-          obj.id = @partner.id
+      expect_any_instance_of(Partner).to receive(:save) do |_self|
+          _self.id = @partner.id
           true
       end
       post :create, partner: @partner.attributes
@@ -48,7 +51,6 @@ RSpec.describe Hq::PartnersController, type: :controller do
   context '#edit and #update' do 
 
     before :each do
-      sign_in instance_double(AdminUser)
       @partner = build_stubbed :partner
       expect(Partner).to receive(:find).and_return(@partner)
     end

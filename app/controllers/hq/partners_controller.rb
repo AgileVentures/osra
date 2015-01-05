@@ -13,10 +13,7 @@ class Hq::PartnersController < ApplicationController
   
   def create 
     build_partner
-    unless save_partner
-      load_associations
-      render 'new'
-    end
+    save_partner or render 'new'
   end
 
   def show
@@ -54,6 +51,9 @@ private
     if @partner.save
       flash[:success] = 'Partner successfuly saved'
       redirect_to hq_partner_url(@partner)
+    else
+      load_associations
+      false
     end
   end
 
