@@ -7,5 +7,4 @@ Osra::Application.load_tasks
 
 require 'coveralls/rake/task'
 Coveralls::RakeTask.new
-#task :test_with_coveralls => [:cucumber_hq, 'coveralls:push']
-task :test_with_coveralls => [:spec, :cucumber_hq, :cucumber, 'coveralls:push']
+task :test_with_coveralls => [:spec, :cucumber_hq, :cucumber_aa, 'coveralls:push']
