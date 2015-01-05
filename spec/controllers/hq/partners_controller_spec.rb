@@ -25,13 +25,16 @@ RSpec.describe Hq::PartnersController, type: :controller do
     
     before :each do
       sign_in instance_double(AdminUser)
-      @partner = FactoryGirl.build(:partner)
+      @partner = FactoryGirl.build_stubbed(:partner)
     end
     
     specify 'successful create redirects to the show view' do
+      allow_any_instance_of(Partner).to receive(:save) do |obj|
+          obj.id = @partner.id
+          true
+      end
       post :create, partner: @partner.attributes
-      @partner = Partner.find_by_name(@partner[:name])
-      expect(response).to redirect_to hq_partner_path(@partner)
+      expect(response).to redirect_to hq_partner_path(@partner.id)
     end
 
     specify 'unsuccessful create renders the new view' do
