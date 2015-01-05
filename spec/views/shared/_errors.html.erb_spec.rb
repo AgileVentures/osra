@@ -1,18 +1,12 @@
 require 'rails_helper'
 require 'cgi'
 
-RSpec.describe "hq/partners/_form.html.erb", type: :view do
-
-  let(:provinces) { Province.all }
-  let(:statuses) { Status.all }
-  let(:partner) { build :partner, name: nil, region: "Test Region"}
+RSpec.describe "shared/_errors.html.erb", type: :view do
 
   before :each do
-    assign(:provinces, provinces)
-    assign(:statuses, statuses)
-    assign(:partner, partner)
+    partner = build_stubbed :partner, name: nil, region: "Test Region"
     partner.valid?
-    render
+    render 'shared/errors', object: partner
   end
 
   it 'tells us we have errors' do
