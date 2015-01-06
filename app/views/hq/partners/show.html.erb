@@ -1,3 +1,11 @@
+<div class="action_items">
+  <div class="instance">
+    <%= link_to('Edit Partner', edit_hq_partner_path(@partner.id),
+                class: 'btn btn-default', role: 'button') %>
+    <%= link_to('Upload Orphan List', upload_hq_partner_pending_orphan_lists_path(@partner.id),
+                class: 'btn btn-primary', role: 'button') %>
+  </div>
+</div>
 <dl class="dl-horizontal">
   <dt>Partner Name</dt>
   <dd><%= @partner.name %></dd>

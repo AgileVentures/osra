@@ -11,15 +11,13 @@ RSpec.describe "hq/partners/show.html.erb", type: :view do
 
   describe 'instance action-items' do
     specify 'Edit Partner' do
-      pending
       render
       expect(rendered).to have_link('Edit Partner', edit_hq_partner_path(partner.id))
     end
 
     specify 'Upload Orphan List' do
-      pending
       render
-      expect(rendered).to have_link('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(partner))
+      expect(rendered).to have_link('Upload Orphan List', upload_hq_partner_pending_orphan_lists_path(partner.id))
     end
   end
 
