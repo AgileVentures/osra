@@ -1,4 +1,5 @@
 <%= form_for [:hq, @partner] do |f| %>
+  <%= render 'shared/errors', object: f.object %>
   <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
@@ -23,7 +24,7 @@
   </div>
   <div class="form-group">
     <%= f.label :start_date %>
-    <%= f.text_field :start_date, class: "form-control" %>
+    <%= f.text_field :start_date, class: "form-control date-picker" %>
   </div>
   <div class="form-group">
     <%= f.submit class: "btn btn-default" %>

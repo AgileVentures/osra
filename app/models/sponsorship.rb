@@ -4,7 +4,7 @@ class Sponsorship < ActiveRecord::Base
 
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
-  after_save :update_sponsor_request_fulfilled
+  after_save :update_sponsor
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -54,8 +54,8 @@ private
     self.orphan.update_sponsorship_status! 'Sponsored'
   end
 
-  def update_sponsor_request_fulfilled
-    self.sponsor.update_request_fulfilled!
+  def update_sponsor
+    self.sponsor.sponsorship_changed!
   end
 
   def set_orphan_status_to_previously_sponsored

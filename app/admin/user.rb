@@ -1,5 +1,7 @@
 ActiveAdmin.register User do
 
+  config.filters = false
+
   actions :all, except: :destroy
 
   permit_params :user_name, :email
