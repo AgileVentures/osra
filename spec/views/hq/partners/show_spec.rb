@@ -5,11 +5,25 @@ RSpec.describe "hq/partners/show.html.erb", type: :view do
     FactoryGirl.build_stubbed :partner, created_at: Date.current, updated_at: Date.current
   end
 
-  describe 'orphan lists link' do
-    before :each do
-      assign :partner, partner
+  before :each do
+    assign :partner, partner
+  end
+
+  describe 'instance action-items' do
+    specify 'Edit Partner' do
+      pending
+      render
+      expect(rendered).to have_link('Edit Partner', edit_hq_partner_path(partner.id))
     end
 
+    specify 'Upload Orphan List' do
+      pending
+      render
+      expect(rendered).to have_link('Upload Orphan List', upload_admin_partner_pending_orphan_lists_path(partner))
+    end
+  end
+
+  describe 'orphan lists link' do
     it 'disappears when lists absent' do
       render
       expect(rendered).to match /none/
