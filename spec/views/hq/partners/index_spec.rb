@@ -14,11 +14,5 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
       render and expect(rendered).to match /No Partners found/
     end
   end
-
-  describe 'class action-items' do
-    specify 'New Partner' do
-      pending('not implemented');expect(1).to(eq(2))
-    end
-  end
 end
 
