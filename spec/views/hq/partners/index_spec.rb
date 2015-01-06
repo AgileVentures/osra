@@ -14,5 +14,13 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
       render and expect(rendered).to match /No Partners found/
     end
   end
+
+  describe 'class action-items' do
+    specify 'New Partner' do
+      assign(:partners, [])
+      render
+      expect(rendered).to have_link('New Partner', new_hq_partner_path)
+    end
+  end
 end
 
