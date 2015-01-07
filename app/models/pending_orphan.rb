@@ -3,6 +3,10 @@ class PendingOrphan < ActiveRecord::Base
   after_initialize :create_orphan
   attr_accessor :orphan
 
+  def father_name
+    "#{father_given_name} #{family_name}"
+  end
+  
   def create_orphan
     @orphan = Orphan.new
   end
