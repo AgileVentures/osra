@@ -1,7 +1,7 @@
 require 'orphan_importer'
 
 ActiveAdmin.register PendingOrphanList do
-  actions :destroy, :create, :new
+  actions :destroy#, :create, :new
   belongs_to :partner
   menu false
 

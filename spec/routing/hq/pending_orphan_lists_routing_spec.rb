@@ -6,12 +6,10 @@ RSpec.describe 'Hq::PendingOrphanLists routing', type: :routing do
       expect(get: '/hq/partners/1/pending_orphan_lists').       not_to be_routable
     end
     specify '#create' do
-      pending('method-missing Hq::PendingOrphanListsController#create')
-      expect(post: '/hq/partners/1/pending_orphan_lists').          to be_routable
+      expect(post: '/hq/partners/1/pending_orphan_lists').      not_to be_routable
     end
     specify '#new' do
-      pending('method-missing Hq::PendingOrphanListsController#new')
-      expect(get: '/hq/partners/1/pending_orphan_lists/new').       to be_routable
+      expect(get: '/hq/partners/1/pending_orphan_lists/new').   not_to be_routable
     end
     specify '#show' do
       expect(get: '/hq/partners/1/pending_orphan_lists/1').     not_to be_routable
