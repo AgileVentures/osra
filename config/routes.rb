@@ -6,8 +6,8 @@ Osra::Application.routes.draw do
       resources :pending_orphan_lists do
         delete 'destroy', on: :member
         get 'upload', on: :collection
-        get 'validate', on: :collection
-        get 'import', on: :collection
+        post 'validate', on: :collection
+        post 'import', on: :collection
       end
     end
   end
