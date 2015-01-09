@@ -28,5 +28,8 @@ module Osra
 
     # Add path to validators
     config.autoload_paths += %W(#{config.root}/lib/validators/)
+
+    # Do not suppress AR errors raised in `after_rollback` & `after_commit`
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end
