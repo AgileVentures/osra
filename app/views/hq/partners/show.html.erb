@@ -4,6 +4,10 @@
                 class: 'btn btn-default', role: 'button') %>
     <%= link_to('Upload Orphan List', upload_hq_partner_pending_orphan_lists_path(@partner.id),
                 class: 'btn btn-primary', role: 'button') %>
+    <%- unless @partner.orphan_lists.empty? -%>
+      <%= link_to('Orphan lists', hq_partner_orphan_lists_path(@partner),
+                class: 'btn btn-default', role: 'button') %>
+    <%- end -%>
   </div>
 </div>
 <dl class="dl-horizontal">
@@ -33,14 +37,6 @@
 <dl class="dl-horizontal">
   <dt>Contact Details</dt>
   <dd><%= @partner.contact_details %></dd>
-</dl>
-<dl class="dl-horizontal">
-  <dt>Orphan Lists</dt>
-  <dd><%- if @partner.orphan_lists.empty? %>
-    <i>none</i>
-  <%- else %>
-    <%= link_to('All orphan lists', hq_partner_orphan_lists_path(@partner)) %>
-  <%- end %></dd>
 </dl>
 <dl class="dl-horizontal">
   <dt>Created at</dt>
