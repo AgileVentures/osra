@@ -40,7 +40,7 @@
             <%= partner.status.name %>
           </td>
           <td>
-            <%= partner.start_date.strftime('%d %B %Y') %>
+            <%= format_full_date partner.start_date %>
           </td>
           <td>
             <%= partner.province.name %>
