@@ -13,7 +13,7 @@ class Hq::PartnersController < ApplicationController
   
   def create 
     build_partner
-    save_partner or render 'new'
+    save_partner or re_render 'new'
   end
 
   def show
@@ -27,9 +27,8 @@ class Hq::PartnersController < ApplicationController
 
   def update
     load_partner
-    load_associations
     build_partner
-    save_partner or render 'edit'
+    save_partner or re_render 'edit'
   end
 
 private
@@ -51,10 +50,12 @@ private
     if @partner.save
       flash[:success] = 'Partner successfuly saved'
       redirect_to hq_partner_url(@partner)
-    else
-      load_associations
-      false
     end
+  end
+
+  def re_render(view)
+    load_associations
+    render view
   end
 
   def partner_params
