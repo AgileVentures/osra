@@ -67,7 +67,7 @@ describe Sponsorship, type: :model do
       it { is_expected.to_not allow_value(start_date - 1).for :end_date }
       it { is_expected.to allow_value(start_date).for :end_date }
  
-      ["", "42", "5-12"].each do |bad_date|
+      [nil, "", "42", "5-12"].each do |bad_date|
         it { is_expected.to_not allow_value(bad_date).for :end_date }
       end 
     end 
