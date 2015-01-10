@@ -19,7 +19,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
 
 end
 
-RSpec.describe Hq::PartnersController, type: :controller, focus: true do
+RSpec.describe Hq::PartnersController, type: :controller do
 
   before :each do
     sign_in instance_double(AdminUser)
