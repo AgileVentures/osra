@@ -15,7 +15,6 @@ ActiveAdmin.register Sponsor do
   filter :request_fulfilled, as: :boolean
   filter :active_sponsorship_count, label: "Number of active sponsorships", as: :numeric
 
-
   actions :all, except: [:destroy]
 
   index do
@@ -145,6 +144,10 @@ ActiveAdmin.register Sponsor do
       f.action :submit
       f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
     end
+  end
+
+  action_item :link_to_orphan, only: :show do
+    link_to "New Sponsor", new_admin_sponsor_path
   end
 
   action_item :link_to_orphan, only: :show do
