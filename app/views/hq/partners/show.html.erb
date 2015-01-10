@@ -12,7 +12,7 @@
 </dl>
 <dl class="dl-horizontal">
   <dt>Start Date</dt>
-  <dd><%= @partner.start_date.strftime('%d %B %Y') %></dd>
+  <dd><%= format_full_date @partner.start_date %></dd>
 </dl>
 <dl class="dl-horizontal">
   <dt>Province</dt>
@@ -36,9 +36,9 @@
 </dl>
 <dl class="dl-horizontal">
   <dt>Created at</dt>
-  <dd><%= @partner.created_at.strftime('%d %B %Y') %></dd>
+  <dd><%= format_full_date @partner.created_at %></dd>
 </dl>
 <dl class="dl-horizontal">
   <dt>Updated at</dt>
-  <dd><%= @partner.updated_at.strftime('%d %B %Y') %></dd>
+  <dd><%= format_full_date @partner.updated_at %></dd>
 </dl>
