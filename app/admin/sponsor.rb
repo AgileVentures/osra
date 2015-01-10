@@ -146,7 +146,7 @@ ActiveAdmin.register Sponsor do
     end
   end
 
-  action_item :link_to_orphan, only: :show do
+  action_item :new_sponsor, only: :show do
     link_to "New Sponsor", new_admin_sponsor_path
   end
 
