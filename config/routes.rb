@@ -3,6 +3,12 @@ Osra::Application.routes.draw do
   namespace :hq do
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
+      resources :pending_orphan_lists do
+        delete 'destroy', on: :member
+        get 'upload', on: :collection
+        post 'validate', on: :collection
+        post 'import', on: :collection
+      end
     end
   end
 
