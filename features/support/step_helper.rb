@@ -5,14 +5,14 @@ module Helpers
     :password => 'defaultpass'    
   }
 
-  def create_admin_user email= DEFAULT_ADMIN[:email], password= DEFAULT_ADMIN[:password]
-    AdminUser.new(email: email, password: password, password_confirmation: password).save!
+  def create_admin_user admin= DEFAULT_ADMIN
+    AdminUser.create!(email: admin[:email], password: admin[:password], password_confirmation: admin[:password])
   end
 
-  def login email= DEFAULT_ADMIN[:email], password= DEFAULT_ADMIN[:password]
+  def login admin= DEFAULT_ADMIN
     visit new_admin_user_session_path
-    fill_in "admin_user_email", :with => email
-    fill_in "admin_user_password", :with => password
+    fill_in "admin_user_email", :with => admin[:email]
+    fill_in "admin_user_password", :with => admin[:password]
     click_button "Login"
   end
 
