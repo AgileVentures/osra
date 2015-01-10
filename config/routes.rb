@@ -4,6 +4,7 @@ Osra::Application.routes.draw do
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
     end
+    resources :users, except: [:destroy]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
