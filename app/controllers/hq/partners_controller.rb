@@ -1,49 +1,45 @@
 class Hq::PartnersController < ApplicationController
-  before_action :authenticate_admin_user!
+  before_action :authenticate_admin_user!,
+                :new_partner_facade
   layout 'application'
 
   def index
-    @partners= Partner.all
+    @partners = @partner_facade.load_all
   end
 
   def new
-    @partner = Partner.new
+    @partner = @partner_facade.build
     load_associations
   end
   
   def create 
-    build_partner
-    save_partner or re_render 'new'
+    @partner = @partner_facade.build(params[:partner])
+    save_partner or re_render "new"
   end
 
   def show
-    @partner= Partner.find(params[:id])
+    @partner = @partner_facade.load(params[:id])
   end
 
   def edit
-    load_partner
+    @partner = @partner_facade.load(params[:id])
     load_associations
   end
 
   def update
-    load_partner
-    build_partner
+    @partner = @partner_facade.update(params[:id], params[:partner])
     save_partner or re_render 'edit'
   end
 
 private
-  def load_partner
-    @partner = Partner.find(params[:id])
+
+  def new_partner_facade
+    @partner_facade = PartnerFacade.new
   end
 
   def load_associations
     @provinces = Province.all
     @statuses = Status.all
-  end
-
-  def build_partner
-    @partner ||= Partner.new
-    @partner.attributes = partner_params
   end
 
   def save_partner
@@ -56,16 +52,6 @@ private
   def re_render(view)
     load_associations
     render view
-  end
-
-  def partner_params
-    partner_params = params[:partner]
-    if partner_params
-      partner_params.permit(:name, :region, :contact_details, :province_id,
-                            :status_id, :start_date)
-    else
-      {}
-    end
   end
 
 end
