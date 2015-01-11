@@ -10,6 +10,7 @@ Osra::Application.routes.draw do
         post 'import', on: :collection
       end
     end
+    resources :users, except: [:destroy]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
