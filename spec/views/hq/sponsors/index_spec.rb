@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/sponsors/index.html.ruby", type: :view do
+RSpec.describe "hq/sponsors/index.html.haml", type: :view do
   context 'sponsors exist' do
     it 'should not indicate no sponsors were found' do
       assign(:sponsors, [ FactoryGirl.build_stubbed(:sponsor) ] )
