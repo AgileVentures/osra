@@ -6,6 +6,16 @@ class Hq::PartnersController < ApplicationController
     @partners= Partner.all
   end
 
+  def new
+    @partner = Partner.new
+    load_associations
+  end
+  
+  def create 
+    build_partner
+    save_partner or re_render 'new'
+  end
+
   def show
     @partner= Partner.find(params[:id])
   end
@@ -17,9 +27,8 @@ class Hq::PartnersController < ApplicationController
 
   def update
     load_partner
-    load_associations
     build_partner
-    save_partner or render 'edit'
+    save_partner or re_render 'edit'
   end
 
 private
@@ -33,7 +42,7 @@ private
   end
 
   def build_partner
-    @partner ||= Partner.build
+    @partner ||= Partner.new
     @partner.attributes = partner_params
   end
 
@@ -42,6 +51,11 @@ private
       flash[:success] = 'Partner successfuly saved'
       redirect_to hq_partner_url(@partner)
     end
+  end
+
+  def re_render(view)
+    load_associations
+    render view
   end
 
   def partner_params
