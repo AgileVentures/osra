@@ -1,26 +1,12 @@
 require 'rails_helper'
-class NyuksController < Hq::PartnersController; end
 
 RSpec.describe Hq::PartnersController, type: :controller do
-  describe 'authentication' do
-    controller NyuksController do
-      def foobar_action
-        render nothing: true
-      end
-    end
-
-    it 'checks for admin_user session' do
-      routes.draw { get 'foobar_action', to: 'nyuks#foobar_action' }
-      expect(controller).to be_a_kind_of(Hq::PartnersController)
-      expect_any_instance_of(Hq::PartnersController).to receive :authenticate_admin_user!
-      get :foobar_action
-    end
+  specify 'authentication' do
+    expect(Hq::PartnersController.superclass).to eq HqController
   end
-
 end
 
 RSpec.describe Hq::PartnersController, type: :controller do
-
   before :each do
     sign_in instance_double(AdminUser)
   end
@@ -43,11 +29,9 @@ RSpec.describe Hq::PartnersController, type: :controller do
       post :create, partner: partner.attributes
       expect(response).to render_template 'new'
     end
-
   end
 
-  context '#edit and #update' do 
-
+  context '#edit and #update' do
     before :each do
       @partner = build_stubbed :partner
       expect(Partner).to receive(:find).and_return(@partner)
@@ -69,6 +53,5 @@ RSpec.describe Hq::PartnersController, type: :controller do
       patch :update, id: @partner.id, partner: @partner.attributes
       expect(response).to redirect_to(hq_partner_path(@partner))
     end
-
   end
 end
