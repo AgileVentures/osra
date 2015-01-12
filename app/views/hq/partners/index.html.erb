@@ -51,9 +51,5 @@
   </table>
   <div class="pagination">
     <%= will_paginate @partners, renderer: BootstrapPagination::Rails %>
-    <%# page_entries_info(@partners, :entry_name => 'partner').html_safe %>
-    <%# page_entries_info(@partners, :entry_name => 'Partner').html_safe %>
-    <%# page_entries_info(@partners).html_safe %>
-    <%= page_entries_info @partners %>
   </div>
 <%- end %>

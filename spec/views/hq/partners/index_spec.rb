@@ -22,12 +22,6 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
       render
       expect(rendered).to match /success/
     end
-
-    it "calls page_entries_info" do
-      allow(view).to receive(:page_entries_info).with(partners).and_return('foobar')
-      render
-      expect(rendered).to match /foobar/
-    end
   end
 
   context 'no partners exist' do
