@@ -179,13 +179,10 @@ GEM
       addressable (~> 2.3)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    metaclass (0.0.4)
     method_source (0.8.2)
     mime-types (2.4.3)
     mini_portile (0.6.2)
     minitest (5.5.0)
-    mocha (1.1.0)
-      metaclass (~> 0.0.1)
     multi_json (1.10.1)
     multi_test (0.1.1)
     netrc (0.10.2)
@@ -324,6 +321,8 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.1)
     will_paginate (3.0.7)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -353,7 +352,6 @@ DEPENDENCIES
   hirb
   jquery-rails
   launchy
-  mocha (~> 1.1.0)
   newrelic_rpm
   paperclip (~> 4.2.1)
   passenger
@@ -371,3 +369,4 @@ DEPENDENCIES
   shoulda-matchers
   uglifier (>= 2.6.0)
   will_paginate (~> 3.0.7)
+  will_paginate-bootstrap

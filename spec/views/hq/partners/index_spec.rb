@@ -1,13 +1,12 @@
 require 'rails_helper'
 
-
 RSpec.describe "hq/partners/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partners) do
-      17.times do
+      31.times do
         FactoryGirl.create :partner, province: Province.find_by_name('Aleppo')
       end
-      Partner.paginate(:page => 2, :per_page => 6)
+      Partner.paginate(:page => 2)
     end
 
     before :each do
