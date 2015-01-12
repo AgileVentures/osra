@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "hq/partners/show.html.erb", type: :view do
   let(:partner) do
-    FactoryGirl.build_stubbed :partner, created_at: Date.current, updated_at: Date.current
+    FactoryGirl.build_stubbed :partner
   end
 
   before :each do
