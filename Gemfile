@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.2.0'
 
-gem 'rails', '~> 4.1.8'
+gem 'rails', '~> 4.2.0'
 
 gem 'pg'
 gem 'sass-rails', '~> 5.0.0'
@@ -15,6 +15,8 @@ gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails', '~> 4.0.2'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'uglifier', '>= 2.6.0' # compressor for JavaScript assets
+# activeadmin dependency
+gem 'inherited_resources', github: 'josevalim/inherited_resources', branch: 'rails-4-2'
 gem 'activeadmin', github: 'activeadmin'
 gem 'sequenced', '>= 2.0.0' # Sequential IDs in Models
 gem 'devise' # Authentication solution
@@ -26,6 +28,9 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
+
+# browser console for debugging
+gem 'web-console', '~> 2.0', group: :development
 
 group :test do
   gem 'capybara'

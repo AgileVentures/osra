@@ -42,7 +42,7 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
                                html: CGI::escape_html(statuses.first.name)
     end
 
-    assert_select "input#partner_start_date" do
+    within "input#partner_start_date" do
       assert_select "[value=?]", partner.start_date
     end
 
