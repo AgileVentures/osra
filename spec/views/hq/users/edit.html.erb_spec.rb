@@ -3,12 +3,18 @@ require 'rails_helper'
 describe 'hq/users/edit.html.erb', type: :view do
 
   before :each do
-    assign :user, build_stubbed(:user)
+    @user = build_stubbed(:user)
+    assign(:user, @user)
   end
 
   it 'renders the form partial' do
     render
     expect(view).to render_template(partial: '_form')
+  end
+
+  it 'cancel button goes to show page' do
+    render
+    expect(rendered).to have_link('Cancel', href: hq_user_path(@user))
   end
 
 end

@@ -21,6 +21,21 @@ class Hq::UsersController < HqController
     end
   end
 
+  def new
+    @user = User.new
+  end
+
+  def create
+    @user = User.new
+    @user.attributes = user_params
+    if @user.save
+      flash[:success] = 'User successfully created'
+      redirect_to hq_user_url(@user)
+    else
+      render 'new'
+    end
+  end
+
 private
 
   def user_params

@@ -3,8 +3,8 @@ require 'rails_helper'
 describe "hq/users/_form.html.erb", type: :view do
 
   before :each do
-    @user = FactoryGirl.build_stubbed(:user, user_name: 'Frederick & Bloggs', email: 'fred.bloggs@example.com')
-    render
+    @user = FactoryGirl.build_stubbed(:user)
+    render partial: 'form', locals: { cancel_path: 'some cancel url' }
   end
 
   it 'has a form element' do
@@ -24,7 +24,7 @@ describe "hq/users/_form.html.erb", type: :view do
   end
 
   it 'has a cancel button' do
-    expect(rendered).to have_link('Cancel', href: hq_user_path(@user))
+    expect(rendered).to have_link('Cancel', href: 'some cancel url')
   end
 
 end

@@ -1,2 +1,2 @@
 <h1> Edit User </h1>
-<%= render partial: 'form' %>
+<%= render partial: 'form', locals: { cancel_path:  hq_user_path(@user) } %>

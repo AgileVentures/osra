@@ -4,7 +4,7 @@ RSpec.describe Hq::UsersController, type: :controller do
 
   before :each do
     sign_in instance_double(AdminUser)
-    @user = build_stubbed :user, email: 'someone@example.com'
+    @user = build_stubbed :user
   end
 
   it '#index' do
@@ -34,8 +34,6 @@ RSpec.describe Hq::UsersController, type: :controller do
       allow(@old_user).to receive(:save).and_return(false)
       post :update, id: @old_user.id, user: { email: 'some email address'}
       expect(response).to render_template 'edit'
-      new_user = controller.instance_variable_get(:@user)
-      expect(new_user[:email]).to eq 'some email address'
       expect(flash[:success]).to be_nil
     end
 
@@ -44,6 +42,43 @@ RSpec.describe Hq::UsersController, type: :controller do
       post :update, id: @old_user.id, user: { email: 'some email address'}
       expect(response).to redirect_to(hq_user_path(@old_user))
       expect(flash[:success]).to_not be_nil
+    end
+
+  end
+
+  describe '#new' do
+    
+    before :each do
+      @new_user = User.new
+      allow(User).to receive(:new).and_return(@new_user)
+    end
+
+    it 'enables entering details of a new user' do
+      get :new
+      expect(response).to render_template 'new'
+      expect(assigns(:user)).to be_a_new(User)
+    end
+
+  end
+
+  describe '#create' do
+
+    before :each do
+      @new_user = FactoryGirl.build_stubbed(:user, user_name: nil, email: nil)
+      allow(User).to receive(:new).and_return(@new_user)
+    end
+
+    specify 'successful create shows the new user' do
+      expect(@new_user).to receive(:save).and_return(true)
+      post :create, user: { user_name: 'some user' }
+      expect(response).to redirect_to hq_user_path(@new_user)
+      expect(flash[:success]).to_not be_nil
+    end
+
+    specify 'unsuccessful create re-renders the new view' do
+      expect(@new_user).to receive(:save).and_return(false)
+      post :create, user: { user_name: 'some user' }
+      expect(response).to render_template 'new'
     end
 
   end
