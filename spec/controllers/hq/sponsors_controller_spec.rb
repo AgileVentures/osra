@@ -26,7 +26,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   end
 
   specify '#index' do
-    expect(Sponsor).to receive(:all).and_return(@sponsor)
+    expect(Sponsor).to receive(:all).and_return( [ @sponsor ] )
     get :index
     expect(response).to render_template 'index'
   end
