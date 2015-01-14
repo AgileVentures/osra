@@ -1,12 +1,12 @@
 require 'rails_helper'
+require 'will_paginate/array'
 
 RSpec.describe "hq/partners/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partners) do
-      31.times do
-        FactoryGirl.create :partner, province: Province.find_by_name('Aleppo')
-      end
-      Partner.paginate(:page => 2)
+      (1..31).each_with_object([]) do |num, arr|
+        arr << FactoryGirl.build_stubbed(:partner)
+      end.paginate(:page => 2)
     end
 
     before :each do
