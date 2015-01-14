@@ -28,8 +28,8 @@ ActiveAdmin.register Sponsor do
     column :start_date
     column :request_fulfilled
     column :sponsor_type
-    column :country do |sponsor|
-      ISO3166::Country.search(sponsor.country)
+    column :country do |_sponsor|
+      "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
     end
   end
 
@@ -47,8 +47,8 @@ ActiveAdmin.register Sponsor do
       row :payment_plan
       row :sponsor_type
       row :affiliate
-      row :country do
-        ISO3166::Country.search(sponsor.country)
+      row :country do |_sponsor|
+        "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
       end
       row :city
       row :address
