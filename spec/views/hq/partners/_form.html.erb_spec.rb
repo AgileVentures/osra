@@ -1,11 +1,11 @@
 require 'rails_helper'
 require 'cgi'
 
-RSpec.describe 'hq/partners/_form.html.erb', type: :view do
+RSpec.describe "hq/partners/_form.html.erb", type: :view do
   let(:provinces) { Province.all }
   let(:statuses) { Status.all }
   let(:partner) { build_stubbed :partner,
-                  region: 'Region1', contact_details: 'CD123'}
+                  region: "Region1", contact_details: "CD123"}
 
   before :each do
     assign(:provinces, provinces)
@@ -14,20 +14,24 @@ RSpec.describe 'hq/partners/_form.html.erb', type: :view do
   end
 
   specify 'has a form' do
-    render and assert_select 'form'
+    render
+
+    assert_select 'form'
   end
 
   describe '"Cancel" button' do
     specify 'when no :id' do
       allow(partner).to receive(:id).and_return nil
       render
-      assert_select 'a[href=?]', hq_partners_path, role: 'button', text: 'Cancel'
+
+      assert_select 'a[href=?]', hq_partners_path, text: 'Cancel'
     end
 
     specify 'when :id' do
       allow(partner).to receive(:id).and_return 42
       render
-      assert_select 'a[href=?]', hq_partner_path(42), role: 'button', text: 'Cancel'
+
+      assert_select 'a[href=?]', hq_partner_path(42), text: 'Cancel'
     end
   end
 
