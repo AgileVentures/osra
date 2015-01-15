@@ -11,6 +11,7 @@ Osra::Application.routes.draw do
       end
     end
     resources :users, except: [:destroy]
+    resources :sponsors, except: [:destroy]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
