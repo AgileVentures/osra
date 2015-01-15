@@ -32,18 +32,6 @@ begin
       t.profile = 'rerun'
     end
 
-    Cucumber::Rake::Task.new({:aa => 'test:prepare'}, 'Run aa features that should pass') do |t|
-      t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
-      t.fork = true # You may get faster startup if you set this to false
-      t.profile = 'aa'
-    end
-
-    Cucumber::Rake::Task.new({:hq => 'test:prepare'}, 'Run hq features that should pass') do |t|
-      t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
-      t.fork = true # You may get faster startup if you set this to false
-      t.profile = 'hq'
-    end
-
     desc 'Run all features'
     task :all => [:ok, :wip]
 
@@ -53,12 +41,10 @@ begin
       ::CodeStatistics::TEST_TYPES << "Cucumber features" if File.exist?('features')
     end
   end
-
   desc 'Alias for cucumber:ok'
-  task :default => :cucumber
-  task :cucumber => 'cucumber:aa'
-  task :cucumber_aa => 'cucumber:aa'
-  task :cucumber_hq => 'cucumber:hq'
+  task :cucumber => 'cucumber:ok'
+
+  # task :default => :cucumber
 
   task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
