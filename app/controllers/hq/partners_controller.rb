@@ -3,7 +3,7 @@ class Hq::PartnersController < ApplicationController
   layout 'application'
 
   def index
-    @partners= Partner.all
+    @partners = Partner.all.paginate(:page => params[:page])
   end
 
   def new
