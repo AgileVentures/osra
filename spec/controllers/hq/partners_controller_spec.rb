@@ -25,11 +25,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
   end
 
-<<<<<<< HEAD
   context '#edit and #update' do
-=======
-  context '#edit and #update' do 
->>>>>>> will-paginate added
     before :each do
       @partner = build_stubbed :partner
       expect(Partner).to receive(:find).and_return(@partner)
@@ -51,8 +47,6 @@ RSpec.describe Hq::PartnersController, type: :controller do
       patch :update, id: @partner.id, partner: @partner.attributes
       expect(response).to redirect_to(hq_partner_path(@partner))
     end
-<<<<<<< HEAD
-=======
   end
 
   describe 'index' do
@@ -60,6 +54,5 @@ RSpec.describe Hq::PartnersController, type: :controller do
       expect(Partner).to receive_message_chain(:all, :paginate).with(page: "2").and_return([].paginate)
       get :index, page: "2"
     end
->>>>>>> will-paginate added
   end
 end
