@@ -169,3 +169,7 @@ Feature:
   Scenario: **Bug fix** When editing a sponsor, country selector defaults to sponsor's country
     Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
     Then the drop down box for "Country" should show "United Kingdom"
+
+  Scenario: **Bug fix** Country filter list should show full country names
+    Given I am on the "Sponsors" page for the "Admin" role
+    Then I should see full country names in the Country filter
