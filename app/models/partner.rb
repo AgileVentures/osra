@@ -1,6 +1,7 @@
 class Partner < ActiveRecord::Base
   include Initializer
 
+  self.per_page = 10  
   attr_readonly :province_id
 
   after_initialize :default_status_to_active, :default_start_date_to_today

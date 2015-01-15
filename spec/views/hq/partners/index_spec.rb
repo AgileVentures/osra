@@ -4,9 +4,9 @@ require 'will_paginate/array'
 RSpec.describe "hq/partners/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partners) do
-      (1..31).each_with_object([]) do |num, arr|
+      (1..5).each_with_object([]) do |num, arr|
         arr << FactoryGirl.build_stubbed(:partner)
-      end.paginate(:page => 2)
+      end.paginate(:page => 2, :per_page => 2)
     end
 
     before :each do
