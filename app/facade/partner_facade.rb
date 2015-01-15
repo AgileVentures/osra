@@ -2,26 +2,25 @@ class PartnerFacade
 
   attr_reader :partner
 
-  def build(partner_params=nil)
+  def build_partner(partner_params=nil)
     @partner = Partner.new(permitted_params(partner_params))
   end
 
-  def load(id)
+  def load_partner(id)
     @partner = Partner.find(id)
   end
 
-  def update(id, partner_params)
-    self.load(id)
+  def update_partner(id, partner_params)
+    self.load_partner(id)
     @partner.attributes = permitted_params(partner_params)
-    @partner
   end
 
-  def load_all
-    Partner.all
+  def provinces
+    @provinces ||= Province.all
   end
 
-  def save
-    @partner.save
+  def statuses
+    @statuses ||= Status.all
   end
 
 private

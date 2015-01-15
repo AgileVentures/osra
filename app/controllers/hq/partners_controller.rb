@@ -4,31 +4,29 @@ class Hq::PartnersController < ApplicationController
   layout 'application'
 
   def index
-    @partners = @partner_facade.load_all
+    @partners = Partner.all
   end
 
   def new
-    @partner = @partner_facade.build
-    load_associations
+    @partner_facade.build_partner
   end
   
   def create 
-    @partner = @partner_facade.build(params[:partner])
-    save_partner or re_render "new"
+    @partner_facade.build_partner(params[:partner])
+    save_partner or render :new
   end
 
   def show
-    @partner = @partner_facade.load(params[:id])
+    @partner_facade.load_partner(params[:id])
   end
 
   def edit
-    @partner = @partner_facade.load(params[:id])
-    load_associations
+    @partner_facade.load_partner(params[:id])
   end
 
   def update
-    @partner = @partner_facade.update(params[:id], params[:partner])
-    save_partner or re_render 'edit'
+    @partner_facade.update_partner(params[:id], params[:partner])
+    save_partner or render :edit
   end
 
 private
@@ -37,21 +35,10 @@ private
     @partner_facade = PartnerFacade.new
   end
 
-  def load_associations
-    @provinces = Province.all
-    @statuses = Status.all
-  end
-
   def save_partner
-    if @partner.save
+    if @partner_facade.partner.save
       flash[:success] = 'Partner successfuly saved'
-      redirect_to hq_partner_url(@partner)
+      redirect_to hq_partner_url(@partner_facade.partner)
     end
   end
-
-  def re_render(view)
-    load_associations
-    render view
-  end
-
 end
