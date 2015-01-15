@@ -195,7 +195,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
-    passenger (4.0.55)
+    passenger (4.0.57)
       daemon_controller (>= 1.2.0)
       rack
       rake (>= 0.8.1)
