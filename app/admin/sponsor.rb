@@ -32,7 +32,7 @@ ActiveAdmin.register Sponsor do
     column :request_fulfilled
     column :sponsor_type
     column :country do |_sponsor|
-      "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
+      en_ar_country(_sponsor.country)
     end
   end
 
@@ -51,7 +51,7 @@ ActiveAdmin.register Sponsor do
       row :sponsor_type
       row :affiliate
       row :country do |_sponsor|
-        "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
+        en_ar_country(_sponsor.country)
       end
       row :city
       row :address

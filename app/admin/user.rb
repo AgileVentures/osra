@@ -28,7 +28,9 @@ ActiveAdmin.register User do
           link_to sponsor.name, admin_sponsor_path(sponsor)
         end
         column :gender
-        column :country
+        column :country do |_sponsor|
+          en_ar_country(_sponsor.country)
+        end
         column :status
         column :request_fulfilled
         column 'Orphans sponsored' do |_sponsor|

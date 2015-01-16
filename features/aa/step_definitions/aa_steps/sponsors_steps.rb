@@ -86,3 +86,7 @@ Then /^I should see full country names in the Country filter$/ do
   countries = Sponsor.distinct.pluck(:country).map { |c| ISO3166::Country[c] }
   expect(page).to have_select('q_country', with_options: countries)
 end
+
+Given /^"([^"]*)" is from (?:.*)-([A-Z]{2})$/ do |name, country_code|
+  FactoryGirl.create(:sponsor, name: name, country: country_code)
+end
