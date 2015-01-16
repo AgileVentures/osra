@@ -81,3 +81,8 @@ Then /^the drop down box for "([^"]*)" should show "([^"]*)"$/ do |selector, val
   element_id = "sponsor_#{selector.parameterize('_')}"
   expect(page).to have_select(element_id, selected: value)
 end
+
+Then /^I should see full country names in the Country filter$/ do
+  countries = Sponsor.distinct.pluck(:country).map { |c| ISO3166::Country[c] }
+  expect(page).to have_select('q_country', with_options: countries)
+end

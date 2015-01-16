@@ -6,8 +6,11 @@ ActiveAdmin.register Sponsor do
   filter :status, as: :select, collection: proc { Status.pluck(:name, :id) }
   filter :sponsor_type, as: :select, collection: proc { SponsorType.pluck(:name, :id) }
   filter :agent, as: :select, collection: proc { User.pluck(:user_name, :id) }
-  filter :country, as: :select,
-         collection: proc {Sponsor.distinct.pluck :country}
+  filter :country, as: :select, collection: proc {
+    Sponsor.distinct.pluck(:country).each_with_object({}) do |c, h|
+      h[ISO3166::Country[c].name] = c
+    end
+  }
   filter :city, as: :select, collection: proc { Sponsor.distinct.pluck(:city).uniq.sort }
   filter :created_at, as: :date_range
   filter :updated_at, as: :date_range
