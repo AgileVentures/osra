@@ -5,6 +5,7 @@ class Sponsorship < ActiveRecord::Base
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
   after_save :update_sponsor
+  after_destroy :update_sponsor, :update_orphan
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -56,6 +57,10 @@ private
 
   def update_sponsor
     self.sponsor.sponsorship_changed!
+  end
+
+  def update_orphan
+    self.orphan.resolve_sponsorship_status
   end
 
   def set_orphan_status_to_previously_sponsored

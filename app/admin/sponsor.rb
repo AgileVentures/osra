@@ -89,6 +89,10 @@ ActiveAdmin.register Sponsor do
             input '', type: :hidden, name: :authenticity_token, value: form_authenticity_token
           text_node '</form>'.html_safe
         end
+        column '' do |_sponsorship|
+          link_to 'X', admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id), method: :delete,
+            data: { confirm: 'WARNING: You are about to permanently delete the record of this sponsorship!' }
+        end
       end
     end
 
