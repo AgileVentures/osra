@@ -27,7 +27,10 @@
     <%= f.text_field :start_date, class: "form-control date-picker" %>
   </div>
   <div class="form-group">
-    <%= f.submit class: "btn btn-default" %>
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to('Cancel',
+                (@partner.id ? hq_partner_path(@partner.id) : hq_partners_path),
+                class: 'btn btn-default btn-cancel', role: 'button') %>
   </div>
 <% end %>
 

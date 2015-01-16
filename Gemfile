@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.2.0'
 
 gem 'rails', '~> 4.1.8'
 
@@ -26,6 +26,7 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
+gem 'haml', '~> 4.0.6'  #[view] templating engine
 
 group :test do
   gem 'capybara'

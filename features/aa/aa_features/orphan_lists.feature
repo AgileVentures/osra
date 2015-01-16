@@ -152,6 +152,15 @@ Feature:
     Then I click the "Cancel" button
     Then I should be on the "Show Partner" page for partner "Partner1"
 
+  Scenario: I should be able to see summary details of the orphans to import
+    Given I visit the new orphan list page for partner "Partner1"
+    And I upload the "one_orphan_xlsx.xlsx" file
+    Then I click the "Upload" button
+    Then I should see "محمد"
+    And I should see "John Doe"
+    And I should see "January 02, 2012"
+    And I should see "Male"
+
   Scenario: I should be able to see the imported orphans
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "three_orphans_xlsx.xlsx" file

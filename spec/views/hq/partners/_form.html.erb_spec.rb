@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'cgi'
 
 RSpec.describe "hq/partners/_form.html.erb", type: :view do
-
   let(:provinces) { Province.all }
   let(:statuses) { Status.all }
   let(:partner) { build_stubbed :partner,
@@ -12,14 +11,33 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     assign(:provinces, provinces)
     assign(:statuses, statuses)
     assign(:partner, partner)
-    render
   end
 
   specify 'has a form' do
-    assert_select "form"
+    render
+
+    assert_select 'form'
   end
 
-  specify 'renders each form value' do
+  describe '"Cancel" button' do
+    specify 'when no :id' do
+      allow(partner).to receive(:id).and_return nil
+      render
+
+      assert_select 'a[href=?]', hq_partners_path, text: 'Cancel'
+    end
+
+    specify 'when :id' do
+      allow(partner).to receive(:id).and_return 42
+      render
+
+      assert_select 'a[href=?]', hq_partner_path(42), text: 'Cancel'
+    end
+  end
+
+  specify 'form values' do
+    render
+
     assert_select "input#partner_name" do
       assert_select "[value=?]", CGI::escape_html(partner.name)
     end

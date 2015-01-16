@@ -12,6 +12,7 @@ ActiveAdmin.register Orphan do
          collection: proc { OrphanSponsorshipStatus.all.map { |oss| [oss.name, oss.id] } }
   filter :orphan_status, as: :select
   filter :partner_name, as: :select, collection: -> { Partner.all_names }
+  filter :father_given_name
   filter :family_name
   filter :father_is_martyr, as: :boolean
   filter :mother_alive, as: :boolean
