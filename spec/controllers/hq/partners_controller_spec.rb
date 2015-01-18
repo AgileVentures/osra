@@ -26,20 +26,18 @@ RSpec.describe Hq::PartnersController, type: :controller do
   end
 
   context '#new and #create' do
-    let(:partner_double) { instance_double Partner, :attributes= => true }
-    
-    before :each do
-      controller.instance_variable_set(:@partner, partner_double)
-    end
-    
+
     specify 'successful create redirects to the show view' do
-      expect(partner_double).to receive(:save).and_return(true)
+      allow_any_instance_of(Partner).to receive(:save) do |_self|
+        _self.id = 1
+        true        
+      end
       post :create, partner: {}
-      expect(response).to redirect_to hq_partner_path(partner_double)
+      expect(response).to redirect_to hq_partner_path(1)
     end
 
     specify 'unsuccessful create renders the new view' do
-      expect(partner_double).to receive(:save).and_return(false)
+      allow_any_instance_of(Partner).to receive(:save).and_return(false)
       post :create, partner: {}
       expect(response).to render_template 'new'
     end

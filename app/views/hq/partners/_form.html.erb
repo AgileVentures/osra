@@ -1,4 +1,4 @@
-<%= form_for [:hq, @partner] do |f| %>
+<%= form_for [:hq, @partner_facade.partner] do |f| %>
   <%= render 'shared/errors', object: f.object %>
   <div class="form-group">
     <%= f.label :name %>
@@ -15,12 +15,12 @@
   <div class="form-group">
     <%= f.label :province_id %>
     <%= f.collection_select :province_id,
-     @provinces, :id, :name , {},  class: "form-control", disabled: !f.object.new_record?%>
+     @partner_facade.provinces, :id, :name , {},  class: "form-control", disabled: !f.object.new_record?%>
   </div>
   <div class="form-group">
     <%= f.label :status_id %>
     <%= f.collection_select :status_id,
-      @statuses, :id, :name, {}, class: "form-control" %>
+      @partner_facade.statuses, :id, :name, {}, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :start_date %>
@@ -29,7 +29,7 @@
   <div class="form-group">
     <%= f.submit class: 'btn btn-primary' %>
     <%= link_to('Cancel',
-                (@partner.id ? hq_partner_path(@partner.id) : hq_partners_path),
+                (@partner_facade.partner.id ? hq_partner_path(@partner_facade.partner) : hq_partners_path),
                 class: 'btn btn-default btn-cancel', role: 'button') %>
   </div>
 <% end %>
