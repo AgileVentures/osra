@@ -2,7 +2,13 @@
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} features" : "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} #{rerun}"
 std_opts = "-r features --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip"
+std_opts_aa = "-r features/aa -r features/support --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip_aa"
+std_opts_hq = "-r features/hq -r features/support --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip_hq"
 %>
-default: <%= std_opts %> features
+default: <%= std_opts_aa %> features/aa
+aa: <%= std_opts_aa %> features/aa
+hq: <%= std_opts_hq %> features/hq
 wip: --tags @wip:3 --wip features
+wip_aa: --tags @wip_aa:3 --wip features/aa
+wip_hq: --tags @wip_hq:3 --wip features/hq
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip

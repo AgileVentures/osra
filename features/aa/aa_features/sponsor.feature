@@ -60,33 +60,33 @@ Feature:
   Scenario: I should see the required fields on the index page
     Given I am on the "Sponsors" page for the "Admin" role
     Then I should see the following fields on the page:
-    |  field             | value                  |
-    |  name              | Sponsor1               |
-    |  country           | United Kingdom         |
-    |  gender            | Active                 |
-    |  sponsor_type      | Individual             |
-    |  status            | Active                 |
-    |  start_date        | September 25, 2013     |
-    |  request_fulfilled | No                     |
+    |  field             | value                            |
+    |  name              | Sponsor1                         |
+    |  country           | (United Kingdom) المملكة المتحدة |
+    |  gender            | Active                           |
+    |  sponsor_type      | Individual                       |
+    |  status            | Active                           |
+    |  start_date        | September 25, 2013               |
+    |  request_fulfilled | No                               |
 
   Scenario: I should see the required fields on the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
     Then I should see the following fields on the page:
-    |  field                   | value                  |
-    |  name                    | Sponsor1               |
-    |  country                 | United Kingdom         |
-    |  gender                  | Active                 |
-    |  requested_orphan_count  | 15                     |
-    |  sponsor_type            | Individual             |
-    |  payment_plan            | Every Two Months       |
-    |  address                 | Address1               |
-    |  email                   | email1@example.com     |
-    |  contact1                | cd1                    |
-    |  contact2                | cd21                   |
-    |  additional_info         | additional1            |
-    |  status                  | Active                 |
-    |  start_date              | September 25, 2013     |
-    |  request_fulfilled       | No                     |
+    |  field                   | value                            |
+    |  name                    | Sponsor1                         |
+    |  country                 | (United Kingdom) المملكة المتحدة |
+    |  gender                  | Active                           |
+    |  requested_orphan_count  | 15                               |
+    |  sponsor_type            | Individual                       |
+    |  payment_plan            | Every Two Months                 |
+    |  address                 | Address1                         |
+    |  email                   | email1@example.com               |
+    |  contact1                | cd1                              |
+    |  contact2                | cd21                             |
+    |  additional_info         | additional1                      |
+    |  status                  | Active                           |
+    |  start_date              | September 25, 2013               |
+    |  request_fulfilled       | No                               |
 
   Scenario: Should be able to edit a sponsor from the sponsor show page
     Given I am on the "Show Sponsor" page for sponsor "Sponsor1"
@@ -169,3 +169,7 @@ Feature:
   Scenario: **Bug fix** When editing a sponsor, country selector defaults to sponsor's country
     Given I am on the "Edit Sponsor" page for sponsor "Sponsor1"
     Then the drop down box for "Country" should show "United Kingdom"
+
+  Scenario: **Bug fix** Country filter list should show full country names
+    Given I am on the "Sponsors" page for the "Admin" role
+    Then I should see full country names in the Country filter

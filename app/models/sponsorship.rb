@@ -4,7 +4,7 @@ class Sponsorship < ActiveRecord::Base
 
   before_create :set_orphan_status_to_sponsored
   before_validation(on: :create) { :set_active_to_true }
-  after_save :update_sponsor_request_fulfilled
+  after_save :update_sponsor
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -12,7 +12,7 @@ class Sponsorship < ActiveRecord::Base
   validates :start_date, presence: { scope: true, message: "is invalid"}
   validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
   
-  validates :end_date, presence: {scope: true, message: 'is invalid' }, if: '!active', if: 'active_changed?'
+  validates :end_date, presence: { message: 'is invalid' }, if: '!active'
   validate  :end_date_not_before_start_date, on: :update, if: :end_date
 
   validates :orphan, uniqueness: { scope: :active,
@@ -54,8 +54,8 @@ private
     self.orphan.update_sponsorship_status! 'Sponsored'
   end
 
-  def update_sponsor_request_fulfilled
-    self.sponsor.update_request_fulfilled!
+  def update_sponsor
+    self.sponsor.sponsorship_changed!
   end
 
   def set_orphan_status_to_previously_sponsored

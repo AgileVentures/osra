@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.2.0'
 
 gem 'rails', '~> 4.1.8'
 
@@ -8,6 +8,8 @@ gem 'pg'
 gem 'sass-rails', '~> 5.0.0'
 # sass powered version of bootstrap https://github.com/twbs/bootstrap-sass
 gem 'bootstrap-sass', '~> 3.3.1'
+# jquery datepicker and bootstrap-sass gem don't play nicely
+gem 'bootstrap-datepicker-rails'
 # gem to add browser vendor prefixes automatically. Recommended install for
 # bootstrap-sass
 gem 'autoprefixer-rails', '~> 4.0.2'
@@ -24,6 +26,7 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
+gem 'haml', '~> 4.0.6'  #[view] templating engine
 
 group :test do
   gem 'capybara'

@@ -1,7 +1,22 @@
 ActiveAdmin.register Sponsor do
 
-  preserve_default_filters!
   filter :gender, as: :select, collection: Settings.lookup.gender
+  filter :branch, as: :select, collection: proc { Branch.pluck(:name, :id) }
+  filter :organization, as: :select, collection: proc { Organization.pluck(:name, :id) }
+  filter :status, as: :select, collection: proc { Status.pluck(:name, :id) }
+  filter :sponsor_type, as: :select, collection: proc { SponsorType.pluck(:name, :id) }
+  filter :agent, as: :select, collection: proc { User.pluck(:user_name, :id) }
+  filter :country, as: :select, collection: proc {
+    Sponsor.distinct.pluck(:country).each_with_object({}) do |c, h|
+      h[ISO3166::Country[c].name] = c
+    end
+  }
+  filter :city, as: :select, collection: proc { Sponsor.distinct.pluck(:city).uniq.sort }
+  filter :created_at, as: :date_range
+  filter :updated_at, as: :date_range
+  filter :start_date, as: :date_range
+  filter :request_fulfilled, as: :boolean
+  filter :active_sponsorship_count, label: "Number of active sponsorships", as: :numeric
 
   actions :all, except: [:destroy]
 
@@ -16,8 +31,8 @@ ActiveAdmin.register Sponsor do
     column :start_date
     column :request_fulfilled
     column :sponsor_type
-    column :country do |sponsor|
-      ISO3166::Country.search(sponsor.country)
+    column :country do |_sponsor|
+      "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
     end
   end
 
@@ -35,8 +50,8 @@ ActiveAdmin.register Sponsor do
       row :payment_plan
       row :sponsor_type
       row :affiliate
-      row :country do
-        ISO3166::Country.search(sponsor.country)
+      row :country do |_sponsor|
+        "(#{ISO3166::Country[_sponsor.country]}) #{t _sponsor.country, locale: :ar}"
       end
       row :city
       row :address
@@ -62,7 +77,7 @@ ActiveAdmin.register Sponsor do
         column :orphan_date_of_birth
         column :orphan_gender
         column 'Sponsorship began' do |_sponsorship|
-          _sponsorship.start_date.strftime("%m/%Y")
+          format_short_date _sponsorship.start_date
         end
         column '' do |_sponsorship|
           form_submit_route= inactivate_admin_sponsor_sponsorship_path(sponsor_id: sponsor.id, id: _sponsorship.id)
@@ -84,10 +99,10 @@ ActiveAdmin.register Sponsor do
         column :orphan_date_of_birth
         column :orphan_gender
         column 'Sponsorship began' do |_sponsorship|
-          _sponsorship.start_date.strftime("%m/%Y")
+          format_short_date _sponsorship.start_date
         end
         column 'Sponsorship ended' do |_sponsorship|
-          _sponsorship.end_date.strftime("%m/%Y")
+          format_short_date _sponsorship.end_date
         end
       end
     end
@@ -132,6 +147,10 @@ ActiveAdmin.register Sponsor do
       f.action :submit
       f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
     end
+  end
+
+  action_item :new_sponsor, only: :show do
+    link_to "New Sponsor", new_admin_sponsor_path
   end
 
   action_item :link_to_orphan, only: :show do
