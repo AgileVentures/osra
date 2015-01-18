@@ -7,46 +7,48 @@
 <%- if @partners.empty? %>
   No Partners found
 <%- else %>
-  <table>
-    <thead>
-      <tr>
-        <th>
-          Osra Num
-        </th>
-        <th>
-          Name
-        </th>
-        <th>
-          Status
-        </th>
-        <th>
-          Start Date
-        </th>
-        <th>
-          Province
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <%- @partners.each do |partner| %>
+  <div class='table-responsive'>
+    <table class='table'>
+      <thead>
         <tr>
-          <td>
-            <%= link_to partner.osra_num, hq_partner_path(partner) %>
-          </td>
-          <td>
-            <%= link_to partner.name, hq_partner_path(partner) %>
-          </td>
-          <td>
-            <%= partner.status.name %>
-          </td>
-          <td>
-            <%= format_full_date partner.start_date %>
-          </td>
-          <td>
-            <%= partner.province.name %>
-          </td>
+          <th>
+            Osra Num
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Status
+          </th>
+          <th>
+            Start Date
+          </th>
+          <th>
+            Province
+          </th>
         </tr>
-      <%- end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <%- @partners.each do |partner| %>
+          <tr>
+            <td>
+              <%= link_to partner.osra_num, hq_partner_path(partner) %>
+            </td>
+            <td>
+              <%= link_to partner.name, hq_partner_path(partner) %>
+            </td>
+            <td>
+              <%= partner.status.name %>
+            </td>
+            <td>
+              <%= format_full_date partner.start_date %>
+            </td>
+            <td>
+              <%= partner.province.name %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
 <%- end %>
