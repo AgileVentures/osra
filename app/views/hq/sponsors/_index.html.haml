@@ -1,0 +1,38 @@
+- if sponsors.empty?
+  No Sponsors found
+- else
+  .table-responsive
+    %table.table
+      %thead
+        %tr
+          %th
+            Osra Num
+          %th
+            Name
+          %th
+            Status
+          %th
+            Start Date
+          %th
+            Request Fulfilled
+          %th
+            Sponsor Type
+          %th
+            Country
+      %tbody
+        - sponsors.each do |sponsor|
+          %tr
+            %td
+              = link_to sponsor.osra_num, hq_sponsor_path(sponsor)
+            %td
+              = link_to sponsor.name, hq_sponsor_path(sponsor)
+            %td
+              = sponsor.status.name
+            %td
+              = format_full_date sponsor.start_date
+            %td
+              = sponsor.request_fulfilled ? 'Yes' : 'No'
+            %td
+              = sponsor.sponsor_type.name
+            %td
+              = "(#{ISO3166::Country[sponsor.country]}) #{t sponsor.country, locale: :ar}"
