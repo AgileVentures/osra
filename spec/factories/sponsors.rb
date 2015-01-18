@@ -16,5 +16,6 @@ FactoryGirl.define do
     branch { Branch.all.sample if sponsor_type.name == 'Individual' }
     organization { Organization.all.sample if sponsor_type.name == 'Organization' }
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
+    agent
   end
 end

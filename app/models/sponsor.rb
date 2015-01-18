@@ -29,6 +29,7 @@ class Sponsor < ActiveRecord::Base
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email, with: Devise.email_regexp, allow_blank: true
   validate :type_matches_affiliation, on: :create
+  validates :agent, presence: true
 
   belongs_to :branch
   belongs_to :organization
