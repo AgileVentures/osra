@@ -21,6 +21,7 @@ Feature:
       | start_date             | 2013-09-25         | 2013-09-25            | 2013-09-25          |
       | status                 | Active             | Active                | Active              |
       | payment_plan           | Every Two Months   |                       | Other               |
+      | agent                  | Agent1             | Agent2                | Agent1              |
 
     And I am a new, authenticated user
 
