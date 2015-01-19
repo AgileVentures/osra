@@ -12,4 +12,10 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     expect(response).to render_template 'index'
   end
 
+  specify '#show' do
+    expect(Sponsor).to receive(:find).and_return(@sponsor)
+    get :show, id: @sponsor.id
+    expect(assigns(:sponsor)).to eq @sponsor
+    expect(response).to render_template 'show'
+  end
 end
