@@ -1,7 +1,4 @@
-class Hq::SponsorsController < ApplicationController
-  before_action :authenticate_admin_user!
-  layout 'application'
-
+class Hq::SponsorsController < HqController
   def index
     @sponsors= Sponsor.all
   end

@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Hq::PartnersController, type: :controller do
-  specify 'authentication' do
-    expect(Hq::PartnersController.superclass).to eq HqController
-  end
-end
-
-RSpec.describe Hq::PartnersController, type: :controller do
   before :each do
     sign_in instance_double(AdminUser)
   end

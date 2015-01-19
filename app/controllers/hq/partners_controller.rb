@@ -1,5 +1,4 @@
 class Hq::PartnersController < HqController
-
   def index
     @partners= Partner.all
   end

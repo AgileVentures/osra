@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Hq::UsersController, type: :controller do
-  specify 'authentication' do
-    expect(Hq::UsersController.superclass).to eq HqController
-  end
-end
-
-RSpec.describe Hq::UsersController, type: :controller do
   before :each do
     sign_in instance_double(AdminUser)
     @user = build_stubbed :user
