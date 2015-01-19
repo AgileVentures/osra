@@ -26,21 +26,21 @@ RSpec.describe Hq::PartnersController, type: :controller do
   end
 
   context '#new and #create' do
-    let(:partner_double) { instance_double Partner, :attributes= => true }
-    
+    let(:partner) { build_stubbed :partner }
+
     before :each do
-      controller.instance_variable_set(:@partner, partner_double)
+      controller.instance_variable_set(:@partner, partner)
     end
-    
+
     specify 'successful create redirects to the show view' do
-      expect(partner_double).to receive(:save).and_return(true)
-      post :create, partner: {}
-      expect(response).to redirect_to hq_partner_path(partner_double)
+      expect(partner).to receive(:save).and_return(true)
+      post :create, partner: partner.attributes
+      expect(response).to redirect_to hq_partner_path(partner)
     end
 
     specify 'unsuccessful create renders the new view' do
-      expect(partner_double).to receive(:save).and_return(false)
-      post :create, partner: {}
+      expect(partner).to receive(:save).and_return(false)
+      post :create, partner: partner.attributes
       expect(response).to render_template 'new'
     end
 
@@ -60,13 +60,13 @@ RSpec.describe Hq::PartnersController, type: :controller do
 
     specify 'unsuccessful update renders the edit view' do
       expect(@partner).to receive(:save).and_return(false)
-      patch :update, id: @partner.id
+      patch :update, id: @partner.id, partner: @partner.attributes
       expect(response).to render_template 'edit'
     end
 
     specify 'successful update redirects to the show view' do
       expect(@partner).to receive(:save).and_return(true)
-      patch :update, id: @partner.id
+      patch :update, id: @partner.id, partner: @partner.attributes
       expect(response).to redirect_to(hq_partner_path(@partner))
     end
 
