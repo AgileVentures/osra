@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe 'hq/sponsors/edit.html.haml', type: :view do
   before :each do
     assign :sponsor, build_stubbed(:sponsor)
-    assign :statuses, Status.all
-    assign :sponsor_types, SponsorType.all
-    assign :organizations, Organization.all
-    assign :branches, Branch.all
-    assign :cities, Sponsor.all_cities.unshift(Sponsor::NEW_CITY_MENU_OPTION)
+    assign :statuses, []
+    assign :sponsor_types, []
+    assign :organizations, []
+    assign :branches, []
+    assign :cities, []
   end
 
   it 'renders the form partial' do

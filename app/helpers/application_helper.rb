@@ -25,11 +25,11 @@ module ApplicationHelper
     temp_list= []
     select_list= ISO3166::Country.all.map {|c| [ en_ar_country(c[1]), c[1] ] }
 
-    select_list.reject! do |country| 
+    select_list.reject! do |country| #reject excluded countries
       EXCLUDED_COUNTRYS.any? {|excluded| excluded == country[1] }
     end
 
-    PRIORITY_COUNTRIES.each do |priority|
+    PRIORITY_COUNTRIES.each do |priority|  #move prioriry countries to top of the list
       select_list.each_with_index do |v,k|
         if !v.nil? and priority == v[1]
           temp_list << v

@@ -29,14 +29,14 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     specify 'successful' do
       expect(Sponsor).to receive(:find).and_return(@sponsor)
       expect(@sponsor).to receive(:save).and_return(true)
-      put :update, id: @sponsor.id, sponsor: @sponsor.attributes #, name: 'Some Name'
-      expect(response).to redirect_to hq_sponsors_url  #will be #show once implemented
+      put :update, id: @sponsor.id, sponsor: @sponsor.attributes
+      expect(response).to redirect_to hq_sponsors_url             #will be #show once implemented
     end
 
     specify 'unsuccessful' do
       expect(Sponsor).to receive(:find).and_return(@sponsor)
       expect(@sponsor).to receive(:save).and_return(false)
-      put :update, id: @sponsor.id, sponsor: @sponsor.attributes #, name: 'Some Name'
+      put :update, id: @sponsor.id, sponsor: @sponsor.attributes
       expect(response).to render_template 'edit'
     end
   end

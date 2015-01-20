@@ -16,6 +16,11 @@ FactoryGirl.define do
     branch { Branch.all.sample if sponsor_type.name == 'Individual' }
     organization { Organization.all.sample if sponsor_type.name == 'Organization' }
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
+    address { "#{Faker::Address.street_name} #{Faker::Address.building_number.to_s}" }
+    email { Faker::Internet.email }
+    contact1 { Faker::PhoneNumber.phone_number }
+    contact2 { Faker::PhoneNumber.cell_phone }
+    additional_info { Faker::Lorem.sentence }
     agent
   end
 end
