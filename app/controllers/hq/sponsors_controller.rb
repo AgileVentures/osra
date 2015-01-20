@@ -8,7 +8,7 @@ class Hq::SponsorsController < HqController
   end
 
   def edit
-    # @sponsor= Sponsor.new
+    # @sponsor= Sponsor.new   for testing #new
     load_partner
     load_associations
   end
