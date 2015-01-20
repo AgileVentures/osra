@@ -8,7 +8,7 @@
 </dl>
 <div class="active_sponsors">
   <%= pluralize(@user.active_sponsors.count.to_s, 'Active Sponsor') %>
-  <% if @user.active_sponsors.count > 0 %>
+  <% if @user.sponsors.count > 0 %>
     <div class="active_sponsors_index">
       <%= render partial: 'hq/sponsors/index.html.haml', locals: {sponsors: @user.active_sponsors} %>
     </div>
@@ -16,7 +16,7 @@
 </div>
 <div class="inactive_sponsors">
   <%= pluralize(@user.inactive_sponsors.count.to_s, 'Inactive Sponsor') %>
-  <% if @user.inactive_sponsors.count > 0 %>
+  <% if @user.sponsors.count > 0 %>
     <div class="inactive_sponsors_index">
       <%= render partial: 'hq/sponsors/index.html.haml', locals: {sponsors: @user.inactive_sponsors} %>
     </div>
