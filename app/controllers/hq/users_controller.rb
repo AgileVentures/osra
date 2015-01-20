@@ -1,9 +1,5 @@
-class Hq::UsersController < ApplicationController
-  before_action :authenticate_admin_user!
-  layout 'application'
-
+class Hq::UsersController < HqController
   def index
     @users = User.all
   end
-
 end
