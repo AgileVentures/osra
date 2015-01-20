@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'cgi'
 
 RSpec.describe "hq/sponsors/_index.html.haml", type: :view do
   describe 'sponsors exist' do
@@ -38,7 +39,7 @@ RSpec.describe "hq/sponsors/_index.html.haml", type: :view do
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|
       example "#{attrib}" do
-        eval "expect(rendered).to match sponsor.#{attrib}.to_s"
+        eval "expect(rendered).to match CGI::escape_html(sponsor.#{attrib}.to_s)"
       end
     end
   end

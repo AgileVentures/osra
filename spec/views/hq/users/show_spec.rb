@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'cgi'
 
 RSpec.describe 'hq/users/show.html.erb', type: :view do
   describe 'user' do
@@ -11,11 +12,11 @@ RSpec.describe 'hq/users/show.html.erb', type: :view do
 
     describe 'displays' do
       specify 'user name' do
-        expect(rendered).to match user.user_name
+        expect(rendered).to match CGI::escape_html(user.user_name)
       end
 
       specify 'email address' do
-        expect(rendered).to match user.email
+        expect(rendered).to match CGI::escape_html(user.email)
       end
     end
   end
