@@ -35,4 +35,4 @@
             %td
               = sponsor.sponsor_type.name
             %td
-              = "(#{ISO3166::Country[sponsor.country]}) #{t sponsor.country, locale: :ar}"
+              = en_ar_country(sponsor.country)
