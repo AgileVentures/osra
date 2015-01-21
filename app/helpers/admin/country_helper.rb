@@ -8,5 +8,4 @@ module Admin::CountryHelper
 
     ("(#{en_country}) #{ar_country}").html_safe
   end
-  
 end
