@@ -178,6 +178,6 @@ Feature:
   Scenario: **Bug fix** Display 'Translation N/A' when translation missing
     Given "Obscure Sponsor" is from Cayman Islands-KY
     And I am on the "Sponsors" page for the "Admin" role
-    Then I should see "(Cayman Islands) [Translation N/A]"
+    Then I should see "(Cayman Islands) Translation N/A"
     When I am on the "Show Sponsor" page for sponsor "Obscure Sponsor"
-    Then I should see "(Cayman Islands) [Translation N/A]"
+    Then I should see "(Cayman Islands) Translation N/A"

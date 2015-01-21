@@ -1,100 +1,105 @@
 = form_for [:hq, @sponsor] do |f|
   = render 'shared/errors', object: f.object
 
-  %div.form-group
+  .form-group
     = f.label :name
     = f.text_field :name, class: "form-control"
-  %div.form-group
+  .form-group
     = f.label :status_id
     = f.collection_select :status_id, @statuses, :id, :name, {}, 
           class: "form-control"
-  %div.form-group
+  .form-group
     = f.label :gender
     = f.select :gender, Settings.lookup.gender, {}, class: "form-control"
-  %div.form-group
+  .form-group
     = f.label :start_date
     = f.text_field :start_date, class: "form-control date-picker"
-  %div.form-group
+  .form-group
     = f.label :requested_orphan_count
     = f.text_field :requested_orphan_count, class: "form-control"
-  - unless f.object.new_record?
-    %div.form-group
-      = f.label :request_fulfilled
-      = f.check_box :request_fulfilled, {disabled: true, class: "checkbox"}, f.object.request_fulfilled ? 1 : 0
 
 
   - if f.object.new_record?    
-    %div.form-group
+    .form-group
       = f.label :sponsor_type
       = f.collection_select :sponsor_type_id, @sponsor_types, :id, :name, 
             {}, class: "form-control"
-    %div.form-group
+    .form-group
       = f.label :organization
       = f.collection_select :organization_id, @organizations, :id, :name, 
             {include_blank: true}, class: "form-control"
-    %div.form-group
+    .form-group
       = f.label :branch
       = f.collection_select :branch_id, @branches, :id, :name,
             {include_blank: true}, class: "form-control"
   - else
-    %div.form-group
+    .form-group
+      = f.label :request_fulfilled
+      = f.check_box :request_fulfilled, 
+          {disabled: true, checked: f.object.request_fulfilled, class: "checkbox"},
+          "#{bool_to_int f.object.request_fulfilled}"
+    .form-group
       = f.label :sponsor_type
       = f.collection_select :sponsor_type_id, @sponsor_types, :id, :name, 
             {}, {class: "form-control", disabled: true}
-    %div.form-group
+    .form-group
       = f.label :organization
       = f.collection_select :organization_id, @organizations, :id, :name, 
             {include_blank: true},  {class: "form-control", disabled: true}
-    %div.form-group
+    .form-group
       = f.label :branch
       = f.collection_select :branch_id, @branches, :id, :name, 
             {include_blank: true},  {class: "form-control", disabled: true}
 
 
-  %div.form-group
+  .form-group
     = f.label :payment_plan
     = f.select :payment_plan, Sponsor::PAYMENT_PLANS, 
           {include_blank: true}, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :country
-    = f.select :country, country_select_list, {disabled: ""}, class: "form-control"
+    = country_select("sponsor", "country",
+                     { format: :en_ar, 
+                       priority_countries: Sponsor::PRIORITY_COUNTRIES, 
+                       except: Sponsor::EXCLUDED_COUNTRYS }, 
+                     { class: "form-control" })
 
-  %div.form-group
+  .form-group
     = f.label :city
     = f.select :city, @cities, {}, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :new_city_name
     = f.text_field :new_city_name, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :address
     = f.text_field :address, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :email
     = f.text_field :email, {class: "form-control", type: "email"}
 
-  %div.form-group
+  .form-group
     = f.label :contact1
     = f.text_field :contact1, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :contact2
     = f.text_field :contact2, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :additional_info
     = f.text_field :additional_info, class: "form-control"
 
-  %div.form-group
+  .form-group
     = f.label :agent
     = f.select :agent_id, User.pluck(:user_name, :id), 
           {include_blank: true}, class: "form-control"
  
-  %div.form-group
+  .form-group
     = f.submit class: 'btn btn-primary'
     = link_to 'Cancel',
-                (@sponsor.id ? hq_sponsor_path(@sponsor.id) : hq_sponsors_path),
+                "#{cancel_button_link f.object}",
                 class: 'btn btn-default btn-cancel', role: 'button'

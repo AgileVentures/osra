@@ -17,7 +17,8 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     get :show, id: @sponsor.id
     expect(assigns(:sponsor)).to eq @sponsor
     expect(response).to render_template 'show'
-
+  end
+  
   specify '#edit' do
     expect(Sponsor).to receive(:find).and_return(@sponsor)
     get :edit, id: @sponsor.id

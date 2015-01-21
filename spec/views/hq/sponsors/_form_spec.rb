@@ -3,7 +3,10 @@ require 'cgi'
 
 RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   let(:user) { build_stubbed :user}
-  let(:sponsor_full) { build_stubbed :sponsor_full, agent: user, request_fulfilled: [true, false].sample }
+  let(:sponsor_full) do 
+    build_stubbed :sponsor_full, agent: user,
+                   request_fulfilled: [true, false].sample
+  end
   let(:sponsor_new) { Sponsor.new }
 
   before :each do
@@ -68,12 +71,13 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
         assert_select "[disabled=?]", "disabled"
         assert_select "[value=?]", sponsor_full.request_fulfilled ? "1" : "0"
         assert_select "[checked]", true if sponsor_full.request_fulfilled
+        assert_select "[checked]", false if !sponsor_full.request_fulfilled
       end
 
       assert_select "select#sponsor_sponsor_type_id" do
         assert_select "[disabled=?]", "disabled"
         assert_select "option", value: sponsor_full.sponsor_type_id,
-                                html: CGI::escape_html(sponsor_full.sponsor_type.name) do
+          html: CGI::escape_html(sponsor_full.sponsor_type.name) do
             assert_select "[selected=?]", "selected"
         end
       end
@@ -81,13 +85,17 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       assert_select "select#sponsor_organization_id" do
         assert_select "[disabled=?]", "disabled"
         assert_select "option", value: sponsor_full.organization_id
-        assert_select "option", html: CGI::escape_html(sponsor_full.organization.name) if sponsor_full.organization
+        assert_select "option", 
+            html: CGI::escape_html(sponsor_full.organization.name) if sponsor_full.organization
+        assert_select "option", value: false if !sponsor_full.organization
       end
 
       assert_select "select#sponsor_branch_id" do
         assert_select "[disabled=?]", "disabled"
         assert_select "option", value: sponsor_full.branch_id
-        assert_select "option", html: CGI::escape_html(sponsor_full.branch.name) if sponsor_full.branch
+        assert_select "option", 
+            html: CGI::escape_html(sponsor_full.branch.name) if sponsor_full.branch
+        assert_select "option", value: false if !sponsor_full.branch
       end
 
       assert_select "select#sponsor_payment_plan" do
@@ -110,28 +118,40 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       end
 
       assert_select "input#sponsor_address" do
-        assert_select "[value=?]", CGI::escape_html(sponsor_full.address) if sponsor_full.address
+        assert_select "[value=?]", 
+            CGI::escape_html(sponsor_full.address) if sponsor_full.address
+        assert_select "[value]", false if !sponsor_full.address
       end
 
       assert_select "input#sponsor_email" do
-        assert_select "[value=?]", CGI::escape_html(sponsor_full.email) if sponsor_full.email
+        assert_select "[value=?]", 
+            CGI::escape_html(sponsor_full.email) if sponsor_full.email
+        assert_select "[value]", false if !sponsor_full.email
       end
 
       assert_select "input#sponsor_contact1" do
-        assert_select "[value=?]", CGI::escape_html(sponsor_full.contact1) if sponsor_full.contact1
+        assert_select "[value=?]", 
+            CGI::escape_html(sponsor_full.contact1) if sponsor_full.contact1
+        assert_select "[value]", false if !sponsor_full.contact1
       end
 
       assert_select "input#sponsor_contact2" do
-        assert_select "[value=?]", CGI::escape_html(sponsor_full.contact2) if sponsor_full.contact2
+        assert_select "[value=?]", 
+            CGI::escape_html(sponsor_full.contact2) if sponsor_full.contact2
+        assert_select "[value]", false if !sponsor_full.contact2
       end
 
       assert_select "input#sponsor_additional_info" do
-        assert_select "[value=?]", CGI::escape_html(sponsor_full.additional_info) if sponsor_full.additional_info
+        assert_select "[value=?]", 
+            CGI::escape_html(sponsor_full.additional_info) if sponsor_full.additional_info
+        assert_select "[value]", false if !sponsor_full.additional_info
       end
 
       assert_select "select#sponsor_agent_id" do
         assert_select "option", value: sponsor_full.agent_id
-        assert_select "option", html: CGI::escape_html(sponsor_full.agent.user_name) if sponsor_full.agent
+        assert_select "option", 
+            html: CGI::escape_html(sponsor_full.agent.user_name) if sponsor_full.agent
+        assert_select "option", value: false if !sponsor_full.agent
       end
 
       assert_select "input", type: "submit"
