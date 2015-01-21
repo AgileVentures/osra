@@ -2,6 +2,8 @@ class Sponsor < ActiveRecord::Base
   include Initializer
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+  PRIORITY_COUNTRIES= %w(SA TR AE GB)
+  EXCLUDED_COUNTRYS= %w(IL)
 
   attr_accessor :new_city_name
   attr_readonly :branch_id, :organization_id, :sponsor_type_id

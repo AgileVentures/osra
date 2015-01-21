@@ -96,6 +96,5 @@
   %div.form-group
     = f.submit class: 'btn btn-primary'
     = link_to 'Cancel',
-                (@sponsor.id ? hq_sponsors_path : hq_sponsors_path),
+                (@sponsor.id ? hq_sponsor_path(@sponsor.id) : hq_sponsors_path),
                 class: 'btn btn-default btn-cancel', role: 'button'
-    /(@sponsor.id ? hq_sponsor_path(@sponsor.id) : hq_sponsors_path)

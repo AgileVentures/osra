@@ -8,7 +8,6 @@ class Hq::SponsorsController < HqController
   end
 
   def edit
-    # @sponsor= Sponsor.new   #for testing #new
     load_partner
     load_associations
   end
@@ -41,7 +40,7 @@ private
   def save_sponsor
     if @sponsor.save
       flash[:success]= "Sponsor successfuly saved"
-      redirect_to hq_sponsors_url #will be: hq_sponsor_url(@sponsor)
+      redirect_to hq_sponsor_url(@sponsor)
     end
   end
 
@@ -50,7 +49,7 @@ private
     render view
   end
 
-  def sponsor_params   #for #create we don't permit :sponsor_type_id, :organization_id, :branch_id. security issue?!?
+  def sponsor_params
     params.require(:sponsor)
         .permit(:name, :address, :country, :email, :contact1, :contact2,
                 :additional_info, :status_id, :start_date, :sponsor_type_id,
