@@ -1,14 +1,14 @@
 require 'rails_helper'
 require 'cgi'
 
-RSpec.describe "hq/sponsors/_index.html.haml", type: :view do
+RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
   describe 'sponsors exist' do
     let(:sponsors) do
       [FactoryGirl.build_stubbed(:sponsor), FactoryGirl.build_stubbed(:sponsor)]
     end
 
     before :each do
-      render :partial => 'hq/sponsors/index.html.haml', :locals => {:sponsors => sponsors}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors}
     end
 
     it 'should render something besides "No Sponsors found"' do
@@ -25,7 +25,7 @@ RSpec.describe "hq/sponsors/_index.html.haml", type: :view do
 
   describe 'no sponsors exist' do
     it 'should indicate no sponsors were found' do
-      render partial: 'hq/sponsors/index.html.haml', locals: {sponsors: []}
+      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: []}
       expect(rendered).to match /No Sponsors found/
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe "hq/sponsors/_index.html.haml", type: :view do
     let(:sponsor) { FactoryGirl.build_stubbed(:sponsor) }
 
     before :each do
-      render :partial => 'hq/sponsors/index.html.haml', :locals => {:sponsors => [sponsor]}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor]}
     end
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|

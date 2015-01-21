@@ -25,7 +25,7 @@ RSpec.describe 'hq/users/show.html.erb', type: :view do
     assign :user, FactoryGirl.build_stubbed(:user)
     render
 
-    expect(view).to_not render_template partial: 'hq/sponsors/index.html.haml',
+    expect(view).to_not render_template partial: 'hq/sponsors/sponsors.html.haml',
                                       locals: {sponsors: []}
   end
 
@@ -44,12 +44,12 @@ RSpec.describe 'hq/users/show.html.erb', type: :view do
     end
 
     specify 'inactive' do
-      expect(view).to render_template partial: 'hq/sponsors/index.html.haml',
+      expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
                                       locals: {sponsors: user.sponsors.all_active}
     end
 
     specify 'active' do
-      expect(view).to render_template partial: 'hq/sponsors/index.html.haml',
+      expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
                                       locals: {sponsors: user.sponsors.all_inactive}
     end
   end
