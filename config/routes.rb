@@ -21,6 +21,7 @@ Osra::Application.routes.draw do
   root to: "admin/dashboard#index"
 
   #build a new sponsorship on the Orphan class instead of the Sponsorship class
-  get '/admin/sponsors/:sponsor_id/sponsorships/new', to: 'admin/orphans#index', as: :new_sponsorship
+  # replace ", to:" with shorthand "=>"
+  get '/admin/sponsors/:sponsor_id/sponsorships/new' => 'admin/orphans#index', as: :new_sponsorship
 
 end

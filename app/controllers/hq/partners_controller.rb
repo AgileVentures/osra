@@ -18,6 +18,7 @@ class Hq::PartnersController < HqController
     begin
       @partner= Partner.find(params[:id])
     rescue ActiveRecord::RecordNotFound
+      # Add warn method to log for easier tracking with logging software (Papertrail for OSRA)
       logger.warn 'A user tried to visit sponsor that does not exist'
       flash[:error] = 'Sponsor not found.'
       redirect_to :back
