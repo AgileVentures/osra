@@ -14,7 +14,14 @@ class Hq::PartnersController < HqController
   end
 
   def show
-    @partner= Partner.find(params[:id])
+    request.env['HTTP_REFERER'] ||= hq_partners_path
+    begin
+      @partner= Partner.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      logger.warn 'A user tried to visit sponsor that does not exist'
+      flash[:error] = 'Sponsor not found.'
+      redirect_to :back
+    end
   end
 
   def edit
