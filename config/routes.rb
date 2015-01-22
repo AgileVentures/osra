@@ -24,4 +24,8 @@ Osra::Application.routes.draw do
   # replace ", to:" with shorthand "=>"
   get '/admin/sponsors/:sponsor_id/sponsorships/new' => 'admin/orphans#index', as: :new_sponsorship
 
+  # just for fun - the value of `to:` is a Rack endpoint
+  # meaning that it can easily map to a Rack app - e.g. one built in Sinatra
+  get '/hello', to: proc { |env| [200, {}, ['Hello world!']] }
+
 end
