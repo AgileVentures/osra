@@ -9,6 +9,8 @@ Osra::Application.routes.draw do
         # DRY collection routes declaration
         collection do
           get 'upload' # new?
+          # consider extracting 'validate' & 'import' into own controller(s)
+          # nested under pending_orphan_lists
           post 'validate' # create?
           post 'import'
         end
