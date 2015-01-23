@@ -5,10 +5,13 @@ Osra::Application.routes.draw do
     resources :partners, except: [:destroy], shallow: true do
       resources :orphan_lists, only: [:index]
       resources :pending_orphan_lists do
-        delete 'destroy', on: :member
-        get 'upload', on: :collection
-        post 'validate', on: :collection
-        post 'import', on: :collection
+        # delete 'destroy', on: :member - redundant, get this with `resources`
+        # DRY collection routes declaration
+        collection do
+          get 'upload'
+          post 'validate'
+          post 'import'
+        end
       end
     end
     resources :users, except: [:destroy]
