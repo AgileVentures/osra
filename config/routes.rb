@@ -4,12 +4,12 @@ Osra::Application.routes.draw do
     # :shallow option shortens URLs when possible
     resources :partners, except: [:destroy], shallow: true do
       resources :orphan_lists, only: [:index]
-      resources :pending_orphan_lists do
+      resources :pending_orphan_lists do # , path_names: { new: 'upload', create: 'validate' }
         # delete 'destroy', on: :member - redundant, get this with `resources`
         # DRY collection routes declaration
         collection do
-          get 'upload'
-          post 'validate'
+          get 'upload' # new?
+          post 'validate' # create?
           post 'import'
         end
       end
