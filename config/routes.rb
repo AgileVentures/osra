@@ -1,7 +1,8 @@
 Osra::Application.routes.draw do
 
   namespace :hq do
-    resources :partners, except: [:destroy] do
+    # :shallow option shortens URLs when possible
+    resources :partners, except: [:destroy], shallow: true do
       resources :orphan_lists, only: [:index]
       resources :pending_orphan_lists do
         delete 'destroy', on: :member
