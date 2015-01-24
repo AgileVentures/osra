@@ -9,32 +9,33 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   end
   let(:sponsor_new) { Sponsor.new }
 
-  before :each do
-    assign :sponsor, sponsor_full
-    assign :statuses, Status.all
-    assign :sponsor_types, SponsorType.all
-    assign :organizations, Organization.all
-    assign :branches, Branch.all
-    assign :cities, [sponsor_full.city].unshift(Sponsor::NEW_CITY_MENU_OPTION)
+  def render_sponsor_form current_sponsor
+    render partial: 'hq/sponsors/form.html.haml',
+                          locals: { sponsor: current_sponsor,
+                                    statuses: Status.all,
+                                    sponsor_types: SponsorType.all,
+                                    organizations: Organization.all,
+                                    branches: Branch.all,
+                                    cities: [sponsor_full.city].
+                                              unshift(Sponsor::NEW_CITY_MENU_OPTION)
+                                  }
   end
 
   specify 'has a form' do
-    render
+    render_sponsor_form sponsor_new
 
     assert_select 'form'
   end
 
   describe 'has a "Cancel" button' do
     specify 'using an existing Sponsor record' do
-      allow(sponsor_full).to receive(:id).and_return sponsor_full.id
-      render
+      render_sponsor_form sponsor_full
 
       assert_select 'a[href=?]', hq_sponsor_path(sponsor_full.id), text: 'Cancel'
     end
 
     specify 'using a new Sponsor record' do
-      allow(sponsor_full).to receive(:id).and_return nil
-      render
+      render_sponsor_form sponsor_new
 
       assert_select 'a[href=?]', hq_sponsors_path, text: 'Cancel'
     end
@@ -43,7 +44,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   describe 'has form values' do
     specify 'using an existing Sponsor record' do
       allow(User).to receive(:pluck).and_return([user.user_name, user.id])
-      render
+      render_sponsor_form sponsor_full
 
       #fextfields
       ["name", "requested_orphan_count", "start_date", "new_city_name", "address", "email",
@@ -69,8 +70,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
 
       assert_select "input#sponsor_request_fulfilled" do
         assert_select "[disabled=?]", "disabled"
-          assert_select "[checked]", sponsor_full.request_fulfilled
-        end
+        assert_select "[checked]", sponsor_full.request_fulfilled
       end
 
       assert_select "select#sponsor_sponsor_type_id" do
@@ -113,7 +113,6 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
         assert_select "option", value: sponsor_full.country do
           assert_select "[selected]", html: CGI::escape_html(en_ar_country(sponsor_full.country).strip)
         end
-
       end
 
       assert_select "select#sponsor_city" do
@@ -135,8 +134,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
     end
 
     specify "using a new Sponsor record" do
-      assign :sponsor, sponsor_new
-      render
+      render_sponsor_form sponsor_new
 
       assert_select "input#sponsor_name" do
         assert_select "[value]", false
@@ -151,7 +149,6 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
         end
       end
     end
-
   end
 
 end

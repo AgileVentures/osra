@@ -27,7 +27,7 @@ private
     @branches= Branch.all
     @cities= Sponsor.all_cities.unshift(Sponsor::NEW_CITY_MENU_OPTION)
   end
-  
+
   def build_partner
     @sponsor||= Sponsor.new
     @sponsor.attributes= sponsor_params

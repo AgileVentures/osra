@@ -1,2 +1,2 @@
 %h1 Edit Partner #{@sponsor.name}, OSRA number #{@sponsor.osra_num}
-= render partial: 'form'
+= render partial: 'form', locals: { sponsor: @sponsor, statuses: @statuses, sponsor_types: @sponsor_types, organizations: @organizations, branches: @branches, cities: @cities } 

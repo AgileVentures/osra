@@ -1,57 +1,47 @@
-= form_for [:hq, @sponsor] do |f|
+= form_for [:hq, sponsor] do |f|
   = render 'shared/errors', object: f.object
 
   .form-group
     = f.label :name
     = f.text_field :name, class: "form-control"
+
   .form-group
     = f.label :status_id
-    = f.collection_select :status_id, @statuses, :id, :name, {},
+    = f.collection_select :status_id, statuses, :id, :name, {},
           class: "form-control"
+
   .form-group
     = f.label :gender
     = f.select :gender, Settings.lookup.gender, {}, class: "form-control"
+
   .form-group
     = f.label :start_date
     = f.text_field :start_date, class: "form-control date-picker"
+
   .form-group
     = f.label :requested_orphan_count
     = f.text_field :requested_orphan_count, class: "form-control"
 
-
-  - if f.object.new_record?
+  - if !f.object.new_record?
     .form-group
-      = f.label :sponsor_type
-      = f.collection_select :sponsor_type_id, @sponsor_types, :id, :name,
-            {}, class: "form-control"
-    .form-group
-      = f.label :organization
-      = f.collection_select :organization_id, @organizations, :id, :name,
-            {include_blank: true}, class: "form-control"
-    .form-group
-      = f.label :branch
-      = f.collection_select :branch_id, @branches, :id, :name,
-            {include_blank: true}, class: "form-control"
-  - else
-    .form-group
-      - f.object.request_fulfilled = true
       = f.label :request_fulfilled
       = f.check_box :request_fulfilled,
-          {disabled: true, checked: f.object.request_fulfilled, class: "checkbox"}
+          {disabled: !f.object.new_record?, class: "checkbox"}
 
-    .form-group
-      = f.label :sponsor_type
-      = f.collection_select :sponsor_type_id, @sponsor_types, :id, :name,
-            {}, {class: "form-control", disabled: true}
-    .form-group
-      = f.label :organization
-      = f.collection_select :organization_id, @organizations, :id, :name,
-            {include_blank: true},  {class: "form-control", disabled: true}
-    .form-group
-      = f.label :branch
-      = f.collection_select :branch_id, @branches, :id, :name,
-            {include_blank: true},  {class: "form-control", disabled: true}
+  .form-group
+    = f.label :sponsor_type
+    = f.collection_select :sponsor_type_id, sponsor_types, :id, :name,
+          {}, {class: "form-control", disabled: !f.object.new_record?}
 
+  .form-group
+    = f.label :organization
+    = f.collection_select :organization_id, organizations, :id, :name,
+          {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
+
+  .form-group
+    = f.label :branch
+    = f.collection_select :branch_id, branches, :id, :name,
+          {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
 
   .form-group
     = f.label :payment_plan
@@ -62,13 +52,14 @@
     = f.label :country
     = country_select("sponsor", "country",
                      { format: :en_ar,
+                       selected: f.object.country,
                        priority_countries: Sponsor::PRIORITY_COUNTRIES,
                        except: Sponsor::EXCLUDED_COUNTRYS },
                      { class: "form-control" })
 
   .form-group
     = f.label :city
-    = f.select :city, @cities, {}, class: "form-control"
+    = f.select :city, cities, {}, class: "form-control"
 
   .form-group
     = f.label :new_city_name
