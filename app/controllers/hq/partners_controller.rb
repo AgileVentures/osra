@@ -10,7 +10,7 @@ class Hq::PartnersController < HqController
 
   def create
     build_partner
-    save_partner or re_render 'new'
+    save_partner or re_render 'new' and return # good standard practice to avoid DoubleRenderError
   end
 
   def show
@@ -20,8 +20,8 @@ class Hq::PartnersController < HqController
       # Add warn method to log for easier tracking with logging software
       # (Papertrail in OSRA's case)
       # This should never happen - code error or user error?
-      logger.warn 'A user tried to visit sponsor that does not exist'
-      flash[:error] = 'Sponsor not found.'
+      logger.warn 'A user tried to visit partner that does not exist'
+      flash[:error] = 'Partner not found.'
       redirect_to_back_or_default
     end
   end
@@ -34,7 +34,7 @@ class Hq::PartnersController < HqController
   def update
     load_partner
     build_partner
-    save_partner or re_render 'edit'
+    save_partner or re_render 'edit' and return # good standard practice to avoid DoubleRenderError
   end
 
 private
