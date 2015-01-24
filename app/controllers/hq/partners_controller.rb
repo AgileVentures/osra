@@ -14,14 +14,15 @@ class Hq::PartnersController < HqController
   end
 
   def show
-    request.env['HTTP_REFERER'] ||= hq_partners_path
     begin
       @partner= Partner.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      # Add warn method to log for easier tracking with logging software (Papertrail for OSRA)
+      # Add warn method to log for easier tracking with logging software
+      # (Papertrail in OSRA's case)
+      # This should never happen - code error or user error?
       logger.warn 'A user tried to visit sponsor that does not exist'
       flash[:error] = 'Sponsor not found.'
-      redirect_to :back
+      redirect_to_back_or_default
     end
   end
 
@@ -69,5 +70,14 @@ private
                   :province_id, :status_id, :start_date)
   end
 
+  # This would be in application_controller or a shared module
+  def redirect_to_back_or_default(default = root_path)
+    referer = request.env['HTTP_REFERER']
+    if referer.present? && referer != request.env['REQUEST_URI']
+      redirect_to :back
+    else
+      redirect_to default
+    end
+  end
 end
 
