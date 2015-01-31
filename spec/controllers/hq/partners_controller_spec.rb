@@ -48,4 +48,11 @@ RSpec.describe Hq::PartnersController, type: :controller do
       expect(response).to redirect_to(hq_partner_path(@partner))
     end
   end
+
+  describe 'index' do
+    specify 'pagination' do
+      expect(Partner).to receive_message_chain(:all, :paginate).with(page: "2").and_return([].paginate)
+      get :index, page: "2"
+    end
+  end
 end
