@@ -5,7 +5,7 @@ describe "hq/users/index.html.erb", type: :view do
 
   context 'class action-items' do
     it 'should have a New User link' do
-      assign(:users, [])
+      assign(:users, [].paginate)
       render
       expect(rendered).to have_link('New User', new_hq_user_path)
     end
@@ -14,7 +14,7 @@ describe "hq/users/index.html.erb", type: :view do
   describe 'should display users correctly' do
     context 'no users' do
       it 'hides the table' do
-        @users = []
+        @users = [].paginate
         render
 
         expect(rendered).to match /No Users Found/
