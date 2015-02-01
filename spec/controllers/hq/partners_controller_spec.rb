@@ -50,7 +50,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
   end
 
-  describe 'index' do
+  describe '#index' do
     specify 'pagination' do
       expect(Partner).to receive(:paginate).with(page: "2").and_return([].paginate)
       get :index, page: "2"

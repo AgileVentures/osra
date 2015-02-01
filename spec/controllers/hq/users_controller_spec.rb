@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'will_paginate/array'
 
 RSpec.describe Hq::UsersController, type: :controller do
 
@@ -7,9 +8,9 @@ RSpec.describe Hq::UsersController, type: :controller do
     @user = build_stubbed :user
   end
 
-  it '#index' do
-    expect(User).to receive(:all).and_return(@user)
-    get :index
+  specify '#index' do
+    expect(User).to receive_message_chain(:all, :paginate).with(page: '2').and_return([@user].paginate)
+    get :index, page: '2'
     expect(response).to render_template 'index'
   end
 
