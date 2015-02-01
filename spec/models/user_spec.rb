@@ -17,6 +17,10 @@ RSpec.describe User, :type => :model do
 
   it { is_expected.to have_many :sponsors }
 
+  it 'should override the default pagination per_page' do
+    expect(User.per_page).to eq 10
+  end
+
   describe 'methods' do
     let(:user) { build_stubbed :user }
     let(:active_status) { Status.find_by_name 'Active' }
