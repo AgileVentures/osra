@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Osra</title>
+    <title>OSRA</title>
     <%= stylesheet_link_tag "application", media: "all" %>
+    <%= stylesheet_link_tag "hq", media: "all" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div class="container-fluid">
-      <%= render 'layouts/flashes' %>
-      <%= yield %>
-      <%= render 'layouts/footer' %>
-    </div>
+    <%= render template: 'layouts/navigation' %>
   </body>
 </html>
