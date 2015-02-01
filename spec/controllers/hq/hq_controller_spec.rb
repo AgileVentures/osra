@@ -30,4 +30,11 @@ RSpec.describe HqController, type: :controller do
       get :foobar_action
     end
   end
+
+  describe 'instantiates' do
+    specify 'navigation buttons' do
+      expect(HqController::NAVIGATION_BUTTONS).to be_present.and be_a_kind_of Hash
+    end
+  end
+
 end

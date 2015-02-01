@@ -1,13 +1,17 @@
-<div class="action_items">
-  <div class="class">
-    <%= link_to('New Partner', new_hq_partner_path,
-                class: 'btn btn-default', role: 'button') %>
+<div class="panel-heading">
+  <div class="action_items">
+    <div class="class">
+      <%= link_to('New Partner', new_hq_partner_path,
+                  class: 'btn btn-default', role: 'button') %>
+    </div>
   </div>
 </div>
 <%- if @partners.empty? %>
-  No Partners found
+  <div class="panel-body">
+    <em>No Partners found</em>
+  </div>
 <%- else %>
-  <div class='table-responsive'>
+  <div class='panel-body table-responsive'>
     <table class='table'>
       <thead>
         <tr>
