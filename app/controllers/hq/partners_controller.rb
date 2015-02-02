@@ -4,13 +4,12 @@ class Hq::PartnersController < HqController
   end
 
   def new
-    @partner = Partner.new
-    load_associations
+    @facade = PartnerFacade.new(Partner.new)
   end
 
   def create
     build_partner
-    save_partner or re_render 'new'
+    save_partner or render 'new'
   end
 
   def show
@@ -18,24 +17,18 @@ class Hq::PartnersController < HqController
   end
 
   def edit
-    load_partner
-    load_associations
+    @facade = PartnerFacade.new(load_partner)
   end
 
   def update
     load_partner
     build_partner
-    save_partner or re_render 'edit'
+    save_partner or render 'edit'
   end
 
 private
   def load_partner
     @partner = Partner.find(params[:id])
-  end
-
-  def load_associations
-    @provinces = Province.all
-    @statuses = Status.all
   end
 
   def build_partner
@@ -48,11 +41,6 @@ private
       flash[:success] = 'Partner successfuly saved'
       redirect_to hq_partner_url(@partner)
     end
-  end
-
-  def re_render(view)
-    load_associations
-    render view
   end
 
   def partner_params

@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'hq/partners/edit.html.erb', type: :view do
   before :each do
-    assign :partner, build_stubbed(:partner)
-    assign :statuses, Status.all
-    assign :provinces, Province.all
+    assign :facade, PartnerFacade.new(build_stubbed :partner)
   end
 
   it 'renders the form partial' do

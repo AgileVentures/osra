@@ -2,15 +2,11 @@ require 'rails_helper'
 require 'cgi'
 
 RSpec.describe "hq/partners/_form.html.erb", type: :view do
-  let(:provinces) { Province.all }
-  let(:statuses) { Status.all }
   let(:partner) { build_stubbed :partner,
                   region: "Region1", contact_details: "CD123"}
 
   before :each do
-    assign(:provinces, provinces)
-    assign(:statuses, statuses)
-    assign(:partner, partner)
+    @facade = PartnerFacade.new(partner)
   end
 
   specify 'has a form' do
@@ -28,10 +24,9 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     end
 
     specify 'when :id' do
-      allow(partner).to receive(:id).and_return 42
       render
 
-      assert_select 'a[href=?]', hq_partner_path(42), text: 'Cancel'
+      assert_select 'a[href=?]', hq_partner_path(partner.id), text: 'Cancel'
     end
   end
 
@@ -51,13 +46,13 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     end
 
     assert_select "select#partner_province_id" do
-      assert_select "option", value: provinces.first.id,
-                               html: CGI::escape_html(provinces.first.name)
+      assert_select "option", value: Province.first.id,
+        html: CGI::escape_html(Province.first.name)
     end
 
     assert_select "select#partner_status_id" do
-      assert_select "option", value: statuses.first.id,
-                               html: CGI::escape_html(statuses.first.name)
+      assert_select "option", value: Status.first.id,
+        html: CGI::escape_html(Status.first.name)
     end
 
     assert_select "input#partner_start_date" do
