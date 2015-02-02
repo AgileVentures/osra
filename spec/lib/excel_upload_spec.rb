@@ -3,28 +3,28 @@ require 'excel_upload'
 
 describe ExcelUpload do
   before :each do
-    @settings = Settings.import
+    @first_row = OrphanImporter.class_variable_get(:@@first_row)
   end
 
   describe '.upload' do
     it 'should reject opening a non Excel file with an error' do
       expect{ExcelUpload.upload('spec/fixtures/not_an_excel_file.txt',
-        @settings.first_row)}.to raise_error
+        @first_row)}.to raise_error
     end
 
     it 'should open an .xls file with no errors' do
       expect{ExcelUpload.upload('spec/fixtures/one_orphan_xls.xls',
-        @settings.first_row)}.not_to raise_error
+        @first_row)}.not_to raise_error
     end
 
     it 'should reject opening an empty Excel file' do
       expect{ExcelUpload.upload('spec/fixtures/empty_xls.xls',
-        @settings.first_row)}.to raise_error
+        @first_row)}.to raise_error
     end
 
     it 'should reject opening a non Excel file even if it has an Excel extension' do
       expect{ExcelUpload.upload('spec/fixtures/fake_excel_file.png.xls',
-        @settings.first_row)}.to raise_error
+        @first_row)}.to raise_error
     end
   end
 
@@ -41,12 +41,12 @@ describe ExcelUpload do
   describe '.empty_file?' do
     it 'should return true for a file without orphan records' do
       doc = Roo::Spreadsheet.open('spec/fixtures/empty_xls.xls')
-      expect(ExcelUpload.empty_file?(doc, @settings.first_row)).to be true
+      expect(ExcelUpload.empty_file?(doc, @first_row)).to be true
     end
 
     it 'should return false for a file with orphan records' do
       doc = Roo::Spreadsheet.open('spec/fixtures/one_orphan_xls.xls')
-      expect(ExcelUpload.empty_file?(doc, @settings.first_row)).to be false
+      expect(ExcelUpload.empty_file?(doc, @first_row)).to be false
     end
   end
 end

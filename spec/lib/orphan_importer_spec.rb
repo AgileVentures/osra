@@ -22,71 +22,54 @@ describe OrphanImporter do
   describe '.extract_orphans' do
     it 'should reject opening a non Excel file with an error' do
       importer = OrphanImporter.new('spec/fixtures/not_an_excel_file.txt', @partner)
-      importer.extract_orphans
-      expect(importer).not_to be_valid
-      expect(importer.import_errors[0][:error]).to include('not a valid Excel file')
-    end
-
-    it 'should open an .xls file with no errors' do
-      importer = OrphanImporter.new('spec/fixtures/empty_xls.xls', @partner)
-      expect(importer).to be_valid
+      result, pending_orphans, import_errors = importer.extract_orphans
+      expect(result).to be false
+      expect(import_errors[0][:error]).to include('not a valid Excel file')
     end
 
     it 'should reject opening an empty Excel file' do
-      expect(empty_results[0][:error]).to include 'Does not contain any orphan records'
-      expect(empty_importer).not_to be_valid
+      expect(empty_results[2][0][:error]).to include 'Does not contain any orphan records'
+      expect(empty_results[0]).to be false
     end
 
     it 'should reject opening a non Excel file even if it has an Excel extension' do
       importer = OrphanImporter.new('spec/fixtures/fake_excel_file.png.xls', @partner)
-      importer.extract_orphans
-      expect(importer).not_to be_valid
-      expect(importer.import_errors[0][:error]).to include 'not a valid Excel file'
+      result, pending_orphans, import_errors = importer.extract_orphans
+      expect(result).to be false
+      expect(import_errors[0][:error]).to include 'not a valid Excel file'
     end
 
   end
 
   describe '.extract_orphans' do
     it 'should parse one valid record and return one orphan hash and no errors' do
-      expect(one_orphan_result.count).to eq 1
-      expect(one_orphan_importer).to be_valid
+      expect(one_orphan_result[1].count).to eq 1
+      expect(one_orphan_result[0]).to be true
     end
 
     it 'should parse three valid records and return three orphan hashes and no errors' do
-      expect(three_orphans_result.count).to eq 3
-      expect(three_orphans_importer).to be_valid
+      expect(three_orphans_result[1].count).to eq 3
+      expect(three_orphans_result[0]).to be true
     end
 
     it 'should parse three invalid records and return errors' do
-      expect(three_invalid_orphans_result.empty?).to eq false
-      expect(three_invalid_orphans_importer).not_to be_valid
+      expect(three_invalid_orphans_result[0]).to eq false
+      expect(three_invalid_orphans_result[2].count).to be > 0
     end
 
     it 'should parse four valid records with duplication and return errors' do
-      expect(four_orphans_with_duplicates_result).not_to be_empty
-      expect(four_orphans_with_duplicates_importer).not_to be_valid
+      expect(four_orphans_with_duplicates_result[0]).to be false
+      expect(four_orphans_with_duplicates_result[2].count).to be > 0
     end
 
     it 'should return valid pending orphan objects' do
-      [one_orphan_result, three_orphans_result].each do |result|
+      [one_orphan_result[1], three_orphans_result[1]].each do |result|
         result.each do |orphan|
           expect(orphan).to be_valid
         end
       end
     end
 
-  end
-
-  describe '#valid?' do
-    it 'will return true if there are no import errors' do
-      one_orphan_importer.instance_variable_set(:@import_errors, [])
-      expect(one_orphan_importer.valid?).to be true
-    end
-
-    it 'will return false if there are import errors' do
-      one_orphan_importer.instance_variable_set(:@import_errors, ["has errors"])
-      expect(one_orphan_importer.valid?).to be false
-    end
   end
 
   describe '#add_import_errors' do
@@ -108,126 +91,38 @@ describe OrphanImporter do
     end
   end
 
-  describe '#process_column' do
-    let(:record) { double('record') }
-    let(:column) do
-      double('column',
-             :column => 'column',
-             :field  => 'field')
-    end
-
-    it 'will return an Integer if the column type is an integer' do
-      expect(column).to receive(:mandatory).and_return("false")
-      expect(column).to receive(:type).and_return('Integer')
-      expect(one_orphan_importer.send(:process_column, record, column, "8")).to eq 8
-    end
-
-    it 'will return a String if the column type is a string' do
-      expect(column).to receive(:type).and_return("String")
-      expect(one_orphan_importer.send(:process_column, record,
-                                      column, "String Value")).to eq "String Value"
-    end
-
-    it 'will return a Date if the column type is a date' do
-      date = Date.current
-      expect(column).to receive(:mandatory).and_return("false")
-      expect(column).to receive(:type).and_return("Date")
-      expect(one_orphan_importer.send(:process_column, record,
-                                      column, "#{date}")).to eq date
-    end
-
-    describe 'NotAFloat' do
-      before(:each) do
-        expect(column).to receive(:mandatory).and_return('false').at_least(:once)
-        expect(column).to receive(:type).and_return('NotAFloat').at_least(:once)
-      end
-
-      it 'will strip trailing .0 from values that should be integers' do
-        [1.0, 123.0, 1234567890.0].each do |float|
-          expect(one_orphan_importer.send(:process_column, record,
-                                          column, float)).to eq float.to_i.to_s
-        end
-      end
-
-      it 'will let strings pass through unaltered' do
-        %w{1.01 1.10 a1.0 a.1.0}.each do |string|
-          expect(one_orphan_importer.send(:process_column, record,
-                                          column, string)).to eq string
-        end
-      end
-    end
-  end
-
-  describe '#error_or_orphans' do
-    let(:errors) {['errors']}
-    let(:orphans) {['orphans']}
-
-    before :each do
-      one_orphan_importer.instance_variable_set(:@pending_orphans, orphans)
-    end
-
-    it 'will return orphans if valid' do
-      expect(one_orphan_importer.send(:error_or_orphans)).to eq orphans
-    end
-
-    it 'will return errors if not valid' do
-      expect(one_orphan_importer.send(:error_or_orphans)).to eq orphans
-    end
-  end
-
-  specify '#import_orphans' do
-    doc = double( "doc", :last_row => 6)
-    expect(one_orphan_importer).to receive(:import_orphan).exactly(3).times
-    one_orphan_importer.import_orphans(doc)
-  end
-
   describe '#import_orphan' do
-    let!(:col_count) {Settings.import.columns.size}
+    let!(:col_count) {one_orphan_importer.instance_variable_get(:@mapper).size}
     let!(:doc) { double("docs") }
 
-    it 'should get a cell from the spreadsheet' do
+    it 'should get a cell and celltype from the spreadsheet' do
       expect(doc).to receive(:cell).exactly(col_count).times
-      one_orphan_importer.import_orphan(doc, 4)
+      expect(doc).to receive(:celltype).exactly(col_count).times
+      one_orphan_importer.send(:import_orphan, doc, 4)
     end
 
-    it 'should call #process_columan' do
-      expect(doc).to receive(:cell).exactly(col_count).times
-      expect(one_orphan_importer).to receive(:process_column).
-        exactly(col_count).times
-      one_orphan_importer.import_orphan(doc, 4)
-    end
   end
 
-  describe '#add_to_pending_orphan_if_valid' do
-    it 'increases pending_orphans by 1 if valid' do
-      expect(one_orphan_importer).to receive(:valid?).and_return(true)
-      expect{one_orphan_importer.send(:add_to_pending_orphans_if_valid,Hash.new)}.
+  describe '#add_to_pending_orphans_if_all_still_ok' do
+    it 'increases pending_orphans by 1 if all ok' do
+      allow(one_orphan_importer).to receive(:no_errors_found_in_spreadsheet?) { true }
+      expect{one_orphan_importer.send(:add_to_pending_orphans_if_all_still_ok,Hash.new)}.
         to change{one_orphan_importer.instance_variable_get(:@pending_orphans).
         size}.from(0).to(1)
     end
 
     it 'should not change pending orphans if not valid' do
-      expect(one_orphan_importer).to receive(:valid?).and_return(false)
-      expect{one_orphan_importer.send(:add_to_pending_orphans_if_valid,Hash.new)}.
+      allow(one_orphan_importer).to receive(:no_errors_found_in_spreadsheet?) { false }
+      expect{one_orphan_importer.send(:add_to_pending_orphans_if_all_still_ok,Hash.new)}.
         not_to change{one_orphan_importer.
         instance_variable_get(:@pending_orphans).size}
     end
   end
 
-  describe '#process_column' do
-    let(:col_settings) {double "col_settings", field: "name",
-                        column: "B", mandatory: false}
-
-    it 'creates a new instance of a DataColumn subclass' do
-      expect(col_settings).to receive(:type).and_return("String")
-      expect(ImportOrphanSettings::StringColumn).to receive(:new)
-      one_orphan_importer.send(:process_column, 4, col_settings, "Y")
-    end
-  end
-
   specify '#log_exceptions logs to import errors if an error is raised' do
-    expect{one_orphan_importer.send(:log_exceptions) {raise ArgumentError} }.
-     to change{one_orphan_importer.import_errors.size}.from(0).to(1)
+    exception_raiser = lambda { raise ArgumentError }
+    expect{one_orphan_importer.send(:log_exceptions, nil, nil, &exception_raiser) }.
+     to change{one_orphan_importer.instance_variable_get(:@import_errors).size}.from(0).to(1)
   end
 end
 

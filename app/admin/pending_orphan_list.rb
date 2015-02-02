@@ -37,19 +37,23 @@ ActiveAdmin.register PendingOrphanList do
     end
     @pending_orphan_list = PendingOrphanList.new(pending_orphan_list_params)
     importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'], @partner)
-    result               = importer.extract_orphans
-    if importer.valid?
-      @pending_orphan_list.pending_orphans = result
+    spreadsheet_all_ok, pending_orphans, import_errors = importer.extract_orphans  # with this ruby construct the 3 entry
+    # array returned is split into the 3 variables spreadsheet_all_ok, pending_orphans and import_errors
+    if spreadsheet_all_ok
+      @pending_orphan_list.pending_orphans = pending_orphans
       @pending_orphan_list.save!
-      to_render = :valid_list
-    else
-      to_render = :invalid_list
-    end
-    render action: to_render,
+      render action: :valid_list,
            locals: { partner:             @partner,
                      orphan_list:         @partner.orphan_lists.build,
                      pending_orphan_list: @pending_orphan_list,
-                     result:              result }
+                     result:              pending_orphans }
+    else
+      render action: :invalid_list,
+           locals: { partner:             @partner,
+                     orphan_list:         @partner.orphan_lists.build,
+                     pending_orphan_list: @pending_orphan_list,
+                     result:              import_errors }
+    end
   end
 
   collection_action :import, method: :post do

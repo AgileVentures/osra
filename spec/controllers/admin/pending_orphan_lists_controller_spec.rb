@@ -76,7 +76,7 @@ describe Admin::PendingOrphanListsController, type: :controller do
         allow(partner).to receive(:active?).and_return true
         allow(pending_orphan_list).to receive :save!
         allow(pending_orphan_list).to receive :pending_orphans=
-        allow(orphan_importer).to receive :extract_orphans
+        allow(orphan_importer).to receive(:extract_orphans).and_return [true,nil,nil]
         allow(orphan_importer).to receive(:valid?).and_return true
         post :validate, partner_id: 1, pending_orphan_list: orphan_list_params
       end
