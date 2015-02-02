@@ -7,6 +7,16 @@ class Hq::SponsorsController < HqController
     @sponsor = Sponsor.find(params[:id])
   end
 
+  def new
+    build_partner
+    load_associations
+  end
+
+  def create
+    build_partner
+    save_sponsor or re_render "new"
+  end
+
   def edit
     load_partner
     load_associations
@@ -30,7 +40,7 @@ private
 
   def build_partner
     @sponsor||= Sponsor.new
-    @sponsor.attributes= sponsor_params
+    @sponsor.attributes= sponsor_params if params[:sponsor]
   end
 
   def load_partner
