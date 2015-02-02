@@ -1,16 +1,19 @@
 require 'rails_helper'
+require 'will_paginate/array'
 
 RSpec.describe Hq::SponsorsController, type: :controller do
   before :each do
     sign_in instance_double(AdminUser)
     @sponsor = FactoryGirl.build_stubbed :sponsor
+    @sponsors = (1..5).map {FactoryGirl.build_stubbed :sponsor}
     @sponsor_build = FactoryGirl.build :sponsor
     @sponsor_new = Sponsor.new
   end
 
   specify '#index' do
-    expect(Sponsor).to receive(:all).and_return( [ @sponsor ] )
-    get :index
+    expect(Sponsor).to receive(:paginate).with(page: "2").and_return( @sponsors.paginate(per_page: 2) )
+    get :index, page: 2
+    expect(assigns(:sponsors).count).to eq 2
     expect(response).to render_template 'index'
   end
 

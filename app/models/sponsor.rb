@@ -5,6 +5,7 @@ class Sponsor < ActiveRecord::Base
   PRIORITY_COUNTRIES= %w(SA TR AE GB)
   EXCLUDED_COUNTRYS= %w(IL)
 
+  self.per_page = 10
   attr_accessor :new_city_name
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
 
