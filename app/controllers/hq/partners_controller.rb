@@ -1,17 +1,14 @@
-class Hq::PartnersController < ApplicationController
-  before_action :authenticate_admin_user!
-  layout 'application'
-
+class Hq::PartnersController < HqController
   def index
-    @partners= Partner.all
+    @partners = Partner.all.paginate(:page => params[:page])
   end
 
   def new
     @partner = Partner.new
     load_associations
   end
-  
-  def create 
+
+  def create
     build_partner
     save_partner or re_render 'new'
   end
@@ -59,13 +56,10 @@ private
   end
 
   def partner_params
-    partner_params = params[:partner]
-    if partner_params
-      partner_params.permit(:name, :region, :contact_details, :province_id,
-                            :status_id, :start_date)
-    else
-      {}
-    end
+    params.require(:partner)
+          .permit(:name, :region, :contact_details,
+                  :province_id, :status_id, :start_date)
   end
 
 end
+
