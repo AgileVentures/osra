@@ -1,44 +1,44 @@
-Province.create(name: 'Damascus & Rif Dimashq', code: 11)
-Province.create(name: 'Aleppo', code: 12)
-Province.create(name: 'Homs', code: 13)
-Province.create(name: 'Hama', code: 14)
-Province.create(name: 'Latakia', code: 15)
-Province.create(name: 'Deir Al-Zor', code: 16)
-Province.create(name: 'Daraa', code: 17)
-Province.create(name: 'Idlib', code: 18)
-Province.create(name: 'Ar Raqqah', code: 19)
-Province.create(name: 'Al Hasakah', code: 20)
-Province.create(name: 'Tartous', code: 21)
-Province.create(name: 'Al-Suwayada', code: 22)
-Province.create(name: 'Al-Quneitera', code: 23)
-Province.create(name: 'Outside Syria', code: 29)
+Province.where(name: 'Damascus & Rif Dimashq', code: 11).first_or_create!
+Province.where(name: 'Aleppo', code: 12).first_or_create!
+Province.where(name: 'Homs', code: 13).first_or_create!
+Province.where(name: 'Hama', code: 14).first_or_create!
+Province.where(name: 'Latakia', code: 15).first_or_create!
+Province.where(name: 'Deir Al-Zor', code: 16).first_or_create!
+Province.where(name: 'Daraa', code: 17).first_or_create!
+Province.where(name: 'Idlib', code: 18).first_or_create!
+Province.where(name: 'Ar Raqqah', code: 19).first_or_create!
+Province.where(name: 'Al Hasakah', code: 20).first_or_create!
+Province.where(name: 'Tartous', code: 21).first_or_create!
+Province.where(name: 'Al-Suwayada', code: 22).first_or_create!
+Province.where(name: 'Al-Quneitera', code: 23).first_or_create!
+Province.where(name: 'Outside Syria', code: 29).first_or_create!
 
-Status.create(name: 'Active', code: 1)
-Status.create(name: 'Inactive', code: 2)
-Status.create(name: 'On Hold', code: 3)
+Status.where(name: 'Active', code: 1).first_or_create!
+Status.where(name: 'Inactive', code: 2).first_or_create!
+Status.where(name: 'On Hold', code: 3).first_or_create!
 
-OrphanStatus.create(name: 'Active', code: 1)
-OrphanStatus.create(name: 'Inactive', code: 2)
-OrphanStatus.create(name: 'On Hold', code: 3)
-OrphanStatus.create(name: 'Under Revision', code: 4)
+OrphanStatus.where(name: 'Active', code: 1).first_or_create!
+OrphanStatus.where(name: 'Inactive', code: 2).first_or_create!
+OrphanStatus.where(name: 'On Hold', code: 3).first_or_create!
+OrphanStatus.where(name: 'Under Revision', code: 4).first_or_create!
 
-SponsorType.create(name: 'Individual', code: 1)
-SponsorType.create(name: 'Organization', code: 2)
+SponsorType.where(name: 'Individual', code: 1).first_or_create!
+SponsorType.where(name: 'Organization', code: 2).first_or_create!
 
-Branch.create(name: 'Riyadh', code: 1)
-Branch.create(name: 'Jeddah', code: 2)
-Branch.create(name: 'Dammam', code: 3)
-Branch.create(name: 'Dubai', code: 11)
-Branch.create(name: 'London', code: 21)
+Branch.where(name: 'Riyadh', code: 1).first_or_create!
+Branch.where(name: 'Jeddah', code: 2).first_or_create!
+Branch.where(name: 'Dammam', code: 3).first_or_create!
+Branch.where(name: 'Dubai', code: 11).first_or_create!
+Branch.where(name: 'London', code: 21).first_or_create!
 
-OrphanSponsorshipStatus.create(name: 'Unsponsored',          code: 1)
-OrphanSponsorshipStatus.create(name: 'Sponsored',            code: 2)
-OrphanSponsorshipStatus.create(name: 'Previously Sponsored', code: 3)
-OrphanSponsorshipStatus.create(name: 'On Hold',              code: 4)
+OrphanSponsorshipStatus.where(name: 'Unsponsored',          code: 1).first_or_create!
+OrphanSponsorshipStatus.where(name: 'Sponsored',            code: 2).first_or_create!
+OrphanSponsorshipStatus.where(name: 'Previously Sponsored', code: 3).first_or_create!
+OrphanSponsorshipStatus.where(name: 'On Hold',              code: 4).first_or_create!
 
-Organization.create(name: 'أهل الغربة وقت الكربة', code: 51)
-Organization.create(name: 'حملة بنات الحرمين لنصرة الشعب السوري', code: 52)
-Organization.create(name: 'مجموعة السراج للتنمية والرعاية الصحية', code: 53)
+Organization.where(name: 'أهل الغربة وقت الكربة', code: 51).first_or_create!
+Organization.where(name: 'حملة بنات الحرمين لنصرة الشعب السوري', code: 52).first_or_create!
+Organization.where(name: 'مجموعة السراج للتنمية والرعاية الصحية', code: 53).first_or_create!
 
 if Rails.env.development?
   require "#{Rails.root}/db/seeds/development_seeds.rb"

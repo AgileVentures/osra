@@ -10,11 +10,20 @@ class Hq::PartnersController < HqController
 
   def create
     build_partner
-    save_partner or re_render 'new'
+    save_partner or re_render 'new' and return # good standard practice to avoid DoubleRenderError
   end
 
   def show
-    @partner= Partner.find(params[:id])
+    begin
+      @partner= Partner.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      # Add warn method to log for easier tracking with logging software
+      # (Papertrail in OSRA's case)
+      # This should never happen - code error or user error?
+      logger.warn 'A user tried to visit partner that does not exist'
+      flash[:error] = 'Partner not found.'
+      redirect_to_back_or_default
+    end
   end
 
   def edit
@@ -25,7 +34,7 @@ class Hq::PartnersController < HqController
   def update
     load_partner
     build_partner
-    save_partner or re_render 'edit'
+    save_partner or re_render 'edit' and return # good standard practice to avoid DoubleRenderError
   end
 
 private
@@ -61,5 +70,14 @@ private
                   :province_id, :status_id, :start_date)
   end
 
+  # This would be in application_controller or a shared module
+  def redirect_to_back_or_default(default = root_path)
+    referer = request.env['HTTP_REFERER']
+    if referer.present? && referer != request.env['REQUEST_URI']
+      redirect_to :back
+    else
+      redirect_to default
+    end
+  end
 end
 
