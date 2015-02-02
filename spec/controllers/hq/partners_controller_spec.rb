@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'will_paginate/array'
 
 RSpec.describe Hq::PartnersController, type: :controller do
   before :each do
