@@ -33,7 +33,12 @@ RSpec.describe HqController, type: :controller do
 
   describe 'instantiates' do
     specify 'navigation buttons' do
-      expect(HqController::NAVIGATION_BUTTONS).to be_present.and be_a_kind_of Hash
+      expect(HqController::NAVIGATION_BUTTONS).to be_present.and be_a_kind_of Array
+      expect(HqController::NAVIGATION_BUTTONS.first).to be_a_kind_of Hash
+      expect(HqController::NAVIGATION_BUTTONS.first[:text]).to be_present.and be_a_kind_of String
+      expect(HqController::NAVIGATION_BUTTONS.first[:href]).to be_present.and be_a_kind_of String
+      expect(HqController::NAVIGATION_BUTTONS.first[:path_regex]).to be_present.and be_a_kind_of Regexp
+      expect(HqController::NAVIGATION_BUTTONS.first[:glyph]).to be_present.and be_a_kind_of String
     end
   end
 
