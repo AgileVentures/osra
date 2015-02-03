@@ -12,3 +12,13 @@ ul.nav li a {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+@media (min-width: 768px) {
+  .navbar {
+    width:80px;
+  }
+  .content {
+    width:calc(100% - 80px);
+    float:left;
+  }
+}
