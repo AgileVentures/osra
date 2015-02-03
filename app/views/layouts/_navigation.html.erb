@@ -1,0 +1,27 @@
+<nav class="navbar navbar-default navbar-left">
+
+  <!-- Button for mobile display -->
+  <div class="navbar-header pull-left">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <!-- Menu -->
+  <div class="col-xs-12 col-sm-1 no-horiz-padding collapse navbar-collapse" id="main-navbar">
+    <ul class="nav nav-pills nav-stacked" >
+      <% HqController::NAVIGATION_BUTTONS.each do | _, btn | %>
+        <li role="presentation" <%= (request.path=~ btn[:path_regex]) ? 'class=active' : 'class=dormant' %> >
+          <%= link_to %Q{
+            <span class="glyphicon #{btn[:glyph]}" aria-hidden="true"></span>
+            <p class="text-center">#{btn[:text]}</p>
+            }.html_safe, eval(btn[:href]) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+</nav>

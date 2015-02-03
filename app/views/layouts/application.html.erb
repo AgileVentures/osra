@@ -9,6 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <%= render template: 'layouts/navigation' %>
+
+    <div class="container-fluid">
+      <div class="row">
+        <%= render 'layouts/navigation' %>
+        <div class="content">
+          <%= render 'layouts/flashes' %>
+          <%= yield %>
+        </div>
+      </div>
+
+      <%= render 'layouts/footer' %>
+    </div>
+
   </body>
 </html>
