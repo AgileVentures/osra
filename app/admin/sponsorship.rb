@@ -1,6 +1,6 @@
 ActiveAdmin.register Sponsorship do
   menu if: proc { false }
-  actions :create
+  actions :create, :destroy
   belongs_to :sponsor
 
   member_action :inactivate, method: :put do

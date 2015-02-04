@@ -5,7 +5,7 @@ namespace :db do
     OrphanList.destroy_all
     PendingOrphan.destroy_all
     PendingOrphanList.destroy_all
-    Sponsorship.destroy_all
+    Sponsorship.delete_all # skip callbacks on already destroyed orphan records
 
     Sponsor.update_all(:request_fulfilled => false)
 

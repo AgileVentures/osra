@@ -110,6 +110,20 @@ describe Sponsorship, type: :model do
         expect(sponsorship.sponsor).to have_received(:sponsorship_changed!)
       end
     end
+
+    describe 'after_destroy' do
+      let(:sponsorship) { create :sponsorship }
+
+      it 'resets sponsor' do
+        expect(sponsorship.sponsor).to receive(:sponsorship_changed!)
+        sponsorship.destroy
+      end
+
+      it 'resets orphan' do
+        expect(sponsorship.orphan).to receive(:resolve_sponsorship_status)
+        sponsorship.destroy
+      end
+    end
   end
 
   describe 'methods' do
