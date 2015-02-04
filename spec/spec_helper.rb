@@ -85,4 +85,6 @@ RSpec.configure do |config|
     # a real object. This is generally recommended.
     mocks.verify_partial_doubles = true
   end
+
+  config.filter_gems_from_backtrace 'database_cleaner'
 end
