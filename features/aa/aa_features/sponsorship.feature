@@ -167,3 +167,9 @@ Feature:
     Given I click the "Orphans" link
     Then I should not see a Sponsors Path crumb
     And I should not see a Sponsor Path crumb
+
+  Scenario: Sponsorship destruction
+    Given I have mistakenly created a sponsorship between "Wrong Sponsor" and "Wrong Orphan"
+    And I destroy the record of the "Wrong Sponsor" - "Wrong Orphan" sponsorship
+    Then sponsorship data for "Wrong Sponsor" should reset
+    And sponsorship status for "Wrong Orphan" should reset
