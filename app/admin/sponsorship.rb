@@ -20,15 +20,18 @@ ActiveAdmin.register Sponsorship do
 
   controller do
     def create
-      @sponsor = Sponsor.find(params[:sponsor_id])
-      sponsorship= Sponsorship.new(sponsor: @sponsor, orphan_id: params[:orphan_id],
-                                      start_date: params[:sponsorship_start_date].to_s )
-      if sponsorship.save
+      sponsor = Sponsor.find(params[:sponsor_id])
+      sponsorship = sponsor.sponsorships.build(orphan_id: params[:orphan_id],
+                                               start_date: params[:sponsorship_start_date])
+      begin
+        CreateSponsorship.new(sponsor: sponsor, sponsorship: sponsorship).call
         flash[:success] = 'Sponsorship link was successfully created.'
-        redirect_to admin_sponsor_path(@sponsor.id)
-      else
-        flash[:warning]= sponsorship.errors.full_messages || 'Sponsorship not created'
-        redirect_to new_sponsorship_path(@sponsor.id, scope: 'eligible_for_sponsorship')
+        redirect_to admin_sponsor_path(sponsor)
+      rescue
+        error_msg = sponsorship.errors.full_messages ||
+          'Sponsorship link could not be created.'
+        flash[:warning] = error_msg
+        redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end
