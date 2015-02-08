@@ -36,5 +36,19 @@ ActiveAdmin.register Sponsorship do
     end
   end
 
+  def destroy
+    sponsor = Sponsor.find(params[:sponsor_id])
+    sponsorship = sponsor.sponsorships.find(params[:id])
+    begin
+      DestroySponsorship.new(sponsor: sponsor,
+                                   sponsorship: sponsorship).call
+      flash[:success] = 'Sponsorship record was successfully destroyed.'
+    rescue
+      flash[:warning] = 'Sponsorship record could not be destroyed.'
+    ensure
+      redirect_to admin_sponsor_path(sponsor)
+    end
+  end
+
   permit_params :orphan_id
 end
