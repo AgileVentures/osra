@@ -5,8 +5,10 @@
       </div>
       <div class="osra-header-secondary">
         <ul class="osra-header __secondary">
-          <li>example@example</li>
-          <li>logout</li>
+          <% if admin_user_signed_in?  %>
+            <li> <%= link_to current_admin_user.email, admin_admin_user_path(current_admin_user.id) %></li>
+            <li> <%= link_to 'logout', :destroy_admin_user_session %> </li>
+          <% end %>
         </ul>
       </div>
   </div>
