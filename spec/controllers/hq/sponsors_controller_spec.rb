@@ -33,21 +33,19 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   end
 
   context '#create' do
-    before :each do
-      @sponsor_new = Sponsor.new
-      @sponsor_build = FactoryGirl.build :sponsor
-    end
-
     specify 'successful' do
-      expect(Sponsor).to receive(:new).and_return(@sponsor_new)
-      expect {post :create, sponsor: @sponsor_build.attributes }.to change{Sponsor.count}.by 1
-      expect(response).to redirect_to hq_sponsor_url( Sponsor.find_by_name(@sponsor_build.name) )
+      expect_any_instance_of(Sponsor).to receive(:save) do |_self|
+        _self.id = sponsor.id
+        true
+      end
+
+      post :create, sponsor: sponsor.attributes
+      expect(response).to redirect_to hq_sponsor_url(sponsor)
     end
 
     specify 'unsuccessful' do
-      expect(Sponsor).to receive(:new).and_return(@sponsor_new)
       expect_any_instance_of(Sponsor).to receive(:save).and_return(false)
-      expect {post :create, sponsor: @sponsor_build.attributes }.to change{Sponsor.count}.by 0
+      post :create, sponsor: sponsor.attributes
       expect(response).to render_template 'new'
     end
   end
