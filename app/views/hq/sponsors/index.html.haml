@@ -1,5 +1,4 @@
 .action_items
-  .class
-    = link_to('New Sponsor', new_hq_sponsor_path,
+  = link_to('New Sponsor', new_hq_sponsor_path,
          class: 'btn btn-default', role: 'button')
 = render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors}
