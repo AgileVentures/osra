@@ -26,10 +26,8 @@ describe CreateSponsorship do
       end
 
       it 'updates orphan sponsorship status' do
-        sponsored_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
-
-        expect{ service.call }.to change(orphan, :orphan_sponsorship_status).
-          to(sponsored_status)
+        expect{ service.call }.to change(orphan, :sponsorship_status).
+          to('sponsored')
       end
 
       it 'returns true' do
@@ -55,7 +53,7 @@ describe CreateSponsorship do
       end
 
       it 'updates orphan sponsorship status' do
-        expect{ service.call }.not_to change(orphan, :orphan_sponsorship_status)
+        expect{ service.call }.not_to change(orphan, :sponsorship_status)
       end
 
       it "sets @error_msg to the rescued error's message" do

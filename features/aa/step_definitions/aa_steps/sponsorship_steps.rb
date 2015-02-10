@@ -106,8 +106,9 @@ Given /^I have mistakenly created a sponsorship between "([^"]*)" and "([^"]*)"$
   orphan = FactoryGirl.create(:orphan, name: orphan_name)
   @sponsor_original_state = [sponsor.request_fulfilled,
                              sponsor.active_sponsorship_count]
-  @orphan_original_state = orphan.orphan_sponsorship_status
-  sponsor.sponsorships.create!(orphan: orphan, start_date: Date.current)
+  @orphan_original_state = orphan.sponsorship_status
+  sponsorship = FactoryGirl.build :sponsorship, sponsor: sponsor, orphan: orphan
+  CreateSponsorship.new(sponsorship).call
 end
 
 And /^I destroy the record of the "([^"]*)" - "([^"]*)" sponsorship$/ do |sponsor_name, orphan_name|
@@ -126,5 +127,5 @@ end
 
 And /^sponsorship status for "([^"]*)" should reset$/ do |orphan_name|
   orphan = Orphan.find_by_name(orphan_name)
-  expect(orphan.orphan_sponsorship_status).to eq @orphan_original_state
+  expect(orphan.sponsorship_status).to eq @orphan_original_state
 end

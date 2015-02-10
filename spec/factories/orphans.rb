@@ -19,8 +19,8 @@ FactoryGirl.define do
     orphan_list
 
     trait :random_optional_fields do
-      orphan_status { OrphanStatus.all.sample }
-      orphan_sponsorship_status { OrphanSponsorshipStatus.all.sample }
+      status { Orphan.statuses.values.sample }
+      sponsorship_status { Orphan.sponsorship_statuses.values.sample }
       health_status { Faker::Lorem.word }
       schooling_status { Faker::Lorem.word }
       goes_to_school { [true, false].sample }

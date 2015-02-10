@@ -30,17 +30,14 @@
         <%= f.label :goes_to_school %>
         <%= f.check_box :goes_to_school %>
       </div>
-      <div class="form-group">
-        <%= f.label :orphan_status_id %>
-        <%= f.collection_select :orphan_status_id,
-          orphan_statuses, :id, :name, {},
-          {class: "form-control"} %>
+      <div class='form-group'>
+        <%= f.label :status %>
+        <%= f.select :status, statuses, {}, class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= f.label :orphan_sponsorship_status_id %>
-        <%= f.collection_select :orphan_sponsorship_status_id,
-          orphan_sponsorship_statuses, :id, :name, {},
-          {class: "form-control", disabled: "true"} %>
+        <%= f.label :sponsorship_status %>
+        <%= f.select :sponsorship_status, sponsorship_statuses, {},
+          class: 'form-control', disabled: true %>
       </div>
       <div class="form-group">
         <%= f.label :priority %>

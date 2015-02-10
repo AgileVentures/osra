@@ -4,8 +4,8 @@ require 'will_paginate/array'
 RSpec.describe Hq::OrphansController, type: :controller do
   let(:orphans) {build_stubbed_list(:orphan, 2)}
   let(:orphan) {build_stubbed :orphan}
-  let(:orphan_statuses) {instance_double OrphanStatus}
-  let(:orphan_sponsorship_statuses) {instance_double OrphanSponsorshipStatus}
+  let(:statuses) { [] }
+  let(:sponsorship_statuses) { [] }
   let(:provinces) {instance_double Province}
 
   before :each do
@@ -35,36 +35,40 @@ RSpec.describe Hq::OrphansController, type: :controller do
     end
 
     specify 'editing renders the edit view' do
-      expect(OrphanStatus).to receive(:all).and_return(orphan_statuses)
-      expect(OrphanSponsorshipStatus).to receive(:all).and_return(orphan_sponsorship_statuses)
+      expect(Orphan).to receive_message_chain(:statuses, :keys, :map).
+        and_return(statuses)
+      expect(Orphan).to receive_message_chain(:sponsorship_statuses, :keys, :map).
+        and_return(sponsorship_statuses)
       expect(Province).to receive(:all).and_return(provinces)
       get :edit, id: orphan.id
 
       expect(assigns(:orphan)).to eq orphan
-      expect(assigns(:orphan_statuses)).to eq orphan_statuses
-      expect(assigns(:orphan_sponsorship_statuses)).to eq orphan_sponsorship_statuses
+      expect(assigns(:statuses)).to eq statuses
+      expect(assigns(:sponsorship_statuses)).to eq sponsorship_statuses
       expect(assigns(:provinces)).to eq provinces
       expect(response).to render_template 'edit'
     end
 
     specify 'successful update redirects to the show view' do
       expect(orphan).to receive(:save).and_return(true)
-      patch :update, id: orphan.id, orphan: orphan.attributes
+      patch :update, id: orphan.id, orphan: { name: 'John' }
 
       expect(response).to redirect_to(hq_orphan_path(orphan))
       expect(flash[:success]).to_not be_nil
     end
 
     specify 'unsuccessful update renders the edit view' do
-      expect(OrphanStatus).to receive(:all).and_return(orphan_statuses)
-      expect(OrphanSponsorshipStatus).to receive(:all).and_return(orphan_sponsorship_statuses)
+      expect(Orphan).to receive_message_chain(:statuses, :keys, :map).
+        and_return(statuses)
+      expect(Orphan).to receive_message_chain(:sponsorship_statuses, :keys, :map).
+        and_return(sponsorship_statuses)
       expect(Province).to receive(:all).and_return(provinces)
       expect(orphan).to receive(:save).and_return(false)
-      patch :update, id: orphan.id, orphan: orphan.attributes
+      patch :update, id: orphan.id, orphan: { name: 'John' }
 
       expect(assigns(:orphan)).to eq orphan
-      expect(assigns(:orphan_statuses)).to eq orphan_statuses
-      expect(assigns(:orphan_sponsorship_statuses)).to eq orphan_sponsorship_statuses
+      expect(assigns(:statuses)).to eq statuses
+      expect(assigns(:sponsorship_statuses)).to eq sponsorship_statuses
       expect(assigns(:provinces)).to eq provinces
       expect(response).to render_template 'edit'
       expect(flash[:success]).to be_nil

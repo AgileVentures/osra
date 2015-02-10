@@ -15,8 +15,7 @@ describe Sponsorship, type: :model do
     let(:inactive_status) { Status.find_by_name 'Inactive' }
     let(:ineligible_sponsor) { build_stubbed :sponsor, status: inactive_status }
     let(:request_fulfilled_sponsor) { build_stubbed :sponsor, request_fulfilled: true}
-    let(:inactive_orphan_status) { OrphanStatus.find_by_name('Inactive') }
-    let(:ineligible_orphan) { build_stubbed :orphan, orphan_status: inactive_orphan_status}
+    let(:ineligible_orphan) { build_stubbed :orphan, status: 'inactive' }
 
     it 'disallows creation of new sponsorships with ineligible sponsors' do
       expect{ create :sponsorship, sponsor: ineligible_sponsor }.to raise_error ActiveRecord::RecordInvalid

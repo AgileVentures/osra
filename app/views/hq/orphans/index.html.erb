@@ -85,10 +85,10 @@
               <%= orphan.priority %>
             </td>
             <td>
-              <%= orphan.orphan_status.name %>
+              <%= orphan.status.humanize %>
             </td>
             <td>
-              <%= orphan.orphan_sponsorship_status.name %>
+              <%= orphan.sponsorship_status.humanize %>
             </td>
           </tr>
         <%- end %>

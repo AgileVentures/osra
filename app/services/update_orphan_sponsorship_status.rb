@@ -1,16 +1,15 @@
 class UpdateOrphanSponsorshipStatus
 
-  def initialize(orphan, status_name)
+  def initialize(orphan, status)
     @orphan = orphan
-    @status_name = status_name
+    @status = status
   end
 
   def call
-    status = OrphanSponsorshipStatus.find_by_name status_name
-    orphan.orphan_sponsorship_status = status
+    orphan.sponsorship_status = status
   end
 
   private
 
-  attr_reader :orphan, :status_name
+  attr_reader :orphan, :status
 end

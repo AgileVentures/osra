@@ -2,6 +2,24 @@ ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :create, :destroy]
 
+  status_filter = -> {
+    Orphan.distinct.pluck(:status).map { |s| [Orphan.statuses.key(s).humanize, s] }
+  }
+
+  sponsorship_status_filter = -> {
+    Orphan.distinct.pluck(:sponsorship_status).map { |ss| [Orphan.sponsorship_statuses.key(ss).humanize, ss] }
+  }
+
+  status_select = Orphan.statuses.inject({}) do |h, (k, _)|
+    h[k.humanize] = k
+    h
+  end
+
+  sponsorship_status_select = Orphan.sponsorship_statuses.inject({}) do |h, (k, _)|
+    h[k.humanize] = k
+    h
+  end
+
   filter :name, as: :string
   filter :date_of_birth, as: :date_range
   filter :gender, as: :select, collection: Settings.lookup.gender
@@ -10,9 +28,8 @@ ActiveAdmin.register Orphan do
   filter :original_address_city, label: 'Orphan City of Origin', as: :select,
         collection: proc {Orphan.distinct.pluck(:city).sort.map{|c| [c, c]} }
   filter :priority, as: :select
-  filter :orphan_sponsorship_status, as: :select,
-         collection: proc { OrphanSponsorshipStatus.all.map { |oss| [oss.name, oss.id] } }
-  filter :orphan_status, as: :select
+  filter :sponsorship_status, as: :select, collection: sponsorship_status_filter
+  filter :status, as: :select, collection: status_filter
   filter :partner_name, as: :select, collection: -> { Partner.all_names }
   filter :father_given_name
   filter :family_name
@@ -45,7 +62,7 @@ ActiveAdmin.register Orphan do
 
   config.batch_actions = false
   config.sort_order= ''
-  scope :all, :deep_joins, default: true, show_count: true
+  scope :all, default: true, show_count: true
   scope :eligible_for_sponsorship, :sort_by_eligibility, default: false, show_count: true
 
   permit_params :name, :father_name, :father_given_name, :family_name, :father_is_martyr,
@@ -56,7 +73,7 @@ ActiveAdmin.register Orphan do
                 :guardian_id_num, :contact_number, :alt_contact_number,
                 :sponsored_by_another_org, :another_org_sponsorship_details,
                 :minor_siblings_count, :sponsored_minor_siblings_count,
-                :comments, :orphan_status_id, :priority, :sponsor_id, :order,
+                :comments, :status, :priority, :sponsor_id, :order,
                 original_address_attributes: [:id, :city, :province_id,
                                               :neighborhood, :street, :details],
                 current_address_attributes:  [:id, :city, :province_id,
@@ -72,8 +89,15 @@ ActiveAdmin.register Orphan do
       f.input :health_status
       f.input :schooling_status
       f.input :goes_to_school
-      f.input :orphan_status, include_blank: false
-      f.input :orphan_sponsorship_status, label: 'Sponsorship Status', input_html: { :disabled => true }
+      f.input :status,
+        as: :select,
+        collection: status_select,
+        include_blank: false
+      f.input :sponsorship_status,
+        as: :select,
+        label: 'Sponsorship Status',
+        collection: sponsorship_status_select,
+        input_html: { :disabled => true }
       f.input :priority, as: :select,
               collection: %w(Normal High), include_blank: false
     end
@@ -126,6 +150,7 @@ ActiveAdmin.register Orphan do
        f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
      end
   end
+
   show title: :full_name do |orphan|
     panel 'Orphan Details' do
       attributes_table_for orphan do
@@ -138,9 +163,9 @@ ActiveAdmin.register Orphan do
         row :goes_to_school do
           orphan.goes_to_school ? 'Yes' : 'No'
         end
-        row :orphan_status
-        row :orphan_sponsorship_status
-        row :current_sponsor if orphan.currently_sponsored?
+        row('Status') { |o| o.status.humanize }
+        row('Sponsorship status') { |o| o.sponsorship_status.humanize }
+        row :current_sponsor
         row :priority
         row :created_at do
               format_date(orphan.created_at)
@@ -270,10 +295,8 @@ ActiveAdmin.register Orphan do
         column :priority, sortable: :priority do |orphan|
           status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
         end
-        column :orphan_status, sortable: :orphan_status_id
-        column 'Sponsorship', sortable: 'orphan_sponsorship_statuses.name' do |orphan|
-          orphan.orphan_sponsorship_status.name
-        end
+        column('Status') { |o| o.status.humanize }
+        column('Sponsorship') { |o| o.sponsorship_status.humanize }
       end
 
     end
