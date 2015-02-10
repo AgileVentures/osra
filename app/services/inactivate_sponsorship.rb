@@ -1,17 +1,17 @@
 class InactivateSponsorship
 
-  def initialize(sponsor:, sponsorship:, end_date:)
+  def initialize(sponsorship:, end_date:)
     @sponsorship = sponsorship
     @end_date = end_date
-    @sponsor = sponsor
+    @sponsor = sponsorship.sponsor
     @orphan = sponsorship.orphan
   end
 
   def call
     ActiveRecord::Base.transaction do
-      inactivate_sponsorship!
-      UpdateOrphanSponsorshipStatus.new(@orphan, 'Previously Sponsored').call
-      UpdateSponsorSponsorshipData.new(@sponsor).call
+      inactivate_sponsorship! and
+        UpdateOrphanSponsorshipStatus.new(@orphan, 'Previously Sponsored').call and
+        UpdateSponsorSponsorshipData.new(@sponsor).call
     end
   end
 
