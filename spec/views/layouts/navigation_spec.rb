@@ -1,21 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe 'layouts/navigation.html.erb', type: :view do
-  describe 'renders' do
-    specify 'flashes' do
-      render and expect(view).to render_template 'layouts/_flashes'
-    end
-
-    specify 'footer' do
-      render and expect(view).to render_template 'layouts/_footer'
-    end
-  end
-
+RSpec.describe 'layouts/_navigation.html.erb', type: :view do
   describe 'nav button count' do
     before :each do
       allow(view).to receive_message_chain(:request, :path, :=~).and_return(nil)
       allow(view).to receive_message_chain(:request, :path, :=~).
-                  with(HqController::NAVIGATION_BUTTONS.to_a.sample.second[:path_regex]).
+                  with(HqController::NAVIGATION_BUTTONS.sample[:path_regex]).
                   and_return(true)
       render
     end
@@ -29,8 +19,8 @@ RSpec.describe 'layouts/navigation.html.erb', type: :view do
 
   describe 'buttons' do
     specify 'has glyph icon' do
-      stub_const('HqController::NAVIGATION_BUTTONS', {
-        comments: { text: 'foobar', href: '"/pathname/file.extension"', path_regex: /baz/, glyph: 'lorem_ipsum' } })
+      stub_const('HqController::NAVIGATION_BUTTONS', [
+        { text: 'foobar', href: '"/pathname/file.extension"', path_regex: /baz/, glyph: 'lorem_ipsum' } ])
       render
 
       assert_select 'li' do
@@ -40,8 +30,8 @@ RSpec.describe 'layouts/navigation.html.erb', type: :view do
     end
 
     specify 'generates link from href code' do
-      stub_const('HqController::NAVIGATION_BUTTONS', {
-        comments: { text: 'foobar', href: '"/pathname/file.extension".reverse', path_regex: /baz/, glyph: 'lorem_ipsum' } })
+      stub_const('HqController::NAVIGATION_BUTTONS', [
+        { text: 'foobar', href: '"/pathname/file.extension".reverse', path_regex: /baz/, glyph: 'lorem_ipsum' } ])
       render
 
       assert_select 'a', href: 'noisnetxe.elif/emanhtap/', text: 'foobar'
