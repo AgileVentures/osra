@@ -27,6 +27,8 @@ gem 'roo'
 gem 'rails_config'
 gem 'newrelic_rpm'
 gem 'haml', '~> 4.0.6'  #[view] templating engine
+gem 'will_paginate', '~> 3.0.7' #pagination gem for rails branch
+gem 'will_paginate-bootstrap'
 
 group :test do
   gem 'capybara'

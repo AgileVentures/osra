@@ -124,6 +124,10 @@ class Orphan < ActiveRecord::Base
     current_sponsorship.sponsor if currently_sponsored?
   end
 
+  def sponsorship_changed!
+    resolve_sponsorship_status and save!
+  end
+
 private
 
   def sponsored_siblings_does_not_exceed_siblings_count
@@ -164,7 +168,7 @@ private
 
   def qualify_for_sponsorship_by_status
     if orphan_status_is_active?
-      reactivate
+      resolve_sponsorship_status
     elsif orphan_status_was_active?
       deactivate
     end
@@ -182,7 +186,7 @@ private
     self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
   end
 
-  def reactivate
+  def resolve_sponsorship_status
     if unsponsored?
       set_sponsorship_status 'Unsponsored'
     elsif previously_sponsored?

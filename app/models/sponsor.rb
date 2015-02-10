@@ -2,6 +2,8 @@ class Sponsor < ActiveRecord::Base
   include Initializer
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+  PRIORITY_COUNTRIES= %w(SA TR AE GB)
+  EXCLUDED_COUNTRYS= %w(IL)
 
   attr_accessor :new_city_name
   attr_readonly :branch_id, :organization_id, :sponsor_type_id
@@ -29,6 +31,7 @@ class Sponsor < ActiveRecord::Base
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email, with: Devise.email_regexp, allow_blank: true
   validate :type_matches_affiliation, on: :create
+  validates :agent, presence: true
 
   belongs_to :branch
   belongs_to :organization

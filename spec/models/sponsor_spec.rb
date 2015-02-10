@@ -23,6 +23,7 @@ describe Sponsor, type: :model do
   it { is_expected.not_to allow_value(Sponsor::NEW_CITY_MENU_OPTION).for(:city).
                               with_message 'Please enter city name below. &darr;' }
   it { is_expected.to validate_presence_of :sponsor_type }
+  it { is_expected.to validate_presence_of :agent }
 
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }

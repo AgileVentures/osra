@@ -21,6 +21,7 @@ Feature:
       | start_date             | 2013-09-25         | 2013-09-25            | 2013-09-25          |
       | status                 | Active             | Active                | Active              |
       | payment_plan           | Every Two Months   |                       | Other               |
+      | agent                  | Agent1             | Agent2                | Agent1              |
 
     And I am a new, authenticated user
 
@@ -174,9 +175,9 @@ Feature:
     Given I am on the "Sponsors" page for the "Admin" role
     Then I should see full country names in the Country filter
 
-  Scenario: **Bug fix** Display 'Translation N/A' when translation missing
+  Scenario: **Bug fix** Display only original country when translation missing
     Given "Obscure Sponsor" is from Cayman Islands-KY
     And I am on the "Sponsors" page for the "Admin" role
-    Then I should see "(Cayman Islands) [Translation N/A]"
+    Then I should see "(Cayman Islands)"
     When I am on the "Show Sponsor" page for sponsor "Obscure Sponsor"
-    Then I should see "(Cayman Islands) [Translation N/A]"
+    Then I should see "(Cayman Islands)"

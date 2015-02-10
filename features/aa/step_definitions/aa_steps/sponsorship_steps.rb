@@ -95,3 +95,31 @@ Given /^sponsor "([^"]*)" has requested to sponsor (\d+) orphans$/ do |sponsor_n
   sponsor = Sponsor.find_by_name sponsor_name
   sponsor.update!(requested_orphan_count: request)
 end
+
+Given /^I have mistakenly created a sponsorship between "([^"]*)" and "([^"]*)"$/ do |sponsor_name, orphan_name|
+  sponsor = FactoryGirl.create(:sponsor, name: sponsor_name, requested_orphan_count: 1)
+  orphan = FactoryGirl.create(:orphan, name: orphan_name)
+  @sponsor_original_state = [sponsor.request_fulfilled,
+                             sponsor.active_sponsorship_count]
+  @orphan_original_state = orphan.orphan_sponsorship_status
+  sponsor.sponsorships.create!(orphan: orphan, start_date: Date.current)
+end
+
+And /^I destroy the record of the "([^"]*)" - "([^"]*)" sponsorship$/ do |sponsor_name, orphan_name|
+  steps %Q{ When I am on the "Show Sponsor" page for sponsor "#{sponsor_name}" }
+  orphan = Orphan.find_by_name(orphan_name)
+  sponsorship = Sponsorship.where(orphan_id: orphan.id, active: true).first
+  tr_id = "#sponsorship_#{sponsorship.id}"
+  within(tr_id) { click_link 'X' }
+end
+
+Then /^sponsorship data for "([^"]*)" should reset$/ do |sponsor_name|
+  sponsor = Sponsor.find_by_name(sponsor_name)
+  sponsor_state = [sponsor.request_fulfilled, sponsor.active_sponsorship_count]
+  expect(sponsor_state).to eq @sponsor_original_state
+end
+
+And /^sponsorship status for "([^"]*)" should reset$/ do |orphan_name|
+  orphan = Orphan.find_by_name(orphan_name)
+  expect(orphan.orphan_sponsorship_status).to eq @orphan_original_state
+end
