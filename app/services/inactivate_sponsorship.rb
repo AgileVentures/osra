@@ -9,13 +9,23 @@ class InactivateSponsorship
 
   def call
     ActiveRecord::Base.transaction do
-      inactivate_sponsorship! and
-        UpdateOrphanSponsorshipStatus.new(@orphan, 'Previously Sponsored').call and
-        UpdateSponsorSponsorshipData.new(@sponsor).call
+      inactivate_sponsorship!
+      update_and_save_orphan!
+      update_and_save_sponsor!
     end
   end
 
   def inactivate_sponsorship!
     @sponsorship.update!(active: false, end_date: @end_date)
+  end
+
+  def update_and_save_orphan!
+    UpdateOrphanSponsorshipStatus.new(@orphan, 'Previously Sponsored').call
+    @orphan.save!
+  end
+
+  def update_and_save_sponsor!
+    UpdateSponsorSponsorshipData.new(@sponsor).call
+    @sponsor.save!
   end
 end

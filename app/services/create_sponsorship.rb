@@ -8,13 +8,23 @@ class CreateSponsorship
 
   def call
     ActiveRecord::Base.transaction do
-      save_sponsorship! and
-        UpdateOrphanSponsorshipStatus.new(@orphan, 'Sponsored').call and
-        UpdateSponsorSponsorshipData.new(@sponsor).call
+      persist_sponsorship!
+      update_and_save_orphan!
+      update_and_save_sponsor!
     end
   end
 
-  def save_sponsorship!
+  def persist_sponsorship!
     @sponsorship.save!
+  end
+
+  def update_and_save_orphan!
+    UpdateOrphanSponsorshipStatus.new(@orphan, 'Sponsored').call
+    @orphan.save!
+  end
+
+  def update_and_save_sponsor!
+    UpdateSponsorSponsorshipData.new(@sponsor).call
+    @sponsor.save!
   end
 end

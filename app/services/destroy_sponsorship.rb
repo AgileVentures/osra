@@ -8,9 +8,9 @@ class DestroySponsorship
 
   def call
     ActiveRecord::Base.transaction do
-      destroy_sponsorship! and
-        resolve_status_and_update_orphan! and
-        UpdateSponsorSponsorshipData.new(@sponsor).call
+      destroy_sponsorship!
+      resolve_status_and_update_orphan!
+      update_and_save_sponsor!
     end
   end
 
@@ -21,5 +21,11 @@ class DestroySponsorship
   def resolve_status_and_update_orphan!
     status = ResolveOrphanSponsorshipStatus.new(@orphan).call
     UpdateOrphanSponsorshipStatus.new(@orphan, status).call
+    @orphan.save!
+  end
+
+  def update_and_save_sponsor!
+    UpdateSponsorSponsorshipData.new(@sponsor).call
+    @sponsor.save!
   end
 end

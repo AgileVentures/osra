@@ -7,6 +7,6 @@ class UpdateOrphanSponsorshipStatus
 
   def call
     status = OrphanSponsorshipStatus.find_by_name @status_name
-    @orphan.update!(orphan_sponsorship_status: status)
+    @orphan.orphan_sponsorship_status = status
   end
 end

@@ -84,11 +84,6 @@ class Orphan < ActiveRecord::Base
     end
   end
 
-  def update_sponsorship_status!(status_name)
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
-    update!(orphan_sponsorship_status: sponsorship_status)
-  end
-
   scope :active,
         -> { joins(:orphan_status).
             where(orphan_statuses: { name: 'Active' }) }
@@ -124,10 +119,6 @@ class Orphan < ActiveRecord::Base
 
   def current_sponsor
     current_sponsorship.sponsor if currently_sponsored?
-  end
-
-  def sponsorship_changed!
-    resolve_sponsorship_status and save!
   end
 
 private
@@ -176,7 +167,8 @@ private
 
   def qualify_for_sponsorship_by_status
     if orphan_status_is_active?
-      resolve_sponsorship_status
+      new_status = ResolveOrphanSponsorshipStatus.new(self).call
+      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name(new_status)
     elsif orphan_status_was_active?
       deactivate
     end
@@ -192,29 +184,6 @@ private
 
   def deactivate
     self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
-  end
-
-  def resolve_sponsorship_status
-    if unsponsored?
-      set_sponsorship_status 'Unsponsored'
-    elsif previously_sponsored?
-      set_sponsorship_status 'Previously Sponsored'
-    elsif currently_sponsored?
-      set_sponsorship_status 'Sponsored'
-    end
-  end
-
-  def unsponsored?
-    self.sponsorships.empty?
-  end
-
-  def previously_sponsored?
-    self.sponsorships.all_active.empty?
-  end
-
-  def set_sponsorship_status(status_name)
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
-    self.orphan_sponsorship_status = sponsorship_status
   end
 
   def can_be_inactivated

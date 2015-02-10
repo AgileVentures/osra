@@ -24,10 +24,6 @@ class Sponsorship < ActiveRecord::Base
   delegate :name, :additional_info, :id, to: :sponsor, prefix: true
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
-  def inactivate(end_date)
-    update_attributes(active: false, end_date: end_date)
-  end
-
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
