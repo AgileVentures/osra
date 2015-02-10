@@ -52,10 +52,9 @@ describe "hq/users/index.html.erb", type: :view do
       end
 
       it 'paginates' do
-        allow(view).to receive(:will_paginate).and_return('success')
-        render
+        expect(view).to receive(:will_paginate)
 
-        expect(rendered).to match /success/
+        render
       end
     end
   end
