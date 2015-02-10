@@ -9,7 +9,7 @@ RSpec.describe Hq::UsersController, type: :controller do
   end
 
   specify '#index' do
-    expect(User).to receive_message_chain(:all, :paginate).with(page: '2').and_return([@user].paginate)
+    expect(User).to receive(:paginate).with(page: '2')
     get :index, page: '2'
     expect(response).to render_template 'index'
   end
