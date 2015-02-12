@@ -5,12 +5,16 @@ class ResolveOrphanSponsorshipStatus
   end
 
   def call
-    if @orphan.sponsorships.empty?
+    if orphan.sponsorships.empty?
       'Unsponsored'
-    elsif @orphan.sponsorships.all_active.empty?
+    elsif orphan.sponsorships.all_active.empty?
       'Previously Sponsored'
-    elsif @orphan.sponsorships.all_active.present?
+    elsif orphan.sponsorships.all_active.present?
       'Sponsored'
     end
   end
+
+  private
+
+  attr_reader :orphan
 end

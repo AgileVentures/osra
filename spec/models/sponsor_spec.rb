@@ -82,7 +82,8 @@ describe Sponsor, type: :model do
 
     it 'should allow existing records to have request_fulfilled' do
       sponsor.save!
-      expect(sponsor).to receive(:request_is_fulfilled?).and_return true
+      allow(sponsor).to receive_message_chain(:sponsorships, :all_active, :size).and_return 1
+      sponsor.requested_orphan_count = 1
       sponsor.save!
       expect(sponsor.reload.request_fulfilled?).to be true
     end
@@ -188,7 +189,7 @@ describe Sponsor, type: :model do
     describe 'after_initialize #set_defaults' do
       describe 'status' do
 
-        it 'defaults status to "Under Revision"' do
+        it 'defaults status to "Active"' do
           expect((Sponsor.new).status).to eq active_status
         end
 
@@ -231,8 +232,8 @@ describe Sponsor, type: :model do
 
       context 'when sponsor has active sponsorships' do
         before do
-          orphan = create(:orphan)
-          create :sponsorship, sponsor: sponsor, orphan: orphan
+          sponsorship = build :sponsorship, sponsor: sponsor
+          CreateSponsorship.new(sponsorship).call
         end
 
         specify 's/he cannot be inactivated' do
@@ -330,82 +331,6 @@ describe Sponsor, type: :model do
       expect(request_fulfilled_sponsor.eligible_for_sponsorship?).to eq false
     end
 
-    describe '#sponsorship_changed!' do
-
-      specify '#sponsorship_changed! should call update methods' do
-        expect(active_sponsor).to receive(:update_request_fulfilled!)
-        expect(active_sponsor).to receive(:update_active_sponsorship_count!)
-        active_sponsor.sponsorship_changed!
-      end
-    end
-
-    describe 'sponsorship requests' do
-      describe '#request_is_fulfilled?' do
-        it 'should return false if number of active sponsorships is less than requested' do
-          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
-          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 3
-          expect(active_sponsor.send(:request_is_fulfilled?)).to be false
-        end
-
-        it 'should return true if number of active sponsorships is equal to requested' do
-          expect(active_sponsor).to receive(:requested_orphan_count).and_return 5
-          expect(active_sponsor).to receive_message_chain(:sponsorships, :all_active, :count).and_return 5
-          expect(active_sponsor.send(:request_is_fulfilled?)).to be true
-        end
-      end
-
-      describe '#set_request_fulfilled' do
-        let(:in_memory_sponsor) { Sponsor.new }
-
-        it 'should set request_fulfilled to true when requests have been fulfilled' do
-          in_memory_sponsor.request_fulfilled = false
-          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return true
-          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(false).to(true)
-        end
-
-        it 'should set request_fulfilled to false when requests have not been fulfilled' do
-          in_memory_sponsor.request_fulfilled = true
-          expect(in_memory_sponsor).to receive(:request_is_fulfilled?).and_return false
-          expect{ in_memory_sponsor.send(:set_request_fulfilled) }.to change{ in_memory_sponsor.request_fulfilled }.from(true).to(false)
-        end
-      end
-
-      describe '#update_request_fulfilled!' do
-        let(:persisted_sponsor) { create :sponsor }
-
-        it 'should set request_fulfilled to true when requests have been fulfilled' do
-          persisted_sponsor.update_columns(request_fulfilled: false)
-          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return true
-          expect{ persisted_sponsor.update_request_fulfilled! }.to \
-            change{ persisted_sponsor.reload.request_fulfilled }.from(false).to(true)
-        end
-
-        it 'should set request_fulfilled to false when requests have not been fulfilled' do
-          persisted_sponsor.update_columns(request_fulfilled: true)
-          allow(persisted_sponsor).to receive(:request_is_fulfilled?).and_return false
-          expect{ persisted_sponsor.update_request_fulfilled! }.to \
-            change{ persisted_sponsor.reload.request_fulfilled }.from(true).to(false)
-        end
-      end
-    end
-
-    describe '#update_active_sponsorship_count!' do
-      let(:new_sponsor) { build_stubbed :sponsor }
-      let(:current_orphan) { create :orphan }
-      let(:sponsorship) { create :sponsorship,
-        sponsor: new_sponsor,
-        orphan: current_orphan }
-
-      it 'should add 1 to active sponsorship count if a sponsorship is created' do
-        expect{ sponsorship }.to change {new_sponsor.active_sponsorship_count}.by(1)
-      end
-
-      it 'should subtract 1 from active sponsorship count if a sponsorship is ended' do
-        sponsorship
-        expect{ sponsorship.inactivate (Date.current + 1.month) }.to change {new_sponsor.active_sponsorship_count}.by(-1)
-      end
-    end
-
     describe '#currently_sponsored_orphans' do
       let(:new_sponsor) { build_stubbed :sponsor, requested_orphan_count: 5 }
       let(:current_orphan) { create :orphan }
@@ -419,7 +344,8 @@ describe Sponsor, type: :model do
 
       before(:each) do
         future_date = past_sponsorship.start_date + 1.month
-        past_sponsorship.inactivate future_date
+        InactivateSponsorship.new(sponsorship: past_sponsorship,
+                                  end_date: future_date).call
       end
 
       it 'returns only orphans that are currently sponsored' do

@@ -14,18 +14,22 @@ class DestroySponsorship
     end
   end
 
+  private
+
+  attr_reader :sponsorship, :sponsor, :orphan
+
   def destroy_sponsorship!
-    @sponsorship.destroy!
+    sponsorship.destroy!
   end
 
   def resolve_status_and_update_orphan!
-    status = ResolveOrphanSponsorshipStatus.new(@orphan).call
-    UpdateOrphanSponsorshipStatus.new(@orphan, status).call
-    @orphan.save!
+    status = ResolveOrphanSponsorshipStatus.new(orphan).call
+    UpdateOrphanSponsorshipStatus.new(orphan, status).call
+    orphan.save!
   end
 
   def update_and_save_sponsor!
-    UpdateSponsorSponsorshipData.new(@sponsor).call
-    @sponsor.save!
+    UpdateSponsorSponsorshipData.new(sponsor).call
+    sponsor.save!
   end
 end

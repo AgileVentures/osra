@@ -14,17 +14,21 @@ class CreateSponsorship
     end
   end
 
+  private
+
+  attr_reader :sponsorship, :sponsor, :orphan
+
   def persist_sponsorship!
-    @sponsorship.save!
+    sponsorship.save!
   end
 
   def update_and_save_orphan!
-    UpdateOrphanSponsorshipStatus.new(@orphan, 'Sponsored').call
-    @orphan.save!
+    UpdateOrphanSponsorshipStatus.new(orphan, 'Sponsored').call
+    orphan.save!
   end
 
   def update_and_save_sponsor!
-    UpdateSponsorSponsorshipData.new(@sponsor).call
-    @sponsor.save!
+    UpdateSponsorSponsorshipData.new(sponsor).call
+    sponsor.save!
   end
 end

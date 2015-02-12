@@ -10,8 +10,8 @@ ActiveAdmin.register Sponsorship do
       InactivateSponsorship.new(sponsorship: sponsorship,
                                 end_date: params[:end_date]).call
       flash[:success] = 'Sponsorship link was successfully terminated.'
-    rescue
-      flash[:warning] = 'Sponsorship link could not be terminated.'
+    rescue => error
+      flash[:warning] = error.message
     ensure
       redirect_to admin_sponsor_path(sponsor)
     end
@@ -23,8 +23,8 @@ ActiveAdmin.register Sponsorship do
     begin
       DestroySponsorship.new(sponsorship).call
       flash[:success] = 'Sponsorship record was successfully destroyed.'
-    rescue
-      flash[:warning] = 'Sponsorship record could not be destroyed.'
+    rescue => error
+      flash[:warning] = error.message
     ensure
       redirect_to admin_sponsor_path(sponsor)
     end
@@ -39,10 +39,8 @@ ActiveAdmin.register Sponsorship do
         CreateSponsorship.new(sponsorship).call
         flash[:success] = 'Sponsorship link was successfully created.'
         redirect_to admin_sponsor_path(sponsor)
-      rescue
-        error_msg = sponsorship.errors.full_messages ||
-          'Sponsorship link could not be created.'
-        flash[:warning] = error_msg
+      rescue => error
+        flash[:warning] = error.message
         redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
