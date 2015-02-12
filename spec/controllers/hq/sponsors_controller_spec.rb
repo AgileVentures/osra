@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'will_paginate/array'
 
 RSpec.describe Hq::SponsorsController, type: :controller do
-    let(:sponsor) {FactoryGirl.build_stubbed :sponsor}
-    let(:sponsors) {(1..5).map {FactoryGirl.build_stubbed :sponsor}}
+    let(:sponsor) {build_stubbed :sponsor}
+    let(:sponsors) {(1..5).map {build_stubbed :sponsor}}
 
   before :each do
     sign_in instance_double(AdminUser)
@@ -34,18 +34,13 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
   context '#create' do
     specify 'successful' do
-      expect_any_instance_of(Sponsor).to receive(:save) do |_self|
-        _self.id = sponsor.id
-        true
-      end
-
-      post :create, sponsor: sponsor.attributes
-      expect(response).to redirect_to hq_sponsor_url(sponsor)
+      post :create, sponsor: build(:sponsor).attributes
+      expect(response).to redirect_to hq_sponsor_url(assigns :sponsor)
     end
 
     specify 'unsuccessful' do
       expect_any_instance_of(Sponsor).to receive(:save).and_return(false)
-      post :create, sponsor: sponsor.attributes
+      post :create, sponsor: build(:sponsor).attributes
       expect(response).to render_template 'new'
     end
   end

@@ -18,7 +18,7 @@ FactoryGirl.define do
     payment_plan { Sponsor::PAYMENT_PLANS.sample }
     agent
 
-    trait :random_optional_fields do  
+    trait :random_optional_fields do
       address { ["#{Faker::Address.building_number.to_s} #{Faker::Address.street_name}", nil].sample }
       email { [Faker::Internet.email, nil].sample }
       contact1 { [Faker::PhoneNumber.phone_number, nil].sample }
@@ -26,6 +26,6 @@ FactoryGirl.define do
       additional_info { [Faker::Lorem.sentence, nil].sample }
     end
 
-    factory :sponsor_full, traits: [:random_optional_fields] 
+    factory :sponsor_full, traits: [:random_optional_fields]
   end
 end
