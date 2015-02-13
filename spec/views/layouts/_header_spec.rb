@@ -3,7 +3,6 @@ include Devise::TestHelpers
 
 RSpec.describe 'layouts/_header.html.erb', type: :view do
   before :each do
-    @request.env["devise.mapping"] = Devise.mappings[:admin_user]
     @admin = FactoryGirl.create :admin_user
     sign_in @admin
   end
