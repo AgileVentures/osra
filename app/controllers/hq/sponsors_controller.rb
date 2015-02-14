@@ -1,6 +1,6 @@
 class Hq::SponsorsController < HqController
   def index
-    @sponsors= Sponsor.all
+    @sponsors = Sponsor.paginate(:page => params[:page])
   end
 
   def show

@@ -8,7 +8,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     end
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1)}
     end
 
     it 'should render something besides "No Sponsors found"' do
@@ -21,6 +21,10 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
         expect(rendered).to match link_to(sponsor.name, hq_sponsor_path(sponsor.id))
       end
     end
+
+    it 'should have pagination buttons' do
+      expect(rendered).to have_selector('div.pagination')
+    end
   end
 
   describe 'no sponsors exist' do
@@ -28,13 +32,17 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
       render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: []}
       expect(rendered).to match /No Sponsors found/
     end
+
+    it 'should not have pagination buttons' do
+      expect(rendered).to_not have_selector('div.pagination')
+    end
   end
 
   describe 'required attributes:' do
     let(:sponsor) { FactoryGirl.build_stubbed(:sponsor) }
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor]}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1)}
     end
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|

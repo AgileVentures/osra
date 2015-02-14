@@ -45,12 +45,12 @@ RSpec.describe 'hq/users/show.html.erb', type: :view do
 
     specify 'inactive' do
       expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
-                                      locals: {sponsors: user.sponsors.all_active}
+                                      locals: {sponsors: user.sponsors.all_active.paginate(page: 1)}
     end
 
     specify 'active' do
       expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
-                                      locals: {sponsors: user.sponsors.all_inactive}
+                                      locals: {sponsors: user.sponsors.all_inactive.paginate(page: 1)}
     end
   end
 end
