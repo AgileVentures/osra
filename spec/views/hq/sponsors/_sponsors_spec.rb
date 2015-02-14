@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'cgi'
+require 'will_paginate/array'
 
 RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
   describe 'sponsors exist' do
