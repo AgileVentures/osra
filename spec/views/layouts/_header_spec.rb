@@ -1,5 +1,4 @@
 require 'rails_helper'
-include Devise::TestHelpers
 
 RSpec.describe 'layouts/_header.html.erb', type: :view do
   before :each do
