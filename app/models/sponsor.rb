@@ -66,7 +66,8 @@ class Sponsor < ActiveRecord::Base
   end
 
   def currently_sponsored_orphans
-    sponsorships.all_active.map(&:orphan)
+    Orphan.joins(:sponsorships).
+      where(sponsorships: { sponsor_id: self.id, active: true } )
   end
 
   def self.all_cities
