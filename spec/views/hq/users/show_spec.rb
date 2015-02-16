@@ -18,6 +18,10 @@ RSpec.describe 'hq/users/show.html.erb', type: :view do
       specify 'email address' do
         expect(rendered).to match CGI::escape_html(user.email)
       end
+
+      specify 'Edit User button' do
+        expect(rendered).to have_link 'Edit User', edit_hq_user_path(user)
+      end
     end
   end
 
