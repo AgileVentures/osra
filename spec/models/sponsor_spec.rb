@@ -36,8 +36,9 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
                           only_integer.is_greater_than(0) }
 
-  it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100').for :email }
-  ['not_email', 'also@not_email', 'really_not@', 'not.emal@em..com', '+not@an.em'].each do |bad_email_value|
+  it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
+      'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
+  ['not_email', 'also@not_email', 'really_not@', 'not_emal@em..com', '"not@an.em'].each do |bad_email_value|
     it { is_expected.to_not allow_value(bad_email_value).for :email }
   end
 

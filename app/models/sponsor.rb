@@ -31,8 +31,8 @@ class Sponsor < ActiveRecord::Base
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
-            with: /\A[_a-z0-9](\.?[\-+_%a-z0-9]+)*@([_+\-%a-z0-9]+)(\.[_+\-%a-z0-9]+)*(\.[_a-z0-9]+)+\z/i,
-            allow_blank: true
+      with: /\A([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)(\.[\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)*\@([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+\.)+([[:word:]]+)(\:[0-9]+)?\z/i,
+      allow_blank: true
   validate :type_matches_affiliation, on: :create
   validates :agent, presence: true
 
