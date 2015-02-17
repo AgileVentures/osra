@@ -1,0 +1,11 @@
+.form-group.required-group label:after {
+  content:"*";
+  color:green;
+}
+.required-field:after {
+  content:"*";
+  color:red;
+}
+.mandatory-field {
+  color: blue;
+}
