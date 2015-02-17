@@ -11,7 +11,7 @@ describe Sponsor, type: :model do
   it 'should have a valid factory' do
     expect(build_stubbed :sponsor).to be_valid
   end
-  
+
   it 'should have payment plans' do
     expect(Sponsor::PAYMENT_PLANS).to be_present
   end
@@ -36,8 +36,8 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
                           only_integer.is_greater_than(0) }
 
-  it { is_expected.to allow_value(nil, '', 'admin@example.com').for :email }
-  ['not_an_emai', 'also@not_an_email', 'really_not@'].each do |bad_email_value|
+  it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100').for :email }
+  ['not_email', 'also@not_email', 'really_not@', 'not.emal@em..com', '+not@an.em'].each do |bad_email_value|
     it { is_expected.to_not allow_value(bad_email_value).for :email }
   end
 
@@ -90,7 +90,7 @@ describe Sponsor, type: :model do
   describe 'branch or organization affiliation' do
     let(:branch) { Branch.all.sample }
     let(:organization) { Organization.all.sample }
-    
+
     describe 'must be affiliated to 1 branch or 1 organization' do
       subject(:sponsor) { build_stubbed(:sponsor) }
 
@@ -394,7 +394,7 @@ describe Sponsor, type: :model do
       let(:sponsorship) { create :sponsorship,
         sponsor: new_sponsor,
         orphan: current_orphan }
-      
+
       it 'should add 1 to active sponsorship count if a sponsorship is created' do
         expect{ sponsorship }.to change {new_sponsor.active_sponsorship_count}.by(1)
       end
@@ -415,10 +415,10 @@ describe Sponsor, type: :model do
       let!(:past_sponsorship) { create :sponsorship,
                                              sponsor: new_sponsor,
                                              orphan: past_orphan }
-      
-      before(:each) do 
-        future_date = past_sponsorship.start_date + 1.month                                           
-        past_sponsorship.inactivate future_date 
+
+      before(:each) do
+        future_date = past_sponsorship.start_date + 1.month
+        past_sponsorship.inactivate future_date
       end
 
       it 'returns only orphans that are currently sponsored' do
