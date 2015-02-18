@@ -60,8 +60,9 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
                                html: CGI::escape_html(statuses.first.name)
     end
 
+    expect(rendered).to have_selector("input#partner_start_date[value='#{partner.start_date}']")
     assert_select "input#partner_start_date" do
-      assert_select "[value=?]", partner.start_date
+      assert_select "[value=?]", CGI::escape_html(partner.start_date.to_s)
     end
 
     assert_select "input", type: "submit"
