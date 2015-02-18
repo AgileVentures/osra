@@ -38,6 +38,13 @@ RSpec.describe Hq::SponsorsController, type: :controller do
       expect(response).to redirect_to hq_sponsor_url(assigns :sponsor)
     end
 
+    specify 'redirects to new when user clicks Create and Add Another' do
+      post :create, sponsor: build(:sponsor).attributes,
+        commit: 'Create and Add Another'
+
+      expect(response).to redirect_to new_hq_sponsor_path
+    end
+
     specify 'unsuccessful' do
       expect_any_instance_of(Sponsor).to receive(:save).and_return(false)
       post :create, sponsor: build(:sponsor).attributes

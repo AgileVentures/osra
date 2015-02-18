@@ -49,8 +49,16 @@ private
 
   def save_sponsor
     if @sponsor.save
-      flash[:success]= "Sponsor successfuly saved"
-      redirect_to hq_sponsor_url(@sponsor)
+      flash[:success]= "Sponsor successfuly created"
+      redirect_to_new_or_saved_sponsor
+    end
+  end
+
+  def redirect_to_new_or_saved_sponsor
+    if params[:commit] == 'Create and Add Another'
+      redirect_to new_hq_sponsor_path
+    else
+      redirect_to hq_sponsor_path(@sponsor)
     end
   end
 
