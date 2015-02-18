@@ -7,16 +7,19 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
   describe 'the sponsor exists' do
     before :each do
       assign(:sponsor, sponsor)
+      render
     end
 
     it 'should show the assigned sponsor details' do
-      render and expect(rendered).to match sponsor.name
+      expect(rendered).to match sponsor.name
     end
 
     it 'should have an Edit Sponsor button' do
-      render
-
       expect(rendered).to have_link('Edit Sponsor', edit_hq_sponsor_path(sponsor.id))
+    end
+
+    it 'should have a Link to Orphan button' do
+      expect(rendered).to have_link('Link to Orphan')
     end
   end
 
