@@ -149,6 +149,9 @@ ActiveAdmin.register Sponsor do
     end
     f.actions do
       f.action :submit
+      if f.object.new_record?
+        f.action :submit, :label => 'Create and Add Another'
+      end
       f.action :cancel, :label => "Cancel", :wrapper_html => { :class => "cancel" }
     end
   end
@@ -159,6 +162,30 @@ ActiveAdmin.register Sponsor do
 
   action_item :link_to_orphan, only: :show do
     link_to 'Link to Orphan', new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship') if sponsor.eligible_for_sponsorship?
+  end
+
+  controller do
+    def create
+      @sponsor = Sponsor.new(permitted_params[:sponsor])
+      save_sponsor or render 'new'
+    end
+
+    private
+
+    def save_sponsor
+      if @sponsor.save
+        flash[:success] = 'Sponsor was successfully created'
+        redirect_to_new_or_saved_sponsor
+      end
+    end
+
+    def redirect_to_new_or_saved_sponsor
+      if params[:commit] == 'Create and Add Another'
+        redirect_to new_admin_sponsor_path
+      else
+        redirect_to admin_sponsor_path @sponsor
+      end
+    end
   end
 
   permit_params :name, :country, :gender, :requested_orphan_count, :address,
