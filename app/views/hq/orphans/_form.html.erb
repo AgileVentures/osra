@@ -1,0 +1,14 @@
+<%= form_for [:hq, @orphan] do |f| %>
+  <%= render 'shared/errors', object: f.object %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to('Cancel',
+                (@orphan.id ? hq_orphan_path(@orphan.id) : hq_orphans_path),
+                class: 'btn btn-default btn-cancel', role: 'button') %>
+  </div>
+<% end %>
+
