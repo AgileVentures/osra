@@ -1,0 +1,41 @@
+<div class="panel-heading">
+  <div class="action_items">
+    <%= link_to('New Orphan', new_hq_orphan_path,
+                class: 'btn btn-default', role: 'button') %>
+  </div>
+</div>
+<%- if @orphans.empty? %>
+  <div class="panel-body">
+    <em>No Orphans found</em>
+  </div>
+<%- else %>
+  <div class='panel-body table-responsive'>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>
+            Osra Num
+          </th>
+          <th>
+            Name
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- @orphans.each do |orphan| %>
+          <tr>
+            <td>
+              <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= link_to orphan.name, hq_orphan_path(orphan) %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
+  </div>
+<%- end %>
