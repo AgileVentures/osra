@@ -11,17 +11,21 @@ describe Admin::SponsorshipsController, type: :controller do
     allow(Sponsor).to receive(:find).with('1').and_return sponsor
   end
 
-  describe 'inactivate' do
+  describe '#inactivate' do
+
+    let(:sponsorship_inactivator) { instance_double InactivateSponsorship }
 
     before(:each) do
       expect(sponsor).to receive_message_chain(:sponsorships, :find)
+      allow(InactivateSponsorship).to receive(:new).
+        and_return sponsorship_inactivator
     end
 
     context 'when successful' do
 
       before(:each) do
-        expect(InactivateSponsorship).to receive_message_chain(:new, :call).
-          and_return true
+        expect(sponsorship_inactivator).to receive(:call).and_return true
+
         put :inactivate, { id: 1, sponsor_id: 1, end_date: '1-1-2017' }
       end
 
@@ -38,14 +42,15 @@ describe Admin::SponsorshipsController, type: :controller do
     context 'when unsuccessful' do
 
       before(:each) do
-        expect(InactivateSponsorship).to receive_message_chain(:new, :call).
-          and_raise('BOOM')
+        expect(sponsorship_inactivator).to receive(:call).and_return false
+        expect(sponsorship_inactivator).to receive(:error_msg).and_return 'No go'
+
         put :inactivate, { id: 1, sponsor_id: 1, end_date: '1-1-2017' }
       end
 
       it 'sets flash[:warning] message' do
         expect(flash[:success]).to be_nil
-        expect(flash[:warning]).to eq 'BOOM'
+        expect(flash[:warning]).to eq 'No go'
       end
 
       it 'redirects to sponsor show view' do
@@ -54,22 +59,26 @@ describe Admin::SponsorshipsController, type: :controller do
     end
   end
 
-  describe 'destroy' do
+  describe '#destroy' do
+
+    let(:sponsorship_destructor) { instance_double DestroySponsorship }
 
     before(:each) do
       allow(sponsor).to receive_message_chain(:sponsorships, :find)
+      allow(DestroySponsorship).to receive(:new).
+        and_return(sponsorship_destructor)
     end
 
     context 'when successful' do
 
       before(:each) do
-        expect(DestroySponsorship).to receive_message_chain(:new, :call).
-          and_return true
+        expect(sponsorship_destructor).to receive(:call).and_return true
+
         delete :destroy, { id: 1, sponsor_id: 1 }
       end
 
       it 'sets flash[:success] message' do
-        expect(flash[:success]).not_to be_nil
+        expect(flash[:success]).to eq 'Sponsorship record was successfully destroyed.'
         expect(flash[:warning]).to be_nil
       end
 
@@ -81,14 +90,15 @@ describe Admin::SponsorshipsController, type: :controller do
     context 'when unsuccessful' do
 
       before(:each) do
-        expect(DestroySponsorship).to receive_message_chain(:new, :call).
-          and_raise('BOOM')
+        expect(sponsorship_destructor).to receive(:call).and_return false
+        expect(sponsorship_destructor).to receive(:error_msg).and_return 'No go'
+
         delete :destroy, { id: 1, sponsor_id: 1 }
       end
 
       it 'sets flash[:warning] message' do
         expect(flash[:success]).to be_nil
-        expect(flash[:warning]).to eq 'BOOM'
+        expect(flash[:warning]).to eq 'No go'
       end
 
       it 'redirects to sponsor show view' do
@@ -97,18 +107,21 @@ describe Admin::SponsorshipsController, type: :controller do
     end
   end
 
-  describe 'create' do
+  describe '#create' do
+
+    let(:sponsorship_creator) { instance_double CreateSponsorship }
 
     before :each do
       allow(sponsor).to receive_message_chain(:sponsorships, :build)
+      allow(CreateSponsorship).to receive(:new).and_return(sponsorship_creator)
     end
 
     context 'when successful' do
 
       before(:each) do
-        expect(CreateSponsorship).to receive_message_chain(:new, :call).
-          and_return true
-        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2000' }
+        expect(sponsorship_creator).to receive(:call).and_return true
+
+        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
       it 'sets flash[:success] message' do
@@ -122,16 +135,16 @@ describe Admin::SponsorshipsController, type: :controller do
     end
 
     context 'when unsuccessful' do
-
       before(:each) do
-        expect(CreateSponsorship).to receive_message_chain(:new, :call).
-          and_raise('BOOM')
-        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2000' }
+        expect(sponsorship_creator).to receive(:call).and_return false
+        expect(sponsorship_creator).to receive(:error_msg).and_return 'No go'
+
+        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
       it 'sets flash[:warning] message' do
         expect(flash[:success]).to be_nil
-        expect(flash[:warning]).to eq 'BOOM'
+        expect(flash[:warning]).to eq 'No go'
       end
 
       it 'redirects to new sponsorship view' do

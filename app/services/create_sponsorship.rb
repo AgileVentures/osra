@@ -1,5 +1,7 @@
 class CreateSponsorship
 
+  attr_reader :error_msg
+
   def initialize(sponsorship)
     @sponsorship = sponsorship
     @sponsor = sponsorship.sponsor
@@ -7,16 +9,22 @@ class CreateSponsorship
   end
 
   def call
-    ActiveRecord::Base.transaction do
-      persist_sponsorship!
-      update_and_save_orphan!
-      update_and_save_sponsor!
+    begin
+      ActiveRecord::Base.transaction do
+        persist_sponsorship!
+        update_and_save_orphan!
+        update_and_save_sponsor!
+      end
+    rescue => error
+      self.error_msg = error.message
+      false
     end
   end
 
   private
 
   attr_reader :sponsorship, :sponsor, :orphan
+  attr_writer :error_msg
 
   def persist_sponsorship!
     sponsorship.save!
