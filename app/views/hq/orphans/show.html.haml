@@ -1,0 +1,127 @@
+%div.action_items
+  %div.instance
+    = link_to 'Edit Orphan', edit_hq_orphan_path(@orphan.id),
+      class: 'btn btn-default', role: 'button'
+    = link_to 'Link to Orphan', '#',
+      class: 'btn btn-default', role: 'button'
+
+%dl.dl-horizontal
+  %dt Orphan Name
+  %dd
+    = @orphan.name
+%dl.dl-horizontal
+  %dt OSRA Num
+  %dd
+    = @orphan.osra_num
+%dl.dl-horizontal
+  %dt Father Given Name
+  %dd
+    = @orphan.father_given_name
+%dl.dl-horizontal
+  %dt Family Name
+  %dd
+    = @orphan.family_name
+%dl.dl-horizontal
+  %dt Father is Alive
+  %dd
+    = @orphan.father_alive ? 'Yes' : 'No'
+%dl.dl-horizontal
+  %dt Father is Martyr
+  %dd
+    = @orphan.father_is_martyr ? 'Yes' : 'No'
+%dl.dl-horizontal
+  %dt Father Date of Death
+  %dd
+    = format_full_date @orphan.father_date_of_death
+%dl.dl-horizontal
+  %dt Mother Name
+  %dd
+    = @orphan.mother_name
+%dl.dl-horizontal
+  %dt Mother is Alive
+  %dd
+    = @orphan.mother_alive ? 'Yes' : 'No'
+%dl.dl-horizontal
+  %dt Date of Birth
+  %dd
+    = format_full_date @orphan.date_of_birth
+%dl.dl-horizontal
+  %dt Gender
+  %dd
+    = @orphan.gender
+%dl.dl-horizontal
+  %dt Contact Number
+  %dd
+    = @orphan.contact_number
+%dl.dl-horizontal
+  %dt Sponsored by Another Org
+  %dd
+    = @orphan.sponsored_by_another_org ? 'Yes' : 'No'
+%dl.dl-horizontal
+  %dt Minor Siblings Count
+  %dd
+    = @orphan.minor_siblings_count
+%dl.dl-horizontal
+  %dt Sponsored Minor Siblings Count
+  %dd
+    = @orphan.sponsored_minor_siblings_count
+%dl.dl-horizontal
+  %dt Original Province Name
+  %dd
+    = @orphan.original_address.province.name
+%dl.dl-horizontal
+  %dt Original Province Code
+  %dd
+    = @orphan.original_address.province.code
+%dl.dl-horizontal
+  %dt Original City
+  %dd
+    = @orphan.original_address.city
+%dl.dl-horizontal
+  %dt Original Neighborhood
+  %dd
+    = @orphan.original_address.neighborhood
+%dl.dl-horizontal
+  %dt Original Street
+  %dd
+    = @orphan.original_address.street
+%dl.dl-horizontal
+  %dt Current Province Name
+  %dd
+    = @orphan.current_address.province.name
+%dl.dl-horizontal
+  %dt Current Province Code
+  %dd
+    = @orphan.current_address.province.code
+%dl.dl-horizontal
+  %dt Current City
+  %dd
+    = @orphan.current_address.city
+%dl.dl-horizontal
+  %dt Current Neighborhood
+  %dd
+    = @orphan.current_address.neighborhood
+%dl.dl-horizontal
+  %dt Current Street
+  %dd
+    = @orphan.current_address.street
+%dl.dl-horizontal
+  %dt Name Status
+  %dd
+    = @orphan.orphan_status.name
+%dl.dl-horizontal
+  %dt Code Status
+  %dd
+    = @orphan.orphan_status.code
+%dl.dl-horizontal
+  %dt Priority
+  %dd
+    = @orphan.priority
+%dl.dl-horizontal
+  %dt Sponsorship Status
+  %dd
+    = @orphan.orphan_sponsorship_status.name
+%dl.dl-horizontal
+  %dt Sponsorship Code
+  %dd
+    = @orphan.orphan_sponsorship_status.code
