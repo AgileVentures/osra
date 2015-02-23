@@ -32,6 +32,7 @@ describe Sponsor, type: :model do
   [7, 'yes', true].each do |bad_date_value|
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
+  it { is_expected.to_not allow_value("2011-04-04").for :start_date }
 
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
                           only_integer.is_greater_than(0) }

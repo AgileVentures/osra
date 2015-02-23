@@ -49,6 +49,13 @@ Feature:
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should see "Start date can not be later than the first of next month"
 
+  Scenario: Sponsorship can not start later than OSRA establishment date
+    Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
+    And I click the "Link to Orphan" button
+    And I fill in Sponsorship Start Date for "First Orphan" with "2011-04-04"
+    When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should see "Start date must be beyond the OSRA establishment date of 2012-04-01"
+
   Scenario: Pairing a sponsor with orphans
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
     And I click the "Link to Orphan" button

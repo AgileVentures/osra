@@ -9,6 +9,7 @@ class Sponsorship < ActiveRecord::Base
 
   validates :start_date, presence: { scope: true, message: "is invalid"}
   validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
+  validate  :start_date_beyound_OSRA_establishment_date, if: :start_date
 
   validates :end_date, presence: { message: 'is invalid' }, if: '!active'
   validate  :end_date_not_before_start_date, on: :update, if: :end_date
@@ -28,6 +29,8 @@ class Sponsorship < ActiveRecord::Base
   scope :all_inactive, -> { where(active: false) }
 
 private
+  
+  include StartdateBeyondOsraEstablishmentValidation
 
   def start_date_no_later_than_1st_of_next_month
     first_of_next_month = Date.current.beginning_of_month.next_month

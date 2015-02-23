@@ -28,6 +28,7 @@ class Sponsor < ActiveRecord::Base
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
+  validate :start_date_beyound_OSRA_establishment_date, if: :start_date
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
@@ -67,6 +68,8 @@ class Sponsor < ActiveRecord::Base
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
   private
+
+  include StartdateBeyondOsraEstablishmentValidation
 
   def date_not_beyond_first_of_next_month
     if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)

@@ -22,6 +22,7 @@ describe Partner, type: :model do
   [7, 'yes', true].each do |bad_date_value|
     it { is_expected.to_not allow_value(bad_date_value).for :start_date }
   end
+  it { is_expected.to_not allow_value("2011-04-04").for :start_date }
 
   it { is_expected.to have_many :orphan_lists }
   it { is_expected.to have_many(:orphans).through :orphan_lists }

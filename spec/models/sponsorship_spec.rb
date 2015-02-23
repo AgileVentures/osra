@@ -31,8 +31,12 @@ describe Sponsorship, type: :model do
       expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
     end
 
+    it 'disallows creation of new sponsorships with a start date prior to OSRA establishment date' do
+      is_expected.to_not allow_value("2011-04-04").for :start_date
+    end
+
     describe 'start_date' do
-      before(:all) { travel_to Date.parse "15-12-2011" }
+      before(:all) { travel_to Date.parse "15-12-2012" }
       after(:all) { travel_back }
 
       let (:today) { Date.current }

@@ -10,6 +10,7 @@ class Partner < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :province, presence: true
   validates :start_date, date_not_in_future: true
+  validate :start_date_beyound_OSRA_establishment_date, if: :start_date
 
   belongs_to :province
   belongs_to :status
@@ -29,6 +30,8 @@ class Partner < ActiveRecord::Base
   end
 
   private
+
+  include StartdateBeyondOsraEstablishmentValidation
 
   def generate_osra_num
     self.osra_num = province.code.to_s + "%03d" % sequential_id
