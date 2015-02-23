@@ -8,22 +8,22 @@ class Hq::SponsorsController < HqController
   end
 
   def new
-    build_partner
+    build_sponsor
     load_associations
   end
 
   def create
-    build_partner
+    build_sponsor
     save_sponsor or re_render "new"
   end
 
   def edit
-    load_partner
+    load_sponsor
     load_associations
   end
 
   def update
-    load_partner
+    load_sponsor
     @sponsor.attributes= sponsor_params
     save_sponsor or re_render "edit"
   end
@@ -38,12 +38,12 @@ private
     @cities= Sponsor.all_cities.unshift(Sponsor::NEW_CITY_MENU_OPTION)
   end
 
-  def build_partner
+  def build_sponsor
     @sponsor||= Sponsor.new
     @sponsor.attributes= sponsor_params if params[:sponsor]
   end
 
-  def load_partner
+  def load_sponsor
     @sponsor= Sponsor.find(params[:id])
   end
 
