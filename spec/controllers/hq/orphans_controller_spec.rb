@@ -2,8 +2,7 @@ require 'rails_helper'
 require 'will_paginate/array'
 
 RSpec.describe Hq::OrphansController, type: :controller do
-    let(:orphan) {build_stubbed :orphan}
-    let(:orphans) {(1..5).map {build_stubbed :orphan}}
+  let(:orphan) {build_stubbed :orphan}
 
   before :each do
     sign_in instance_double(AdminUser)
