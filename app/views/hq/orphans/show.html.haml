@@ -36,10 +36,10 @@
         = @orphan.priority
 .panel.panel-default
   .panel-heading 
-    %h3.panel-title Parent's Details
+    %h3.panel-title Parents' Details
   .panel-body
     %dl.dl-horizontal
-      %dt Father Given Name
+      %dt Father's Given Name
       %dd
         = @orphan.father_given_name
     %dl.dl-horizontal
@@ -106,16 +106,20 @@
       %dt Street
       %dd
         = @orphan.current_address.street
-%dl.dl-horizontal
-  %dt Sponsored by Another Org
-  %dd
-    = @orphan.sponsored_by_another_org ? 'Yes' : 'No'
-%dl.dl-horizontal
-  %dt Minor Siblings Count
-  %dd
-    = @orphan.minor_siblings_count
-%dl.dl-horizontal
-  %dt Sponsored Minor Siblings Count
-  %dd
-    = @orphan.sponsored_minor_siblings_count
+.panel.panel-default
+  .panel-heading 
+    %h3.panel-title Additional Details
+  .panel-body
+    %dl.dl-horizontal
+      %dt Spnsr Another Organization
+      %dd
+        = @orphan.sponsored_by_another_org ? 'Yes' : 'No'
+    %dl.dl-horizontal
+      %dt Minor Siblings Count
+      %dd
+        = @orphan.minor_siblings_count
+    %dl.dl-horizontal
+      %dt Spnsr Minor Siblings Count
+      %dd
+        = @orphan.sponsored_minor_siblings_count
 
