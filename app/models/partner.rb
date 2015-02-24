@@ -10,7 +10,7 @@ class Partner < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :province, presence: true
   validates :start_date, date_not_in_future: true
-  validate :start_date_beyound_OSRA_establishment_date, if: :start_date
+  validate :start_date_beyound_OSRA_establishment_date
 
   belongs_to :province
   belongs_to :status

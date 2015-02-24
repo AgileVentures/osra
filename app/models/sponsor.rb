@@ -1,5 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
+  include ValidatorHelpers
+  
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
   PRIORITY_COUNTRIES= %w(SA TR AE GB)
@@ -28,7 +30,7 @@ class Sponsor < ActiveRecord::Base
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validate :ensure_valid_date
   validate :date_not_beyond_first_of_next_month
-  validate :start_date_beyound_OSRA_establishment_date, if: :start_date
+  validate :start_date_beyound_OSRA_establishment_date
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
@@ -84,14 +86,6 @@ class Sponsor < ActiveRecord::Base
   def ensure_valid_date
     unless valid_date? start_date
       errors.add(:start_date, "is not a valid date")
-    end
-  end
-
-  def valid_date? test_date
-    begin
-      Date.parse(test_date.to_s)
-    rescue ArgumentError
-      false
     end
   end
 
