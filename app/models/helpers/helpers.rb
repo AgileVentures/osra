@@ -1,6 +1,6 @@
-module ValidatorHelpers
+module Helpers
 
-private
+  private
 
   def valid_date?(date)
     Date.parse(date.to_s)

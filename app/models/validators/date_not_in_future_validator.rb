@@ -1,6 +1,6 @@
 class DateNotInFutureValidator < ActiveModel::EachValidator
-  include ValidatorHelpers
-  
+  include Helpers
+
   def validate_each(record, attribute, value)
     if !valid_date?(value)
       record.errors[attribute] << ('is not a valid date')

@@ -1,7 +1,7 @@
 class Partner < ActiveRecord::Base
   include Initializer
 
-  self.per_page = 10  
+  self.per_page = 10
   attr_readonly :province_id
 
   after_initialize :default_status_to_active, :default_start_date_to_today
@@ -10,7 +10,7 @@ class Partner < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :province, presence: true
   validates :start_date, date_not_in_future: true
-  validate :start_date_beyound_OSRA_establishment_date
+  validates :start_date, beyond_osra_establishment: true
 
   belongs_to :province
   belongs_to :status
@@ -24,14 +24,12 @@ class Partner < ActiveRecord::Base
   def active?
     status && status.name == 'Active'
   end
-  
+
   def self.all_names
     Partner.order(:name).map(&:name)
   end
 
   private
-
-  include StartdateBeyondOsraEstablishmentValidation
 
   def generate_osra_num
     self.osra_num = province.code.to_s + "%03d" % sequential_id
