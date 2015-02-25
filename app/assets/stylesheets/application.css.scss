@@ -13,3 +13,10 @@
  *= require_self
  *= require_tree .
  */
+
+ // To match the whole width space
+ nav.osra-nav-header {
+   width: auto;
+   margin-left: -15px;
+   margin-right: -15px;
+ }

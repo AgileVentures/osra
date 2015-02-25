@@ -92,6 +92,8 @@
 
   .form-group
     = f.submit class: 'btn btn-primary'
+    - if f.object.new_record?
+      = f.submit 'Create and Add Another', class: 'btn btn-primary'
     = link_to 'Cancel',
                 f.object.new_record? ? hq_sponsors_path : hq_sponsor_path(f.object.id),
                 class: 'btn btn-default btn-cancel', role: 'button'

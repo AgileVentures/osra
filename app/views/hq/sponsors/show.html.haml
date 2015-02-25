@@ -1,7 +1,9 @@
 %div.action_items
   %div.instance
-    = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id), 
-        class: 'btn btn-default', role: 'button'
+    = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id),
+      class: 'btn btn-default', role: 'button'
+    = link_to 'Link to Orphan', '#',
+      class: 'btn btn-default', role: 'button'
 
 %dl.dl-horizontal
   %dt Sponsor Name

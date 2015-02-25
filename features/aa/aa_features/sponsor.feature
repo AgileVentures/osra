@@ -181,3 +181,9 @@ Feature:
     Then I should see "(Cayman Islands)"
     When I am on the "Show Sponsor" page for sponsor "Obscure Sponsor"
     Then I should see "(Cayman Islands)"
+
+  Scenario: Create and Add Another workflow
+    Given I enter valid new sponsor data
+    And I click the "Create and Add Another" button
+    Then I should be on the "New Sponsor" page for the "Admin" role
+    And I should see "Sponsor was successfully created"

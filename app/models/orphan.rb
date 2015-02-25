@@ -66,6 +66,8 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
+  default_scope { includes(:partner, :orphan_sponsorship_status, :orphan_status, original_address: :province) }
+
   def father_name
     "#{father_given_name} #{family_name}"
   end
@@ -138,11 +140,15 @@ private
   end
 
   def default_sponsorship_status_unsponsored
-    self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'
+    if new_record?
+      self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'
+    end
   end
 
   def default_orphan_status_active
-     self.orphan_status ||= OrphanStatus.find_by_name 'Active'
+    if new_record?
+      self.orphan_status ||= OrphanStatus.find_by_name 'Active'
+    end
   end
 
   def valid_date? date
@@ -154,7 +160,9 @@ private
   end
 
   def default_priority_to_normal
-    self.priority ||= 'Normal'
+    if new_record?
+      self.priority ||= 'Normal'
+    end
   end
 
 

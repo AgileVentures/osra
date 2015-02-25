@@ -6,6 +6,9 @@ describe Initializer do
     Class.new do
       include Initializer
       attr_accessor :status, :start_date
+
+      def new_record?
+      end
     end
   end
 
@@ -16,6 +19,7 @@ describe Initializer do
     let(:on_hold_status) { Status.find_by_name 'On Hold' }
 
     it 'sets status to default if it is blank' do
+      expect(test_model).to receive(:new_record?).and_return(true)
       test_model.default_status_to_active
       expect(test_model.status).to eq active_status
     end

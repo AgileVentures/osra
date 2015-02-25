@@ -1,13 +1,15 @@
-<div class="action_items">
-  <div class="class">
+<div class="panel-heading">
+  <div class="action_items">
     <%= link_to('New Partner', new_hq_partner_path,
                 class: 'btn btn-default', role: 'button') %>
   </div>
 </div>
 <%- if @partners.empty? %>
-  No Partners found
+  <div class="panel-body">
+    <em>No Partners found</em>
+  </div>
 <%- else %>
-  <div class='table-responsive'>
+  <div class='panel-body table-responsive'>
     <table class='table'>
       <thead>
         <tr>
@@ -50,6 +52,7 @@
         <%- end %>
       </tbody>
     </table>
+  </div>
   <div class="pagination">
     <%= will_paginate @partners, renderer: BootstrapPagination::Rails %>
   </div>
