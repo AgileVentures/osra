@@ -4,27 +4,34 @@ ActiveAdmin.register Sponsorship do
   belongs_to :sponsor
 
   member_action :inactivate, method: :put do
-    sponsorship = Sponsorship.find(params[:id])
     sponsor = Sponsor.find(params[:sponsor_id])
-    if sponsorship.inactivate params[:end_date]
-      flash[:success] = 'Sponsorship link was successfully terminated'
-    else
-      flash[:warning] = sponsorship.errors.full_messages || 'Sponsorship not terminated'
+    sponsorship = sponsor.sponsorships.find(params[:id])
+    begin
+      InactivateSponsorship.new(sponsor: sponsor,
+                                sponsorship: sponsorship,
+                                end_date: params[:end_date]).call
+      flash[:success] = 'Sponsorship link was successfully terminated.'
+    rescue
+      flash[:warning] = 'Sponsorship link could not be terminated.'
+    ensure
+      redirect_to admin_sponsor_path(sponsor)
     end
-    redirect_to admin_sponsor_path(sponsor)
   end
 
   controller do
     def create
-      @sponsor = Sponsor.find(params[:sponsor_id])
-      sponsorship= Sponsorship.new(sponsor: @sponsor, orphan_id: params[:orphan_id],
-                                      start_date: params[:sponsorship_start_date].to_s )
-      if sponsorship.save
+      sponsor = Sponsor.find(params[:sponsor_id])
+      sponsorship = sponsor.sponsorships.build(orphan_id: params[:orphan_id],
+                                               start_date: params[:sponsorship_start_date])
+      begin
+        CreateSponsorship.new(sponsor: sponsor, sponsorship: sponsorship).call
         flash[:success] = 'Sponsorship link was successfully created.'
-        redirect_to admin_sponsor_path(@sponsor.id)
-      else
-        flash[:warning]= sponsorship.errors.full_messages || 'Sponsorship not created'
-        redirect_to new_sponsorship_path(@sponsor.id, scope: 'eligible_for_sponsorship')
+        redirect_to admin_sponsor_path(sponsor)
+      rescue
+        error_msg = sponsorship.errors.full_messages ||
+          'Sponsorship link could not be created.'
+        flash[:warning] = error_msg
+        redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end
