@@ -85,3 +85,6 @@
   %dt Updated at
   %dd
     = format_full_date @sponsor.updated_at
+
+= render partial: 'hq/sponsors/sponsorships_active.html.haml', locals: {sponsorships: @sponsorships_active}
+= render partial: 'hq/sponsors/sponsorships_inactive.html.haml', locals: {sponsorships: @sponsorships_inactive}

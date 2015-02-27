@@ -11,7 +11,11 @@ Osra::Application.routes.draw do
       end
     end
     resources :users, except: [:destroy]
-    resources :sponsors, except: [:destroy]
+    resources :sponsors, except: [:destroy] do
+      resources :sponsorships, only: :destroy do
+        put "inactivate", on: :member
+      end
+    end
     resources :orphans, except: [:destroy]
   end
 

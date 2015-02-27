@@ -2,7 +2,9 @@ require 'rails_helper'
 require 'will_paginate/array'
 
 RSpec.describe Hq::SponsorsController, type: :controller do
-    let(:sponsor) {build_stubbed :sponsor}
+    let(:sponsorships_active) {(1..3).map {build_stubbed :sponsorship, active: true}}
+    let(:sponsorships_inactive) {(1..2).map {build_stubbed :sponsorship, active: false}}
+    let(:sponsor) {build_stubbed :sponsor, sponsorships: (sponsorships_active + sponsorships_inactive)}
     let(:sponsors) {(1..5).map {build_stubbed :sponsor}}
 
   before :each do
@@ -21,6 +23,8 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     expect(Sponsor).to receive(:find).and_return(sponsor)
     get :show, id: sponsor.id
     expect(assigns(:sponsor)).to eq sponsor
+    expect(assigns(:sponsorships_active)).to eq sponsorships_active
+    expect(assigns(:sponsorships_inactive)).to eq sponsorships_inactive
     expect(response).to render_template 'show'
   end
 

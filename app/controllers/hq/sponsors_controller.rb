@@ -4,7 +4,9 @@ class Hq::SponsorsController < HqController
   end
 
   def show
-    @sponsor = Sponsor.find(params[:id])
+    @sponsor = Sponsor.find(params[:id])   #.includes(:sponsorships)
+    @sponsorships_active = @sponsor.sponsorships.select {|sp| sp.active == true}
+    @sponsorships_inactive = @sponsor.sponsorships.select {|sp| sp.active == false}
   end
 
   def new

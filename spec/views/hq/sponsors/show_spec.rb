@@ -7,6 +7,8 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
   describe 'the sponsor exists' do
     before :each do
       assign(:sponsor, sponsor)
+      assign(:sponsorships_active, [])
+      assign(:sponsorships_inactive, [])
       render
     end
 
@@ -20,6 +22,11 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
 
     it 'should have a Link to Orphan button' do
       expect(rendered).to have_link('Link to Orphan')
+    end
+
+    it 'should delegate to partials' do
+      expect(view).to render_template partial: 'hq/sponsors/sponsorships_active.html.haml', locals: {sponsorships: []}
+      expect(view).to render_template partial: 'hq/sponsors/sponsorships_inactive.html.haml', locals: {sponsorships: []}
     end
   end
 
