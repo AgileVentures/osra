@@ -21,6 +21,8 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
   specify '#show' do
     expect(Sponsor).to receive(:find).and_return(sponsor)
+    expect(Sponsorship).to receive_message_chain(:where, :eager_load,:all).
+                           and_return(sponsorships_active + sponsorships_inactive)
     get :show, id: sponsor.id
     expect(assigns(:sponsor)).to eq sponsor
     expect(assigns(:sponsorships_active)).to eq sponsorships_active
