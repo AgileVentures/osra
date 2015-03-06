@@ -4,7 +4,7 @@ div do
   table_for result do
     column :name
     column :father_name
-    column :date_of_birth
+    column(:date_of_birth) { |orphan| format_date(Date.parse(orphan.date_of_birth)) }
     column :gender
   end
 end
