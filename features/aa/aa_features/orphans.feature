@@ -138,3 +138,21 @@ Feature:
     And I click the "Cancel" button
     Then I should be on the "Show Orphan" page for orphan "Orphan 1"
     And I should not see "Orphan N"
+
+  Scenario: **Bug fix OSRA385** Orphan filter should be done by name
+    Given I am on the "Orphans" page for the "Admin" role
+    And I fill in "Name" with "Orphan 1"
+    And I click the "Filter" button
+    Then I should be on the "Orphans" page for the "Admin" role
+    And I should see "Orphan 1"
+    And I should not see "Orphan 2"
+
+  Scenario: **Bug fix OSRA385** Orphan filter should be done by dates range
+    Given I am on the "Orphans" page for the "Admin" role
+    And I fill in "q[date_of_birth_gteq]" with "2011-12-01"
+    And I fill in "q[date_of_birth_lteq]" with "2012-01-02"
+    And I click the "Filter" button
+    Then I should be on the "Orphans" page for the "Admin" role
+    And I should see "Orphan 1"
+    And I should not see "Orphan 2"
+

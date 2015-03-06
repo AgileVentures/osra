@@ -2,6 +2,8 @@ ActiveAdmin.register Orphan do
 
   actions :all, except: [:new, :destroy]
 
+  filter :name, as: :string
+  filter :date_of_birth, as: :date_range
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :province_code, as: :select,
          collection: proc { Province.distinct.map { |p| [p.name, p.code] } }
