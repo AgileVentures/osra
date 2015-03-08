@@ -5,6 +5,8 @@ class Orphan < ActiveRecord::Base
   VALID_GESTATION = 1
 
   include Initializer
+  include DateHelpers
+
   after_initialize :set_defaults
 
   before_update :qualify_for_sponsorship_by_status,
@@ -25,7 +27,7 @@ class Orphan < ActiveRecord::Base
   validates :father_is_martyr, exclusion: { in: [nil] }
 
   with_options :if => :father_deceased do |o|
-    o.validates :father_date_of_death, presence: true, date_not_in_future: true
+    o.validates :father_date_of_death, valid_date_presence: true, date_not_in_future: true
   end
 
   with_options :unless => :father_deceased do |o|
@@ -37,7 +39,7 @@ class Orphan < ActiveRecord::Base
 
   validates :mother_name, presence: true
   validates :mother_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
-  validates :date_of_birth, presence: true, date_not_in_future: true
+  validates :date_of_birth, valid_date_presence: true, date_not_in_future: true
   validates :gender, presence: true, inclusion: {in: Settings.lookup.gender }
   validates :contact_number, presence: true
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }, exclusion: { in: [nil]}

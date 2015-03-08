@@ -1,6 +1,6 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
-  include Helpers
+  include DateHelpers
 
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -28,9 +28,9 @@ class Sponsor < ActiveRecord::Base
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
-  validate :ensure_valid_date
+  validates :start_date, valid_date_presence: true
   validate :date_not_beyond_first_of_next_month
-  validates :start_date, beyond_osra_establishment: true
+  validates :start_date, date_beyond_osra_establishment: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
@@ -79,12 +79,6 @@ class Sponsor < ActiveRecord::Base
 
   def default_type_to_individual
     self.sponsor_type ||= SponsorType.find_by_name 'Individual'
-  end
-
-  def ensure_valid_date
-    unless valid_date? start_date
-      errors.add(:start_date, "is not a valid date")
-    end
   end
 
   def belongs_to_one_branch_or_organization

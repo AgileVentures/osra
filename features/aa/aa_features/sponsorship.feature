@@ -40,7 +40,7 @@ Feature:
     And I click the "Link to Orphan" button
     And I fill in Sponsorship Start Date for "First Orphan" with "yesterday"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
-    Then I should see "Start date is invalid"
+    Then I should see "Start date is not a valid date"
 
   Scenario: Sponsorship can not start later than the 1st of next month
     Given I am on the "Show Sponsor" page for sponsor "First Sponsor"
@@ -93,7 +93,7 @@ Feature:
     And I fill in Sponsorship End Date for "First Orphan" with ""
     And I click the "End sponsorship" link for orphan "First Orphan"
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
-    And I should see "End date is invalid"
+    And I should see "End date is not a valid date"
 
   Scenario: Ending a sponsorship with an end date prior to the start date
     Given "First Sponsor" started a sponsorship for "First Orphan" on "2013-03-15"

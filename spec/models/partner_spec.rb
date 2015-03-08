@@ -17,12 +17,26 @@ describe Partner, type: :model do
   it { is_expected.to belong_to :province }
   it { is_expected.to belong_to :status }
 
-  it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
-  it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
-  [7, 'yes', true].each do |bad_date_value|
-    it { is_expected.to_not allow_value(bad_date_value).for :start_date }
+  context 'start_date validation' do
+    describe 'valid date' do
+      [Date.current, "10-10-2012"].each do |good_date_value|
+        it { is_expected.to allow_value(good_date_value).for :start_date }
+      end
+
+      [7, 'yes', true].each do |bad_date_value|
+        it { is_expected.to_not allow_value(bad_date_value).for :start_date }
+      end
+    end
+
+    describe 'not in future' do
+      it { is_expected.to_not allow_value("2011-04-04").for :start_date }
+    end
+
+    describe 'not beyond OSRA establishment date' do
+      it { should allow_value(Date.new(2013,04,01)).for(:start_date) }
+      it { should_not allow_value(Date.new(2010,04,01)).for(:start_date) }
+    end
   end
-  it { is_expected.to_not allow_value("2011-04-04").for :start_date }
 
   it { is_expected.to have_many :orphan_lists }
   it { is_expected.to have_many(:orphans).through :orphan_lists }

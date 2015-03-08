@@ -1,4 +1,4 @@
-module Helpers
+module DateHelpers
 
   private
 

@@ -29,13 +29,46 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
   it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
 
-  [7, 'yes', true].each do |bad_date_value|
-    it { is_expected.to_not allow_value(bad_date_value).for :start_date }
-  end
-  it { is_expected.to_not allow_value("2011-04-04").for :start_date }
 
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
                           only_integer.is_greater_than(0) }
+
+  context 'start_date validation' do
+    describe 'valid date' do
+      [Date.current, "10-10-2012"].each do |good_date_value|
+        it { is_expected.to allow_value(good_date_value).for :start_date }
+      end
+
+      [7, 'yes', true].each do |bad_date_value|
+        it { is_expected.to_not allow_value(bad_date_value).for :start_date }
+      end
+    end
+
+    describe 'not in future' do
+      it { is_expected.to_not allow_value("2011-04-04").for :start_date }
+    end
+
+    describe 'not beyond OSRA establishment date' do
+      it { should allow_value(Date.new(2013,04,01)).for(:start_date) }
+      it { should_not allow_value(Date.new(2010,04,01)).for(:start_date) }
+    end
+
+    describe 'on or before 1st of next month' do
+      today = Date.current
+      first_of_next_month = today.beginning_of_month.next_month
+      yesterday = today.yesterday
+      second_of_next_month = first_of_next_month + 1.day
+      two_months_ahead = today + 2.months
+
+      [today, first_of_next_month, yesterday].each do |good_date|
+        it { is_expected.to allow_value(good_date).for :start_date }
+      end
+
+      [second_of_next_month, two_months_ahead].each do |bad_date|
+        it { is_expected.to_not allow_value(bad_date).for :start_date }
+      end
+    end
+  end
 
   it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
       'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
@@ -51,21 +84,6 @@ describe Sponsor, type: :model do
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
 
-  context 'start_date validation on or before 1st of next month' do
-    today = Date.current
-    first_of_next_month = today.beginning_of_month.next_month
-    yesterday = today.yesterday
-    second_of_next_month = first_of_next_month + 1.day
-    two_months_ahead = today + 2.months
-
-    [today, first_of_next_month, yesterday].each do |good_date|
-      it { is_expected.to allow_value(good_date).for :start_date }
-    end
-
-    [second_of_next_month, two_months_ahead].each do |bad_date|
-      it { is_expected.to_not allow_value(bad_date).for :start_date }
-    end
-  end
 
   describe '.request_fulfilled' do
     let(:sponsor) { build(:sponsor, requested_orphan_count: 2) }
