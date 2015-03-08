@@ -19,7 +19,7 @@ Given(/^the following orphans exist:$/) do |table|
                         original_address: original_address,
                         current_address: current_address,
                         mother_alive: true,
-                        father_alive: false,
+                        father_deceased: true,
                         gender: 'Female',
                         minor_siblings_count: 0,
                         father_is_martyr: true,

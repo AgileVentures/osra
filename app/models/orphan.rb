@@ -21,17 +21,19 @@ class Orphan < ActiveRecord::Base
   validates :father_given_name, presence: true
   validates :family_name, presence: true
 
-  # TODO NEEDS REFACTOR
-  validates :father_alive, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
-  validates :father_alive, inclusion: { in: [false] }, exclusion: { in: [true] }, if: :father_is_martyr
-  validates :father_alive, inclusion: { in: [true] }, exclusion: { in: [false] }, if: 'father_date_of_death.nil?'
-  validates :father_alive, inclusion: { in: [false] }, exclusion: { in: [true] }, unless: 'father_date_of_death.nil?'
-  validates :father_is_martyr, inclusion: { in: [true, false] }, exclusion: { in: [nil] }
-  validates :father_is_martyr, inclusion: { in: [false] }, exclusion: { in: [true] }, if: :father_alive
-  validates :father_is_martyr, inclusion: { in: [false] }, exclusion: { in: [true] }, if: 'father_date_of_death.nil?'
-  validates :father_date_of_death, presence: true, date_not_in_future: true, unless: :father_alive
-  validates :father_date_of_death, absence: true, if: :father_alive
-  # END REFACTOR
+  validates :father_deceased, exclusion: { in: [nil] }
+  validates :father_is_martyr, exclusion: { in: [nil] }
+
+  with_options :if => :father_deceased do |o|
+    o.validates :father_date_of_death, presence: true, date_not_in_future: true
+  end
+
+  with_options :unless => :father_deceased do |o|
+    o.validates :father_date_of_death, absence: true
+    o.validates :father_place_of_death, absence: true
+    o.validates :father_cause_of_death, absence: true
+    o.validates :father_is_martyr, inclusion: { in: [false] }
+  end
 
   validates :mother_name, presence: true
   validates :mother_alive, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
@@ -49,8 +51,9 @@ class Orphan < ActiveRecord::Base
   validates :orphan_list, presence: true
   validate :sponsored_siblings_does_not_exceed_siblings_count
   validate :orphan_born_shortly_after_fathers_death,
-    unless: :father_alive,
-    if: ['valid_date?(date_of_birth)', 'valid_date?(father_date_of_death)']
+    if: [:father_deceased,
+         'valid_date?(date_of_birth)',
+         'valid_date?(father_date_of_death)']
   validate :of_elibible_age_to_join, if: 'valid_date?(date_of_birth)'
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
 

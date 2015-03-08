@@ -50,7 +50,7 @@ ActiveAdmin.register Orphan do
 
   permit_params :name, :father_name, :father_given_name, :family_name, :father_is_martyr,
                 :father_occupation, :father_place_of_death, :father_cause_of_death,
-                :father_date_of_death, :mother_name, :mother_alive, :father_alive,
+                :father_date_of_death, :mother_name, :mother_alive, :father_deceased,
                 :date_of_birth, :gender, :health_status, :schooling_status,
                 :goes_to_school, :guardian_name, :guardian_relationship,
                 :guardian_id_num, :contact_number, :alt_contact_number,
@@ -80,7 +80,7 @@ ActiveAdmin.register Orphan do
     f.inputs "Parents' Details" do
       f.input :father_given_name
       f.input :family_name
-      f.input :father_alive
+      f.input :father_deceased
       f.input :mother_name
       f.input :mother_alive
       f.input :father_is_martyr
@@ -155,8 +155,8 @@ ActiveAdmin.register Orphan do
       attributes_table_for orphan do
         row :father_given_name
         row :family_name
-        row :father_alive do
-          orphan.father_alive ? 'Yes' : 'No'
+        row :father_deceased do
+          orphan.father_deceased ? 'Yes' : 'No'
         end
         row :mother_name
         row :mother_alive do
@@ -265,7 +265,7 @@ ActiveAdmin.register Orphan do
           orphan.partner.name
         end
         column :father_is_martyr, sortable: :father_is_martyr
-        column :father_alive, sortable: :father_alive
+        column :father_deceased, sortable: :father_deceased
         column :mother_alive, sortable: :mother_alive
         column :priority, sortable: :priority do |orphan|
           status_tag(orphan.priority == 'High' ? 'warn' : '', label: orphan.priority)
