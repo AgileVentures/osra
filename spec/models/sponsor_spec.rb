@@ -36,29 +36,15 @@ describe Sponsor, type: :model do
   context 'start_date validation' do
       it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
       it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
-
-    describe "date_not_beyond_first_of_next_month" do
-      past = 1.year.ago
-      today = Date.current
-      first_of_next_month = today.beginning_of_month.next_month
-      yesterday = today.yesterday
-      second_of_next_month = first_of_next_month + 1.day
-      two_months_ahead = today + 2.months
-
-      [past, today, first_of_next_month, yesterday].each do |good_date|
-        it { is_expected.to allow_value(good_date).for :start_date }
-      end
-
-      [second_of_next_month, two_months_ahead].each do |bad_date|
-        it { is_expected.to_not allow_value(bad_date).for :start_date }
-      end
-    end
+      it { is_expected.to have_validation :date_not_beyond_first_of_next_month, :on => :start_date }
   end
 
-  it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
-      'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
-  ['not_email', 'also@not_email', 'really_not@', 'not_emal@em..com', '"not@an.em'].each do |bad_email_value|
-    it { is_expected.to_not allow_value(bad_email_value).for :email }
+  context 'email validation' do
+    it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
+        'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
+    ['not_email', 'also@not_email', 'really_not@', 'not_emal@em..com', '"not@an.em'].each do |bad_email_value|
+      it { is_expected.to_not allow_value(bad_email_value).for :email }
+    end
   end
 
 
