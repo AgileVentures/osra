@@ -13,22 +13,18 @@ describe ValidDatePresenceValidator do
 
   subject { test_model.new }
 
-  [Date.current, "10-10-2012"].each do |good_date_value|
-    it 'passes when the date is valid' do
-      subject.date_attr = good_date_value
-      expect(subject).to be_valid
-    end
+  it 'passes when the date is valid' do
+    expect_any_instance_of(ValidDatePresenceValidator).to receive(:valid_date?).and_return true
+    expect(subject).to be_valid
   end
 
-  [7, 'yes', true].each do |bad_date_value|
-    it 'fails when the date attribute is not a date format' do
-      subject.date_attr = bad_date_value
-      expect(subject).not_to be_valid
-    end
+  it 'fails when the date attribute is not a valid date format' do
+    expect_any_instance_of(ValidDatePresenceValidator).to receive(:valid_date?).and_return false
+    expect(subject).not_to be_valid
   end
 
-  it 'returns appropriate message when the date attribute is not a date format' do
-    subject.date_attr = "bad date format"
+  it 'returns appropriate message when the date attribute is not a valid date format' do
+    expect_any_instance_of(ValidDatePresenceValidator).to receive(:valid_date?).and_return false
     subject.valid?
     expect(subject.errors[:date_attr]).to eq ['is not a valid date']
   end
