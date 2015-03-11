@@ -3,9 +3,9 @@ ActiveAdmin.register Orphan do
   actions :all, except: [:new, :destroy]
 
   filter :gender, as: :select, collection: Settings.lookup.gender
-  filter :province_code, as: :select,
+  filter :province_code, label: 'Partner Province Code', as: :select,
          collection: proc { Province.distinct.map { |p| [p.name, p.code] } }
-  filter :original_address_city, label: 'City of origin', as: :select,
+  filter :original_address_city, label: 'Orphan City of Origin', as: :select,
         collection: proc {Orphan.distinct.pluck(:city).sort.map{|c| [c, c]} }
   filter :priority, as: :select
   filter :orphan_sponsorship_status, as: :select,
