@@ -5,7 +5,7 @@ describe ValidDatePresenceValidator do
     Class.new do
       include ActiveModel::Validations
 
-      attr_accessor :date_attr
+      attr_accessor :date_attr, :other_attr
 
       validates :date_attr, valid_date_presence: true
     end

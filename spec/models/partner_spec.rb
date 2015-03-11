@@ -19,13 +19,7 @@ describe Partner, type: :model do
 
   context 'start_date validation' do
     describe 'valid date' do
-      [Date.current, "10-10-2012"].each do |good_date_value|
-        it { is_expected.to allow_value(good_date_value).for :start_date }
-      end
-
-      [7, 'yes', true].each do |bad_date_value|
-        it { is_expected.to_not allow_value(bad_date_value).for :start_date }
-      end
+      it { is_expected.to have_validation ValidDatePresenceValidator, :on => :start_date }
     end
 
     describe 'not in future' do
@@ -33,8 +27,7 @@ describe Partner, type: :model do
     end
 
     describe 'not beyond OSRA establishment date' do
-      it { should allow_value(Date.new(2013,04,01)).for(:start_date) }
-      it { should_not allow_value(Date.new(2010,04,01)).for(:start_date) }
+      it { is_expected.to have_validation DateBeyondOsraEstablishmentValidator, :on => :start_date }
     end
   end
 
