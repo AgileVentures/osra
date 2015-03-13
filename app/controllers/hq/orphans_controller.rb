@@ -16,6 +16,7 @@ class Hq::OrphansController < HqController
 
   def edit
     load_orphan
+    load_associations
   end
 
   def update
@@ -24,7 +25,7 @@ class Hq::OrphansController < HqController
     save_orphan or re_render 'edit'
   end
 
-  private
+private
   def load_orphan
     @orphan = Orphan.find(params[:id])
   end
@@ -34,7 +35,9 @@ class Hq::OrphansController < HqController
       .permit(:contact_number, :date_of_birth, :family_name, :father_alive,
               :father_given_name, :father_is_martyr, :gender, :minor_siblings_count,
               :mother_alive, :mother_name, :name, :orphan_list_id, :orphan_sponsorship_status_id,
-              :orphan_status_id, :priority, :sponsored_by_another_org, :sponsored_minor_siblings_count)
+              :orphan_status_id, :priority, :sponsored_by_another_org, :sponsored_minor_siblings_count, 
+              :minor_siblings_count, :sponsored_minor_siblings_count,
+              :original_address, :current_address)
   end
 
   def build_orphan
@@ -43,7 +46,9 @@ class Hq::OrphansController < HqController
   end
 
   def load_associations
-    #TODO what associations belong here?
+    @orphan_statuses = OrphanStatus.all
+    @orphan_sponsorship_statuses = OrphanSponsorshipStatus.all
+    @provinces = Province.all
   end
 
   def save_orphan
