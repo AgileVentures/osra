@@ -2,22 +2,36 @@ class Hq::SponsorshipsController < HqController
 
   def inactivate
     sponsorship = Sponsorship.find(params[:id])
-    if sponsorship.inactivate params[:sponsorship][:end_date]
-      flash[:success] = 'Sponsorship link was successfully terminated'
-    else
-      flash[:error] = sponsorship.errors.full_messages || 'Sponsorship not terminated'
-    end
-    redirect_to hq_sponsor_path(sponsorship.sponsor_id)
+
+    @sponsorship_inactivator = InactivateSponsorship.new(sponsorship: sponsorship,
+                                                         end_date: params[:sponsorship][:end_date])
+    inactivate_sponsorship and redirect_to hq_sponsor_path(sponsorship.sponsor_id)
   end
 
   def destroy
     sponsorship = Sponsorship.find(params[:id])
-    if sponsorship.destroy
-      flash[:success] = 'Sponsorship was successfully deleted'
+
+    @sponsorship_destructor = DestroySponsorship.new(sponsorship)
+
+    destroy_sponsorship and redirect_to hq_sponsor_path(sponsorship.sponsor_id)
+  end
+
+  private
+
+  def inactivate_sponsorship
+    if @sponsorship_inactivator.call
+      flash[:success] = 'Sponsorship link was successfully terminated.'
     else
-      flash[:error] = 'Sponsorship not deleted'
+      flash[:error] = @sponsorship_inactivator.error_msg
     end
-    redirect_to hq_sponsor_path(sponsorship.sponsor_id)
+  end
+
+  def destroy_sponsorship
+    if @sponsorship_destructor.call
+      flash[:success] = 'Sponsorship record was successfully destroyed.'
+    else
+      flash[:error] = @sponsorship_destructor.error_msg
+    end
   end
 
 end
