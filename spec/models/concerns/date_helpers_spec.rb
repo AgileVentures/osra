@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DateHelpers do
+RSpec.describe DateHelpers do
   let(:test_class) do
     Class.new { include DateHelpers }
   end

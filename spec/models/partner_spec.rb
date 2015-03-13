@@ -19,7 +19,7 @@ describe Partner, type: :model do
 
   context 'start_date validation' do
     describe 'valid date' do
-      it { is_expected.to have_validation ValidDatePresenceValidator, :on => :start_date }
+      it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
     end
 
     describe 'not in future' do
@@ -27,7 +27,7 @@ describe Partner, type: :model do
     end
 
     describe 'not beyond OSRA establishment date' do
-      it { is_expected.to have_validation DateBeyondOsraEstablishmentValidator, :on => :start_date }
+      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
     end
   end
 

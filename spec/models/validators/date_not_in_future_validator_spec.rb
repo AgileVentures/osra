@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DateNotInFutureValidator do
+RSpec.describe DateNotInFutureValidator do
   let(:test_model) do
     Class.new do
       include ActiveModel::Validations

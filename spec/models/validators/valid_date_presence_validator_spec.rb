@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ValidDatePresenceValidator do
+RSpec.describe ValidDatePresenceValidator do
   let(:test_model) do
     Class.new do
       include ActiveModel::Validations
