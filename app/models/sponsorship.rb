@@ -28,6 +28,8 @@ class Sponsorship < ActiveRecord::Base
 
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
+  scope :load_with_orphans_for_sponsor,
+         ->(sponsor_id) {where("sponsor_id = ?", sponsor_id).eager_load(:orphan).all}
 
 private
 

@@ -49,7 +49,7 @@ private
   end
 
   def load_active_and_inactive_sponsorships
-    sponsorships = Sponsorship.where("sponsor_id = ?", @sponsor.id).eager_load(:orphan).all
+    sponsorships = Sponsorship.load_with_orphans_for_sponsor @sponsor.id
     @sponsorships_active = sponsorships.select {|sp| sp.active == true}
     @sponsorships_inactive = sponsorships.select {|sp| sp.active == false}
   end
