@@ -1,15 +1,19 @@
 require 'rails_helper'
+require 'will_paginate/array'
 
 RSpec.describe Hq::UsersController, type: :controller do
+  let(:users) { 3.times.map {build_stubbed(:user)} }
 
   before :each do
     sign_in instance_double(AdminUser)
     @user = build_stubbed :user
   end
 
-  it '#index' do
-    expect(User).to receive(:all).and_return(@user)
-    get :index
+  specify '#index' do
+    expect(User).to receive(:paginate).with(page: '2').
+                    and_return( users.paginate(per_page: 2, page: 2) )
+    get :index, page: '2'
+    expect(assigns(:users).count).to eq 1
     expect(response).to render_template 'index'
   end
 
@@ -23,7 +27,7 @@ RSpec.describe Hq::UsersController, type: :controller do
     before :each do
       @old_user = FactoryGirl.build_stubbed(:user)
       expect(User).to receive(:find).and_return(@old_user)
-    end    
+    end
 
     specify 'editing renders the edit view' do
       get :edit, id: @old_user.id
@@ -47,7 +51,7 @@ RSpec.describe Hq::UsersController, type: :controller do
   end
 
   describe '#new' do
-    
+
     before :each do
       @new_user = User.new
       allow(User).to receive(:new).and_return(@new_user)
