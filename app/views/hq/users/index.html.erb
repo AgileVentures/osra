@@ -2,35 +2,42 @@
   <%= link_to('New User', new_hq_user_path,
               class: 'btn btn-default', role: 'button') %>
 </div>
-<div class='table-responsive'>
-  <table class='table'>
-    <thead>
-      <tr>
-        <th>
-          User Name
-        </th>
-        <th>
-          Email
-        </th>
-        <th>
-          Assigned Active Sponsors
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <%- @users.each do |user| %>
+<% if @users.empty? %>
+  <em>No Users Found</em>
+<% else %>
+  <div class='table-responsive'>
+    <table class='table' id="users-index">
+      <thead>
         <tr>
-          <td>
-            <%= link_to user.user_name, hq_user_path(user) %>
-          </td>
-          <td>
-            <%= user.email %>
-          </td>
-          <td>
-            <%= user.active_sponsors.count %>
-          </td>
+          <th>
+            User Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Assigned Active Sponsors
+          </th>
         </tr>
-      <%- end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <%- @users.each do |user| %>
+          <tr>
+            <td>
+              <%= link_to user.user_name, hq_user_path(user) %>
+            </td>
+            <td>
+              <%= user.email %>
+            </td>
+            <td>
+              <%= user.active_sponsors.count %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+  </div>
+<% end %>
