@@ -266,8 +266,8 @@ describe Orphan, type: :model do
 
         context 'when orphan has active sponsorships' do
           before do
-            sponsor = create :sponsor
-            create :sponsorship, sponsor: sponsor, orphan: orphan
+            sponsorship = build :sponsorship, orphan: orphan
+            CreateSponsorship.new(sponsorship).call
           end
 
           specify 's/he cannot be inactivated' do
@@ -334,22 +334,6 @@ describe Orphan, type: :model do
           end
         end
 
-        describe '#update_sponsorship_status!' do
-          it 'correctly updates to Sponsored, Previously Sponsored & On Hold' do
-            ['Sponsored', 'Previously Sponsored', 'On Hold'].each do |status_name|
-              sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
-              active_unsponsored_orphan.update_sponsorship_status!(status_name)
-              expect(active_unsponsored_orphan.reload.orphan_sponsorship_status).to eq sponsorship_status
-            end
-          end
-
-          it 'correctly updates to Unsponsored' do
-            sponsorship_status = OrphanSponsorshipStatus.find_by_name('Unsponsored')
-            active_sponsored_orphan.update_sponsorship_status!('Unsponsored')
-            expect(active_sponsored_orphan.reload.orphan_sponsorship_status).to eq sponsorship_status
-          end
-        end
-
         specify '#eligible_for_sponsorship? should return true for eligible & false for ineligible orphans' do
           expect(active_unsponsored_orphan.eligible_for_sponsorship?).to eq true
           expect(active_previously_sponsored_orphan.eligible_for_sponsorship?).to eq true
@@ -367,19 +351,17 @@ describe Orphan, type: :model do
 
             specify 'when orphan_status is not changed' do
               expect(active_unsponsored_orphan).not_to receive(:qualify_for_sponsorship_by_status)
-              expect(active_unsponsored_orphan).not_to receive(:deactivate)
-              expect(active_unsponsored_orphan).not_to receive(:resolve_sponsorship_status)
               active_unsponsored_orphan.update!(name: 'New Name')
             end
 
             specify 'when one disqualifying orphan_status changes to another' do
-              expect(inactive_unsponsored_orphan).not_to receive(:resolve_sponsorship_status)
+              expect(ResolveOrphanSponsorshipStatus).not_to receive(:new)
               inactive_unsponsored_orphan.update!(orphan_status: on_hold_orphan_status)
 
-              expect(on_hold_sponsored_orphan).not_to receive(:resolve_sponsorship_status)
+              expect(ResolveOrphanSponsorshipStatus).not_to receive(:new)
               on_hold_sponsored_orphan.update!(orphan_status: under_revision_orphan_status)
 
-              expect(under_revision_unsponsored_orphan).not_to receive(:resolve_sponsorship_status)
+              expect(ResolveOrphanSponsorshipStatus).not_to receive(:new)
               under_revision_unsponsored_orphan.update!(orphan_status: inactive_orphan_status)
             end
           end

@@ -129,7 +129,7 @@ Feature:
     Given I am on the "Edit Orphan" page for orphan "Orphan 1"
     And I fill in "Date of birth" with "1950-01-01"
     And I click the "Update Orphan" button
-    Then I should see "Orphan must be younger than 22 years old."
+    Then I should see "Orphan must be younger than 22 years old to join OSRA."
 
   Scenario: Should return to orphan show page if editing an orphan is cancelled
     Given I am on the "Show Orphan" page for orphan "Orphan 1"

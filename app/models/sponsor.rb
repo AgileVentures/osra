@@ -13,7 +13,7 @@ class Sponsor < ActiveRecord::Base
                    :default_start_date_to_today,
                    :default_type_to_individual
   before_create :generate_osra_num, :set_request_unfulfilled
-  before_update :set_request_fulfilled
+  before_update :set_request_fulfilled, if: 'requested_orphan_count_changed?'
   before_validation :set_city
 
   validates :name, presence: true
@@ -52,20 +52,6 @@ class Sponsor < ActiveRecord::Base
 
   def eligible_for_sponsorship?
     self.status.active? && !self.request_fulfilled?
-  end
-
-  def sponsorship_changed!
-    update_request_fulfilled!
-    update_active_sponsorship_count!
-  end
-
-  def update_request_fulfilled!
-    update!(request_fulfilled: request_is_fulfilled?)
-  end
-
-  def update_active_sponsorship_count!
-    number_of_active_sponsorships = sponsorships.all_active.count
-    update!(active_sponsorship_count: number_of_active_sponsorships)
   end
 
   def currently_sponsored_orphans
@@ -131,8 +117,7 @@ class Sponsor < ActiveRecord::Base
   end
 
   def set_request_fulfilled
-    self.request_fulfilled = request_is_fulfilled?
-    true
+    UpdateSponsorSponsorshipData.new(self).call
   end
 
   def can_be_inactivated
@@ -143,10 +128,6 @@ class Sponsor < ActiveRecord::Base
 
   def being_inactivated?
     status_id_changed? && (Status.find(status_id).name == 'Inactive')
-  end
-
-  def request_is_fulfilled?
-    sponsorships.all_active.count >= requested_orphan_count
   end
 
   def type_matches_affiliation
