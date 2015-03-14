@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'will_paginate/array'
 
 describe "hq/users/index.html.erb", type: :view do
 

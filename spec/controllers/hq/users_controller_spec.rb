@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'will_paginate/array'
 
 RSpec.describe Hq::UsersController, type: :controller do
   let(:users) { 3.times.map {build_stubbed(:user)} }
