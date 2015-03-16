@@ -158,7 +158,7 @@ Feature:
     Then I click the "Upload" button
     Then I should see "محمد"
     And I should see "John Doe"
-    And I should see "January 02, 2012"
+    And I should see "02 January 2012"
     And I should see "Male"
 
   Scenario: I should be able to see the imported orphans

@@ -34,7 +34,7 @@ describe Sponsorship, type: :model do
     describe 'start_date' do
       before(:all) { travel_to Date.parse "15-12-2011" }
       after(:all) { travel_back }
-      
+
       let (:today) { Date.current }
       let (:yesterday) { today.yesterday }
       let (:first_of_next_month) { today.beginning_of_month.next_month }
@@ -53,24 +53,24 @@ describe Sponsorship, type: :model do
       it { is_expected.to allow_value(yesterday).for :start_date }
       it { is_expected.to allow_value(last_day_of_the_month).for :start_date }
     end
-    
+
     describe 'end_date' do
       subject(:sponsorship) { build_stubbed :sponsorship }
 
       before(:each) do
         sponsorship.active = false
-      end 
+      end
 
       let(:start_date) { sponsorship.start_date }
- 
+
       it { is_expected.to allow_value(start_date + 1).for :end_date }
       it { is_expected.to_not allow_value(start_date - 1).for :end_date }
       it { is_expected.to allow_value(start_date).for :end_date }
- 
+
       [nil, "", "42", "5-12"].each do |bad_date|
         it { is_expected.to_not allow_value(bad_date).for :end_date }
-      end 
-    end 
+      end
+    end
 
     describe 'disallow concurrent active sponsorships' do
       let(:orphan) { create :orphan }
@@ -83,71 +83,24 @@ describe Sponsorship, type: :model do
 
       it 'does not disallow multiple inactive sponsorships' do
         future_date = active_sponsorship.start_date + 1.month
-        active_sponsorship.inactivate future_date
+        InactivateSponsorship.new(sponsorship: active_sponsorship,
+                                  end_date: future_date).call
         new_sponsorship = create :sponsorship, sponsor: sponsor, orphan: orphan
-        expect{ new_sponsorship.inactivate future_date }.not_to raise_error
+        expect do
+          InactivateSponsorship.new(sponsorship: new_sponsorship,
+                                          end_date: future_date).call
+        end.not_to raise_error
       end
     end
   end
 
   describe 'callbacks' do
-    describe 'before_create & after_save' do
-      let(:sponsorship) { build :sponsorship }
-      before(:each) do
-        allow(sponsorship.sponsor).to receive :sponsorship_changed!
-        sponsorship.save!
-      end
+    describe 'before_validation on: :create' do
 
       it 'sets the .active attribute to true' do
-        expect(sponsorship.reload.active).to eq true
-      end
+        sponsorship = Sponsorship.new
+        sponsorship.valid?
 
-      it 'sets orphan sponsorship status to Sponsored' do
-        expect(sponsorship.orphan.orphan_sponsorship_status.name).to eq 'Sponsored'
-      end
-
-      it 'calls Sponsor#sponsorship_changed' do
-        expect(sponsorship.sponsor).to have_received(:sponsorship_changed!)
-      end
-    end
-
-    describe 'after_destroy' do
-      let(:sponsorship) { create :sponsorship }
-
-      it 'resets sponsor' do
-        expect(sponsorship.sponsor).to receive(:sponsorship_changed!)
-        sponsorship.destroy
-      end
-
-      it 'resets orphan' do
-        expect(sponsorship.orphan).to receive(:resolve_sponsorship_status)
-        sponsorship.destroy
-      end
-    end
-  end
-
-  describe 'methods' do
-    context '#inactivate' do
-      let(:sponsorship) { create :sponsorship }
-      
-      it 'sets attributes for the sponsorship and it\'s orphan' do
-        future_date = sponsorship.start_date + 1.month
-        sponsorship.inactivate future_date
-        expect(sponsorship.reload.active).to eq false
-        expect(sponsorship.end_date).to eq future_date
-        expect(sponsorship.orphan.reload.orphan_sponsorship_status.name).to eq 'Previously Sponsored'
-      end
-
-      it 'returns false if end_date precedes the start_date' do
-        end_date = sponsorship.start_date - 1.month
-        expect(sponsorship.inactivate end_date).to eq false
-      end
-    end
-
-    context '#set_active_to_true' do
-      it 'sets .active to true' do
-        sponsorship = Sponsorship.new(active: false)
-        sponsorship.send(:set_active_to_true)
         expect(sponsorship.active).to eq true
       end
     end
@@ -156,9 +109,11 @@ describe Sponsorship, type: :model do
   describe 'scopes' do
     let!(:active_sponsorship) { create :sponsorship }
     let(:inactive_sponsorship) { create :sponsorship }
+
     before(:each) do
       future_date = active_sponsorship.start_date + 1.month
-      inactive_sponsorship.inactivate future_date
+      InactivateSponsorship.new(sponsorship: inactive_sponsorship,
+                                end_date: future_date).call
     end
 
     it '.all_active should return active sponsorships' do

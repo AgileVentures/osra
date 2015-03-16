@@ -3,8 +3,6 @@ class Sponsorship < ActiveRecord::Base
   include Initializer
 
   before_validation(on: :create) { :set_active_to_true }
-  after_save :update_sponsor_and_orphan
-  after_destroy :update_sponsor_and_orphan
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -26,10 +24,6 @@ class Sponsorship < ActiveRecord::Base
   delegate :name, :additional_info, :id, to: :sponsor, prefix: true
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
-  def inactivate(end_date)
-    update_attributes(active: false, end_date: end_date)
-  end
-
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
@@ -46,11 +40,6 @@ private
     unless end_date >= start_date
       errors[:end_date] << "can't be before the starting date (#{self.start_date})"
     end
-  end
-
-  def update_sponsor_and_orphan
-    self.sponsor.sponsorship_changed!
-    self.orphan.sponsorship_changed!
   end
 
   def set_active_to_true

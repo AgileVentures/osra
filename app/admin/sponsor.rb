@@ -1,5 +1,6 @@
 ActiveAdmin.register Sponsor do
 
+  filter :name, as: :string, label: "Name"
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :branch, as: :select, collection: proc { Branch.pluck(:name, :id) }
   filter :organization, as: :select, collection: proc { Organization.pluck(:name, :id) }
