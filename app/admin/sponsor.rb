@@ -30,7 +30,13 @@ ActiveAdmin.register Sponsor do
     end
     column :status, sortable: :status_id
     column :start_date
-    column :request_fulfilled
+    column :request_fulfilled do |sponsor|
+      label = sponsor.request_fulfilled ? 'Yes' : 'No'
+      label << %Q%
+        (#{sponsor.active_sponsorship_count}/#{sponsor.requested_orphan_count})
+      %
+      status_tag(sponsor.request_fulfilled ? 'yes' : 'no', label: label)
+    end
     column :sponsor_type
     column :country do |_sponsor|
       en_ar_country(_sponsor.country)
