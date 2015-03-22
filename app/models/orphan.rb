@@ -192,14 +192,6 @@ private
     end
   end
 
-  def valid_date? date
-    begin
-      Date.parse(date.to_s)
-    rescue ArgumentError
-      return false
-    end
-  end
-
   def qualify_for_sponsorship_by_status
     if orphan_status_is_active?
       new_status = ResolveOrphanSponsorshipStatus.new(self).call

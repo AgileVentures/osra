@@ -111,8 +111,8 @@ describe Orphan, type: :model do
     context 'when father is dead' do
       before(:each) { orphan.father_deceased = true }
 
-      # it { expect(orphan).to have_validation :valid_date_presence, :on => :father_date_of_death }
-      # it { expect(orphan).to have_validation :date_not_in_future, :on => :father_date_of_death }
+      it { expect(orphan).to have_validation :valid_date_presence, :on => :father_date_of_death }
+      it { expect(orphan).to have_validation :date_not_in_future, :on => :father_date_of_death }
 
       it 'allows father_is_martyr to be true or false' do
         expect(orphan).to allow_value(true).for :father_is_martyr

@@ -28,9 +28,9 @@ class Sponsor < ActiveRecord::Base
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
-  validates :start_date, valid_date_presence: true
+  validates :start_date, valid_date_presence: true,
+                         date_beyond_osra_establishment: true
   validate :date_not_beyond_first_of_next_month
-  validates :start_date, date_beyond_osra_establishment: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,

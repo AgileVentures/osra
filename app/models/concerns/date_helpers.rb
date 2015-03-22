@@ -3,7 +3,7 @@ module DateHelpers
   private
 
   def valid_date?(date)
-     Date.parse(date.to_s) and return true
+     return true if Date.parse(date.to_s)
    rescue ArgumentError
      return false
   end

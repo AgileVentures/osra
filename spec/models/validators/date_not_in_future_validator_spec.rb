@@ -19,7 +19,7 @@ RSpec.describe DateNotInFutureValidator do
   end
 
   it 'passes when the date attribute is today' do
-    subject.date_attr = 4.days.ago
+    subject.date_attr = Date.current
     expect(subject).to be_valid
   end
 
@@ -32,5 +32,10 @@ RSpec.describe DateNotInFutureValidator do
     subject.date_attr = 4.days.from_now
     subject.valid?
     expect(subject.errors[:date_attr]).to eq ['is not valid (cannot be in the future)']
+  end
+
+  it "allows date attribute to be an invalid date format" do
+    expect_any_instance_of(DateNotInFutureValidator).to receive(:valid_date?).and_return false
+    expect(subject).to allow_value("invalid_date_format").for :date_attr
   end
 end

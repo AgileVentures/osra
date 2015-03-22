@@ -7,20 +7,29 @@ RSpec::Matchers.define :have_validation do |validator, params|
   validator_class = eval(validator.to_s.camelize + "Validator")
 
   match do |model|
-    my_validators = model.class.validators.select { |v| v.class == validator_class and v.attributes.include? params[:on] }
-    my_validators = my_validators.select { |v| params[:options].all? { |po| v.options.keys.any? { |vo| vo.to_sym == po } } } if params[:options]
-    my_validators.size == 1
+    @_validators = model.class.validators.select { |v| (v.class == validator_class) && (v.attributes.include? params[:on]) }
+    validator_included_once? && (validator_receives_correct_options? params[:options])
   end
 
   failure_message do |model|
-    message = "expected that #{model} would have validation ':#{validator}' on ':#{params[:on]}' field"
-    message = message + " with the options #{params[:options]}" if params[:options]
+    message = "expected #{model} to have validation ':#{validator}' on ':#{params[:on]}' field"
+    message << " with the options #{params[:options]}" if params[:options]
     message
   end
 
   failure_message_when_negated do |model|
-    message = "expected that #{model} would NOT have validation :#{validator} on ':#{params[:on]}' field"
-    message = message + " with the options #{params[:options]}" if params[:options]
+    message = "expected #{model} to NOT have validation :#{validator} on ':#{params[:on]}' field"
+    message << " with the options #{params[:options]}" if params[:options]
     message
+  end
+
+
+  def validator_included_once?
+    @_validators.size == 1
+  end
+
+  def validator_receives_correct_options? options
+    return true unless options
+    options.all? { |o| @_validators.first.options.has_key?(o) }
   end
 end

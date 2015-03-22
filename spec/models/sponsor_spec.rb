@@ -34,13 +34,8 @@ describe Sponsor, type: :model do
                           only_integer.is_greater_than(0) }
 
   context 'start_date validation' do
-    describe 'valid date' do
       it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
-    end
-
-    describe 'not beyond OSRA establishment date' do
       it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
-    end
 
     describe "date_not_beyond_first_of_next_month" do
       past = 1.year.ago

@@ -18,17 +18,9 @@ describe Partner, type: :model do
   it { is_expected.to belong_to :status }
 
   context 'start_date validation' do
-    describe 'valid date' do
-      it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
-    end
-
-    describe 'not in future' do
-      it { is_expected.to_not allow_value("2011-04-04").for :start_date }
-    end
-
-    describe 'not beyond OSRA establishment date' do
-      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
-    end
+    it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
+    it { is_expected.to have_validation :date_not_in_future, :on => :start_date }
+    it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
   end
 
   it { is_expected.to have_many :orphan_lists }
