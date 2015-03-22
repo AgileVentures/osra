@@ -2,11 +2,11 @@ require 'rails_helper'
 require 'will_paginate/array'
 
 RSpec.describe Hq::SponsorsController, type: :controller do
-    let(:sponsorships_active) {build_stubbed_list :sponsorship, 3, active: true}
-
-    let(:sponsorships_inactive) {build_stubbed_list :sponsorship, 2, active: false}
-    let(:sponsor) {build_stubbed :sponsor, sponsorships: (sponsorships_active + sponsorships_inactive)}
-    let(:sponsors) {build_stubbed_list :sponsor, 5}
+  let(:sponsorships_active) {build_stubbed_list :sponsorship, 3, active: true}
+  let(:sponsorships_inactive) {build_stubbed_list :sponsorship, 2, active: false}
+  let(:sponsor_with_sponsorships) {build_stubbed :sponsor, sponsorships: (sponsorships_active + sponsorships_inactive)}
+  let(:sponsor) {build_stubbed :sponsor}
+  let(:sponsors) {build_stubbed_list :sponsor, 5}
 
   before :each do
     sign_in instance_double(AdminUser)
@@ -21,11 +21,11 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   end
 
   specify '#show' do
-    expect(Sponsor).to receive(:find).and_return(sponsor)
+    expect(Sponsor).to receive(:find).and_return(sponsor_with_sponsorships)
     expect(Sponsorship).to receive_message_chain(:where, :eager_load, :all).
                            and_return(sponsorships_active + sponsorships_inactive)
-    get :show, id: sponsor.id
-    expect(assigns(:sponsor)).to eq sponsor
+    get :show, id: sponsor_with_sponsorships.id
+    expect(assigns(:sponsor)).to eq sponsor_with_sponsorships
     expect(assigns(:sponsorships_active)).to eq sponsorships_active
     expect(assigns(:sponsorships_inactive)).to eq sponsorships_inactive
     expect(response).to render_template 'show'

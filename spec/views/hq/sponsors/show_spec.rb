@@ -7,8 +7,8 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
   describe 'the sponsor exists' do
     before :each do
       assign(:sponsor, sponsor)
-      assign(:sponsorships_active, [])
-      assign(:sponsorships_inactive, [])
+      assign(:sponsorships_active, Sponsorship.none)
+      assign(:sponsorships_inactive, Sponsorship.none)
       render
     end
 
