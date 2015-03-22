@@ -27,6 +27,6 @@ Osra::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  #disable the default querry caching
+  #disable the default query caching
   # config.middleware.delete "ActiveRecord::QueryCache"
 end

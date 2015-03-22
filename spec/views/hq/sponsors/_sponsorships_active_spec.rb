@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'hq/sponsors/_sponsorships_active.html.haml', type: :view do
-  let(:orphan) {build_stubbed :orphan}
-  let(:sponsorships_active) {(1..3).map {build_stubbed :sponsorship, active: true, orphan: orphan}}
+  let(:sponsorships_active) {build_stubbed_list :sponsorship, 3, active:true, orphan: build_stubbed(:orphan)}
 
   describe "active sponsorships exist" do
     before :each do
@@ -15,7 +14,7 @@ RSpec.describe 'hq/sponsors/_sponsorships_active.html.haml', type: :view do
 
     it "should show sponsorships and linked orphans details" do
       sponsorships_active.each do |sa|
-        expect(rendered).to have_link(sa.orphan.name, hq_orphan_path(sa.orphan_id))
+        expect(rendered).to have_link(sa.orphan.name, hq_orphan_path(sa.orphan))
         expect(rendered).to have_text(sa.orphan.date_of_birth)
         expect(rendered).to have_text(sa.orphan.gender)
         expect(rendered).to have_text(sa.start_date)
@@ -27,14 +26,14 @@ RSpec.describe 'hq/sponsors/_sponsorships_active.html.haml', type: :view do
       expect(rendered).to have_css("input[type='text'][value='#{Date.current}']")
     end
 
-    it "should have Delete button" do
+    it "should have delete (X) button" do
       sponsorships_active.each do |sa|
-        expect(rendered).to have_link "Delete", hq_sponsor_sponsorship_path(sa.sponsor_id,sa)
+        expect(rendered).to have_link "X", hq_sponsor_sponsorship_path(sa.sponsor,sa)
       end
     end
   end
 
-  describe "active sponsorships does not exist" do
+  describe "active sponsorships do not exist" do
     before :each do
       render :partial => 'hq/sponsors/sponsorships_active.html.haml', :locals => {sponsorships: []}
     end

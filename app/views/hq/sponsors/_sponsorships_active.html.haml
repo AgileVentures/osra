@@ -40,8 +40,8 @@
                 =f.label :end_date, "on"
                 =f.text_field :end_date, value: Date.current
             %td
-              =link_to "Delete",
+              =link_to "X",
                   hq_sponsor_sponsorship_path(sponsorship.sponsor_id, sponsorship),
                   method: :delete,
                   data: { confirm: 'WARNING: You are about to permanently delete the record of this sponsorship!'},
-                  class: "btn btn-default"
+                  class: "btn btn-default btn-xs btn-danger"

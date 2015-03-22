@@ -2,18 +2,20 @@ class Hq::SponsorshipsController < HqController
 
   def inactivate
     sponsorship = Sponsorship.find(params[:id])
+    sponsor = sponsorship.sponsor
 
     @sponsorship_inactivator = InactivateSponsorship.new(sponsorship: sponsorship,
                                                          end_date: params[:sponsorship][:end_date])
-    inactivate_sponsorship and redirect_to hq_sponsor_path(sponsorship.sponsor_id)
+    inactivate_sponsorship and redirect_to hq_sponsor_path(sponsor)
   end
 
   def destroy
     sponsorship = Sponsorship.find(params[:id])
+    sponsor = sponsorship.sponsor
 
     @sponsorship_destructor = DestroySponsorship.new(sponsorship)
 
-    destroy_sponsorship and redirect_to hq_sponsor_path(sponsorship.sponsor_id)
+    destroy_sponsorship and redirect_to hq_sponsor_path(sponsor)
   end
 
   private
