@@ -1,6 +1,6 @@
 ActiveAdmin.register Orphan do
 
-  actions :all, except: [:new, :destroy]
+  actions :all, except: [:new, :create, :destroy]
 
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :province_code, as: :select,
