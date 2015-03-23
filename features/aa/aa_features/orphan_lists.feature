@@ -156,8 +156,8 @@ Feature:
     Given I visit the new orphan list page for partner "Partner1"
     And I upload the "one_orphan_xlsx.xlsx" file
     Then I click the "Upload" button
-    Then I should see "محمد"
-    And I should see "John Doe"
+    Then I should see "Name1"
+    And I should see "نور الدين"
     And I should see "02 January 2012"
     And I should see "Male"
 

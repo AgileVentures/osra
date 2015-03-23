@@ -5,14 +5,10 @@ FactoryGirl.define do
     mother_name { Faker::Name.first_name  }
     family_name { Faker::Name.last_name }
     date_of_birth { 10.years.ago }
-    #father_is_martyr { [true, false].sample }
-    #father_date_of_death { 4.days.ago }
-    father_is_martyr { false }
+    father_deceased { [true, false].sample }
+    father_is_martyr { father_deceased ? [true, false].sample : false }
+    father_date_of_death { father_deceased ? 4.days.ago : nil }
     mother_alive { [true, false].sample }
-    #TODO return father_alive back to [true, false].sample
-    #father_alive { [true, false].sample }
-    #date_of_birth { 10.years.ago }
-    father_alive { true }
     gender { %w(Male Female).sample }
     contact_number { Faker::PhoneNumber.phone_number }
     sponsored_by_another_org { [true, false].sample }

@@ -38,7 +38,7 @@ describe Orphan, type: :model do
 
   it { is_expected.to validate_presence_of :mother_name }
   it { is_expected.to_not allow_value(nil).for(:mother_alive) }
-  it { is_expected.to_not allow_value(nil).for(:father_alive) }
+  it { is_expected.to_not allow_value(nil).for(:father_deceased) }
 
   it { is_expected.to allow_value(Date.today - 5, Date.current).for(:date_of_birth) }
   it { is_expected.to_not allow_value(Date.today + 5).for(:date_of_birth) }
@@ -83,43 +83,62 @@ describe Orphan, type: :model do
 
   it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
 
-  describe 'validate father_alive, father_is_martyr, father_date_of_death values' do
-    let(:orphan) { create :orphan }
+  describe "validates father's death details:" do
+    let(:orphan) { build :orphan }
 
-    context 'when father is alive' do
-      specify 'father_is_martyr must be false & father_date_of_birth must be blank' do
-        orphan.father_alive = true
-
-        expect(orphan).to allow_value(false).for :father_is_martyr
-        expect(orphan).to_not allow_value(true).for :father_is_martyr
-        expect(orphan).to validate_absence_of :father_date_of_death
+    context 'whether father is alive or deceased' do
+      it 'validates presence of father_deceased & father_is_martyr' do
+        expect(orphan).not_to allow_value(nil).for :father_deceased
+        expect(orphan).not_to allow_value(nil).for :father_is_martyr
       end
     end
 
-    context 'when father is not alive' do
-      specify 'father_date_of_death must be present and should be in the past' do
-        orphan.father_alive = false
+    context 'when father is alive' do
+      before(:each) { orphan.father_deceased = false }
+
+      it "validates absence of details of father's death" do
+        expect(orphan).to validate_absence_of :father_date_of_death
+        expect(orphan).to validate_absence_of :father_place_of_death
+        expect(orphan).to validate_absence_of :father_cause_of_death
+      end
+
+      it 'only allows false for father_is_martyr' do
+        expect(orphan).to allow_value(false).for :father_is_martyr
+        expect(orphan).not_to allow_value(true).for :father_is_martyr
+      end
+    end
+
+    context 'when father is dead' do
+      before(:each) { orphan.father_deceased = true }
+
+      it 'validates presence of father_date_of_death' do
         expect(orphan).to validate_presence_of :father_date_of_death
-        expect(orphan).to allow_value(5.days.ago, Date.current).for :father_date_of_death
-        [7, 'yes', true, 5.days.from_now].each do |bad_date_value|
-          expect(orphan).to_not allow_value(bad_date_value).for :father_date_of_death
+      end
+
+      it 'does not allow future dates for father_date_of_death' do
+        [Date.tomorrow, 1.year.from_now].each do |bad_date|
+          expect(orphan).not_to allow_value(bad_date).for :father_date_of_death
         end
+      end
+
+      it 'allows father_is_martyr to be true or false' do
+        expect(orphan).to allow_value(true).for :father_is_martyr
+        expect(orphan).to allow_value(false).for :father_is_martyr
       end
     end
   end
 
-
   describe '#orphans_dob_within_1yr_of_fathers_death' do
     let(:orphan) { create :orphan,
                           :father_date_of_death => (1.year + 1.day).ago,
-                          :father_alive => false }
+                          :father_deceased => true }
 
-    it "is valid when orphan is born a year after fathers death" do
+    it "is valid when orphan is born a year after father's death" do
       orphan.date_of_birth = 1.day.ago
       expect(orphan).to be_valid
     end
 
-    it "is not valid when orphan is born more than a year after fathers death" do
+    it "is not valid when orphan is born more than a year after father's death" do
       orphan.date_of_birth = Date.current
       expect(orphan).not_to be_valid
     end
