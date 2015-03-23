@@ -1,6 +1,6 @@
 ActiveAdmin.register Orphan do
 
-  actions :all, except: [:new, :destroy]
+  actions :all, except: [:new, :create, :destroy]
 
   filter :name, as: :string
   filter :date_of_birth, as: :date_range
