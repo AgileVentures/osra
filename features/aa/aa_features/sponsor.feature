@@ -188,11 +188,3 @@ Feature:
     Then I should be on the "New Sponsor" page for the "Admin" role
     And I should see "Sponsor was successfully created"
 
-  Scenario: **Bug fix OSRA384** Sponsor filter should be done by name
-    Given I am on the "Sponsors" page for the "Admin" role
-    And I fill in "Name" with "Sponsor1"
-    And I click the "Filter" button
-    Then I should be on the "Sponsors" page for the "Admin" role
-    And I should see "Sponsor1"
-    And I should not see "Sponsor2"
-    And I should not see "Sponsor3"
