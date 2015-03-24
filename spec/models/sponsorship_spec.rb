@@ -68,7 +68,8 @@ describe Sponsorship, type: :model do
 
       let(:start_date) { sponsorship.start_date }
 
-      it { is_expected.to have_validation :valid_date_presence, :on => :end_date }
+      it { is_expected.to have_validation :valid_date_presence, :on => :end_date,
+                                                                :options => {if: '!active'}}
 
       it { is_expected.to allow_value(start_date + 1).for :end_date }
       it { is_expected.to_not allow_value(start_date - 1).for :end_date }

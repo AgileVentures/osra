@@ -1,13 +1,17 @@
 # use like this:
 # it { is_expected.to have_validation :valid_date_presence,
 #                                     :on => :start_date,
-#                                     :options => [:allow_blank, :allow_nil]
+#                                     :options => {allow_nil: true, allow_blank: true, if: :date_attr}
 #                                     }
+#checking only for a few of the options is accepted (eg. :options => {if: :date_attr})
 RSpec::Matchers.define :have_validation do |validator, params|
-  validator_class = eval(validator.to_s.camelize + "Validator")
+  validator_class_name = eval(validator.to_s.camelize + "Validator")
 
   match do |model|
-    @_validators = model.class.validators.select { |v| (v.class == validator_class) && (v.attributes.include? params[:on]) }
+    model_validators = model.class.validators
+    @_validators = model_validators.select do |v|
+      (v.class == validator_class_name) && (v.attributes.include? params[:on])
+    end
     validator_included_once? && (validator_receives_correct_options? params[:options])
   end
 
@@ -28,8 +32,12 @@ RSpec::Matchers.define :have_validation do |validator, params|
     @_validators.size == 1
   end
 
-  def validator_receives_correct_options? options
-    return true unless options
-    options.all? { |o| @_validators.first.options.has_key?(o) }
+  def validator_receives_correct_options? expected_options
+    return true unless expected_options
+
+    validators_options = @_validators.first.options
+    expected_options.all? do |k,v|
+      validators_options.has_key?(k) && validators_options[k] == v
+    end
   end
 end

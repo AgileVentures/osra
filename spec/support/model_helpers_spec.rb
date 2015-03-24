@@ -1,4 +1,3 @@
-#testing   /spec/support/model_helpers.rb
 require 'rails_helper'
 
 RSpec.describe "Rspec matchers" do
@@ -8,7 +7,8 @@ RSpec.describe "Rspec matchers" do
 
       attr_accessor :date_attr, :other_attr
 
-      validates :date_attr, valid_date_presence: true, allow_nil: true, allow_blank: true
+      validates :date_attr, valid_date_presence: true, allow_nil: true, allow_blank: true,
+                if: :date_attr
     end
   end
 
@@ -22,7 +22,12 @@ RSpec.describe "Rspec matchers" do
 
     describe "with options" do
       it { is_expected.to have_validation :valid_date_presence, :on => :date_attr,
-                                          :options => [:allow_nil, :allow_blank] }
+                          :options => {allow_nil: true, allow_blank: true, if: :date_attr}}
+    end
+
+    describe "with only a few of the options" do
+      it { is_expected.to have_validation :valid_date_presence, :on => :date_attr,
+                          :options => {if: :date_attr}}
     end
   end
 end
