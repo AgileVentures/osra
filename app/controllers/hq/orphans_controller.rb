@@ -1,4 +1,9 @@
 class Hq::OrphansController < HqController
+
+  def show
+    load_orphan
+  end 
+
   def index
     @orphans = Orphan.paginate(:page => params[:page])
   end
@@ -21,7 +26,7 @@ private
 
   def orphan_params
     params.require(:orphan)
-      .permit(:contact_number, :date_of_birth, :family_name, :father_alive, 
+      .permit(:contact_number, :date_of_birth, :family_name, :father_deceased, 
               :health_status, :schooling_status, :father_given_name, 
               :father_is_martyr, :gender, :minor_siblings_count, :mother_alive, 
               :mother_name, :name, :orphan_list_id, :orphan_sponsorship_status_id, 

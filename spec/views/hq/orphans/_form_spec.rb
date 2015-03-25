@@ -36,7 +36,7 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
     end
 
     #checkboxes
-    ["father_alive", "mother_alive", "father_is_martyr",
+    ["father_deceased", "mother_alive", "father_is_martyr",
      "sponsored_by_another_org"].each do |field|
       assert_select "input#orphan_#{field}" do
         assert_select "[checked]", @orphan[field]

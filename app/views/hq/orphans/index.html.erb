@@ -1,9 +1,3 @@
-<div class="panel-heading">
-  <div class="action_items">
-    <%= link_to('New Orphan', new_hq_orphan_path,
-                class: 'btn btn-default', role: 'button') %>
-  </div>
-</div>
 <%- if @orphans.empty? %>
   <div class="panel-body">
     <em>No Orphans found</em>
@@ -38,7 +32,7 @@
             Father is Martyr
           </th>
           <th>
-            Father Alive
+            Father Deceased
           </th>
           <th>
             Mother Alive
@@ -82,7 +76,7 @@
               <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
             </td>
             <td>
-              <%= orphan.father_alive ? 'Yes' : 'No' %>
+              <%= orphan.father_deceased ? 'Yes' : 'No' %>
             </td>
             <td>
               <%= orphan.mother_alive ? 'Yes' : 'No' %>
