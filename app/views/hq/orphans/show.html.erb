@@ -1,0 +1,157 @@
+<div class="action_items">
+  <div class="instance">
+    <%= link_to('Edit Orphan', edit_hq_orphan_path(@orphan.id),
+                class: 'btn btn-default', role: 'button') %>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Orphan Details
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>OSRA Num</dt>
+      <dd><%= @orphan.osra_num %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Orphan Name</dt>
+      <dd><%= @orphan.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Date of Birth</dt>
+      <dd><%= format_full_date @orphan.date_of_birth %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Gender</dt>
+      <dd><%= @orphan.gender %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Contact Number</dt>
+      <dd><%= @orphan.contact_number %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Orphan Status</dt>
+      <dd><%= @orphan.orphan_status.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Sponsorship Status</dt>
+      <dd><%= @orphan.orphan_sponsorship_status.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Priority</dt>
+      <dd><%= @orphan.priority %></dd>
+    </dl>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Parents' Details
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Father's Given Name</dt>
+      <dd><%= @orphan.father_given_name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Family Name</dt>
+      <dd><%= @orphan.family_name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Father is Alive</dt>
+      <dd><%= @orphan.father_alive ? 'Yes' : 'No' %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Mother Name</dt>
+      <dd><%= @orphan.mother_name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Mother is Alive</dt>
+      <dd><%= @orphan.mother_alive ? 'Yes' : 'No' %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Father is Martyr</dt>
+      <dd><%= @orphan.father_is_martyr ? 'Yes' : 'No' %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Father Date of Death</dt>
+      <dd><%= format_full_date @orphan.father_date_of_death %></dd>
+    </dl>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Original Address
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Province Name</dt>
+      <dd><%= @orphan.original_address.province.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>City</dt>
+      <dd><%= @orphan.original_address.city %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Neighborhood</dt>
+      <dd><%= @orphan.original_address.neighborhood %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Street</dt>
+      <dd><%= @orphan.original_address.street %></dd>
+    </dl>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Current Address
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Province Name</dt>
+      <dd><%= @orphan.current_address.province.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>City</dt>
+      <dd><%= @orphan.current_address.city %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Neighborhood</dt>
+      <dd><%= @orphan.current_address.neighborhood %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Street</dt>
+      <dd><%= @orphan.current_address.street %></dd>
+    </dl>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Additional Details
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Spnsr Another Organization</dt>
+      <dd><%= @orphan.sponsored_by_another_org ? 'Yes' : 'No' %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Minor Siblings Count</dt>
+      <dd><%= @orphan.minor_siblings_count %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Spnsr Minor Siblings Count</dt>
+      <dd><%= @orphan.sponsored_minor_siblings_count %></dd>
+    </dl>
+  </div>
+</div>
+
+

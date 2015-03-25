@@ -3,12 +3,6 @@ class Hq::OrphansController < HqController
     @orphans = Orphan.paginate(:page => params[:page])
   end
 
-  def create
-    @orphan ||= Orphan.new
-    @orphan.attributes = orphan_params
-    save_orphan or re_render 'new'
-  end
-
   def edit
     load_orphan
     load_associations
@@ -27,17 +21,19 @@ private
 
   def orphan_params
     params.require(:orphan)
-      .permit(:contact_number, :date_of_birth, :family_name, :father_alive,
-              :father_given_name, :father_is_martyr, :gender, :minor_siblings_count,
-              :mother_alive, :mother_name, :name, :orphan_list_id, :orphan_sponsorship_status_id,
+      .permit(:contact_number, :date_of_birth, :family_name, :father_alive, 
+              :health_status, :schooling_status, :father_given_name, 
+              :father_is_martyr, :gender, :minor_siblings_count, :mother_alive, 
+              :mother_name, :name, :orphan_list_id, :orphan_sponsorship_status_id, 
               :orphan_status_id, :priority, :sponsored_by_another_org, :sponsored_minor_siblings_count, 
-              :minor_siblings_count, :sponsored_minor_siblings_count,
-              :original_address, :current_address)
+              :minor_siblings_count, :sponsored_minor_siblings_count, 
+              original_address: [:id, :city, :province_id, :street, :neighborhood],
+              current_address: [:id, :city, :province_id, :street, :neighborhood])
   end
 
   def build_orphan
     @orphan ||= Orphan.new
-    @orphan.attributes = orphan_params
+    @orphan.attributes = orphan_params if params[:orphan]
   end
 
   def load_associations

@@ -1,9 +1,3 @@
-<div class="panel-heading">
-  <div class="action_items">
-    <%= link_to('New Orphan', new_hq_orphan_path,
-                class: 'btn btn-default', role: 'button') %>
-  </div>
-</div>
 <%- if @orphans.empty? %>
   <div class="panel-body">
     <em>No Orphans found</em>
@@ -19,6 +13,39 @@
           <th>
             Name
           </th>
+          <th>
+            Father Name
+          </th>
+          <th>
+            Date of Birth
+          </th>
+          <th>
+            Gender
+          </th>
+          <th>
+            Original Province
+          </th>
+          <th>
+            Partner
+          </th>
+          <th>
+            Father is Martyr
+          </th>
+          <th>
+            Father Alive
+          </th>
+          <th>
+            Mother Alive
+          </th>
+          <th>
+            Priority
+          </th>
+          <th>
+            Orphan Status
+          </th>
+          <th>
+            Sponsorship
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +56,39 @@
             </td>
             <td>
               <%= link_to orphan.name, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= orphan.father_given_name %>
+            </td>
+            <td>
+              <%= orphan.date_of_birth %>
+            </td>
+            <td>
+              <%= orphan.gender %>
+            </td>
+            <td>
+              <%= orphan.original_address.province.name %>
+            </td>
+            <td>
+              <%= orphan.original_address.province.name %>
+            </td>
+            <td>
+              <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.father_alive ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.mother_alive ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.priority %>
+            </td>
+            <td>
+              <%= orphan.orphan_status.name %>
+            </td>
+            <td>
+              <%= orphan.orphan_sponsorship_status.name %>
             </td>
           </tr>
         <%- end %>

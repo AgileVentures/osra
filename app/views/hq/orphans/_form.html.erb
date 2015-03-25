@@ -18,19 +18,25 @@
         <%= f.select :gender,
           Settings.lookup.gender, {}, class: "form-control" %>
       </div>
-      <%# Health status %>
-      <%# Schooling status %>
+      <div class="form-group">
+        <%= f.label :health_status %>
+        <%= f.text_field :health_status, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :schooling_status %>
+        <%= f.text_field :schooling_status, class: "form-control" %>
+      </div>
       <div class="form-group">
         <%= f.label :orphan_status_id %>
         <%= f.collection_select :orphan_status_id,
           @orphan_statuses, :id, :name, {}, 
-					{class: "form-control" , disabled: !f.object.new_record?} %>
+          {class: "form-control"} %>
       </div>
       <div class="form-group">
         <%= f.label :orphan_sponsorship_status_id %>
         <%= f.collection_select :orphan_sponsorship_status_id,
           @orphan_sponsorship_statuses, :id, :name, {}, 
-					{class: "form-control", disabled: !f.object.new_record?} %>
+          {class: "form-control", disabled: !f.object.new_record?} %>
       </div>
       <div class="form-group">
         <%= f.label :priority %>
@@ -74,53 +80,53 @@
     <div class="panel-heading">
       <h3 class="panel-title">Original Address</h3>
     </div>
-    <%= f.fields_for :original_address do |builder| %>
-			<div class="panel-body">
-				<div class="form-group">
-					<%= builder.label :city %>
-					<%= builder.text_field :city, class: "form-control" %>
-				</div>
-				<div class="form-group">
-					<%= f.label :province %>
-					<%= f.collection_select :original_address,
-					 @provinces, :id, :name, {},  {class: "form-control", disabled: !f.object.new_record?} %>
-				</div>
-        <div class="form-group">
-			    <%= builder.label :neighborhood %>
-			    <%= builder.text_field :neighborhood, class: "form-control" %>
-			  </div>
-        <div class="form-group">
-			    <%= builder.label :street %>
-			    <%= builder.text_field :street, class: "form-control" %>
-			  </div>
-			</div>
-    <% end %>
+      <%= f.fields_for :original_address do |b| %>
+        <div class="panel-body">
+          <div class="form-group">
+            <%= b.label :city %>
+            <%= b.text_field :city, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= b.label :province %>
+            <%= b.collection_select :province_id,
+              @provinces, :id, :name, {},  {class: "form-control"} %>
+          </div>
+          <div class="form-group">
+            <%= b.label :neighborhood %>
+            <%= b.text_field :neighborhood, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= b.label :street %>
+            <%= b.text_field :street, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Current Address</h3>
     </div>
-    <%= f.fields_for :current_address do |builder| %>
-			<div class="panel-body">
-			  <div class="form-group">
-			    <%= builder.label :city %>
-			    <%= builder.text_field :city, class: "form-control" %>
-			  </div>
-			  <div class="form-group">
-			    <%= f.label :province %>
-			    <%= f.collection_select :current_address,
-			     @provinces, :id, :name, {},  {class: "form-control", disabled: !f.object.new_record?} %>
-			  </div>
-        <div class="form-group">
-			    <%= builder.label :neighborhood %>
-			    <%= builder.text_field :neighborhood, class: "form-control" %>
-			  </div>
-        <div class="form-group">
-			    <%= builder.label :street %>
-			    <%= builder.text_field :street, class: "form-control" %>
-			  </div>
-			</div>
-    <% end %>
+      <%= f.fields_for :current_address do |b| %>
+        <div class="panel-body">
+          <div class="form-group">
+            <%= b.label :city %>
+            <%= b.text_field :city, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= b.label :province %>
+            <%= b.collection_select :province_id,
+              @provinces, :id, :name, {},  {class: "form-control"} %>
+          </div>
+          <div class="form-group">
+            <%= b.label :neighborhood %>
+            <%= b.text_field :neighborhood, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= b.label :street %>
+            <%= b.text_field :street, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -143,8 +149,8 @@
   </div>
   <div class="form-group">
     <%= f.submit class: 'btn btn-primary' %>
-    <%= link_to('Cancel',
-                (@orphan.id ? hq_orphan_path(@orphan.id) : hq_orphans_path),
+    <%= link_to('Cancel', 
+                hq_orphan_path(@orphan),
                 class: 'btn btn-default btn-cancel', role: 'button') %>
   </div>
 <% end %>
