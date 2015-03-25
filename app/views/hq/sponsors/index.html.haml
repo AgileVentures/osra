@@ -1,4 +1,11 @@
-.action_items
+.action_items.pull-right
   = link_to('New Sponsor', new_hq_sponsor_path,
          class: 'btn btn-default', role: 'button')
+
+%h2
+  OSRA Sponsors.
+  %small
+    Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
+    out of #{total_requested_sponsorships} requested.
+
 = render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors}
