@@ -17,7 +17,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
 
   specify "#destroy" do
     expect(Sponsorship).to receive(:find).and_return(sponsorship)
-    expect(sponsorship).to receive(:destroy).and_return(true)
+    expect(sponsorship).to receive(:destroy!)
     delete :destroy, id: sponsorship.id
 
     expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
