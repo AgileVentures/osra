@@ -40,11 +40,8 @@ describe Orphan, type: :model do
   it { is_expected.to_not allow_value(nil).for(:mother_alive) }
   it { is_expected.to_not allow_value(nil).for(:father_deceased) }
 
-  it { is_expected.to allow_value(Date.today - 5, Date.current).for(:date_of_birth) }
-  it { is_expected.to_not allow_value(Date.today + 5).for(:date_of_birth) }
-  [7, 'yes', true].each do |bad_date_value|
-    it { is_expected.to_not allow_value(bad_date_value).for :date_of_birth }
-  end
+  it { is_expected.to have_validation :valid_date_presence, :on => :date_of_birth }
+  it { is_expected.to have_validation :date_not_in_future, :on => :date_of_birth }
 
   it { is_expected.to validate_presence_of :gender }
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
@@ -111,15 +108,10 @@ describe Orphan, type: :model do
     context 'when father is dead' do
       before(:each) { orphan.father_deceased = true }
 
-      it 'validates presence of father_date_of_death' do
-        expect(orphan).to validate_presence_of :father_date_of_death
-      end
-
-      it 'does not allow future dates for father_date_of_death' do
-        [Date.tomorrow, 1.year.from_now].each do |bad_date|
-          expect(orphan).not_to allow_value(bad_date).for :father_date_of_death
-        end
-      end
+      it { expect(orphan).to have_validation :valid_date_presence, :on => :father_date_of_death,
+                                                                   :options => {if: :father_deceased}}
+      it { expect(orphan).to have_validation :date_not_in_future, :on => :father_date_of_death ,
+                                                                  :options => {if: :father_deceased}}
 
       it 'allows father_is_martyr to be true or false' do
         expect(orphan).to allow_value(true).for :father_is_martyr

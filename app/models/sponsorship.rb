@@ -7,10 +7,12 @@ class Sponsorship < ActiveRecord::Base
   validates :sponsor, presence: true
   validates :orphan, presence: true
 
-  validates :start_date, presence: { scope: true, message: "is invalid"}
+  validates :start_date, valid_date_presence: true,
+                         date_beyond_osra_establishment: true
   validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
 
-  validates :end_date, presence: { message: 'is invalid' }, if: '!active'
+
+  validates :end_date, valid_date_presence: true, if: '!active'
   validate  :end_date_not_before_start_date, on: :update, if: :end_date
 
   validates :orphan, uniqueness: { scope: :active,
@@ -21,7 +23,7 @@ class Sponsorship < ActiveRecord::Base
   belongs_to :sponsor
   belongs_to :orphan
 
-  delegate :name, :additional_info, :id, to: :sponsor, prefix: true
+  delegate :name, :additional_info, to: :sponsor, prefix: true
   delegate :date_of_birth, :gender, to: :orphan, prefix: true
 
   scope :all_active, -> { where(active: true) }
