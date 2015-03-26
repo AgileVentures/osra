@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Hq::UsersController, type: :controller do
-  let(:users) { 3.times.map {build_stubbed(:user)} }
+  let(:users) { build_stubbed_list(:user, 3) }
 
   before :each do
     sign_in instance_double(AdminUser)
