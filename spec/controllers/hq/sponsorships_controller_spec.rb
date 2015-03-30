@@ -9,10 +9,11 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
 
   specify "#inactivate" do
     expect(Sponsorship).to receive(:find).and_return(sponsorship)
+    expect(sponsorship).to receive(:update!)
     put :inactivate, id: sponsorship.id, sponsorship: {end_date: Date.current}
 
-    expect(sponsorship.active).to be false
     expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+    expect(flash[:success]).to_not be_nil
   end
 
   specify "#destroy" do
@@ -21,5 +22,6 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
     delete :destroy, id: sponsorship.id
 
     expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+    expect(flash[:success]).to_not be_nil
   end
 end
