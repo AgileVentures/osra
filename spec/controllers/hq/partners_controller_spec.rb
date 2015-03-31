@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'will_paginate/array'
 
 RSpec.describe Hq::PartnersController, type: :controller do
   before :each do
@@ -50,9 +49,9 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
   end
 
-  describe 'index' do
+  describe '#index' do
     specify 'pagination' do
-      expect(Partner).to receive(:paginate).with(page: "2").and_return([].paginate)
+      expect(Partner).to receive(:paginate).with(page: "2")
       get :index, page: "2"
     end
   end
