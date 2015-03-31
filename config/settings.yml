@@ -20,10 +20,6 @@ import:
         db: true
       - cell: N
         db: false
-      - cell: متوفى
-        db: false
-      - cell: موجود
-        db: true
     gender:
       - cell: ذكر
         db: Male
@@ -79,7 +75,7 @@ import:
       column: F
       mandatory: false
       type: String
-    - field: father_alive
+    - field: father_deceased
       column: G
       mandatory: true
       type: father options
