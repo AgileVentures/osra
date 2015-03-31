@@ -28,6 +28,8 @@ class Sponsorship < ActiveRecord::Base
 
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
+  
+  default_scope { includes(:sponsor, :orphan) }
 
 private
 

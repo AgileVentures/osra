@@ -4,7 +4,8 @@ class Hq::SponsorsController < HqController
   end
 
   def show
-    @sponsor = Sponsor.find(params[:id])
+    load_sponsor
+    load_active_and_inactive_sponsorships
   end
 
   def new
@@ -45,6 +46,12 @@ private
 
   def load_sponsor
     @sponsor= Sponsor.find(params[:id])
+  end
+
+  def load_active_and_inactive_sponsorships
+    sponsorships = Sponsorship.where(sponsor: @sponsor)
+    @sponsorships_active = sponsorships.select {|sp| sp.active == true}
+    @sponsorships_inactive = sponsorships.select {|sp| sp.active == false}
   end
 
   def save_sponsor
