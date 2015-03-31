@@ -3,30 +3,35 @@ include Devise::TestHelpers
 
 describe Admin::SponsorshipsController, type: :controller do
 
-  let(:orphan) { instance_double Orphan }
   let(:sponsor) { instance_double Sponsor }
-  let(:sponsorship) { instance_double Sponsorship, sponsor: sponsor, orphan: orphan }
+  let(:sponsorship) { instance_double Sponsorship }
 
   before(:each) do
     sign_in instance_double(AdminUser)
-    allow(sponsor).to receive(:id).and_return(1)
-    allow(Sponsor).to receive(:find).with('1').and_return(sponsor)
-    allow(Sponsorship).to receive(:find).with('1').and_return(sponsorship)
+    allow(Sponsor).to receive(:find).with('1').and_return sponsor
   end
 
-  describe 'inactivate' do
-    describe 'is successful' do
-      before(:each) do
-        allow(sponsorship).to receive(:inactivate).and_return(sponsorship)
-        put :inactivate, { id: 1, sponsor_id: 1, end_date: "1-1-2017" }
-      end  
+  describe '#inactivate' do
 
-      it 'calls #inactivate on sponsorship' do
-        expect(sponsorship).to have_received :inactivate
+    let(:sponsorship_inactivator) { instance_double InactivateSponsorship }
+
+    before(:each) do
+      expect(sponsor).to receive_message_chain(:sponsorships, :find)
+      allow(InactivateSponsorship).to receive(:new).
+        and_return sponsorship_inactivator
+    end
+
+    context 'when successful' do
+
+      before(:each) do
+        expect(sponsorship_inactivator).to receive(:call).and_return true
+
+        put :inactivate, { id: 1, sponsor_id: 1, end_date: '1-1-2017' }
       end
 
       it 'sets flash[:success] message' do
-        expect(flash[:success]).to eq 'Sponsorship link was successfully terminated'
+        expect(flash[:success]).not_to be_nil
+        expect(flash[:warning]).to be_nil
       end
 
       it 'redirects to sponsor show view' do
@@ -34,39 +39,117 @@ describe Admin::SponsorshipsController, type: :controller do
       end
     end
 
-    describe 'is unsuccessful' do
+    context 'when unsuccessful' do
+
       before(:each) do
-        allow(sponsorship).to receive(:inactivate).and_return(false)
-        allow(sponsorship).to receive_message_chain(:errors, :full_messages).and_return("Something wrong")
-        put :inactivate, { id: 1, sponsor_id: 1, end_date: "1-1-2010" }
-      end  
+        expect(sponsorship_inactivator).to receive(:call).and_return false
+        expect(sponsorship_inactivator).to receive(:error_msg).and_return 'No go'
+
+        put :inactivate, { id: 1, sponsor_id: 1, end_date: '1-1-2017' }
+      end
 
       it 'sets flash[:warning] message' do
-        expect(flash[:warning]).to eq 'Something wrong'
+        expect(flash[:success]).to be_nil
+        expect(flash[:warning]).to eq 'No go'
+      end
+
+      it 'redirects to sponsor show view' do
+        expect(response).to redirect_to admin_sponsor_path(sponsor)
       end
     end
   end
 
-  describe 'create' do
+  describe '#destroy' do
+
+    let(:sponsorship_destructor) { instance_double DestroySponsorship }
+
+    before(:each) do
+      allow(sponsor).to receive_message_chain(:sponsorships, :find)
+      allow(DestroySponsorship).to receive(:new).
+        and_return(sponsorship_destructor)
+    end
+
+    context 'when successful' do
+
+      before(:each) do
+        expect(sponsorship_destructor).to receive(:call).and_return true
+
+        delete :destroy, { id: 1, sponsor_id: 1 }
+      end
+
+      it 'sets flash[:success] message' do
+        expect(flash[:success]).to eq 'Sponsorship record was successfully destroyed.'
+        expect(flash[:warning]).to be_nil
+      end
+
+      it 'redirects to sponsor show view' do
+        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      end
+    end
+
+    context 'when unsuccessful' do
+
+      before(:each) do
+        expect(sponsorship_destructor).to receive(:call).and_return false
+        expect(sponsorship_destructor).to receive(:error_msg).and_return 'No go'
+
+        delete :destroy, { id: 1, sponsor_id: 1 }
+      end
+
+      it 'sets flash[:warning] message' do
+        expect(flash[:success]).to be_nil
+        expect(flash[:warning]).to eq 'No go'
+      end
+
+      it 'redirects to sponsor show view' do
+        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      end
+    end
+  end
+
+  describe '#create' do
+
+    let(:sponsorship_creator) { instance_double CreateSponsorship }
+
     before :each do
-      allow(Sponsorship).to receive(:new).and_return(sponsorship)
+      allow(sponsor).to receive_message_chain(:sponsorships, :build)
+      allow(CreateSponsorship).to receive(:new).and_return(sponsorship_creator)
     end
 
-    it 'is successful' do
-      allow(sponsorship).to receive(:save).and_return(true)
-      post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
-      expect(flash[:warning]).to be_nil
-      expect(flash[:success]).to eq 'Sponsorship link was successfully created.'
-      expect(response).to redirect_to admin_sponsor_path(sponsor.id)
+    context 'when successful' do
+
+      before(:each) do
+        expect(sponsorship_creator).to receive(:call).and_return true
+
+        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+      end
+
+      it 'sets flash[:success] message' do
+        expect(flash[:success]).not_to be_nil
+        expect(flash[:warning]).to be_nil
+      end
+
+      it 'redirects to sponsor show view' do
+        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      end
     end
 
-    it 'is unsuccessful' do
-      allow(sponsorship).to receive(:save).and_return(false)
-      allow(sponsorship).to receive_message_chain(:errors, :full_messages).and_return('custom message 42')
-      post :create, { orphan_id: 1, sponsor_id: 1, sponsorship_start_date: '2002-02-02' }
-      expect(flash[:warning]).to eq 'custom message 42'
-      expect(flash[:success]).to be_nil
-      expect(response).to redirect_to new_sponsorship_path(sponsor.id, scope: 'eligible_for_sponsorship')
+    context 'when unsuccessful' do
+      before(:each) do
+        expect(sponsorship_creator).to receive(:call).and_return false
+        expect(sponsorship_creator).to receive(:error_msg).and_return 'No go'
+
+        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+      end
+
+      it 'sets flash[:warning] message' do
+        expect(flash[:success]).to be_nil
+        expect(flash[:warning]).to eq 'No go'
+      end
+
+      it 'redirects to new sponsorship view' do
+        expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+      end
     end
   end
 end

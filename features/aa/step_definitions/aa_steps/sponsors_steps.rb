@@ -93,3 +93,19 @@ end
 Given /^"([^"]*)" is from (?:.*)-([A-Z]{2})$/ do |name, country_code|
   FactoryGirl.create(:sponsor, name: name, country: country_code)
 end
+
+Given /I enter valid new sponsor data/ do
+  steps %Q{
+    Given a user "Agent One" exists
+    And I am on the "New Sponsor" page for the "Admin" role
+    And I fill in "Name" with "Sponsor4"
+    And I fill in "Requested orphan count" with "22"
+    And I select "Canada" from the drop down box for "Country"
+    And I select "Toronto" from the drop down box for "City"
+    And I select "Male" from the drop down box for "Gender"
+    And I select "Jeddah" from the drop down box for "Branch"
+    And I select "Individual" from the drop down box for "Sponsor type"
+    And I select "Agent One" from the drop down box for "Agent"
+    And I select "Every Six Months" from the drop down box for "Payment plan"
+  }
+end

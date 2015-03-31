@@ -14,7 +14,7 @@ RSpec.describe "shared/_errors.html.erb", type: :view do
   end
 
   it "tells us name can't be blank" do
-    assert_select ".panel-body", /#{CGI::escape_html("Name can't be blank")}/
+    assert_select ".panel-body", /Name can't be blank/
   end
 
 end

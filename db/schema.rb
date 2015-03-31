@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: true do |t|
+  create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
     t.text     "body"
     t.string   "resource_id",   null: false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
-  create_table "addresses", force: true do |t|
+  create_table "addresses", force: :cascade do |t|
     t.integer  "province_id"
     t.string   "city"
     t.string   "neighborhood"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "addresses", ["orphan_original_address_id"], name: "index_addresses_on_orphan_original_address_id", using: :btree
   add_index "addresses", ["province_id"], name: "index_addresses_on_province_id", using: :btree
 
-  create_table "admin_users", force: true do |t|
+  create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "branches", force: true do |t|
+  create_table "branches", force: :cascade do |t|
     t.integer  "code"
     t.string   "name"
     t.datetime "created_at"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
 
   add_index "branches", ["code"], name: "index_branches_on_code", unique: true, using: :btree
 
-  create_table "organizations", force: true do |t|
+  create_table "organizations", force: :cascade do |t|
     t.integer  "code"
     t.string   "name"
     t.datetime "created_at"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "organizations", ["code"], name: "index_organizations_on_code", unique: true, using: :btree
   add_index "organizations", ["name"], name: "index_organizations_on_name", unique: true, using: :btree
 
-  create_table "orphan_lists", force: true do |t|
+  create_table "orphan_lists", force: :cascade do |t|
     t.string   "osra_num"
     t.integer  "partner_id"
     t.integer  "orphan_count"
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
   add_index "orphan_lists", ["sequential_id"], name: "index_orphan_lists_on_sequential_id", using: :btree
 
-  create_table "orphan_sponsorship_statuses", force: true do |t|
+  create_table "orphan_sponsorship_statuses", force: :cascade do |t|
     t.integer  "code"
     t.string   "name"
     t.datetime "created_at"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "orphan_sponsorship_statuses", ["code"], name: "index_orphan_sponsorship_statuses_on_code", unique: true, using: :btree
   add_index "orphan_sponsorship_statuses", ["name"], name: "index_orphan_sponsorship_statuses_on_name", unique: true, using: :btree
 
-  create_table "orphan_statuses", force: true do |t|
+  create_table "orphan_statuses", force: :cascade do |t|
     t.integer "code"
     t.string  "name"
   end
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "orphan_statuses", ["code"], name: "index_orphan_statuses_on_code", unique: true, using: :btree
   add_index "orphan_statuses", ["name"], name: "index_orphan_statuses_on_name", unique: true, using: :btree
 
-  create_table "orphans", force: true do |t|
+  create_table "orphans", force: :cascade do |t|
     t.string   "name"
     t.boolean  "father_is_martyr"
     t.string   "father_occupation"
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
 
-  create_table "partners", force: true do |t|
+  create_table "partners", force: :cascade do |t|
     t.string   "name"
     t.string   "region"
     t.datetime "created_at"
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "partners", ["sequential_id"], name: "index_partners_on_sequential_id", using: :btree
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
 
-  create_table "pending_orphan_lists", force: true do |t|
+  create_table "pending_orphan_lists", force: :cascade do |t|
     t.string   "spreadsheet_file_name"
     t.string   "spreadsheet_content_type"
     t.integer  "spreadsheet_file_size"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
     t.datetime "updated_at"
   end
 
-  create_table "pending_orphans", force: true do |t|
+  create_table "pending_orphans", force: :cascade do |t|
     t.integer "pending_orphan_list_id"
     t.string  "name"
     t.string  "father_is_martyr"
@@ -234,7 +234,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree
 
-  create_table "provinces", force: true do |t|
+  create_table "provinces", force: :cascade do |t|
     t.integer  "code"
     t.string   "name"
     t.datetime "created_at"
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "provinces", ["code"], name: "index_provinces_on_code", unique: true, using: :btree
   add_index "provinces", ["name"], name: "index_provinces_on_name", unique: true, using: :btree
 
-  create_table "sponsor_types", force: true do |t|
+  create_table "sponsor_types", force: :cascade do |t|
     t.integer "code"
     t.string  "name"
   end
@@ -252,7 +252,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "sponsor_types", ["code"], name: "index_sponsor_types_on_code", unique: true, using: :btree
   add_index "sponsor_types", ["name"], name: "index_sponsor_types_on_name", unique: true, using: :btree
 
-  create_table "sponsors", force: true do |t|
+  create_table "sponsors", force: :cascade do |t|
     t.string   "name"
     t.string   "address"
     t.string   "country"
@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "sponsors", ["sponsor_type_id"], name: "index_sponsors_on_sponsor_type_id", using: :btree
   add_index "sponsors", ["status_id"], name: "index_sponsors_on_status_id", using: :btree
 
-  create_table "sponsorships", force: true do |t|
+  create_table "sponsorships", force: :cascade do |t|
     t.integer  "sponsor_id"
     t.integer  "orphan_id"
     t.date     "start_date"
@@ -301,7 +301,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "sponsorships", ["orphan_id"], name: "index_sponsorships_on_orphan_id", using: :btree
   add_index "sponsorships", ["sponsor_id"], name: "index_sponsorships_on_sponsor_id", using: :btree
 
-  create_table "statuses", force: true do |t|
+  create_table "statuses", force: :cascade do |t|
     t.integer "code"
     t.string  "name"
   end
@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 20141229224941) do
   add_index "statuses", ["code"], name: "index_statuses_on_code", unique: true, using: :btree
   add_index "statuses", ["name"], name: "index_statuses_on_name", unique: true, using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"

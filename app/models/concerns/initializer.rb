@@ -1,7 +1,9 @@
 module Initializer
 
   def default_status_to_active
-    self.status ||= Status.find_by_name 'Active'
+    if new_record?
+      self.status ||= Status.find_by_name 'Active'
+    end
   end
 
   def default_start_date_to_today

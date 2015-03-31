@@ -14,17 +14,22 @@ end
 Given(/^an (in)?active sponsorship link exists between sponsor "([^"]*)" and orphan "([^"]*)"$/) do |inactive, sponsor_name, orphan_name|
   sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
   orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
-  sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id, start_date: Date.current)
+
+  sponsorship = FactoryGirl.build :sponsorship, sponsor: sponsor, orphan: orphan
+  CreateSponsorship.new(sponsorship).call
+
   if inactive
     future_date = sponsorship.start_date + 2.months
-    sponsorship.inactivate future_date
+    InactivateSponsorship.new(sponsorship: sponsorship, end_date: future_date).call
   end
 end
 
 Given (/^"([^"]*)" started a sponsorship for "([^"]*)" on "([^"]*)"$/) do |sponsor_name, orphan_name, start_date|
   sponsor = Sponsor.find_by_name(sponsor_name) || FactoryGirl.create(:sponsor, name: sponsor_name)
   orphan = Orphan.find_by_name(orphan_name) || FactoryGirl.create(:orphan, name: orphan_name)
-  sponsorship = sponsor.sponsorships.create!(orphan_id: orphan.id, start_date: start_date)
+
+  sponsorship = FactoryGirl.build :sponsorship, sponsor: sponsor, orphan: orphan, start_date: start_date
+  CreateSponsorship.new(sponsorship).call
 end
 
 When(/I click the "Sponsor this orphan" link for orphan "([^"]*)"/) do |orphan_name|

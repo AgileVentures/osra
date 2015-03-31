@@ -38,3 +38,6 @@
               = sponsor.sponsor_type.name
             %td
               = en_ar_country(sponsor.country)
+
+  .pagination
+    = will_paginate sponsors, renderer: BootstrapPagination::Rails

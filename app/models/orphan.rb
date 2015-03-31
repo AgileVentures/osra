@@ -1,11 +1,12 @@
 class Orphan < ActiveRecord::Base
 
   NEW_SPONSORSHIP_SORT_SQL = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+  AGE_OF_ELIGIBILITY_TO_JOIN = 22
+  VALID_GESTATION = 1
 
   include Initializer
-  after_initialize :default_orphan_status_active,
-                   :default_sponsorship_status_unsponsored,
-                   :default_priority_to_normal
+  after_initialize :set_defaults
+
   before_update :qualify_for_sponsorship_by_status,
                 if: :orphan_status_id_changed?
 
@@ -40,15 +41,17 @@ class Orphan < ActiveRecord::Base
   validates :sponsored_by_another_org, inclusion: {in: [true, false] }, exclusion: { in: [nil]}
   validates :minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 },  allow_nil: true
   validates :sponsored_minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
-  validate :sponsored_siblings_does_not_exceed_siblings_count
   validates :original_address, presence: true
   validates :current_address, presence: true
   validates :orphan_status, presence: true
   validates :priority, presence: true, inclusion: { in: %w(Normal High) }
   validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
-  validate :orphans_dob_within_1yr_of_fathers_death, unless: :father_alive
-  validate :less_than_22_yo_when_joined_osra
+  validate :sponsored_siblings_does_not_exceed_siblings_count
+  validate :orphan_born_shortly_after_fathers_death,
+    unless: :father_alive,
+    if: ['valid_date?(date_of_birth)', 'valid_date?(father_date_of_death)']
+  validate :of_elibible_age_to_join, if: 'valid_date?(date_of_birth)'
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
@@ -66,26 +69,7 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
-  def father_name
-    "#{father_given_name} #{family_name}"
-  end
-
-  def full_name
-    "#{name} #{father_given_name} #{family_name}"
-  end
-
-  def orphans_dob_within_1yr_of_fathers_death
-    # gestation is considered vaild if within 1 year of a fathers death
-    return unless valid_date?(father_date_of_death) && valid_date?(date_of_birth)
-    if (father_date_of_death + 1.year) < date_of_birth
-      errors.add(:date_of_birth, "date of birth must be within the gestation period of fathers death")
-    end
-  end
-
-  def update_sponsorship_status!(status_name)
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
-    update!(orphan_sponsorship_status: sponsorship_status)
-  end
+  default_scope { includes(:partner, :orphan_sponsorship_status, :orphan_status, original_address: :province) }
 
   scope :active,
         -> { joins(:orphan_status).
@@ -100,16 +84,16 @@ class Orphan < ActiveRecord::Base
 
   acts_as_sequenced scope: :province_code
 
-  def eligible_for_sponsorship?
-    Orphan.active.currently_unsponsored.include? self
+  def father_name
+    "#{father_given_name} #{family_name}"
   end
 
-  def less_than_22_yo_when_joined_osra
-    return unless valid_date?(date_of_birth)
-    reference_date = self.new_record? ? Date.current : self.created_at.to_date
-    if self.date_of_birth + 22.years <= reference_date
-      errors.add :date_of_birth, "Orphan must be younger than 22 years old."
-    end
+  def full_name
+    "#{name} #{father_given_name} #{family_name}"
+  end
+
+  def eligible_for_sponsorship?
+    Orphan.active.currently_unsponsored.include? self
   end
 
   def currently_sponsored?
@@ -124,25 +108,83 @@ class Orphan < ActiveRecord::Base
     current_sponsorship.sponsor if currently_sponsored?
   end
 
-  def sponsorship_changed!
-    resolve_sponsorship_status and save!
-  end
-
 private
 
+  def set_defaults
+    return if persisted?
+    default_sponsorship_status_to_unsponsored
+    default_orphan_status_to_active
+    default_priority_to_normal
+  end
+
+  def default_sponsorship_status_to_unsponsored
+    self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.
+      find_by_name 'Unsponsored'
+  end
+
+  def default_orphan_status_to_active
+    self.orphan_status ||= OrphanStatus.find_by_name 'Active'
+  end
+
+  def default_priority_to_normal
+    self.priority ||= 'Normal'
+  end
+
+  def set_province_code
+    self.province_code ||= partner_province_code
+  end
+
+  def generate_osra_num
+    self.osra_num = "#{province_code}%05d" % sequential_id
+  end
+
   def sponsored_siblings_does_not_exceed_siblings_count
-   return if sponsored_minor_siblings_count.nil? || sponsored_minor_siblings_count == 0
-   if minor_siblings_count.nil? || sponsored_minor_siblings_count > minor_siblings_count
-     errors.add(:sponsored_minor_siblings_count, 'cannot exceed minor siblings count')
-   end
+    if sponsored_siblings_exceed_total?
+      errors.add(:sponsored_minor_siblings_count, 'cannot exceed minor siblings count')
+    end
   end
 
-  def default_sponsorship_status_unsponsored
-    self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.find_by_name 'Unsponsored'
+  def sponsored_siblings_exceed_total?
+    sponsored_minor_siblings_count.to_i > minor_siblings_count.to_i
   end
 
-  def default_orphan_status_active
-     self.orphan_status ||= OrphanStatus.find_by_name 'Active'
+  def of_elibible_age_to_join
+    if too_old_to_join_osra?
+      errors.add :date_of_birth,
+        "Orphan must be younger than #{AGE_OF_ELIGIBILITY_TO_JOIN} years old to join OSRA."
+    end
+  end
+
+  def too_old_to_join_osra?
+    date_of_birth + AGE_OF_ELIGIBILITY_TO_JOIN.years <= date_of_joining_osra
+  end
+
+  def date_of_joining_osra
+    new_record? ? Date.current : created_at.to_date
+  end
+
+  def orphan_born_shortly_after_fathers_death
+    if orphan_born_long_after_fathers_death?
+      errors.add :date_of_birth,
+                 "must be within #{VALID_GESTATION} year(s) of father's death"
+    end
+  end
+
+  def orphan_born_long_after_fathers_death?
+    (father_date_of_death + VALID_GESTATION.year) < date_of_birth
+  end
+
+  def can_be_inactivated
+    if currently_sponsored?
+      errors.add :orphan_status,
+        'Cannot inactivate orphan with active sponsorships'
+    end
+  end
+
+  def being_inactivated?
+    unless orphan_status_id_was.nil?
+      orphan_status_id_changed? && (OrphanStatus.find(orphan_status_id_was).name == 'Active')
+    end
   end
 
   def valid_date? date
@@ -153,22 +195,10 @@ private
     end
   end
 
-  def default_priority_to_normal
-    self.priority ||= 'Normal'
-  end
-
-
-  def set_province_code
-    self.province_code = partner_province_code
-  end
-
-  def generate_osra_num
-    self.osra_num = "#{province_code}%05d" % sequential_id
-  end
-
   def qualify_for_sponsorship_by_status
     if orphan_status_is_active?
-      resolve_sponsorship_status
+      new_status = ResolveOrphanSponsorshipStatus.new(self).call
+      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name(new_status)
     elsif orphan_status_was_active?
       deactivate
     end
@@ -184,29 +214,6 @@ private
 
   def deactivate
     self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
-  end
-
-  def resolve_sponsorship_status
-    if unsponsored?
-      set_sponsorship_status 'Unsponsored'
-    elsif previously_sponsored?
-      set_sponsorship_status 'Previously Sponsored'
-    elsif currently_sponsored?
-      set_sponsorship_status 'Sponsored'
-    end
-  end
-
-  def unsponsored?
-    self.sponsorships.empty?
-  end
-
-  def previously_sponsored?
-    self.sponsorships.all_active.empty?
-  end
-
-  def set_sponsorship_status(status_name)
-    sponsorship_status = OrphanSponsorshipStatus.find_by_name(status_name)
-    self.orphan_sponsorship_status = sponsorship_status
   end
 
   def can_be_inactivated

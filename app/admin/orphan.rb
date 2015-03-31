@@ -1,12 +1,14 @@
 ActiveAdmin.register Orphan do
 
-  actions :all, except: [:new, :destroy]
+  actions :all, except: [:new, :create, :destroy]
 
+  filter :name, as: :string
+  filter :date_of_birth, as: :date_range
   filter :gender, as: :select, collection: Settings.lookup.gender
-  filter :province_code, as: :select,
+  filter :province_code, label: 'Partner Province Code', as: :select,
          collection: proc { Province.distinct.map { |p| [p.name, p.code] } }
-  filter :original_address, label: 'City of origin', as: :select,
-         collection: proc { Address.original.map { |a| [a.city, a.id] } }
+  filter :original_address_city, label: 'Orphan City of Origin', as: :select,
+        collection: proc {Orphan.distinct.pluck(:city).sort.map{|c| [c, c]} }
   filter :priority, as: :select
   filter :orphan_sponsorship_status, as: :select,
          collection: proc { OrphanSponsorshipStatus.all.map { |oss| [oss.name, oss.id] } }

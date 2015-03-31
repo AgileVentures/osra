@@ -1,3 +1,10 @@
+<div class="action_items">
+  <div class="instance">
+    <%= link_to 'Edit User', edit_hq_user_path(@user),
+      class: 'btn btn-default', role: 'button' %>
+  </div>
+</div>
+
 <dl class="dl-horizontal">
   <dt>User Name</dt>
   <dd><%= @user.user_name %></dd>
@@ -10,7 +17,8 @@
   <%= pluralize(@user.active_sponsors.count.to_s, 'Active Sponsor') %>
   <% if @user.sponsors.count > 0 %>
     <div class="active_sponsors_index">
-      <%= render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @user.active_sponsors} %>
+      <%= render partial: 'hq/sponsors/sponsors.html.haml',
+            locals: {sponsors: @user.active_sponsors.paginate(:page => params[:page])} %>
     </div>
   <% end %>
 </div>
@@ -18,7 +26,8 @@
   <%= pluralize(@user.inactive_sponsors.count.to_s, 'Inactive Sponsor') %>
   <% if @user.sponsors.count > 0 %>
     <div class="inactive_sponsors_index">
-      <%= render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @user.inactive_sponsors} %>
+      <%= render partial: 'hq/sponsors/sponsors.html.haml',
+            locals: {sponsors: @user.inactive_sponsors.paginate(:page => params[:page])} %>
     </div>
   <% end %>
 </div>

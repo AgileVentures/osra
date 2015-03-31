@@ -1,4 +1,4 @@
-module ControllerHelpers
+module ApplicationHelpers
   def sign_in(user= instance_double(AdminUser))
     allow_message_expectations_on_nil
     if user.nil?
@@ -13,5 +13,6 @@ end
 
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
-  config.include ControllerHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :view
+  config.include ApplicationHelpers, :type => :controller
 end
