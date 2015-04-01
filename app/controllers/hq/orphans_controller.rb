@@ -15,7 +15,7 @@ class Hq::OrphansController < HqController
 
   def update
     load_orphan
-    build_orphan
+    @orphan.attributes = orphan_params if params[:orphan]
     save_orphan or re_render 'edit'
   end
 
@@ -34,11 +34,6 @@ private
               :minor_siblings_count, :sponsored_minor_siblings_count, 
               original_address: [:id, :city, :province_id, :street, :neighborhood],
               current_address: [:id, :city, :province_id, :street, :neighborhood])
-  end
-
-  def build_orphan
-    @orphan ||= Orphan.new
-    @orphan.attributes = orphan_params if params[:orphan]
   end
 
   def load_associations
