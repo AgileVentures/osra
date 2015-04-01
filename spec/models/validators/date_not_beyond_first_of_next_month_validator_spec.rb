@@ -24,16 +24,18 @@ RSpec.describe DateNotBeyondFirstOfNextMonthValidator do
   let (:second_of_next_month) { first_of_next_month + 1.day }
   let (:two_months_ahead) { today + 2.months }
 
-  describe "succeeds when date is not beyond first of next month" do
-    it { is_expected.to allow_value(today).for :date_attr }
-    it { is_expected.to allow_value(first_of_next_month).for :date_attr }
-    it { is_expected.to allow_value(yesterday).for :date_attr }
-    it { is_expected.to allow_value(last_day_of_the_month).for :date_attr }
-  end
+  it { is_expected.to allow_value(today).for :date_attr }
+  it { is_expected.to allow_value(first_of_next_month).for :date_attr }
+  it { is_expected.to allow_value(yesterday).for :date_attr }
+  it { is_expected.to allow_value(last_day_of_the_month).for :date_attr }
 
-  describe "fails when date is beyond first of next month" do
-    it { is_expected.to_not allow_value(second_of_next_month).for :date_attr }
-    it { is_expected.to_not allow_value(two_months_ahead).for :date_attr }
+  it { is_expected.to_not allow_value(second_of_next_month).for :date_attr }
+  it { is_expected.to_not allow_value(two_months_ahead).for :date_attr }
+
+  it 'returns appropriate message when validation fails' do
+    subject.date_attr = two_months_ahead
+    subject.valid?
+    expect(subject.errors[:date_attr]).to eq ['can not be later than the first of next month']
   end
 
   it "allows date attribute to be an invalid date format" do
