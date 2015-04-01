@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ActiveSupport::Testing::TimeHelpers
 
 RSpec.describe DateNotBeyondFirstOfNextMonthValidator do
   let(:test_model) do
@@ -13,18 +14,26 @@ RSpec.describe DateNotBeyondFirstOfNextMonthValidator do
 
   subject { test_model.new }
 
-  today = Date.current
-  first_of_next_month = today.beginning_of_month.next_month
-  yesterday = today.yesterday
-  second_of_next_month = first_of_next_month + 1.day
-  two_months_ahead = today + 2.months
+  before(:all) { travel_to Date.parse "15-12-2012" }
+  after(:all) { travel_back }
 
-  [today, first_of_next_month, yesterday].each do |good_date|
-    it { is_expected.to allow_value(good_date).for :date_attr }
+  let (:today) { Date.current }
+  let (:yesterday) { today.yesterday }
+  let (:first_of_next_month) { today.beginning_of_month.next_month }
+  let (:last_day_of_the_month) { first_of_next_month - 1.day }
+  let (:second_of_next_month) { first_of_next_month + 1.day }
+  let (:two_months_ahead) { today + 2.months }
+
+  describe "succeeds when date is not beyond first of next month" do
+    it { is_expected.to allow_value(today).for :date_attr }
+    it { is_expected.to allow_value(first_of_next_month).for :date_attr }
+    it { is_expected.to allow_value(yesterday).for :date_attr }
+    it { is_expected.to allow_value(last_day_of_the_month).for :date_attr }
   end
 
-  [second_of_next_month, two_months_ahead].each do |bad_date|
-    it { is_expected.to_not allow_value(bad_date).for :date_attr }
+  describe "fails when date is beyond first of next month" do
+    it { is_expected.to_not allow_value(second_of_next_month).for :date_attr }
+    it { is_expected.to_not allow_value(two_months_ahead).for :date_attr }
   end
 
   it "allows date attribute to be an invalid date format" do

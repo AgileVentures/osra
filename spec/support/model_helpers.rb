@@ -40,5 +40,4 @@ RSpec::Matchers.define :have_validation do |validator, params|
       validators_options.has_key?(k) && validators_options[k] == v
     end
   end
-
 end

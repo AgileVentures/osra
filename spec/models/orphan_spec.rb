@@ -112,6 +112,7 @@ describe Orphan, type: :model do
                                                                    :options => {if: :father_deceased}}
       it { expect(orphan).to have_validation :date_not_in_future, :on => :father_date_of_death ,
                                                                   :options => {if: :father_deceased}}
+
       it 'allows father_is_martyr to be true or false' do
         expect(orphan).to allow_value(true).for :father_is_martyr
         expect(orphan).to allow_value(false).for :father_is_martyr

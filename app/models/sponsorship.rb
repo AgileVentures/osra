@@ -8,8 +8,8 @@ class Sponsorship < ActiveRecord::Base
   validates :orphan, presence: true
 
   validates :start_date, valid_date_presence: true,
-                         date_beyond_osra_establishment: true
-  validate  :start_date_no_later_than_1st_of_next_month, if: :start_date
+                         date_beyond_osra_establishment: true,
+                         date_not_beyond_first_of_next_month: true
 
   validates :end_date, valid_date_presence: true, if: '!active'
   validate  :end_date_not_before_start_date, on: :update, if: :end_date
