@@ -4,6 +4,7 @@ class Orphan < ActiveRecord::Base
   AGE_OF_ELIGIBILITY_TO_JOIN = 22
   VALID_GESTATION = 1
 
+  self.per_page = 30
   include Initializer
   include DateHelpers
 
