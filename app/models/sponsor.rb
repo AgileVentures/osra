@@ -29,8 +29,8 @@ class Sponsor < ActiveRecord::Base
   validates :gender, inclusion: { in: Settings.lookup.gender }
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validates :start_date, valid_date_presence: true,
-                         date_beyond_osra_establishment: true
-  validate :date_not_beyond_first_of_next_month
+                         date_beyond_osra_establishment: true,
+                         date_not_beyond_first_of_next_month: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
@@ -70,12 +70,6 @@ class Sponsor < ActiveRecord::Base
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
   private
-
-  def date_not_beyond_first_of_next_month
-    if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)
-      errors.add(:start_date, "must not be beyond the first of next month")
-    end
-  end
 
   def default_type_to_individual
     self.sponsor_type ||= SponsorType.find_by_name 'Individual'
