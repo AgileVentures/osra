@@ -16,7 +16,8 @@ gem 'sequenced', '>= 2.0.0' # sequential IDs in Models
 gem 'devise', '~> 3.4.1' # authentication solution
 gem 'jquery-rails', '~> 4.0.3' # use jquery with Rails
 gem 'paperclip', '~> 4.2.1' # upload attachment files
-gem 'aws-sdk', '~> 2.0.26' # Amazon Web Services - S3 bucket for Paperclip
+gem 'aws-sdk', '< 2.0' # Amazon Web Services - S3 bucket for Paperclip;
+# as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
 gem 'coveralls', '~> 0.7.9', require: false # measure test coverage
 gem 'country_select', github: 'stefanpenner/country_select' # country drop-down
 gem 'roo', '~> 1.13.2' # access contents of spreadsheet files
