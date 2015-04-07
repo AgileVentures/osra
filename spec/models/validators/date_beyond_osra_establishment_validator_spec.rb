@@ -23,7 +23,7 @@ RSpec.describe DateBeyondOsraEstablishmentValidator do
     expect(subject).to_not be_valid
   end
 
-  it 'returns appropriate message when attribute is a valid date, beyond OSRA establishment date' do
+  it 'returns appropriate message when attribute is a valid date, prior OSRA establishment date' do
     subject.date_attr = Date.new(2010,01,01)
     subject.valid?
     expect(subject.errors[:date_attr]).to eq ['is not valid (cannot be earlier than the OSRA establishment date of 2012-04-01)']
