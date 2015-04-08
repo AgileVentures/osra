@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cgi'
 
 RSpec.describe "hq/orphans/_form.html.erb", type: :view do
 
@@ -107,6 +106,18 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
 
     #submit button
     expect(rendered).to have_selector("input[type='submit'][value='Update Orphan']")
+  end
+
+  describe 'required fields' do
+    before(:each) { render_orphan_form orphan_full }
+
+    it 'marks required fields' do
+      expect(rendered).to mark_required_fields_for Orphan
+    end
+
+    it 'does not mark optional' do
+      expect(rendered).not_to mark_optional_fields_for Orphan
+    end
   end
 end
 

@@ -111,6 +111,18 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
         expect(rendered).to_not have_selector("select[id='sponsor_#{field}_id'][disabled]")
       end
     end
+
+    describe 'required fields' do
+      before(:each) { render_sponsor_form sponsor_full }
+
+      it 'marks required fields' do
+        expect(rendered).to mark_required_fields_for Sponsor
+      end
+
+      it 'does not mark optional' do
+        expect(rendered).not_to mark_optional_fields_for Sponsor
+      end
+    end
   end
 
 end

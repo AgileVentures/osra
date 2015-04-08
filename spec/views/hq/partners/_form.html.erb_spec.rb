@@ -45,4 +45,16 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     expect(rendered).to have_field("Start date", with: partner.start_date.to_s)
     expect(rendered).to have_selector("input[type='submit'][value='Update Partner']")
   end
+
+  describe 'required fields' do
+    before(:each) { render }
+
+    it 'marks required fields' do
+      expect(rendered).to mark_required_fields_for Partner
+    end
+
+    it 'does not mark optional' do
+      expect(rendered).not_to mark_optional_fields_for Partner
+    end
+  end
 end
