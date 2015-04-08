@@ -1,5 +1,7 @@
 ActiveAdmin.register Sponsor do
 
+  actions :all, except: [:destroy]
+
   filter :name, as: :string, label: "Name"
   filter :gender, as: :select, collection: Settings.lookup.gender
   filter :branch, as: :select, collection: proc { Branch.pluck(:name, :id) }
@@ -19,9 +21,15 @@ ActiveAdmin.register Sponsor do
   filter :request_fulfilled, as: :boolean
   filter :active_sponsorship_count, label: "Number of active sponsorships", as: :numeric
 
-  actions :all, except: [:destroy]
-
   index do
+    text_node %Q%
+    <h3>
+      Currently sponsoring
+      #{pluralize(total_active_sponsorships, 'orphan')} out of
+      #{total_requested_sponsorships} requested.
+    </h3>
+    %.html_safe
+
     column :osra_num, sortable: :osra_num do |sponsor|
       link_to sponsor.osra_num, admin_sponsor_path(sponsor)
     end
