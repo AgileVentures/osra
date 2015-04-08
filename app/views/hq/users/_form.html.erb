@@ -1,11 +1,11 @@
 <%= form_for [:hq, @user] do |f| %>
   <%= render 'shared/errors', object: f.object %>
   <div class="form-group">
-    <%= f.label :user_name %>
+    <%= f.label_for_field :user_name %>
     <%= f.text_field :user_name, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label :email %>
+    <%= f.label_for_field :email %>
     <%= f.text_field :email, class: "form-control" %>
   </div>
   <div class="form-group">
