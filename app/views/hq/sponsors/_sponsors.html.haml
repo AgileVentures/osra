@@ -34,6 +34,7 @@
               = format_full_date sponsor.start_date
             %td
               = sponsor.request_fulfilled ? 'Yes' : 'No'
+              (#{sponsor.active_sponsorship_count}/#{sponsor.requested_orphan_count})
             %td
               = sponsor.sponsor_type.name
             %td

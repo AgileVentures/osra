@@ -52,4 +52,19 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
       end
     end
   end
+
+  describe 'request fulfilled' do
+    let(:sponsor_one) { build_stubbed :sponsor, request_fulfilled: false,
+                        active_sponsorship_count: 2, requested_orphan_count: 7 }
+    let(:sponsor_two) { build_stubbed :sponsor, request_fulfilled: true,
+                        active_sponsorship_count: 4, requested_orphan_count: 4 }
+
+    it 'shows yes/no & numbers of active & requested sponsorships' do
+      render :partial => 'hq/sponsors/sponsors.html.haml',
+        :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1) }
+
+      expect(rendered).to have_text 'No (2/7)'
+      expect(rendered).to have_text 'Yes (4/4)'
+    end
+  end
 end
