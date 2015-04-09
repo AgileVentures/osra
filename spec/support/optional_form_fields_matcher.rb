@@ -4,7 +4,7 @@ RSpec::Matchers.define :mark_optional_fields_for do |object_class|
     @form = form
     @object_class = object_class
     optional_attributes = attrs_without_presence_validation
-    form_does_not_mark_all_fields_for? optional_attributes
+    form_does_not_mark_any_fields_for? optional_attributes
   end
 
   failure_message_when_negated do |form|
@@ -17,7 +17,7 @@ RSpec::Matchers.define :mark_optional_fields_for do |object_class|
     end
   end
 
-  def form_does_not_mark_all_fields_for?(attributes)
+  def form_does_not_mark_any_fields_for?(attributes)
     @fields_not_marked_required = attributes.inject({}) do |h, attr|
       required_label = %r{
         label
