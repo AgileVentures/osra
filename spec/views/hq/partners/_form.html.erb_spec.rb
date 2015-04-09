@@ -68,5 +68,18 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     assert_select "input", type: "submit"
   end
 
+  it 'marks required fields' do
+    render
+
+    validated_attributes = Partner.new.attributes.keys.select do |attr|
+      (Partner.validators_on(attr).map(&:class) & PRESENCE_VALIDATORS).present?
+    end
+
+    validated_attributes.each do |attr|
+      expect(rendered).
+        to have_selector("label.required_field[for=\"partner_#{attr}\"]")
+    end
+  end
+
 end
 

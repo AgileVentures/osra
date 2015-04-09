@@ -8,12 +8,11 @@ class ActionView::Helpers::FormBuilder
     self.label(method, text, options, &block)
   end
 
-  def presence_validated?(attr)
-    presence_validators = [ActiveRecord::Validations::PresenceValidator,
-                           ValidDatePresenceValidator]
+  private
 
+  def presence_validated?(attr)
     attr_validators = object.class.validators_on(attr).map(&:class)
 
-    (presence_validators & attr_validators).present?
+    (PRESENCE_VALIDATORS & attr_validators).present?
   end
 end

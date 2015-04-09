@@ -46,7 +46,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       allow(User).to receive(:pluck).and_return([user.user_name, user.id])
       render_sponsor_form sponsor_full
 
-      #fextfields
+      #textfields
       ["name", "requested_orphan_count", "start_date", "new_city_name", "address", "email",
        "contact1", "contact2", "additional_info"].each do |field|
         assert_select "input#sponsor_#{field}" do
@@ -147,6 +147,19 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
         assert_select "select#sponsor_#{field}_id" do
           assert_select "[disabled]", false
         end
+      end
+    end
+
+    it 'marks required fields' do
+      render_sponsor_form sponsor_full
+
+      validated_attributes = Sponsor.new.attributes.keys.select do |attr|
+        (Sponsor.validators_on(attr).map(&:class) & PRESENCE_VALIDATORS).present?
+      end
+
+      validated_attributes.each do |attr|
+        expect(rendered).
+          to have_selector("label.required_field[for=\"sponsor_#{attr}\"]")
       end
     end
   end

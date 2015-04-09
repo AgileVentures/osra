@@ -27,4 +27,15 @@ describe "hq/users/_form.html.erb", type: :view do
     expect(rendered).to have_link('Cancel', href: 'some cancel url')
   end
 
+  it 'marks required fields' do
+    validated_attributes = User.new.attributes.keys.select do |attr|
+      (User.validators_on(attr).map(&:class) & PRESENCE_VALIDATORS).present?
+    end
+
+    validated_attributes.each do |attr|
+      expect(rendered).
+        to have_selector("label.required_field[for=\"user_#{attr}\"]")
+    end
+  end
+
 end
