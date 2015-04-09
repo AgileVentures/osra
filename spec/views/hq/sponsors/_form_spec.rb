@@ -150,16 +150,15 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       end
     end
 
-    it 'marks required fields' do
-      render_sponsor_form sponsor_full
+    describe 'required fields' do
+      before(:each) { render_sponsor_form sponsor_full }
 
-      validated_attributes = Sponsor.new.attributes.keys.select do |attr|
-        (Sponsor.validators_on(attr).map(&:class) & PRESENCE_VALIDATORS).present?
+      it 'marks required fields' do
+        expect(rendered).to mark_required_fields_for Sponsor
       end
 
-      validated_attributes.each do |attr|
-        expect(rendered).
-          to have_selector("label.required_field[for=\"sponsor_#{attr}\"]")
+      it 'does not mark optional' do
+        expect(rendered).not_to mark_optional_fields_for Sponsor
       end
     end
   end
