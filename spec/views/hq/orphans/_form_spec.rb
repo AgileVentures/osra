@@ -25,11 +25,17 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
   end
 
   specify 'form values' do
-    render
+    render 
 
     #fextfields
-    ["name", "father_given_name", "family_name", "mother_name", "date_of_birth",
-     "minor_siblings_count", "sponsored_minor_siblings_count"].each do |field|
+    ["name", "father_given_name", "family_name", "mother_name", 
+     "date_of_birth", "minor_siblings_count", 
+     "sponsored_minor_siblings_count", "contact_number", 
+     "health_status", "schooling_status", "created_at", "updated_at",
+     "father_occupation", "father_place_of_death", 
+     "father_cause_of_death", "father_date_of_death",
+     "guardian_name", "guardian_relationship", 
+     "guardian_id_num", "alt_contact_number", "comments"].each do |field|
       assert_select "input#orphan_#{field}" do
         assert_select "[value=?]", CGI::escape_html(@orphan[field].to_s)
       end
@@ -37,12 +43,12 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
 
     #checkboxes
     ["father_deceased", "mother_alive", "father_is_martyr",
-     "sponsored_by_another_org"].each do |field|
+     "sponsored_by_another_org", "goes_to_school"].each do |field|
       assert_select "input#orphan_#{field}" do
         assert_select "[checked]", @orphan[field]
       end
     end
-
+    
     assert_select "select#orphan_gender" do
       assert_select "option", value: Settings.lookup.gender.first,
                                html: CGI::escape_html(Settings.lookup.gender.first)
@@ -80,6 +86,10 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
       assert_select "[value=?]", @orphan.original_address.street
     end
 
+    assert_select "input#orphan_original_address_attributes_details" do
+      assert_select "[value=?]", @orphan.original_address.details
+    end
+
     assert_select "input#orphan_current_address_attributes_city" do
       assert_select "[value=?]", @orphan.current_address.city
     end
@@ -95,6 +105,10 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
 
     assert_select "input#orphan_current_address_attributes_street" do
       assert_select "[value=?]", @orphan.current_address.street
+    end
+
+    assert_select "input#orphan_current_address_attributes_details" do
+      assert_select "[value=?]", @orphan.current_address.details
     end
 
     assert_select "input", type: "submit"

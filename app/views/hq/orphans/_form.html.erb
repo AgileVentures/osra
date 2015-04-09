@@ -27,6 +27,10 @@
         <%= f.text_field :schooling_status, class: "form-control" %>
       </div>
       <div class="form-group">
+        <%= f.label :goes_to_school %>
+        <%= f.check_box :goes_to_school %> 
+      </div>
+      <div class="form-group">
         <%= f.label :orphan_status_id %>
         <%= f.collection_select :orphan_status_id,
           @orphan_statuses, :id, :name, {}, 
@@ -42,6 +46,14 @@
         <%= f.label :priority %>
         <%= f.select :priority, 
           %w(Normal High), {}, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :created_at %>
+        <%= f.text_field :created_at, class: "form-control date-picker", value: @orphan.created_at %>
+      </div>
+      <div class="form-group">
+        <%= f.label :updated_at %>
+        <%= f.text_field :updated_at, class: "form-control date-picker", value: @orphan.updated_at %>
       </div>
     </div>
   </div>
@@ -74,6 +86,49 @@
         <%= f.label :father_is_martyr %>
         <%= f.check_box :father_is_martyr %>
       </div>
+      <div class="form-group">
+        <%= f.label :father_occupation %>
+        <%= f.text_field :father_occupation, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :father_place_of_death %>
+        <%= f.text_field :father_place_of_death, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :father_cause_of_death %>
+        <%= f.text_field :father_cause_of_death, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :father_date_of_death %>
+        <%= f.text_field :father_date_of_death, class: "form-control date-picker", value: @orphan.father_date_of_death %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Guardian Details</h3>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <%= f.label :guardian_name %>
+        <%= f.text_field :guardian_name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :guardian_relationship %>
+        <%= f.text_field :guardian_relationship, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :guardian_id_num %>
+        <%= f.text_field :guardian_id_num, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :contact_number %>
+        <%= f.text_field :contact_number, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :alt_contact_number %>
+        <%= f.text_field :alt_contact_number, class: "form-control" %>
+      </div>
     </div>
   </div>
   <div class="panel panel-default">
@@ -98,6 +153,10 @@
           <div class="form-group">
             <%= b.label :street %>
             <%= b.text_field :street, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= b.label :details%>
+            <%= b.text_field :details, class: "form-control" %>
           </div>
         </div>
       <% end %>
@@ -125,6 +184,10 @@
             <%= b.label :street %>
             <%= b.text_field :street, class: "form-control" %>
           </div>
+          <div class="form-group">
+            <%= b.label :details%>
+            <%= b.text_field :details, class: "form-control" %>
+          </div>
         </div>
       <% end %>
   </div>
@@ -144,6 +207,10 @@
       <div class="form-group">
         <%= f.label :sponsored_minor_siblings_count %>
         <%= f.text_field :sponsored_minor_siblings_count, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :comments %>
+        <%= f.text_field :comments, class: "form-control" %>
       </div>
     </div>
   </div>
