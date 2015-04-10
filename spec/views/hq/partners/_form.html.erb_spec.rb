@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cgi'
 
 RSpec.describe "hq/partners/_form.html.erb", type: :view do
   let(:provinces) { Province.all }
