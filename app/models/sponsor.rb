@@ -26,7 +26,8 @@ class Sponsor < ActiveRecord::Base
                          message: 'Please enter city name below. &darr;' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
-  validates :gender, inclusion: { in: Settings.lookup.gender }
+  validates :status_id, presence: true
+  validates :gender, inclusion: { in: Settings.lookup.gender }, presence: true
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validates :start_date, valid_date_presence: true,
                          date_beyond_osra_establishment: true,

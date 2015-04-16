@@ -25,6 +25,8 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_presence_of :sponsor_type }
   it { is_expected.to validate_presence_of :agent }
 
+  it { is_expected.to validate_presence_of :gender }
+  it { is_expected.to validate_presence_of :status_id }
   it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
   it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
   it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }

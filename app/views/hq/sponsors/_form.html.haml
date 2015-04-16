@@ -1,55 +1,57 @@
+- ActionView::Helpers::FormBuilder.include RailsExtensions::FormBuilder::RequiredFields
+
 = form_for [:hq, sponsor] do |f|
   = render 'shared/errors', object: f.object
 
   .form-group
-    = f.label :name
+    = f.label_for_field :name
     = f.text_field :name, class: "form-control"
 
   .form-group
-    = f.label :status_id
+    = f.label_for_field :status_id
     = f.collection_select :status_id, statuses, :id, :name, {},
           class: "form-control"
 
   .form-group
-    = f.label :gender
+    = f.label_for_field :gender
     = f.select :gender, Settings.lookup.gender, {}, class: "form-control"
 
   .form-group
-    = f.label :start_date
+    = f.label_for_field :start_date
     = f.text_field :start_date, class: "form-control date-picker"
 
   .form-group
-    = f.label :requested_orphan_count
+    = f.label_for_field :requested_orphan_count
     = f.text_field :requested_orphan_count, class: "form-control"
 
   - if !f.object.new_record?
     .form-group
-      = f.label :request_fulfilled
+      = f.label_for_field :request_fulfilled
       = f.check_box :request_fulfilled,
           {disabled: !f.object.new_record?, class: "checkbox"}
 
   .form-group
-    = f.label :sponsor_type
+    = f.label_for_field :sponsor_type
     = f.collection_select :sponsor_type_id, sponsor_types, :id, :name,
           {}, {class: "form-control", disabled: !f.object.new_record?}
 
   .form-group
-    = f.label :organization
+    = f.label_for_field :organization
     = f.collection_select :organization_id, organizations, :id, :name,
           {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
 
   .form-group
-    = f.label :branch
+    = f.label_for_field :branch
     = f.collection_select :branch_id, branches, :id, :name,
           {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
 
   .form-group
-    = f.label :payment_plan
+    = f.label_for_field :payment_plan
     = f.select :payment_plan, Sponsor::PAYMENT_PLANS,
           {include_blank: true}, class: "form-control"
 
   .form-group
-    = f.label :country
+    = f.label_for_field :country
     = country_select("sponsor", "country",
                      { format: :en_ar,
                        selected: f.object.country,
@@ -58,35 +60,35 @@
                      { class: "form-control" })
 
   .form-group
-    = f.label :city
+    = f.label_for_field :city
     = f.select :city, cities, {}, class: "form-control"
 
   .form-group
-    = f.label :new_city_name
+    = f.label_for_field :new_city_name
     = f.text_field :new_city_name, class: "form-control"
 
   .form-group
-    = f.label :address
+    = f.label_for_field :address
     = f.text_field :address, class: "form-control"
 
   .form-group
-    = f.label :email
+    = f.label_for_field :email
     = f.text_field :email, {class: "form-control", type: "email"}
 
   .form-group
-    = f.label :contact1
+    = f.label_for_field :contact1
     = f.text_field :contact1, class: "form-control"
 
   .form-group
-    = f.label :contact2
+    = f.label_for_field :contact2
     = f.text_field :contact2, class: "form-control"
 
   .form-group
-    = f.label :additional_info
+    = f.label_for_field :additional_info
     = f.text_field :additional_info, class: "form-control"
 
   .form-group
-    = f.label :agent
+    = f.label_for_field :agent
     = f.select :agent_id, User.pluck(:user_name, :id),
           {include_blank: true}, class: "form-control"
 

@@ -68,5 +68,15 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
     assert_select "input", type: "submit"
   end
 
-end
+  describe 'required fields' do
+    before(:each) { render }
 
+    it 'marks required fields' do
+      expect(rendered).to mark_required_fields_for Partner
+    end
+
+    it 'does not mark optional' do
+      expect(rendered).not_to mark_optional_fields_for Partner
+    end
+  end
+end

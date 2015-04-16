@@ -8,7 +8,8 @@ class Partner < ActiveRecord::Base
   before_create :generate_osra_num
 
   validates :name, presence: true, uniqueness: true
-  validates :province, presence: true
+  validates :province_id, presence: true
+  validates :status_id, presence: true
   validates :start_date, valid_date_presence: true,
                          date_not_in_future: true,
                          date_beyond_osra_establishment: true
