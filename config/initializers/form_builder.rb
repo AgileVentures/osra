@@ -2,8 +2,10 @@ module RailsExtensions
   module FormBuilder
     module RequiredFields
       def label_for_field(method, text = nil, options = {}, &block)
+        required_class = { :class => 'required_field' }
+
         if presence_validated? method
-          options.merge!({ :class => 'required_field' })
+          options.merge!(required_class) { |_, va, vb| "#{va} #{vb}" }
         end
 
         self.label(method, text, options, &block)
@@ -19,5 +21,3 @@ module RailsExtensions
     end
   end
 end
-
-ActionView::Helpers::FormBuilder.include RailsExtensions::FormBuilder::RequiredFields

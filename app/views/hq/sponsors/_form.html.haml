@@ -1,3 +1,5 @@
+- ActionView::Helpers::FormBuilder.include RailsExtensions::FormBuilder::RequiredFields
+
 = form_for [:hq, sponsor] do |f|
   = render 'shared/errors', object: f.object
 
