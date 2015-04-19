@@ -30,7 +30,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
     specify 'using an existing Sponsor record' do
       render_sponsor_form sponsor_full
 
-      expect(rendered).to have_link("Cancel", hq_sponsor_path(sponsor_full.id))
+      expect(rendered).to have_link("Cancel", hq_sponsor_path(sponsor_full))
     end
 
     specify 'using a new Sponsor record' do
@@ -45,7 +45,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       allow(User).to receive(:pluck).and_return([[user.user_name, user.id]])
       render_sponsor_form sponsor_full
 
-      #fextfields
+      #textfields
       ["name", "requested_orphan_count", "start_date", "new_city_name", "address", "email",
        "contact1", "contact2", "additional_info"].each do |field|
         if sponsor_full[field]
@@ -69,18 +69,20 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       expect(rendered).to have_select("sponsor_sponsor_type_id", selected: sponsor_full.sponsor_type.name,
                                        options: SponsorType.pluck(:name), disabled: true)
 
+      expect(rendered).to have_selector("select[id='sponsor_organization_id'][disabled]")
       if sponsor_full.organization
-        expect(rendered).to have_selector("select[id='sponsor_organization_id'][disabled] option[selected]", text: sponsor_full.organization.name)
+        expect(rendered).to have_selector("select[id='sponsor_organization_id'] option[selected]", text: sponsor_full.organization.name)
       else
-        expect(rendered).to have_selector("select[id='sponsor_organization_id'][disabled] option", text: "")
-        expect(rendered).to_not have_selector("select[id='sponsor_organization_id'][disabled] option[selected]")
+        expect(rendered).to have_selector("select[id='sponsor_organization_id'] option", text: "")
+        expect(rendered).to_not have_selector("select[id='sponsor_organization_id'] option[selected]")
       end
 
+      expect(rendered).to have_selector("select[id='sponsor_branch_id'][disabled]")
       if sponsor_full.branch
-        expect(rendered).to have_selector("select[id='sponsor_branch_id'][disabled] option[selected]", text: sponsor_full.branch.name)
+        expect(rendered).to have_selector("select[id='sponsor_branch_id'] option[selected]", text: sponsor_full.branch.name)
       else
-        expect(rendered).to have_selector("select[id='sponsor_branch_id'][disabled] option", text: "")
-        expect(rendered).to_not have_selector("select[id='sponsor_branch_id'][disabled] option[selected]")
+        expect(rendered).to have_selector("select[id='sponsor_branch_id'] option", text: "")
+        expect(rendered).to_not have_selector("select[id='sponsor_branch_id'] option[selected]")
       end
 
       expect(rendered).to have_select("sponsor_payment_plan", selected: sponsor_full.payment_plan,
@@ -90,12 +92,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
 
       expect(rendered).to have_select("City", selected: sponsor_full.city)
 
-      if sponsor_full.agent
-        expect(rendered).to have_selector("select[id='sponsor_agent_id'] option[selected]", text: sponsor_full.agent.user_name)
-      else
-        expect(rendered).to have_selector("select[id='sponsor_agent_id'] option", text: "")
-        expect(rendered).to_not have_selector("select[id='sponsor_agent_id'] option[selected]")
-      end
+      expect(rendered).to have_selector("select[id='sponsor_agent_id'] option[selected]", text: sponsor_full.agent.user_name)
 
       expect(rendered).to have_selector("input[type='submit'][value='Update Sponsor']")
     end
@@ -108,7 +105,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
 
       expect(rendered).to_not have_selector("input[id='sponsor_request_fulfilled']")
 
-      #selects that are disabled only for the existing record
+      #selects that are disabled only for an existing record
       ["sponsor_type", "organization", "branch"].each do |field|
         expect(rendered).to have_selector("select[id='sponsor_#{field}_id']")
         expect(rendered).to_not have_selector("select[id='sponsor_#{field}_id'][disabled]")
