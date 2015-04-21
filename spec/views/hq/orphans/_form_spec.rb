@@ -34,7 +34,7 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
   specify 'has form values' do
     render_orphan_form orphan_full
 
-    #fextfields
+    #textfields
     ["name", "father_given_name", "family_name", "mother_name", 
      "date_of_birth", "minor_siblings_count", 
      "sponsored_minor_siblings_count", "contact_number", 

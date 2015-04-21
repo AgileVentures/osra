@@ -48,12 +48,12 @@
           %w(Normal High), {}, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :created_at %>
-        <%= f.text_field :created_at, class: "form-control date-picker", value: orphan.created_at %>
+        <%= f.label :record_imported_on %>
+        <%= f.text_field :created_at, class: "form-control date-picker", value: orphan.created_at, disabled: "true" %>
       </div>
       <div class="form-group">
-        <%= f.label :updated_at %>
-        <%= f.text_field :updated_at, class: "form-control date-picker", value: orphan.updated_at %>
+        <%= f.label :record_last_updated_on %>
+        <%= f.text_field :updated_at, class: "form-control date-picker", value: orphan.updated_at, disabled: "true" %>
       </div>
     </div>
   </div>
