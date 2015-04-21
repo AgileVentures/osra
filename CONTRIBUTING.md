@@ -26,3 +26,104 @@ As described in `README.md`, we follow Agile methods and work closely with our c
 
 Hope to see you soon!
 
+### Set up your development environment with Cloud9 ( https://c9.io/ )
+
+Start by forking this repository then create new project in the Cloud9 dashboard select "Clone from URL" 
+and paste in the git URL: https://github.com/YOUR_USERNAME/osra.git and click create!
+
+Go into the ide (click the button "start editing"). First change the ruby vesion with this 
+command:
+
+$ rvm install ruby-2.2.0
+
+now you must install capybara-webkit gem
+
+$ sudo apt-get update
+
+install these package needed by Capybara-webkit to work correctly
+
+$ sudo apt-get install qt5-default libqt5webkit5-dev
+$ gem install capybara-webkit -v '1.4.1'
+
+now you can go with:
+
+$ bundle install
+
+now you have to setup the database and the permissions,
+follow these steps:
+
+$ sudo service postgresql start
+$ sudo sudo -u postgres psql
+
+now you are in postgresql console!
+
+postgres=# CREATE USER username SUPERUSER PASSWORD 'password';
+postgres=# \q
+
+setup the environment variable in Cloud9
+
+$ echo "export USERNAME=username" >> ~/.profile
+$ echo "export PASSWORD=password" >> ~/.profile
+$ source ~/.profile
+
+in the config/database.yml file change the username, password and host for all environments:
+
+  username: <%= ENV['USERNAME'] %>
+  password: <%= ENV['PASSWORD'] %>
+  host: <%= ENV['IP'] %>
+  
+then head back to postgresql console and follow these steps:
+
+$ sudo sudo -u postgres psql
+postgres=# UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
+postgres=# DROP DATABASE template1;
+postgres=# CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';
+postgres=# UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';
+postgres=# \c template1
+postgres=# VACUUM FREEZE;
+postgres=# \q
+
+now the authentication issue must be solved you can continue with
+
+$ bundle exec rake db:setup
+$ bundle exec rake db:test:prepare
+
+now you have to install PhantomJS. Follow these commands!
+
+$ sudo apt-get update
+$ sudo apt-get install build-essential chrpath libssl-dev libxft-dev
+
+install these packages needed by PhantomJS to work correctly
+
+$ sudo apt-get install libfreetype6 libfreetype6-dev
+$ sudo apt-get install libfontconfig1 libfontconfig1-dev
+
+get the PhamtomJS!
+
+$ cd ~
+$ export PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+$ wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
+$ sudo tar xvjf $PHANTOM_JS.tar.bz2
+$ sudo mv $PHANTOM_JS /usr/local/share
+$ sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
+
+now, you should have PhantomJS properly installed on your system
+
+$ phantomjs --version
+
+ok nearly finished, now run the tests
+
+$ cd workspace
+$ bundle exec rspec spec/
+$ bundle exec cucumber
+
+all tests must pass
+now you can start the server
+
+$  rails s -p $PORT -b $IP
+
+
+That should work :)
+
+
+
