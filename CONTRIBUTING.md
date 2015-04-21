@@ -114,8 +114,7 @@ $ phantomjs --version
 ok nearly finished, now run the tests
 
 $ cd workspace
-$ bundle exec rspec spec/
-$ bundle exec cucumber
+$ rake
 
 all tests must pass
 now you can start the server
