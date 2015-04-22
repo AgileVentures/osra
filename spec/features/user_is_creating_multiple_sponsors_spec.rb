@@ -16,16 +16,9 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
   end
 end
 
+
 def an_agent_exists
   FactoryGirl.create :agent
-end
-
-def i_sign_in_as_admin
-  admin = FactoryGirl.create :admin_user
-  visit new_admin_user_session_path
-  fill_in 'Email', with: admin.email
-  fill_in 'Password', with: admin.password
-  click_button 'Login'
 end
 
 def when_i_enter_new_sponsor_info

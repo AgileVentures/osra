@@ -14,7 +14,7 @@ Given /^I am a new, authenticated user$/ do
   visit new_admin_user_session_path
   fill_in "admin_user_email", :with => email
   fill_in "admin_user_password", :with => password
-  click_button "Login"
+  click_button "Log in"
 end
 
 def path_to_admin_role(page_name, id = '')
