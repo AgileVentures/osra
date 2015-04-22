@@ -1,5 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
+  include DateHelpers
+
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
   PRIORITY_COUNTRIES= %w(SA TR AE GB)
@@ -26,8 +28,9 @@ class Sponsor < ActiveRecord::Base
   validates :sponsor_type, presence: true
   validates :gender, inclusion: { in: Settings.lookup.gender }
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
-  validate :ensure_valid_date
-  validate :date_not_beyond_first_of_next_month
+  validates :start_date, valid_date_presence: true,
+                         date_beyond_osra_establishment: true,
+                         date_not_beyond_first_of_next_month: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
   validates_format_of :email,
@@ -68,28 +71,8 @@ class Sponsor < ActiveRecord::Base
 
   private
 
-  def date_not_beyond_first_of_next_month
-    if (valid_date? start_date) && (start_date > Date.current.beginning_of_month.next_month)
-      errors.add(:start_date, "must not be beyond the first of next month")
-    end
-  end
-
   def default_type_to_individual
     self.sponsor_type ||= SponsorType.find_by_name 'Individual'
-  end
-
-  def ensure_valid_date
-    unless valid_date? start_date
-      errors.add(:start_date, "is not a valid date")
-    end
-  end
-
-  def valid_date? test_date
-    begin
-      Date.parse(test_date.to_s)
-    rescue ArgumentError
-      false
-    end
   end
 
   def belongs_to_one_branch_or_organization

@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActiveSupport::Testing::TimeHelpers
 
 describe Sponsorship, type: :model do
 
@@ -31,27 +30,14 @@ describe Sponsorship, type: :model do
       expect{ create :sponsorship, orphan: ineligible_orphan }.to raise_error ActiveRecord::RecordInvalid
     end
 
+    describe 'disallows creation of new sponsorships with a start date prior to OSRA establishment date' do
+      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
+    end
+
     describe 'start_date' do
-      before(:all) { travel_to Date.parse "15-12-2011" }
-      after(:all) { travel_back }
-
-      let (:today) { Date.current }
-      let (:yesterday) { today.yesterday }
-      let (:first_of_next_month) { today.beginning_of_month.next_month }
-      let (:last_day_of_the_month) { first_of_next_month - 1.day }
-      let (:second_of_next_month) { first_of_next_month + 1.day }
-      let (:two_months_ahead) { today + 2.months }
-
-      it { is_expected.to_not allow_value("").for :start_date }
-      it { is_expected.to_not allow_value("42").for :start_date }
-      it { is_expected.to_not allow_value("5-12").for :start_date }
-      it { is_expected.to_not allow_value(second_of_next_month).for :start_date }
-      it { is_expected.to_not allow_value(two_months_ahead).for :start_date }
-
-      it { is_expected.to allow_value(today).for :start_date }
-      it { is_expected.to allow_value(first_of_next_month).for :start_date }
-      it { is_expected.to allow_value(yesterday).for :start_date }
-      it { is_expected.to allow_value(last_day_of_the_month).for :start_date }
+      it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
+      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
+      it { is_expected.to have_validation :date_not_beyond_first_of_next_month, :on => :start_date }
     end
 
     describe 'end_date' do
@@ -63,13 +49,12 @@ describe Sponsorship, type: :model do
 
       let(:start_date) { sponsorship.start_date }
 
+      it { is_expected.to have_validation :valid_date_presence, :on => :end_date,
+                                                                :options => {if: '!active'}}
+
       it { is_expected.to allow_value(start_date + 1).for :end_date }
       it { is_expected.to_not allow_value(start_date - 1).for :end_date }
       it { is_expected.to allow_value(start_date).for :end_date }
-
-      [nil, "", "42", "5-12"].each do |bad_date|
-        it { is_expected.to_not allow_value(bad_date).for :end_date }
-      end
     end
 
     describe 'disallow concurrent active sponsorships' do

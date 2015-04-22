@@ -17,14 +17,18 @@ describe Partner, type: :model do
   it { is_expected.to belong_to :province }
   it { is_expected.to belong_to :status }
 
-  it { is_expected.to allow_value(Date.current, Date.yesterday).for :start_date }
-  it { is_expected.not_to allow_value(Date.tomorrow).for :start_date }
-  [7, 'yes', true].each do |bad_date_value|
-    it { is_expected.to_not allow_value(bad_date_value).for :start_date }
+  context 'start_date validation' do
+    it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
+    it { is_expected.to have_validation :date_not_in_future, :on => :start_date }
+    it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
   end
 
   it { is_expected.to have_many :orphan_lists }
   it { is_expected.to have_many(:orphans).through :orphan_lists }
+
+  it 'should override the default pagination per_page' do
+    expect(Partner.per_page).to eq 10
+  end
 
   describe 'methods & scopes' do
 
