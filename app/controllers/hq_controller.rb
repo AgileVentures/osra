@@ -9,7 +9,8 @@ class HqController < ApplicationController
     { text: 'Users', href: 'hq_users_path', path_regex: /^\/hq\/users/, glyph: 'glyphicon-user' }
   ]
 
-  before_action :authenticate_admin_user!
+  before_action :authenticate_hq_admin_user!
+
   layout 'application'
 end
 

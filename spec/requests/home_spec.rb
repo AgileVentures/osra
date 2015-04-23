@@ -6,6 +6,6 @@ describe 'visiting the homepage', type: :request do
   end
 
   it 'should show the login page' do
-    expect(response.body).to include('Log in')
+    expect(response.body).to include('Login')
   end
 end

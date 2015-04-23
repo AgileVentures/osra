@@ -17,25 +17,25 @@ end
 
 def i_sign_in_as_admin
   admin = FactoryGirl.create :admin_user
-  visit new_admin_user_session_path
+  visit new_hq_admin_user_session_path
   fill_in 'Email', with: admin.email
   fill_in 'Password', with: admin.password
   click_button 'Log in'
 end
 
 def i_sign_out
-  click_link 'Logout'
+  click_link 'logout'
 end
 
 def and_i_should_be_on_root_page
-  expect(current_path).to eq root_path
+  expect(current_path).to eq hq_root_path
 end
 
 def and_i_should_be_on_new_admin_user_session_page
-  expect(current_path).to eq new_admin_user_session_path
+  expect(current_path).to eq new_hq_admin_user_session_path
 end
 
 def and_i_should_not_have_access_to_application
-  visit admin_root_path
-  expect(current_path).to eq new_admin_user_session_path
+  visit hq_root_path
+  expect(current_path).to eq new_hq_admin_user_session_path
 end
