@@ -16,7 +16,7 @@ Osra::Application.routes.draw do
         put "inactivate", on: :member
       end
     end
-    resources :orphans, except: [:destroy]
+    resources :orphans, except: [:new, :create, :destroy]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config

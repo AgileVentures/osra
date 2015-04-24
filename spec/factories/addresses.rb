@@ -4,5 +4,6 @@ FactoryGirl.define do
     city { Faker::Address.city }
     neighborhood { Faker::Address.street_name }
     street { Faker::Address.street_address }
+    details { Faker::Lorem.sentence }
   end
 end
