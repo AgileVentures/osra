@@ -3,8 +3,10 @@ require 'cgi'
 
 RSpec.describe "hq/orphans/_form.html.erb", type: :view do
 
-  let(:orphan_statuses) { OrphanStatus.all }
-  let(:orphan_sponsorship_statuses) { OrphanSponsorshipStatus.all }
+  let(:statuses) { Orphan.statuses.keys.map { |k| [k.humanize, k] } }
+  let(:sponsorship_statuses) do
+    Orphan.sponsorship_statuses.keys.map { |k| [k.humanize, k] }
+  end
   let(:provinces) { Province.all }
   let(:orphan_full) do
     build_stubbed :orphan_full
@@ -13,8 +15,8 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
   def render_orphan_form current_orphan
         render partial: 'hq/orphans/form.html.erb',
                         locals: { orphan: current_orphan,
-                                  orphan_statuses: orphan_statuses,
-                                  orphan_sponsorship_statuses: orphan_sponsorship_statuses,
+                                  statuses: statuses,
+                                  sponsorship_statuses: sponsorship_statuses,
                                   provinces: provinces
                                 }
   end
@@ -63,13 +65,14 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
     expect(rendered).to have_select("orphan_gender", selected: orphan_full.gender,
                                  options: Settings.lookup.gender)
 
-    expect(rendered).to have_select("orphan_orphan_status_id", selected: orphan_full.orphan_status.name,
-                                 options: orphan_statuses.map(&:name))
+    expect(rendered).to have_select("orphan_status", selected: orphan_full.status.humanize,
+                                    options: Orphan.statuses.keys.map(&:humanize))
 
-    expect(rendered).to have_select("orphan_orphan_sponsorship_status_id",
-                             selected: orphan_full.orphan_sponsorship_status.name,
-                             options: orphan_sponsorship_statuses.map(&:name), disabled: true)
-
+    expect(rendered).to have_select('orphan_sponsorship_status',
+                                    selected: orphan_full.sponsorship_status.humanize,
+                                    options: Orphan.sponsorship_statuses.keys.map(&:humanize),
+                                    disabled: true)
+    #
     expect(rendered).to have_select("orphan_priority",
                              selected: orphan_full.priority,
                              options: %w(Normal High))

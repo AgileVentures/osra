@@ -1,2 +1,5 @@
 <h1> Edit Orphan <%= @orphan.name %>, OSRA number <%= @orphan.osra_num %> </h1>
-<%= render partial: 'form', locals: { orphan: @orphan, orphan_statuses: @orphan_statuses, orphan_sponsorship_statuses: @orphan_sponsorship_statuses, provinces: @provinces }%>
+<%= render partial: 'form', locals: { orphan: @orphan,
+                                      statuses: @statuses,
+                                      sponsorship_statuses: @sponsorship_statuses,
+                                      provinces: @provinces }%>

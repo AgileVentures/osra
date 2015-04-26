@@ -6,11 +6,11 @@ class ResolveOrphanSponsorshipStatus
 
   def call
     if orphan.sponsorships.empty?
-      'Unsponsored'
+      'unsponsored'
     elsif orphan.sponsorships.all_active.empty?
-      'Previously Sponsored'
+      'previously_sponsored'
     elsif orphan.sponsorships.all_active.present?
-      'Sponsored'
+      'sponsored'
     end
   end
 

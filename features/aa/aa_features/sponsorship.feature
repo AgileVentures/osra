@@ -18,7 +18,7 @@ Feature:
     Then I should see "1 Currently Sponsored Orphan"
     And I should see "First Orphan"
     When I go to the "Show Orphan" page for orphan "First Orphan"
-    Then I should see "Orphan Sponsorship Status" set to "Sponsored"
+    Then I should see "Sponsorship Status" set to "Sponsored"
     And I should see "First Sponsor" linking to the sponsor's page
 
   Scenario: Sponsorships cannot be created for inactive sponsors

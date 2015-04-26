@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310162856) do
+ActiveRecord::Schema.define(version: 20150327092558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,24 +101,6 @@ ActiveRecord::Schema.define(version: 20150310162856) do
   add_index "orphan_lists", ["partner_id"], name: "index_orphan_lists_on_partner_id", using: :btree
   add_index "orphan_lists", ["sequential_id"], name: "index_orphan_lists_on_sequential_id", using: :btree
 
-  create_table "orphan_sponsorship_statuses", force: :cascade do |t|
-    t.integer  "code"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "orphan_sponsorship_statuses", ["code"], name: "index_orphan_sponsorship_statuses_on_code", unique: true, using: :btree
-  add_index "orphan_sponsorship_statuses", ["name"], name: "index_orphan_sponsorship_statuses_on_name", unique: true, using: :btree
-
-  create_table "orphan_statuses", force: :cascade do |t|
-    t.integer "code"
-    t.string  "name"
-  end
-
-  add_index "orphan_statuses", ["code"], name: "index_orphan_statuses_on_code", unique: true, using: :btree
-  add_index "orphan_statuses", ["name"], name: "index_orphan_statuses_on_name", unique: true, using: :btree
-
   create_table "orphans", force: :cascade do |t|
     t.string   "name"
     t.boolean  "father_is_martyr"
@@ -145,8 +127,6 @@ ActiveRecord::Schema.define(version: 20150310162856) do
     t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "orphan_status_id"
-    t.integer  "orphan_sponsorship_status_id"
     t.string   "priority"
     t.integer  "sequential_id"
     t.string   "osra_num"
@@ -154,12 +134,12 @@ ActiveRecord::Schema.define(version: 20150310162856) do
     t.integer  "province_code"
     t.string   "father_given_name",                               null: false
     t.string   "family_name",                                     null: false
+    t.integer  "status",                          default: 0
+    t.integer  "sponsorship_status",              default: 0
     t.boolean  "father_deceased",                 default: false
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
-  add_index "orphans", ["orphan_sponsorship_status_id"], name: "index_orphans_on_orphan_sponsorship_status_id", using: :btree
-  add_index "orphans", ["orphan_status_id"], name: "index_orphans_on_orphan_status_id", using: :btree
   add_index "orphans", ["osra_num"], name: "index_orphans_on_osra_num", unique: true, using: :btree
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree

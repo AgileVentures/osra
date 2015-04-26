@@ -1,4 +1,7 @@
 class Hq::OrphansController < HqController
+
+  ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
+
   def index
     @orphans = Orphan.paginate(:page => params[:page])
   end
@@ -25,8 +28,10 @@ private
   end
 
   def load_associations
-    @orphan_statuses = OrphanStatus.all
-    @orphan_sponsorship_statuses = OrphanSponsorshipStatus.all
+    @statuses = Orphan.statuses.keys.map { |k| [k.humanize, k] }
+    @sponsorship_statuses = Orphan.sponsorship_statuses.keys.map do |k|
+      [k.humanize, k]
+    end
     @provinces = Province.all
   end
 
@@ -45,17 +50,18 @@ private
   def orphan_params
     params.require(:orphan)
       .permit(
-              :name, :father_is_martyr, :father_occupation, :father_place_of_death,
-              :father_cause_of_death, :father_date_of_death, :mother_name, :mother_alive,
-              :date_of_birth, :gender, :health_status, :schooling_status, :goes_to_school,
-              :guardian_name, :guardian_relationship, :guardian_id_num, :contact_number,	
-              :alt_contact_number, :sponsored_by_another_org, :another_org_sponsorship_details,
-              :minor_siblings_count, :sponsored_minor_siblings_count, :comments, 
-              :orphan_status_id, :orphan_sponsorship_status_id, :priority,
-              :sequential_id, :osra_num, :orphan_list_id, :province_code, 
-              :father_given_name, :family_name, :father_deceased,
-              original_address: [:id, :city, :province_id, :street, :neighborhood, :details],
-              current_address: [:id, :city, :province_id, :street, :neighborhood, :details]
+              :name, :father_is_martyr, :father_occupation,
+              :father_place_of_death, :father_cause_of_death,
+              :father_date_of_death, :mother_name, :mother_alive,
+              :date_of_birth, :gender, :health_status, :schooling_status,
+              :goes_to_school, :guardian_name, :guardian_relationship,
+              :guardian_id_num, :contact_number, :alt_contact_number,
+              :sponsored_by_another_org, :another_org_sponsorship_details,
+              :minor_siblings_count, :sponsored_minor_siblings_count, :comments,
+              :status, :priority, :sequential_id, :osra_num, :orphan_list_id,
+              :province_code, :father_given_name, :family_name,
+              :father_deceased, original_address_attributes: ADDRESS_DETAILS,
+              current_address_attributes: ADDRESS_DETAILS
             )
   end
 end
