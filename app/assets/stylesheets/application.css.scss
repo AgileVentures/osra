@@ -1,5 +1,3 @@
- @import "bootstrap-sprockets";
- @import "bootstrap";
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -10,13 +8,5 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
- *= require_tree .
  */
-
- // To match the whole width space
- nav.osra-nav-header {
-   width: auto;
-   margin-left: -15px;
-   margin-right: -15px;
- }
+@import "hq";

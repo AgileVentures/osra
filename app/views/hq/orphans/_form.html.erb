@@ -1,4 +1,4 @@
-<%= form_for [:hq, orphan] do |f| %>
+<%= form_for [:hq, orphan], :builder => OsraFormBuilder do |f| %>
   <%= render 'shared/errors', object: f.object %>
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -6,50 +6,50 @@
     </div>
     <div class="panel-body">
       <div class="form-group">
-        <%= f.label :name %>
+        <%= f.label_for_field :name %>
         <%= f.text_field :name, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :date_of_birth %>
+        <%= f.label_for_field :date_of_birth %>
         <%= f.text_field :date_of_birth, class: "form-control date-picker", value: orphan.date_of_birth %>
       </div>
       <div class="form-group">
-        <%= f.label :gender %>
+        <%= f.label_for_field :gender %>
         <%= f.select :gender,
           Settings.lookup.gender, {}, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :health_status %>
+        <%= f.label_for_field :health_status %>
         <%= f.text_field :health_status, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :schooling_status %>
+        <%= f.label_for_field :schooling_status %>
         <%= f.text_field :schooling_status, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :goes_to_school %>
+        <%= f.label_for_field :goes_to_school %>
         <%= f.check_box :goes_to_school %>
       </div>
       <div class='form-group'>
-        <%= f.label :status %>
+        <%= f.label_for_field :status %>
         <%= f.select :status, statuses, {}, class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= f.label :sponsorship_status %>
+        <%= f.label_for_field :sponsorship_status %>
         <%= f.select :sponsorship_status, sponsorship_statuses, {},
           class: 'form-control', disabled: true %>
       </div>
       <div class="form-group">
-        <%= f.label :priority %>
+        <%= f.label_for_field :priority %>
         <%= f.select :priority,
           %w(Normal High), {}, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :created_at, 'Record imported on' %>
+        <%= f.label_for_field :created_at, 'Record imported on' %>
         <%= f.text_field :created_at, class: "form-control date-picker", value: orphan.created_at, disabled: "true" %>
       </div>
       <div class="form-group">
-        <%= f.label :updated_at, 'Record last updated on' %>
+        <%= f.label_for_field :updated_at, 'Record last updated on' %>
         <%= f.text_field :updated_at, class: "form-control date-picker", value: orphan.updated_at, disabled: "true" %>
       </div>
     </div>
@@ -60,43 +60,43 @@
     </div>
     <div class="panel-body">
       <div class="form-group">
-        <%= f.label :father_given_name %>
+        <%= f.label_for_field :father_given_name %>
         <%= f.text_field :father_given_name, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :family_name %>
+        <%= f.label_for_field :family_name %>
         <%= f.text_field :family_name, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :father_deceased %>
+        <%= f.label_for_field :father_deceased %>
         <%= f.check_box :father_deceased %>
       </div>
       <div class="form-group">
-        <%= f.label :mother_name %>
+        <%= f.label_for_field :mother_name %>
         <%= f.text_field :mother_name, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :mother_alive %>
+        <%= f.label_for_field :mother_alive %>
         <%= f.check_box :mother_alive %>
       </div>
       <div class="form-group">
-        <%= f.label :father_is_martyr %>
+        <%= f.label_for_field :father_is_martyr %>
         <%= f.check_box :father_is_martyr %>
       </div>
       <div class="form-group">
-        <%= f.label :father_occupation %>
+        <%= f.label_for_field :father_occupation %>
         <%= f.text_field :father_occupation, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :father_place_of_death %>
+        <%= f.label_for_field :father_place_of_death %>
         <%= f.text_field :father_place_of_death, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :father_cause_of_death %>
+        <%= f.label_for_field :father_cause_of_death %>
         <%= f.text_field :father_cause_of_death, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :father_date_of_death %>
+        <%= f.label_for_field :father_date_of_death %>
         <%= f.text_field :father_date_of_death, class: "form-control date-picker", value: orphan.father_date_of_death %>
       </div>
     </div>
@@ -107,23 +107,23 @@
     </div>
     <div class="panel-body">
       <div class="form-group">
-        <%= f.label :guardian_name %>
+        <%= f.label_for_field :guardian_name %>
         <%= f.text_field :guardian_name, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :guardian_relationship %>
+        <%= f.label_for_field :guardian_relationship %>
         <%= f.text_field :guardian_relationship, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :guardian_id_num %>
+        <%= f.label_for_field :guardian_id_num %>
         <%= f.text_field :guardian_id_num, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :contact_number %>
+        <%= f.label_for_field :contact_number %>
         <%= f.text_field :contact_number, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :alt_contact_number %>
+        <%= f.label_for_field :alt_contact_number %>
         <%= f.text_field :alt_contact_number, class: "form-control" %>
       </div>
     </div>
@@ -135,24 +135,24 @@
       <%= f.fields_for :original_address do |b| %>
         <div class="panel-body">
           <div class="form-group">
-            <%= b.label :city %>
+            <%= b.label_for_field :city %>
             <%= b.text_field :city, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :province %>
+            <%= b.label_for_field :province %>
             <%= b.collection_select :province_id,
               provinces, :id, :name, {},  {class: "form-control"} %>
           </div>
           <div class="form-group">
-            <%= b.label :neighborhood %>
+            <%= b.label_for_field :neighborhood %>
             <%= b.text_field :neighborhood, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :street %>
+            <%= b.label_for_field :street %>
             <%= b.text_field :street, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :details%>
+            <%= b.label_for_field :details%>
             <%= b.text_field :details, class: "form-control" %>
           </div>
         </div>
@@ -165,24 +165,24 @@
       <%= f.fields_for :current_address do |b| %>
         <div class="panel-body">
           <div class="form-group">
-            <%= b.label :city %>
+            <%= b.label_for_field :city %>
             <%= b.text_field :city, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :province %>
+            <%= b.label_for_field :province %>
             <%= b.collection_select :province_id,
               provinces, :id, :name, {},  {class: "form-control"} %>
           </div>
           <div class="form-group">
-            <%= b.label :neighborhood %>
+            <%= b.label_for_field :neighborhood %>
             <%= b.text_field :neighborhood, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :street %>
+            <%= b.label_for_field :street %>
             <%= b.text_field :street, class: "form-control" %>
           </div>
           <div class="form-group">
-            <%= b.label :details%>
+            <%= b.label_for_field :details%>
             <%= b.text_field :details, class: "form-control" %>
           </div>
         </div>
@@ -194,19 +194,19 @@
     </div>
     <div class="panel-body">
       <div class="form-group">
-        <%= f.label :sponsored_by_another_org %>
+        <%= f.label_for_field :sponsored_by_another_org %>
         <%= f.check_box :sponsored_by_another_org %>
       </div>
       <div class="form-group">
-        <%= f.label :minor_siblings_count %>
+        <%= f.label_for_field :minor_siblings_count %>
         <%= f.text_field :minor_siblings_count, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :sponsored_minor_siblings_count %>
+        <%= f.label_for_field :sponsored_minor_siblings_count %>
         <%= f.text_field :sponsored_minor_siblings_count, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :comments %>
+        <%= f.label_for_field :comments %>
         <%= f.text_field :comments, class: "form-control" %>
       </div>
     </div>
