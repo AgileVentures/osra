@@ -1,3 +1,13 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+// To match the whole width space
+nav.osra-nav-header {
+  width: auto;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
 .no-horiz-padding {
   padding-left: 0px;
   padding-right: 0px;
@@ -21,4 +31,9 @@ ul.nav li a {
     width:calc(100% - 80px);
     float:left;
   }
+}
+
+.required_field::after {
+  content: " (required)";
+  @extend .text-danger;
 }

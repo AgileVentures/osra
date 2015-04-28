@@ -19,6 +19,7 @@ RSpec.describe Hq::UsersController, type: :controller do
   specify '#show' do
     expect(User).to receive(:find).with('42').and_return(@user)
     get :show, id: 42
+    expect(assigns(:user)).to eq @user
     expect(response).to render_template 'show'
   end
 

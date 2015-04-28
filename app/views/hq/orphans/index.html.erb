@@ -1,0 +1,101 @@
+<%- if @orphans.empty? %>
+  <div class="panel-body">
+    <em>No Orphans found</em>
+  </div>
+<%- else %>
+  <div class='panel-body table-responsive'>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>
+            Osra Num
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Father Name
+          </th>
+          <th>
+            Date of Birth
+          </th>
+          <th>
+            Gender
+          </th>
+          <th>
+            Original Province
+          </th>
+          <th>
+            Partner
+          </th>
+          <th>
+            Father is Martyr
+          </th>
+          <th>
+            Father Deceased
+          </th>
+          <th>
+            Mother Alive
+          </th>
+          <th>
+            Priority
+          </th>
+          <th>
+            Orphan Status
+          </th>
+          <th>
+            Sponsorship
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- @orphans.each do |orphan| %>
+          <tr>
+            <td>
+              <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= link_to orphan.name, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= orphan.father_given_name %>
+            </td>
+            <td>
+              <%= orphan.date_of_birth %>
+            </td>
+            <td>
+              <%= orphan.gender %>
+            </td>
+            <td>
+              <%= orphan.original_address.province.name %>
+            </td>
+            <td>
+              <%= orphan.orphan_list.partner.name %>
+            </td>
+            <td>
+              <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.father_deceased ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.mother_alive ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.priority %>
+            </td>
+            <td>
+              <%= orphan.status.humanize %>
+            </td>
+            <td>
+              <%= orphan.sponsorship_status.humanize %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
+  </div>
+<%- end %>

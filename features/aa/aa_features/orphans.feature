@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following orphans exist:
-      | name     | father_given_name | family_name | spon_status | death_date | mother   | birth_date | contact   | o_city  | o_province | o_hood  | c_city  | c_province | c_hood  |
-      | Orphan 1 | Father 1          | Familia1    | Sponsored   | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | OHood 1 | CCity 1 | Homs       | CHood 1 |
-      | Orphan 2 | Father 2          | Familia2    | Unsponsored | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | OHood 2 | CCity 2 | Latakia    | CHood 1 |
+      | name     | father_given_name | family_name | death_date | mother   | birth_date | contact   | o_city  | o_province | o_hood  | c_city  | c_province | c_hood  |
+      | Orphan 1 | Father 1          | Familia1    | 2011-03-15 | Mother 1 | 2012-01-01 | Contact 1 | OCity 1 | Aleppo     | OHood 1 | CCity 1 | Homs       | CHood 1 |
+      | Orphan 2 | Father 2          | Familia2    | 2011-03-15 | Mother 2 | 2011-01-01 | Contact 2 | OCity 2 | Hama       | OHood 2 | CCity 2 | Latakia    | CHood 1 |
     And I am a new, authenticated user
 
   Scenario: There should be a link to the orphans page on the navbar
@@ -18,13 +18,13 @@ Feature:
     Given I am on the "Orphans" page for the "Admin" role
     Then I should see "Orphan 1 Father 1"
     And I should see the OSRA number for "Orphan 1"
-    And I should see "Orphan Status" for "Orphan 1" set to "Active"
+    And I should see "Status" for "Orphan 1" set to "Active"
     And I should see "Date of Birth" for "Orphan 1" set to "January 01, 2012"
     And I should see "Mother Alive" for "Orphan 1" set to "Yes"
     And I should see "Father Deceased" for "Orphan 1" set to "Yes"
     And I should see "Gender" for "Orphan 1" set to "Female"
     And I should see "Priority" for "Orphan 1" set to "Normal"
-    And I should see "Sponsorship" for "Orphan 1" set to "Sponsored"
+    And I should see "Sponsorship" for "Orphan 1" set to "Unsponsored"
     And I should see "Orphan 2 Father 2"
 
   Scenario: Should not be able to create new orphans directly via the UI
@@ -41,7 +41,7 @@ Feature:
     And I click the "Edit Orphan" button
     Then I should be on the "Edit Orphan" page for orphan "Orphan 1"
     And I should not be able to change "OSRA num" for this orphan
-    And I should not be able to change "Orphan Sponsorship Status" for this orphan
+    And I should not be able to change "Sponsorship Status" for this orphan
     And I fill in "Name" with "Orphan N"
     And I fill in "Date of birth" with "2010-01-01"
     And I fill in "Father given name" with "Father N"
@@ -68,7 +68,7 @@ Feature:
     And I fill in "Minor siblings count" with "5"
     And I fill in "Sponsored minor siblings count" with "3"
     And I fill in "Comments" with "Other Comments"
-    And I select "Inactive" from the drop down box for "Orphan status"
+    And I select "Inactive" from the drop down box for "Status"
     And I select "High" from the drop down box for "Priority"
     And I fill in "City" in panel "Original Address" with "Another Original City"
     And I fill in "Neighborhood" in panel "Original Address" with "Another Original Neighborhood"
@@ -108,7 +108,7 @@ Feature:
     And I should see "Minor Siblings Count" set to "5"
     And I should see "Sponsored Minor Siblings Count" set to "3"
     And I should see "Comments" set to "Other Comments"
-    And I should see "Orphan Status" set to "Inactive"
+    And I should see "Status" set to "Inactive"
     And I should see "Priority" set to "High"
     And I should see "City" in panel "Original Address" set to "Another Original City"
     And I should see "Neighborhood" in panel "Original Address" set to "Another Original Neighborhood"

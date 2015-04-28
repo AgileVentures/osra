@@ -1,8 +1,29 @@
 class Orphan < ActiveRecord::Base
 
-  NEW_SPONSORSHIP_SORT_SQL = '"orphan_sponsorship_statuses"."name", "orphans"."priority"  ASC'
+  enum status: [
+    :active,
+    :inactive,
+    :on_hold,
+    :under_revision
+  ]
+
+  enum sponsorship_status: [
+    :unsponsored,
+    :sponsored,
+    :previously_sponsored,
+    :sponsorship_on_hold
+  ]
+
   AGE_OF_ELIGIBILITY_TO_JOIN = 22
   VALID_GESTATION = 1
+
+  SPONSORSHIP_STATUS_ORDERING = %Q{
+  CASE WHEN sponsorship_status = '#{Orphan.sponsorship_statuses[:previously_sponsored]}' THEN '1'
+       WHEN sponsorship_status = '#{Orphan.sponsorship_statuses[:unsponsored]}'          THEN '2'
+  END ASC
+  }
+
+  NEW_SPONSORSHIP_SORT_SQL = "#{SPONSORSHIP_STATUS_ORDERING}, priority ASC"
 
   include Initializer
   include DateHelpers
@@ -10,7 +31,7 @@ class Orphan < ActiveRecord::Base
   after_initialize :set_defaults
 
   before_update :qualify_for_sponsorship_by_status,
-                if: :orphan_status_id_changed?
+    if: :status_changed?
 
   before_validation :set_province_code
 
@@ -47,9 +68,7 @@ class Orphan < ActiveRecord::Base
   validates :sponsored_minor_siblings_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
   validates :original_address, presence: true
   validates :current_address, presence: true
-  validates :orphan_status, presence: true
   validates :priority, presence: true, inclusion: { in: %w(Normal High) }
-  validates :orphan_sponsorship_status, presence: true
   validates :orphan_list, presence: true
   validate :sponsored_siblings_does_not_exceed_siblings_count
   validate :orphan_born_shortly_after_fathers_death,
@@ -57,15 +76,13 @@ class Orphan < ActiveRecord::Base
          'valid_date?(date_of_birth)',
          'valid_date?(father_date_of_death)']
   validate :of_elibible_age_to_join, if: 'valid_date?(date_of_birth)'
-  validate :can_be_inactivated, if: :being_inactivated?, on: :update
+  validate :can_be_inactivated, on: :update
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
   has_many :sponsorships
   has_many :sponsors, through: :sponsorships
 
-  belongs_to :orphan_status
-  belongs_to :orphan_sponsorship_status
   belongs_to :orphan_list
   has_one :partner, through: :orphan_list, autosave: false
 
@@ -74,18 +91,14 @@ class Orphan < ActiveRecord::Base
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
-  default_scope { includes(:partner, :orphan_sponsorship_status, :orphan_status, original_address: :province) }
+  default_scope { includes(:partner, original_address: :province) }
 
-  scope :active,
-        -> { joins(:orphan_status).
-            where(orphan_statuses: { name: 'Active' }) }
   scope :currently_unsponsored,
-        -> { joins(:orphan_sponsorship_status).
-            where(orphan_sponsorship_statuses: { name: ['Unsponsored', 'Previously Sponsored'] }) }
+    -> { where(sponsorship_status: [ Orphan.sponsorship_statuses[:unsponsored],
+                                     Orphan.sponsorship_statuses[:previously_sponsored] ]) }
   scope :high_priority, -> { where(priority: 'High') }
-  scope :deep_joins, -> { joins(:orphan_sponsorship_status).joins(:original_address).joins(:partner) }
-  scope :sort_by_eligibility, -> { active.currently_unsponsored.joins(:original_address).joins(:partner).
-                          order(NEW_SPONSORSHIP_SORT_SQL) }
+  scope :sort_by_eligibility, -> { active.currently_unsponsored.
+                                   order(NEW_SPONSORSHIP_SORT_SQL) }
 
   acts_as_sequenced scope: :province_code
 
@@ -101,16 +114,12 @@ class Orphan < ActiveRecord::Base
     Orphan.active.currently_unsponsored.include? self
   end
 
-  def currently_sponsored?
-    sponsorships.all_active.present?
-  end
-
   def current_sponsorship
-    sponsorships.all_active.first if currently_sponsored?
+    sponsorships.all_active.first if sponsored?
   end
 
   def current_sponsor
-    current_sponsorship.sponsor if currently_sponsored?
+    current_sponsorship.sponsor if sponsored?
   end
 
 private
@@ -118,17 +127,16 @@ private
   def set_defaults
     return if persisted?
     default_sponsorship_status_to_unsponsored
-    default_orphan_status_to_active
+    default_status_to_active
     default_priority_to_normal
   end
 
   def default_sponsorship_status_to_unsponsored
-    self.orphan_sponsorship_status ||= OrphanSponsorshipStatus.
-      find_by_name 'Unsponsored'
+    self.sponsorship_status ||= 'unsponsored'
   end
 
-  def default_orphan_status_to_active
-    self.orphan_status ||= OrphanStatus.find_by_name 'Active'
+  def default_status_to_active
+    self.status ||= 'active'
   end
 
   def default_priority_to_normal
@@ -180,48 +188,26 @@ private
   end
 
   def can_be_inactivated
-    if currently_sponsored?
-      errors.add :orphan_status,
+    if sponsored? && being_inactivated?
+      errors.add :status,
         'Cannot inactivate orphan with active sponsorships'
     end
   end
 
   def being_inactivated?
-    unless orphan_status_id_was.nil?
-      orphan_status_id_changed? && (OrphanStatus.find(orphan_status_id_was).name == 'Active')
-    end
+    status_changed? && (status_was == 'active')
   end
 
   def qualify_for_sponsorship_by_status
-    if orphan_status_is_active?
+    if active?
       new_status = ResolveOrphanSponsorshipStatus.new(self).call
-      self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name(new_status)
-    elsif orphan_status_was_active?
+      self.sponsorship_status = new_status
+    elsif status_was == 'active'
       deactivate
     end
   end
 
-  def orphan_status_is_active?
-    orphan_status.name == 'Active'
-  end
-
-  def orphan_status_was_active?
-    OrphanStatus.find(orphan_status_id_was).name == 'Active'
-  end
-
   def deactivate
-    self.orphan_sponsorship_status = OrphanSponsorshipStatus.find_by_name 'On Hold'
-  end
-
-  def can_be_inactivated
-    if currently_sponsored?
-      errors[:orphan_status] << 'Cannot inactivate orphan with active sponsorships'
-    end
-  end
-
-  def being_inactivated?
-    unless orphan_status_id_was.nil?
-      orphan_status_id_changed? && (OrphanStatus.find(orphan_status_id_was).name == 'Active')
-    end
+    self.sponsorship_status = 'sponsorship_on_hold'
   end
 end

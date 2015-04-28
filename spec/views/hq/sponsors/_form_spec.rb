@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cgi'
 
 RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   let(:user) { build_stubbed :user}
@@ -24,129 +23,104 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   specify 'has a form' do
     render_sponsor_form sponsor_new
 
-    assert_select 'form'
+    expect(rendered).to have_selector("form")
   end
 
   describe 'has a "Cancel" button' do
     specify 'using an existing Sponsor record' do
       render_sponsor_form sponsor_full
 
-      assert_select 'a[href=?]', hq_sponsor_path(sponsor_full.id), text: 'Cancel'
+      expect(rendered).to have_link("Cancel", hq_sponsor_path(sponsor_full))
     end
 
     specify 'using a new Sponsor record' do
       render_sponsor_form sponsor_new
 
-      assert_select 'a[href=?]', hq_sponsors_path, text: 'Cancel'
+      expect(rendered).to have_link("Cancel", hq_sponsors_path)
     end
   end
 
   describe 'has form values' do
     specify 'using an existing Sponsor record' do
-      allow(User).to receive(:pluck).and_return([user.user_name, user.id])
+      allow(User).to receive(:pluck).and_return([[user.user_name, user.id]])
       render_sponsor_form sponsor_full
 
-      #fextfields
+      #textfields
       ["name", "requested_orphan_count", "start_date", "new_city_name", "address", "email",
        "contact1", "contact2", "additional_info"].each do |field|
-        assert_select "input#sponsor_#{field}" do
-          if sponsor_full[field]
-            assert_select "[value=?]", CGI::escape_html(sponsor_full[field].to_s)
-          else
-            assert_select "[value]", false
-          end
-        end
-      end
-
-      assert_select "select#sponsor_status_id" do
-        assert_select "option", value: sponsor_full.status_id,
-                                html: CGI::escape_html(sponsor_full.status.name)
-      end
-
-      assert_select "select#sponsor_gender" do
-        assert_select "option", value: Settings.lookup.gender.first,
-                                html: CGI::escape_html(Settings.lookup.gender.first)
-      end
-
-      assert_select "input#sponsor_request_fulfilled" do
-        assert_select "[disabled=?]", "disabled"
-        assert_select "[checked]", sponsor_full.request_fulfilled
-      end
-
-      assert_select "select#sponsor_sponsor_type_id" do
-        assert_select "[disabled=?]", "disabled"
-        assert_select "option", value: sponsor_full.sponsor_type_id,
-          html: CGI::escape_html(sponsor_full.sponsor_type.name) do
-            assert_select "[selected=?]", "selected"
-        end
-      end
-
-      assert_select "select#sponsor_organization_id" do
-        assert_select "[disabled=?]", "disabled"
-        assert_select "option", value: sponsor_full.organization_id
-        if sponsor_full.organization
-          assert_select "option",
-            html: CGI::escape_html(sponsor_full.organization.name)
+        if sponsor_full[field]
+          expect(rendered).to have_selector("input[id='sponsor_#{field}'][value='#{sponsor_full[field].to_s}']")
         else
-          assert_select "option", value: false
+          expect(rendered).to have_selector("input[id='sponsor_#{field}']")
+          expect(rendered).to_not have_selector("input[id='sponsor_#{field}'][value]")
         end
       end
 
-      assert_select "select#sponsor_branch_id" do
-        assert_select "[disabled=?]", "disabled"
-        assert_select "option", value: sponsor_full.branch_id
-        if sponsor_full.branch
-          assert_select "option",
-            html: CGI::escape_html(sponsor_full.branch.name)
-        else
-          assert_select "option", value: false
-        end
+      expect(rendered).to have_select("Status", selected: sponsor_full.status.name, options: Status.pluck(:name))
+
+      expect(rendered).to have_select("Gender", selected: sponsor_full.gender, options: Settings.lookup.gender)
+
+      if sponsor_full.request_fulfilled
+        expect(rendered).to have_checked_field("Request fulfilled", disabled: true)
+      else
+        expect(rendered).to have_unchecked_field("Request fulfilled", disabled: true)
       end
 
-      assert_select "select#sponsor_payment_plan" do
-        assert_select "option", value: sponsor_full.payment_plan,
-                                html: CGI::escape_html(sponsor_full.payment_plan) do
-        end
+      expect(rendered).to have_select("sponsor_sponsor_type_id", selected: sponsor_full.sponsor_type.name,
+                                       options: SponsorType.pluck(:name), disabled: true)
+
+      expect(rendered).to have_selector("select[id='sponsor_organization_id'][disabled]")
+      if sponsor_full.organization
+        expect(rendered).to have_selector("select[id='sponsor_organization_id'] option[selected]", text: sponsor_full.organization.name)
+      else
+        expect(rendered).to have_selector("select[id='sponsor_organization_id'] option", text: "")
+        expect(rendered).to_not have_selector("select[id='sponsor_organization_id'] option[selected]")
       end
 
-      assert_select "select#sponsor_country" do
-        assert_select "option", value: sponsor_full.country do
-          assert_select "[selected]", html: CGI::escape_html(en_ar_country(sponsor_full.country).strip)
-        end
+      expect(rendered).to have_selector("select[id='sponsor_branch_id'][disabled]")
+      if sponsor_full.branch
+        expect(rendered).to have_selector("select[id='sponsor_branch_id'] option[selected]", text: sponsor_full.branch.name)
+      else
+        expect(rendered).to have_selector("select[id='sponsor_branch_id'] option", text: "")
+        expect(rendered).to_not have_selector("select[id='sponsor_branch_id'] option[selected]")
       end
 
-      assert_select "select#sponsor_city" do
-        assert_select "option", value: CGI::escape_html(sponsor_full.city),
-                                html: CGI::escape_html(sponsor_full.city)
-      end
+      expect(rendered).to have_select("sponsor_payment_plan", selected: sponsor_full.payment_plan,
+                                       with_options: Sponsor::PAYMENT_PLANS)
 
-      assert_select "select#sponsor_agent_id" do
-        assert_select "option", value: sponsor_full.agent_id
-        if sponsor_full.agent
-          assert_select "option",
-            html: CGI::escape_html(sponsor_full.agent.user_name)
-        else
-          assert_select "option", value: false
-        end
-      end
+      expect(rendered).to have_select("Country", selected: en_ar_country(sponsor_full.country))
 
-      assert_select "input", type: "submit"
+      expect(rendered).to have_select("City", selected: sponsor_full.city)
+
+      expect(rendered).to have_selector("select[id='sponsor_agent_id'] option[selected]", text: sponsor_full.agent.user_name)
+
+      expect(rendered).to have_selector("input[type='submit'][value='Update Sponsor']")
     end
 
     specify "using a new Sponsor record" do
       render_sponsor_form sponsor_new
 
-      assert_select "input#sponsor_name" do
-        assert_select "[value]", false
+      expect(rendered).to have_selector("input[id='sponsor_name']")
+      expect(rendered).to_not have_selector("input[id='sponsor_name'][value]")
+
+      expect(rendered).to_not have_selector("input[id='sponsor_request_fulfilled']")
+
+      #selects that are disabled only for an existing record
+      ["sponsor_type", "organization", "branch"].each do |field|
+        expect(rendered).to have_selector("select[id='sponsor_#{field}_id']")
+        expect(rendered).to_not have_selector("select[id='sponsor_#{field}_id'][disabled]")
+      end
+    end
+
+    describe 'required fields' do
+      before(:each) { render_sponsor_form sponsor_full }
+
+      it 'marks required fields' do
+        expect(rendered).to mark_required_fields_for Sponsor
       end
 
-      assert_select "input#sponsor_request_fulfilled", false
-
-      #disabled selects
-      ["sponsor_type", "organization", "branch"].each do |field|
-        assert_select "select#sponsor_#{field}_id" do
-          assert_select "[disabled]", false
-        end
+      it 'does not mark optional' do
+        expect(rendered).not_to mark_optional_fields_for Sponsor
       end
     end
   end
