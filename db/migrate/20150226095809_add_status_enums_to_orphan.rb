@@ -23,8 +23,9 @@ class AddStatusEnumsToOrphan < ActiveRecord::Migration
 
   def set_sponsorship_status
     Orphan.all.each do |orphan|
-      status_code = orphan.orphan_sponsorship_status.code
-      orphan.update_column(:sponsorship_status, ( status_code - 1 ))
+      orphan_sponsorship_status = orphan_sponsorship_statuses.select {|oss| oss["id"] == orphan.orphan_sponsorship_status_id.to_s}.first
+      sponsorship_status_code = orphan_sponsorship_status["code"].to_i
+      orphan.update_column(:sponsorship_status, ( sponsorship_status_code - 1 ))
     end
   end
 end
