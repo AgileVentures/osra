@@ -63,6 +63,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       expect(rendered).to have_select("filters_city", options: ["Any","city1", "city2"])
       expect(rendered).to have_select("filters_request_fulfilled", options: ["Any","Yes", "No"])
     end
+
     specify "filled" do
       render partial: "hq/sponsors/filters.html.haml", locals: {filters: sponsors_filters}
 
@@ -93,6 +94,6 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
     render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
-    expect(rendered).to have_selector("input[type='reset'][value='Clear Filters']")
+    expect(rendered).to have_selector("input[type='submit'][value='Clear Filters']")
   end
 end

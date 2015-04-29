@@ -1,5 +1,7 @@
 class Hq::SponsorsController < HqController
   def index
+    redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
+
     @filters = filters_params
     @sponsors = Sponsor.paginate(:page => params[:page])
   end
