@@ -9,7 +9,6 @@ Feature:
     And the sponsor "First Sponsor" has attribute additional_info "Prefer male orphans from Homs"
     And an orphan "First Orphan" exists
     And an orphan "Second Orphan" exists
-    And an orphan "Third Orphan" exists
     And I am a new, authenticated user
 
   Scenario: Viewing existing sponsorship links between sponsor and orphans
@@ -66,13 +65,14 @@ Feature:
     And I should see "Second Orphan"
     And I fill in Sponsorship Start Date for "First Orphan" with "2014-01-31"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should be on the Link to Orphan page for sponsor "First Sponsor"
+    And I should see "Return to Sponsor page"
+    And I fill in Sponsorship Start Date for "Second Orphan" with "2014-01-31"
+    When I click the "Sponsor this orphan" link for orphan "Second Orphan"
+    Then I should be on the Link to Orphan page for sponsor "First Sponsor"
+    And I should see "No Orphans found"
+    When I click the "First Sponsor" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
-    And I should see "Sponsorship link was successfully created"
-    And I should see "First Orphan" within "Currently Sponsored Orphans"
-    When I click the "Link to Orphan" button
-    And I click the "Sponsor this orphan" link for orphan "Second Orphan"
-    Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
-    And I should see "Sponsorship link was successfully created"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "Second Orphan" within "Currently Sponsored Orphans"
 
@@ -124,8 +124,10 @@ Feature:
     And I click the "Link to Orphan" button
     Then I should see "First Orphan"
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
+    Then I should be on the Link to Orphan page for sponsor "First Sponsor"
+    Then I should see "Return to Sponsor page"
+    When I click the "Return to Sponsor page" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
-    And I should see "Sponsorship link was successfully created"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
     And I should see "First Orphan" within "Previously Sponsored Orphans"
 
