@@ -42,8 +42,12 @@ ActiveAdmin.register Sponsorship do
 
     def create_sponsorship_for(sponsor)
       if @sponsorship_creator.call
-        flash[:success] = 'Sponsorship link was successfully created.'
-        redirect_to admin_sponsor_path(sponsor)
+        if sponsor.request_fulfilled
+          flash[:success] = 'Sponsorship link was successfully created.'
+          redirect_to admin_sponsor_path(sponsor)
+        else
+          redirect_back_to_new_sponsorship_for(sponsor)
+        end
       end
     end
 

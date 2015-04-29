@@ -117,20 +117,43 @@ describe Admin::SponsorshipsController, type: :controller do
     end
 
     context 'when successful' do
-
       before(:each) do
         expect(sponsorship_creator).to receive(:call).and_return true
-
-        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
-      it 'sets flash[:success] message' do
-        expect(flash[:success]).not_to be_nil
-        expect(flash[:warning]).to be_nil
+      context 'when request was fulfilled' do
+        before(:each) do
+          expect(sponsor).to receive(:request_fulfilled).and_return true
+
+          post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+        end
+
+        it 'sets flash[:success] message' do
+          expect(flash[:success]).not_to be_nil
+          expect(flash[:warning]).to be_nil
+        end
+
+        it 'redirects to sponsor show view' do
+          expect(response).to redirect_to admin_sponsor_path(sponsor)
+        end
       end
 
-      it 'redirects to sponsor show view' do
-        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      context 'when request was not fulfilled' do
+        before(:each) do
+          expect(sponsor).to receive(:request_fulfilled).and_return false
+          expect(sponsorship_creator).to receive(:error_msg).and_return 'No go'
+
+          post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+        end
+
+        it 'sets flash[:warning] message' do
+          expect(flash[:warning]).to eq 'No go'
+          expect(flash[:success]).to be_nil
+        end
+
+        it 'redirects back to sponsorship view' do
+          expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        end
       end
     end
 
