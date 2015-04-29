@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
   it 'has a form' do
-    render partial: "hq/sponsors/filters.html.haml"
+    render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
 
     expect(rendered).to have_selector("form")
   end
@@ -16,7 +16,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
     allow(view).to receive(:country_options_for_select).and_return(["country1","country2"])
     allow(Sponsor).to receive_message_chain(:distinct, :pluck, :sort) {(["city1","city2"])}
 
-    render partial: "hq/sponsors/filters.html.haml"
+    render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
 
     #text fields
     ["name_value", "created_at_from", "created_at_until", "updated_at_from", "updated_at_until",
@@ -40,7 +40,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
   end
 
   it "has submit buttons" do
-    render partial: "hq/sponsors/filters.html.haml"
+    render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
     expect(rendered).to have_selector("input[type='reset'][value='Clear Filters']")

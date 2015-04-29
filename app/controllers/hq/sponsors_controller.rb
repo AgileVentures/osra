@@ -1,5 +1,6 @@
 class Hq::SponsorsController < HqController
   def index
+    @filters = filters_params
     @sponsors = Sponsor.paginate(:page => params[:page])
   end
 
@@ -80,6 +81,19 @@ private
                 :additional_info, :status_id, :start_date, :sponsor_type_id,
                 :gender, :branch_id, :organization_id, :osra_num, :sequential_id,
                 :requested_orphan_count, :agent_id, :city, :new_city_name, :payment_plan)
+  end
+
+  def filters_params
+    default_filters = Sponsor::DEFAULT_FILTERS
+
+    params[:filters] ||= default_filters
+    permited_filters = params.require(:filters)
+         .permit({name: [:option, :value]}, :gender, :branch, :organization, :status,
+          :sponsor_type, :agent, :city, :country, {created_at: [:from, :until]},
+          {updated_at: [:from, :until]}, {start_date: [:from, :until]},
+          :request_fulfilled, {active_sponsorship_count: [:option, :value]})
+
+    default_filters.merge(permited_filters)
   end
 
 end

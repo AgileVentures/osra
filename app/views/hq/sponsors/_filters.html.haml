@@ -2,73 +2,69 @@
   Filters
 
 =form_tag({action: "index"}, method: :get) do
-  =fields_for :filters do |f|
-    .form-group
-      =f.label :name
-      =f.fields_for :name do |nf|
-        =nf.select :option, [["Contains","contains"], ["Equals","equals"], ["Starts with","starts_with"], ["Ends width","ends_with"]], {}, class: "form-control"
-        =nf.text_field :value, class: "form-control"
+  .form-group
+    =label_tag :name
+    =select_tag "filters[name][option]",
+          options_for_select([["Contains","contains"], ["Equals","equals"], ["Starts with","starts_with"], ["Ends width","ends_with"]], filters["name"]["option"]),
+           class: "form-control"
+    =text_field_tag "filters[name][value]", filters["name"]["value"], class: "form-control"
 
-    .form-group
-      =f.label :gender
-      =f.select :gender, Settings.lookup.gender, {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :gender
+    =select_tag "filters[gender]", options_for_select(Settings.lookup.gender, filters["gender"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :branch
-      =f.select :branch, Branch.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :branch
+    =select_tag "filters[branch]", options_for_select(Branch.pluck(:name, :id), filters["branch"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :organization
-      =f.select :organization, Organization.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :organization
+    =select_tag "filters[organization]", options_for_select(Organization.pluck(:name, :id), filters["organization"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :starus
-      =f.select :status, Status.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :status
+    =select_tag "filters[status]", options_for_select(Status.pluck(:name, :id), filters["status"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :sponsor_type
-      =f.select :sponsor_type, SponsorType.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :sponsor_type
+    =select_tag "filters[sponsor_type]", options_for_select(SponsorType.pluck(:name, :id), filters["sponsor_type"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :agent
-      =f.select :agent, User.pluck(:user_name, :id), {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :agent
+    =select_tag "filters[agent]", options_for_select(User.pluck(:user_name, :id), filters["agent"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :country
-      =f.select :country, country_options_for_select, {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :country
+    =select_tag "filters[country]", options_for_select(country_options_for_select, filters["country"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :city
-      =f.select :city, Sponsor.distinct.pluck(:city).sort, {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :city
+    =select_tag "filters[city]", options_for_select(Sponsor.distinct.pluck(:city).sort, filters["city"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :created_at
-      =f.fields_for :created_at do |cf|
-        =cf.text_field :from, class: "form-control date-picker"
-        =cf.text_field :until, class: "form-control date-picker"
+  .form-group
+    =label_tag :created_at
+    =text_field_tag "filters[created_at][from]", filters["created_at"]["from"], class: "form-control date-picker"
+    =text_field_tag "filters[created_at][until]", filters["created_at"]["until"], class: "form-control date-picker"
 
-    .form-group
-      =f.label :updated_at
-      =f.fields_for :updated_at do |uf|
-        =uf.text_field :from, class: "form-control date-picker"
-        =uf.text_field :until, class: "form-control date-picker"
+  .form-group
+    =label_tag :updated_at
+    =text_field_tag "filters[updated_at][from]", filters["updated_at"]["from"], class: "form-control date-picker"
+    =text_field_tag "filters[updated_at][until]", filters["updated_at"]["until"], class: "form-control date-picker"
 
-    .form-group
-      =f.label :start_date
-      =f.fields_for :start_date do |sf|
-        =sf.text_field :from, class: "form-control date-picker"
-        =sf.text_field :until, class: "form-control date-picker"
+  .form-group
+    =label_tag :start_date
+    =text_field_tag "filters[start_date][from]", filters["start_date"]["from"], class: "form-control date-picker"
+    =text_field_tag "filters[start_date][until]", filters["start_date"]["until"], class: "form-control date-picker"
 
-    .form-group
-      =f.label :request_fulfilled
-      =f.select :request_fulfilled, [["Yes", true], ["No", false]], {include_blank: "Any"}, class: "form-control"
+  .form-group
+    =label_tag :request_fulfilled
+    =select_tag "filters[request_fulfilled]", options_for_select([["Yes", true], ["No", false]], filters["request_fulfilled"]), {include_blank: "Any", class: "form-control"}
 
-    .form-group
-      =f.label :active_sponsorship_count, "Number Of Active Sponsorships"
-      =f.fields_for :active_sponsorship_count do |af|
-        =af.select :option, [["Equals","equals"], ["Greather than","greather_than"], ["Less than","less_than"]], {}, class: "form-control"
-        =af.text_field :value, class: "form-control"
+  .form-group
+    =label_tag :active_sponsorship_count, "Number Of Active Sponsorships"
+    =select_tag "filters[active_sponsorship_count][option]", options_for_select([["Equals","equals"], ["Greather than","greather_than"], ["Less than","less_than"]], filters["active_sponsorship_count"]["option"]), class: "form-control"
+    =text_field_tag "filters[active_sponsorship_count][value]", filters["active_sponsorship_count"]["value"], class: "form-control"
 
-    .form-group
-      =f.submit "Filter", class: 'btn btn-primary'
-      =f.submit "Clear Filters", type: "reset", class: 'btn btn-default'
+  .form-group
+    =submit_tag "Filter", class: 'btn btn-primary'
+    =submit_tag "Clear Filters", type: "reset", class: 'btn btn-default'

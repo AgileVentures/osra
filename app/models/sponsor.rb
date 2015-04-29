@@ -6,6 +6,22 @@ class Sponsor < ActiveRecord::Base
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
   PRIORITY_COUNTRIES= %w(SA TR AE GB)
   EXCLUDED_COUNTRYS= %w(IL)
+  DEFAULT_FILTERS = {
+    "name" => {"value": nil},
+    "gender": nil,
+    "branch": nil,
+    "organization": nil,
+    "status": nil,
+    "sponsor_type": nil,
+    "agent": nil,
+    "city": nil,
+    "country": nil,
+    "created_at" => {"from": nil, "until": nil},
+    "updated_at" => {"from": nil, "until": nil},
+    "start_date" => {"from": nil, "until": nil},
+    "request_fulfilled": nil,
+    "active_sponsorship_count" => {"value": nil}
+  }
 
   self.per_page = 10
   attr_accessor :new_city_name
