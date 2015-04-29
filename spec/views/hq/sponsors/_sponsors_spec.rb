@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cgi'
 require 'will_paginate/array'
 
 RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
@@ -9,7 +8,8 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     end
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1)}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1),
+                                                           :filters => Sponsor::DEFAULT_FILTERS}
     end
 
     it 'should render something besides "No Sponsors found"' do
@@ -29,8 +29,11 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
   end
 
   describe 'no sponsors exist' do
+    before :each do
+      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: [], :filters => Sponsor::DEFAULT_FILTERS}
+    end
+
     it 'should indicate no sponsors were found' do
-      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: []}
       expect(rendered).to match /No Sponsors found/
     end
 
@@ -43,7 +46,8 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     let(:sponsor) { FactoryGirl.build_stubbed(:sponsor) }
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1)}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1),
+                                                                       :filters => Sponsor::DEFAULT_FILTERS}
     end
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|
@@ -61,7 +65,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
 
     it 'shows yes/no & numbers of active & requested sponsorships' do
       render :partial => 'hq/sponsors/sponsors.html.haml',
-        :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1) }
+        :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1), :filters => Sponsor::DEFAULT_FILTERS }
 
       expect(rendered).to have_text 'No (2/7)'
       expect(rendered).to have_text 'Yes (4/4)'

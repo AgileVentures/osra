@@ -43,4 +43,4 @@
   .pagination
     = will_paginate sponsors, renderer: BootstrapPagination::Rails
 
-  =render partial: 'filters', locals: {filters: @filters}
+  =render partial: '/hq/sponsors/filters.html.haml', locals: {filters: filters}
