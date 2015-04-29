@@ -1,0 +1,74 @@
+%h3
+  Filters
+
+=form_tag({action: "index"}, method: :get) do
+  =fields_for :filters do |f|
+    .form-group
+      =f.label :name
+      =f.fields_for :name do |nf|
+        =nf.select :option, [["Contains","contains"], ["Equals","equals"], ["Starts with","starts_with"], ["Ends width","ends_with"]], {}, class: "form-control"
+        =nf.text_field :value, class: "form-control"
+
+    .form-group
+      =f.label :gender
+      =f.select :gender, Settings.lookup.gender, {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :branch
+      =f.select :branch, Branch.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :organization
+      =f.select :organization, Organization.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :starus
+      =f.select :status, Status.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :sponsor_type
+      =f.select :sponsor_type, SponsorType.pluck(:name, :id), {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :agent
+      =f.select :agent, User.pluck(:user_name, :id), {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :country
+      =f.select :country, country_options_for_select, {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :city
+      =f.select :city, Sponsor.distinct.pluck(:city).sort, {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :created_at
+      =f.fields_for :created_at do |cf|
+        =cf.text_field :from, class: "form-control date-picker"
+        =cf.text_field :until, class: "form-control date-picker"
+
+    .form-group
+      =f.label :updated_at
+      =f.fields_for :updated_at do |uf|
+        =uf.text_field :from, class: "form-control date-picker"
+        =uf.text_field :until, class: "form-control date-picker"
+
+    .form-group
+      =f.label :start_date
+      =f.fields_for :start_date do |sf|
+        =sf.text_field :from, class: "form-control date-picker"
+        =sf.text_field :until, class: "form-control date-picker"
+
+    .form-group
+      =f.label :request_fulfilled
+      =f.select :request_fulfilled, [["Yes", true], ["No", false]], {include_blank: "Any"}, class: "form-control"
+
+    .form-group
+      =f.label :active_sponsorship_count, "Number Of Active Sponsorships"
+      =f.fields_for :active_sponsorship_count do |af|
+        =af.select :option, [["Equals","equals"], ["Greather than","greather_than"], ["Less than","less_than"]], {}, class: "form-control"
+        =af.text_field :value, class: "form-control"
+
+    .form-group
+      =f.submit "Filter", class: 'btn btn-primary'
+      =f.submit "Clear Filters", type: "reset", class: 'btn btn-default'
