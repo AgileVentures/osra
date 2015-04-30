@@ -86,16 +86,13 @@ private
   end
 
   def filters_params
-    default_filters = Sponsor::DEFAULT_FILTERS
-
-    params[:filters] ||= default_filters
-    permited_filters = params.require(:filters)
-         .permit({name: [:option, :value]}, :gender, :branch, :organization, :status,
-          :sponsor_type, :agent, :city, :country, {created_at: [:from, :until]},
-          {updated_at: [:from, :until]}, {start_date: [:from, :until]},
-          :request_fulfilled, {active_sponsorship_count: [:option, :value]})
-
-    default_filters.merge(permited_filters)
+    params[:filters] ||= {}
+    permited_filters = params[:filters]
+          .permit(:name_option, :name_value, :gender, :branch, :organization, :status,
+           :sponsor_type, :agent, :city, :country, :created_at_from, :created_at_until,
+           :updated_at_from, :updated_at_until, :start_date_from, :start_date_until,
+           :request_fulfilled, :active_sponsorship_count_option, :active_sponsorship_count_value)
+          .transform_values {|v| v=="" ? nil : v}
   end
 
 end

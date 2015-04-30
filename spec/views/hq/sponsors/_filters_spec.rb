@@ -1,31 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
-  let(:sponsors_filters) {{
-    "name" => {
-      "option": "equals",
-      "value": Faker::Lorem.word
-      },
-    "gender": Settings.lookup.gender.sample,
-    "branch": "branch2",
-    "organization": "organization2",
-    "status": "status2",
-    "sponsor_type": "sponsor_type2",
-    "agent": "agent2",
-    "city": "city2",
-    "country": "country2",
-    "created_at" => {"from": Faker::Date.backward(999).to_s, "until": Faker::Date.backward(999).to_s},
-    "updated_at" => {"from": Faker::Date.backward(999).to_s, "until": Faker::Date.backward(999).to_s},
-    "start_date" => {"from": Faker::Date.backward(999).to_s, "until": Faker::Date.backward(999).to_s},
-    "request_fulfilled": "false",
-    "active_sponsorship_count" => {
-      "option": "greather_than",
-      "value": Faker::Number.digit.to_s
+  let(:sponsors_filters) do
+    {
+      name_option: "equals",
+      name_value: Faker::Lorem.word,
+      gender: Settings.lookup.gender.sample,
+      branch: "branch2",
+      organization: "organization2",
+      status: "status2",
+      sponsor_type: "sponsor_type2",
+      agent: "agent2",
+      city: "city2",
+      country: "country2",
+      created_at_from: Faker::Date.backward(999).to_s,
+      created_at_until: Faker::Date.backward(999).to_s,
+      updated_at_from: Faker::Date.backward(999).to_s,
+      updated_at_until: Faker::Date.backward(999).to_s,
+      start_date_from: Faker::Date.backward(999).to_s,
+      start_date_until: Faker::Date.backward(999).to_s,
+      request_fulfilled: "false",
+      active_sponsorship_count_option: "greather_than",
+      active_sponsorship_count_value: Faker::Number.digit.to_s
     }
-  }.with_indifferent_access}
+  end
 
   it 'has a form' do
-    render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
+    render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
 
     expect(rendered).to have_selector("form")
   end
@@ -42,7 +43,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
     end
 
     specify "empty" do
-      render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
+      render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
 
       #text fields
       ["name_value", "created_at_from", "created_at_until", "updated_at_from", "updated_at_until",
@@ -68,30 +69,23 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       render partial: "hq/sponsors/filters.html.haml", locals: {filters: sponsors_filters}
 
       #text fields
-      expect(rendered).to have_selector("input[id='filters_name_value'][value='#{sponsors_filters["name"]["value"]}']")
-      expect(rendered).to have_selector("input[id='filters_created_at_from'][value='#{sponsors_filters["created_at"]["from"]}']")
-      expect(rendered).to have_selector("input[id='filters_created_at_until'][value='#{sponsors_filters["created_at"]["until"]}']")
-      expect(rendered).to have_selector("input[id='filters_updated_at_from'][value='#{sponsors_filters["updated_at"]["from"]}']")
-      expect(rendered).to have_selector("input[id='filters_start_date_from'][value='#{sponsors_filters["start_date"]["from"]}']")
-      expect(rendered).to have_selector("input[id='filters_start_date_until'][value='#{sponsors_filters["start_date"]["until"]}']")
-      expect(rendered).to have_selector("input[id='filters_active_sponsorship_count_value'][value='#{sponsors_filters["active_sponsorship_count"]["value"]}']")
+      [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
+        :start_date_from, :start_date_until, :active_sponsorship_count_value].each do |field|
+        expect(rendered).to have_selector("input[id='filters_#{field.to_s}'][value='#{sponsors_filters[field]}']")
+      end
 
+      #select fields
+      [:gender, :branch, :organization, :status, :sponsor_type, :agent, :country, :city].each do |field|
+        expect(rendered).to have_select("filters_#{field.to_s}", selected: sponsors_filters[field])
+      end
       expect(rendered).to have_select("filters_name_option", selected: "Equals")
-      expect(rendered).to have_select("filters_gender", selected: sponsors_filters["gender"])
-      expect(rendered).to have_select("filters_branch", selected: sponsors_filters["branch"])
-      expect(rendered).to have_select("filters_organization", selected: sponsors_filters["organization"])
-      expect(rendered).to have_select("filters_status", selected: sponsors_filters["status"])
-      expect(rendered).to have_select("filters_sponsor_type", selected: sponsors_filters["sponsor_type"])
-      expect(rendered).to have_select("filters_agent", selected: sponsors_filters["agent"])
-      expect(rendered).to have_select("filters_country", selected: sponsors_filters["country"])
-      expect(rendered).to have_select("filters_city", selected: sponsors_filters["city"])
       expect(rendered).to have_select("filters_request_fulfilled", selected: "No")
       expect(rendered).to have_select("filters_active_sponsorship_count_option", selected: "Greather than")
     end
   end
 
   it "has submit buttons" do
-    render partial: "hq/sponsors/filters.html.haml", locals: {filters: Sponsor::DEFAULT_FILTERS}
+    render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
     expect(rendered).to have_selector("input[type='submit'][value='Clear Filters']")
