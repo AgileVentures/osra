@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
   before :each do
     assign(:sponsors, [])
-    assign(:filters, Sponsor::DEFAULT_FILTERS)
+    assign(:filters, {})
   end
   it 'should delegate to partial' do
     render

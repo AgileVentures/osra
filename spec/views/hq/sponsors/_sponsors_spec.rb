@@ -8,8 +8,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     end
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1),
-                                                           :filters => Sponsor::DEFAULT_FILTERS}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
     end
 
     it 'should render something besides "No Sponsors found"' do
@@ -26,11 +25,15 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     it 'should have pagination buttons' do
       expect(rendered).to have_selector('div.pagination')
     end
+
+    it 'should have filters form' do
+      expect(response).to render_template(:partial => '_filters.html.haml')
+    end
   end
 
   describe 'no sponsors exist' do
     before :each do
-      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: [], :filters => Sponsor::DEFAULT_FILTERS}
+      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: [], filters: {}}
     end
 
     it 'should indicate no sponsors were found' do
@@ -40,14 +43,17 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     it 'should not have pagination buttons' do
       expect(rendered).to_not have_selector('div.pagination')
     end
+
+    it 'should not have filters form' do
+      expect(response).to_not render_template(:partial => '_filters.html.haml')
+    end
   end
 
   describe 'required attributes:' do
     let(:sponsor) { FactoryGirl.build_stubbed(:sponsor) }
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1),
-                                                                       :filters => Sponsor::DEFAULT_FILTERS}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1)}
     end
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|
@@ -65,7 +71,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
 
     it 'shows yes/no & numbers of active & requested sponsorships' do
       render :partial => 'hq/sponsors/sponsors.html.haml',
-        :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1), :filters => Sponsor::DEFAULT_FILTERS }
+        :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1) }
 
       expect(rendered).to have_text 'No (2/7)'
       expect(rendered).to have_text 'Yes (4/4)'
