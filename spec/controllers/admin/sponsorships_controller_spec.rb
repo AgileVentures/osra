@@ -143,7 +143,7 @@ describe Admin::SponsorshipsController, type: :controller do
       context 'when request was not fulfilled' do
         before(:each) do
           expect(sponsor).to receive(:request_fulfilled).and_return false
-          expect(orphan).to receive(:name).and_return 'first orphan'
+          expect(orphan).to receive(:full_name).and_return 'first orphan'
 
           post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
         end
