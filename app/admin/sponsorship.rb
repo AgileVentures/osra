@@ -9,12 +9,13 @@ ActiveAdmin.register Sponsorship do
   controller do
     def create
       sponsor = Sponsor.find(params[:sponsor_id])
+      orphan = Orphan.find(params[:orphan_id])
       sponsorship = sponsor.sponsorships.build(orphan_id: params[:orphan_id],
                                                start_date: params[:sponsorship_start_date])
 
       @sponsorship_creator = CreateSponsorship.new(sponsorship)
 
-      create_sponsorship_for(sponsor) or
+      create_sponsorship_for(sponsor, orphan) or
         redirect_back_to_new_sponsorship_for(sponsor)
     end
 
@@ -40,13 +41,14 @@ ActiveAdmin.register Sponsorship do
 
     private
 
-    def create_sponsorship_for(sponsor)
+    def create_sponsorship_for(sponsor, orphan)
       if @sponsorship_creator.call
         if sponsor.request_fulfilled
           flash[:success] = 'Sponsorship link was successfully created.'
           redirect_to admin_sponsor_path(sponsor)
         else
-          redirect_back_to_new_sponsorship_for(sponsor)
+          flash[:success] = "Sponsorship link was successfully created for #{orphan.full_name}"
+          redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
         end
       end
     end

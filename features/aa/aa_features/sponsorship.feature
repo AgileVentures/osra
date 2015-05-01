@@ -67,10 +67,12 @@ Feature:
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the Link to Orphan page for sponsor "First Sponsor"
     And I should see "Return to Sponsor page"
+    And I should see "Sponsorship link was successfully created for First Orphan"
     And I fill in Sponsorship Start Date for "Second Orphan" with "2014-01-31"
     When I click the "Sponsor this orphan" link for orphan "Second Orphan"
     Then I should be on the Link to Orphan page for sponsor "First Sponsor"
     And I should see "No Orphans found"
+    And I should see "Sponsorship link was successfully created for Second Orphan"
     When I click the "First Sponsor" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
@@ -126,6 +128,7 @@ Feature:
     When I click the "Sponsor this orphan" link for orphan "First Orphan"
     Then I should be on the Link to Orphan page for sponsor "First Sponsor"
     Then I should see "Return to Sponsor page"
+    And I should see "Sponsorship link was successfully created for First Orphan"
     When I click the "Return to Sponsor page" link
     Then I should be on the "Show Sponsor" page for sponsor "First Sponsor"
     And I should see "First Orphan" within "Currently Sponsored Orphans"
