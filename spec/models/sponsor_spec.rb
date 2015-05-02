@@ -346,6 +346,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'scopes' do
+      let(:sponsor) { create :sponsor}    #? random list and filter only on one ?
       let(:active_sponsor) { create :sponsor, status: active_status }
       let(:inactive_sponsor) { create :sponsor, status: inactive_status }
       let(:on_hold_sponsor) { create :sponsor, status: on_hold_status }
@@ -356,6 +357,82 @@ describe Sponsor, type: :model do
 
       specify '.all_inactive should return sponsors with Inactive status only' do
         expect(Sponsor.all_inactive).to match_array [inactive_sponsor]
+      end
+
+      describe '.filter' do
+        before :each do
+          @filter_params = {
+            name_option: "",
+            name_value: nil,
+            gender: sponsor.gender,
+            branch: sponsor.branch_id,
+            organization: sponsor.organization_id,
+            status: sponsor.status_id,
+            sponsor_type: sponsor.sponsor_type_id,
+            agent: sponsor.agent_id,
+            city: sponsor.city,
+            country: sponsor.country,
+            created_at_from: sponsor.created_at - 1.day,
+            created_at_until: sponsor.created_at + 1.day,
+            updated_at_from: sponsor.updated_at - 1.day,
+            updated_at_until: sponsor.updated_at + 1.day,
+            start_date_from: sponsor.start_date - 1.day,
+            start_date_until: sponsor.start_date + 1.day,
+            request_fulfilled: sponsor.request_fulfilled,
+            active_sponsorship_count_option: "",
+            active_sponsorship_count_value: nil
+          }
+        end
+
+        specify "valid fields" do
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "name_option: eqauls" do
+          @filter_params[:name_option] = "equals"
+          @filter_params[:name_value] = sponsor.name
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "name_option: contains" do
+          @filter_params[:name_option] = "contains"
+          @filter_params[:name_value] = sponsor.name[0..1]
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "name_option: starts_with" do
+          @filter_params[:name_option] = "starts_with"
+          @filter_params[:name_value] = sponsor.name[0]
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "name_option: ends_with" do
+          @filter_params[:name_option] = "ends_with"
+          @filter_params[:name_value] = sponsor.name[-1]
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "active_sponsorship_count_option: greather_than" do
+          @filter_params[:active_sponsorship_count_option] = "equal"
+          @filter_params[:active_sponsorship_count_value] = sponsor.active_sponsorship_count
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "active_sponsorship_count_option: greather_than" do
+          @filter_params[:active_sponsorship_count_option] = "greather_than"
+          @filter_params[:active_sponsorship_count_value] = sponsor.active_sponsorship_count - 1
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "active_sponsorship_count_option: less_than" do
+          @filter_params[:active_sponsorship_count_option] = "less_than"
+          @filter_params[:active_sponsorship_count_value] = sponsor.active_sponsorship_count + 1
+          expect(Sponsor.filter @filter_params).to eq [sponsor]
+        end
+
+        specify "no params" do
+          expect(Sponsor.filter({})).to eq Sponsor
+        end
       end
     end
   end

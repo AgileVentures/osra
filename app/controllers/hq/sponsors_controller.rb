@@ -3,7 +3,7 @@ class Hq::SponsorsController < HqController
     redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
 
     @filters = filters_params
-    @sponsors = Sponsor.paginate(:page => params[:page])
+    @sponsors = Sponsor.filter(@filters).paginate(:page => params[:page])
   end
 
   def show
