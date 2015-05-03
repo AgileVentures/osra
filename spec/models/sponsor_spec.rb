@@ -346,7 +346,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'scopes' do
-      let(:sponsor) { create :sponsor}    #? random list and filter only on one ?
+      let(:sponsor) { create :sponsor }
       let(:active_sponsor) { create :sponsor, status: active_status }
       let(:inactive_sponsor) { create :sponsor, status: inactive_status }
       let(:on_hold_sponsor) { create :sponsor, status: on_hold_status }
@@ -361,27 +361,7 @@ describe Sponsor, type: :model do
 
       describe '.filter' do
         before :each do
-          @filter_params = {
-            name_option: "",
-            name_value: nil,
-            gender: sponsor.gender,
-            branch: sponsor.branch_id,
-            organization: sponsor.organization_id,
-            status: sponsor.status_id,
-            sponsor_type: sponsor.sponsor_type_id,
-            agent: sponsor.agent_id,
-            city: sponsor.city,
-            country: sponsor.country,
-            created_at_from: sponsor.created_at - 1.day,
-            created_at_until: sponsor.created_at + 1.day,
-            updated_at_from: sponsor.updated_at - 1.day,
-            updated_at_until: sponsor.updated_at + 1.day,
-            start_date_from: sponsor.start_date - 1.day,
-            start_date_until: sponsor.start_date + 1.day,
-            request_fulfilled: sponsor.request_fulfilled,
-            active_sponsorship_count_option: "",
-            active_sponsorship_count_value: nil
-          }
+          @filter_params = build :sponsor_filter, sponsor: sponsor
         end
 
         specify "valid fields" do

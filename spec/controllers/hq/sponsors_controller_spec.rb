@@ -22,13 +22,14 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     end
 
     specify "Filter" do
-      filters = {name_value: "John"}
+      filter = build :sponsor_filter
       expect(Sponsor).to receive_message_chain(:filter,:paginate).with(page: "1").and_return( sponsors )
-      get :index, {page: 1, filters: filters, commit: "Filter"}
-      expect(assigns(:filters)[:name_value]).to eq "John"
+      get :index, {page: 1, filters: filter, commit: "Filter"}
+      expect(assigns(:filters)[:name_value]).to eq filter[:name_value]
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
     end
+
     specify "Clear Filters" do
       get :index, {page: 1, commit: "Clear Filters"}
       expect(response).to redirect_to hq_sponsors_path
