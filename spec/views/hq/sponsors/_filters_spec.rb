@@ -24,23 +24,17 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
 
       #text fields
-      ["name_value", "created_at_from", "created_at_until", "updated_at_from", "updated_at_until",
-        "start_date_from", "start_date_until", "active_sponsorship_count_value"].each do |field|
-        expect(rendered).to have_selector("input[id='filters_#{field}']")
-        expect(rendered).to_not have_selector("input[id='filters_#{field}'][value]")
+      [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
+        :start_date_from, :start_date_until, :active_sponsorship_count_value].each do |field|
+          expect(rendered).to have_selector("input[name='filters[#{field.to_s}]']")
+          expect(rendered).to_not have_selector("input[name='filters[#{field.to_s}]'][value]")
       end
 
       #select fields
-      expect(rendered).to have_select("filters_name_option", options: ["Contains", "Equals", "Starts with", "Ends width"])
-      expect(rendered).to have_select("filters_gender", options: ["Any"] + Settings.lookup.gender)
-      expect(rendered).to have_select("filters_branch", options: ["Any","branch1","branch2", sponsors_filters[:branch_id].to_s])
-      expect(rendered).to have_select("filters_organization", options: ["Any","organization1","organization2", sponsors_filters[:organization_id].to_s])
-      expect(rendered).to have_select("filters_status", options: ["Any","status1","status2", sponsors_filters[:status_id].to_s])
-      expect(rendered).to have_select("filters_sponsor_type", options: ["Any","sponsor_type1","sponsor_type2", sponsors_filters[:sponsor_type_id].to_s])
-      expect(rendered).to have_select("filters_agent", options: ["Any","agent1","agent2", sponsors_filters[:agent_id].to_s])
-      expect(rendered).to have_select("filters_country", options: ["Any","country1","country2", sponsors_filters[:country].to_s])
-      expect(rendered).to have_select("filters_city", options: ["Any","city1", "city2", sponsors_filters[:city].to_s])
-      expect(rendered).to have_select("filters_request_fulfilled", options: ["Any","Yes", "No"])
+      [:name_option, :gender, :branch_id, :organization_id, :status_id, :sponsor_type_id, :agent_id, :country, :city, :request_fulfilled, :active_sponsorship_count_option]. each do |field|
+        expect(rendered).to have_selector("select[name='filters[#{field.to_s}]']")
+        expect(rendered).to_not have_selector("select[name='filters[#{field.to_s}]'] option[selected]")
+      end
     end
 
     specify "filled" do
@@ -49,16 +43,21 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
         :start_date_from, :start_date_until, :active_sponsorship_count_value].each do |field|
-        expect(rendered).to have_selector("input[id='filters_#{field.to_s}'][value='#{sponsors_filters[field]}']") if sponsors_filters[field]
+        expect(rendered).to have_selector("input[name='filters[#{field.to_s}]'][value='#{sponsors_filters[field]}']") if sponsors_filters[field]
       end
 
       #select fields
-      [:gender, :branch, :organization, :status, :sponsor_type, :agent, :country, :city].each do |field|
-        expect(rendered).to have_select("filters_#{field.to_s}", selected: sponsors_filters[field]) if sponsors_filters[field]
-      end
-      expect(rendered).to have_select("filters_name_option", selected: "Equals")
-      expect(rendered).to have_select("filters_request_fulfilled", selected: "No")
-      expect(rendered).to have_select("filters_active_sponsorship_count_option", selected: "Greather than")
+      expect(rendered).to have_select("filters[gender]", selected: sponsors_filters[:gender])
+      expect(rendered).to have_selector("select[name='filters[branch_id]'] option[value='#{sponsors_filters[:branch_id]}'][selected]") if sponsors_filters[:branch_id]
+      expect(rendered).to have_selector("select[name='filters[organization_id]'] option[value='#{sponsors_filters[:organization_id]}'][selected]") if sponsors_filters[:organization_id]
+      expect(rendered).to have_selector("select[name='filters[status_id]'] option[value='#{sponsors_filters[:status_id]}'][selected]")
+      expect(rendered).to have_selector("select[name='filters[sponsor_type_id]'] option[value='#{sponsors_filters[:sponsor_type_id]}'][selected]")
+      expect(rendered).to have_selector("select[name='filters[agent_id]'] option[value='#{sponsors_filters[:agent_id]}'][selected]")
+      expect(rendered).to have_selector("select[name='filters[country]'] option[value='#{sponsors_filters[:country]}'][selected]")
+      expect(rendered).to have_select("filters[city]", selected: sponsors_filters[:city])
+      expect(rendered).to have_select("filters[name_option]", selected: "Equals")
+      expect(rendered).to have_select("filters[request_fulfilled]", selected: (sponsors_filters[:request_fulfilled] ? "Yes" : "No"))
+      expect(rendered).to have_select("filters[active_sponsorship_count_option]", selected: "Greather than")
     end
   end
 

@@ -44,8 +44,8 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
       expect(rendered).to_not have_selector('div.pagination')
     end
 
-    it 'should not have filters form' do
-      expect(response).to_not render_template(:partial => '_filters.html.haml')
+    it 'should have filters form' do
+      expect(response).to render_template(:partial => '_filters.html.haml')
     end
   end
 

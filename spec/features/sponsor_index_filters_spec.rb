@@ -32,11 +32,11 @@ def when_i_fill_in_sponsor_filter_form
     fill_in "filters[name_value]", with: sponsor_filter[:name_value]
 
     select sponsor_filter[:gender], from: 'filters[gender]'
-    find("select[name='filters[branch]']").find("option[value='#{sponsor_filter[:branch_id]}']").select_option if sponsor_filter[:branch_id]
-    find("select[name='filters[organization]']").find("option[value='#{sponsor_filter[:organization_id]}']").select_option if sponsor_filter[:organization_id]
-    find("select[name='filters[status]']").find("option[value='#{sponsor_filter[:status_id]}']").select_option
-    find("select[name='filters[sponsor_type]']").find("option[value='#{sponsor_filter[:sponsor_type_id]}']").select_option
-    find("select[name='filters[agent]']").find("option[value='#{sponsor_filter[:agent_id]}']").select_option
+    find("select[name='filters[branch_id]']").find("option[value='#{sponsor_filter[:branch_id]}']").select_option if sponsor_filter[:branch_id]
+    find("select[name='filters[organization_id]']").find("option[value='#{sponsor_filter[:organization_id]}']").select_option if sponsor_filter[:organization_id]
+    find("select[name='filters[status_id]']").find("option[value='#{sponsor_filter[:status_id]}']").select_option
+    find("select[name='filters[sponsor_type_id]']").find("option[value='#{sponsor_filter[:sponsor_type_id]}']").select_option
+    find("select[name='filters[agent_id]']").find("option[value='#{sponsor_filter[:agent_id]}']").select_option
     find("select[name='filters[country]']").find("option[value='#{sponsor_filter[:country]}']").select_option
     select sponsor_filter[:city], from: 'filters[city]'
 
@@ -83,15 +83,15 @@ def and_i_should_see_filters_form_filled
 
     #select fields
     expect(page).to have_select("filters[gender]", selected: sponsor_filter[:gender])
-    expect(page.find("select[name='filters[branch]']"))
+    expect(page.find("select[name='filters[branch_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:branch_id]}'][selected]") if sponsor_filter[:branch_id]
-    expect(page.find("select[name='filters[organization]']"))
+    expect(page.find("select[name='filters[organization_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:organization_id]}'][selected]") if sponsor_filter[:organization_id]
-    expect(page.find("select[name='filters[status]']"))
+    expect(page.find("select[name='filters[status_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:status_id]}'][selected]")
-    expect(page.find("select[name='filters[sponsor_type]']"))
+    expect(page.find("select[name='filters[sponsor_type_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:sponsor_type_id]}'][selected]")
-    expect(page.find("select[name='filters[agent]']"))
+    expect(page.find("select[name='filters[agent_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:agent_id]}'][selected]")
     expect(page.find("select[name='filters[country]']"))
         .to have_selector("option[value='#{sponsor_filter[:country]}'][selected]")
@@ -103,7 +103,6 @@ def and_i_should_see_filters_form_filled
   end
 end
 
-
 def then_i_should_see_filters_form_clear
   within "#filters" do
     #text fields
@@ -114,7 +113,7 @@ def then_i_should_see_filters_form_clear
     end
 
     #select fields
-    [:name_option, :gender, :branch, :organization, :status, :sponsor_type, :agent, :country, :city, :request_fulfilled, :active_sponsorship_count_option]. each do |field|
+    [:name_option, :gender, :branch_id, :organization_id, :status_id, :sponsor_type_id, :agent_id, :country, :city, :request_fulfilled, :active_sponsorship_count_option]. each do |field|
       expect(page).to have_selector("select[name='filters[#{field.to_s}]']")
       expect(page.find("select[name='filters[#{field.to_s}]']")).to_not have_selector("option[selected]")
     end

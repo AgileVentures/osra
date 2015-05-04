@@ -25,7 +25,11 @@ RSpec.describe Hq::SponsorsController, type: :controller do
       filter = build :sponsor_filter
       expect(Sponsor).to receive_message_chain(:filter,:paginate).with(page: "1").and_return( sponsors )
       get :index, {page: 1, filters: filter, commit: "Filter"}
-      expect(assigns(:filters)[:name_value]).to eq filter[:name_value]
+
+      filter.each_key do |k|
+        expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
+      end
+
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
     end

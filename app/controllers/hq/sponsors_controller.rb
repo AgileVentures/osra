@@ -88,8 +88,8 @@ private
   def filters_params
     params[:filters] ||= {}
     permited_filters = params[:filters]
-          .permit(:name_option, :name_value, :gender, :branch, :organization, :status,
-           :sponsor_type, :agent, :city, :country, :created_at_from, :created_at_until,
+          .permit(:name_option, :name_value, :gender, :branch_id, :organization_id, :status_id,
+           :sponsor_type_id, :agent_id, :city, :country, :created_at_from, :created_at_until,
            :updated_at_from, :updated_at_until, :start_date_from, :start_date_until,
            :request_fulfilled, :active_sponsorship_count_option, :active_sponsorship_count_value)
           .transform_values {|v| v=="" ? nil : v}

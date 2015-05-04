@@ -77,11 +77,11 @@ class Sponsor < ActiveRecord::Base
       _Sponsor = _Sponsor.where("name ~ ?", "#{filters[:name_value]}$") if (filters[:name_value] && filters[:name_option]=="ends_with")
 
       _Sponsor = _Sponsor.where("gender LIKE ?", filters[:gender]) if filters[:gender]
-      _Sponsor = _Sponsor.where("branch_id = ?", filters[:branch]) if filters[:branch]
-      _Sponsor = _Sponsor.where("organization_id = ?", filters[:organization]) if filters[:organization]
-      _Sponsor = _Sponsor.where("status_id = ?", filters[:status]) if filters[:status]
-      _Sponsor = _Sponsor.where("sponsor_type_id = ?", filters[:sponsor_type]) if filters[:sponsor_type]
-      _Sponsor = _Sponsor.where("agent_id = ?", filters[:agent]) if filters[:agent]      # sponsor = sponsor.where(agent: filters[:agent]) if filters[:agent]
+      _Sponsor = _Sponsor.where("branch_id = ?", filters[:branch_id]) if filters[:branch_id]
+      _Sponsor = _Sponsor.where("organization_id = ?", filters[:organization_id]) if filters[:organization_id]
+      _Sponsor = _Sponsor.where("status_id = ?", filters[:status_id]) if filters[:status_id]
+      _Sponsor = _Sponsor.where("sponsor_type_id = ?", filters[:sponsor_type_id]) if filters[:sponsor_type_id]
+      _Sponsor = _Sponsor.where("agent_id = ?", filters[:agent_id]) if filters[:agent_id]
       _Sponsor = _Sponsor.where("city LIKE ?", filters[:city]) if filters[:city]
       _Sponsor = _Sponsor.where("country LIKE ?", filters[:country]) if filters[:country]
 
