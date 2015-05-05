@@ -94,10 +94,10 @@ class Sponsor < ActiveRecord::Base
 
       _Sponsor = _Sponsor.where("request_fulfilled = ?", filters[:request_fulfilled]) if filters[:request_fulfilled]
 
-      _Sponsor = _Sponsor.where("active_sponsorship_count = ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_value]=="equals")
-      _Sponsor = _Sponsor.where("active_sponsorship_count > ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_value]=="greather_than")
-      _Sponsor = _Sponsor.where("active_sponsorship_count < ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_value]=="less_than")
-      _Sponsor
+      _Sponsor = _Sponsor.where("active_sponsorship_count = ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_option]=="equals")
+      _Sponsor = _Sponsor.where("active_sponsorship_count > ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_option]=="greather_than")
+      _Sponsor = _Sponsor.where("active_sponsorship_count < ?", filters[:active_sponsorship_count_value]) if (filters[:active_sponsorship_count_value] && filters[:active_sponsorship_count_option]=="less_than")
+      _Sponsor.all
   end
 
 private
