@@ -4,11 +4,13 @@ include Devise::TestHelpers
 describe Admin::SponsorshipsController, type: :controller do
 
   let(:sponsor) { instance_double Sponsor }
+  let(:orphan) { instance_double Orphan }
   let(:sponsorship) { instance_double Sponsorship }
 
   before(:each) do
     sign_in instance_double(AdminUser)
     allow(Sponsor).to receive(:find).with('1').and_return sponsor
+    allow(Orphan).to receive(:find).with('1').and_return orphan
   end
 
   describe '#inactivate' do
@@ -117,20 +119,43 @@ describe Admin::SponsorshipsController, type: :controller do
     end
 
     context 'when successful' do
-
       before(:each) do
         expect(sponsorship_creator).to receive(:call).and_return true
-
-        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
-      it 'sets flash[:success] message' do
-        expect(flash[:success]).not_to be_nil
-        expect(flash[:warning]).to be_nil
+      context 'when request was fulfilled' do
+        before(:each) do
+          expect(sponsor).to receive(:request_fulfilled).and_return true
+
+          post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+        end
+
+        it 'sets flash[:success] message' do
+          expect(flash[:success]).not_to be_nil
+          expect(flash[:warning]).to be_nil
+        end
+
+        it 'redirects to sponsor show view' do
+          expect(response).to redirect_to admin_sponsor_path(sponsor)
+        end
       end
 
-      it 'redirects to sponsor show view' do
-        expect(response).to redirect_to admin_sponsor_path(sponsor)
+      context 'when request was not fulfilled' do
+        before(:each) do
+          expect(sponsor).to receive(:request_fulfilled).and_return false
+          expect(orphan).to receive(:full_name).and_return 'first orphan'
+
+          post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+        end
+
+        it 'sets flash[:warning] message' do
+          expect(flash[:success]).not_to be_nil
+          expect(flash[:warning]).to be_nil
+        end
+
+        it 'redirects back to sponsorship view' do
+          expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        end
       end
     end
 
@@ -139,7 +164,7 @@ describe Admin::SponsorshipsController, type: :controller do
         expect(sponsorship_creator).to receive(:call).and_return false
         expect(sponsorship_creator).to receive(:error_msg).and_return 'No go'
 
-        post :create, { id: 1, sponsor_id: 1, start_date: '1-1-2013' }
+        post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
       it 'sets flash[:warning] message' do
