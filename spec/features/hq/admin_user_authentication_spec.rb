@@ -4,38 +4,24 @@ RSpec.feature 'AdminUser authentication', :type => :feature do
 
   scenario 'Restricted pages should be accessible to logged in users' do
     i_sign_in_as_admin
-    and_i_should_be_on_root_page
+    and_i_should_be_on :root_page
   end
 
   scenario 'Restricted pages should not be accessible to logged out users' do
     i_sign_in_as_admin
     i_sign_out
-    and_i_should_be_on_sign_in_page
-    and_i_should_not_have_access_to_application
+    and_i_should_be_on :sign_in_page
+    and_i_should_not_have_access_to_restricted_application_pages
   end
-end
 
-def i_sign_in_as_admin
-  admin = FactoryGirl.create :admin_user
-  visit new_hq_admin_user_session_path
-  fill_in 'Email', with: admin.email
-  fill_in 'Password', with: admin.password
-  click_button 'Log in'
-end
+  scenario 'Logging in only possible with correct credentials' do
+    i_sign_in_with_wrong_credentials
+    and_i_should_be_on :sign_in_page
+    and_i_should_see "Invalid email or password"
+  end
 
-def i_sign_out
-  click_link 'logout'
-end
-
-def and_i_should_be_on_root_page
-  expect(current_path).to eq hq_root_path
-end
-
-def and_i_should_be_on_sign_in_page
-  expect(current_path).to eq new_hq_admin_user_session_path
-end
-
-def and_i_should_not_have_access_to_application
-  visit hq_root_path
-  expect(current_path).to eq new_hq_admin_user_session_path
+  def and_i_should_not_have_access_to_restricted_application_pages
+    visit hq_root_path
+    expect(current_path).to eq new_hq_admin_user_session_path
+  end
 end
