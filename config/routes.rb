@@ -3,7 +3,7 @@ Osra::Application.routes.draw do
   devise_for :admin_users, path: "hq", as: "hq", path_names: { sign_in: 'login', sign_out: 'logout' },
                            :controllers => { :sessions => "hq/devise/sessions" }
   namespace :hq do
-    root to: "sponsors#index"                 #should be changed to "dashboard" when implemented"
+    root to: "sponsors#index"
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
       resources :pending_orphan_lists do
