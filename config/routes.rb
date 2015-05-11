@@ -12,11 +12,14 @@ Osra::Application.routes.draw do
     end
     resources :users, except: [:destroy]
     resources :sponsors, except: [:destroy] do
-      resources :sponsorships, only: :destroy , shallow: true do
+      resources :sponsorships, only: [:create, :destroy] , shallow: true do
         put "inactivate", on: :member
       end
     end
     resources :orphans, except: [:new, :create, :destroy]
+
+    #build a new sponsorship on the Orphan class instead of the Sponsorship class
+    get '/hq/sponsors/:sponsor_id/sponsorships/new', to: 'orphans#index', as: :new_sponsorship
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
