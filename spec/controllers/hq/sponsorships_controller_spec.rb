@@ -56,7 +56,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
         end
 
         it 'redirects back to sponsorship view' do
-          expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+          expect(response).to redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
         end
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       end
 
       it 'redirects to new sponsorship view' do
-        expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        expect(response).to redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end

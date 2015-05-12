@@ -39,14 +39,14 @@ class Hq::SponsorshipsController < HqController
         redirect_to hq_sponsor_path(sponsor)
       else
         flash[:success] = "Sponsorship link was successfully created for #{orphan.full_name}"
-        redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end
 
   def redirect_back_to_new_sponsorship_for(sponsor)
     flash[:warning] = @sponsorship_creator.error_msg
-    redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+    redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
   end
 
   def inactivate_sponsorship
