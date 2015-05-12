@@ -12,7 +12,7 @@
     <div class="container-fluid">
       <%= render 'layouts/header' %>
       <div class="row">
-        <%= render 'layouts/navigation' %>
+        <%= render 'layouts/navigation' unless devise_controller? %>
         <div class="content">
           <%= render 'layouts/flashes' %>
           <%= yield %>

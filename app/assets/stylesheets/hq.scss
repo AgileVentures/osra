@@ -13,11 +13,7 @@ nav.osra-nav-header {
   padding-right: 0px;
 }
 
-ul.nav li {
-  text-align: center;
-}
-
-ul.nav li a {
+ul.nav-stacked li a {
   text-align: center;
   padding-left: 0px;
   padding-right: 0px;
@@ -36,4 +32,10 @@ ul.nav li a {
 .required_field::after {
   content: " (required)";
   @extend .text-danger;
+}
+
+.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding-left: 80px;
 }
