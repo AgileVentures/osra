@@ -2,15 +2,15 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">OSRA Support System</a>
+      <a class="navbar-brand" href= "<%= hq_root_path %>">OSRA Support System</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <% if admin_user_signed_in?  %>
-          <li> <%= link_to current_admin_user.email, admin_admin_user_path(current_admin_user.id) %></li>
-          <li> <%= link_to 'logout', :destroy_admin_user_session %> </li>
+        <% if hq_admin_user_signed_in?  %>
+          <li> <%= link_to current_hq_admin_user.email, admin_admin_user_path(current_hq_admin_user.id) %></li>
+          <li> <%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %> </li>
         <% end %>
       </ul>
   </div><!-- /.container-fluid -->

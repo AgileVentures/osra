@@ -42,6 +42,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   #config.infer_spec_type_from_file_location!
 
+  # Feature helpers
+  config.include FeatureHelpers::Authentication, type: :feature
+  config.include FeatureHelpers::Navigation, type: :feature
+
   # Use FactoryGirl methods without prefacing them with 'FactoryGirl.'
   config.include FactoryGirl::Syntax::Methods
 

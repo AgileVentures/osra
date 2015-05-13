@@ -6,6 +6,6 @@ describe 'visiting the homepage', type: :request do
   end
 
   it 'should show the login page' do
-    expect(response.body).to include('Osra Login')
+    expect(response.body).to include('Login')
   end
 end

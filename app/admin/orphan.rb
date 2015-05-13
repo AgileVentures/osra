@@ -252,6 +252,12 @@ ActiveAdmin.register Orphan do
         form_submit_route= admin_sponsor_sponsorships_path(sponsor_id: sponsor.id).to_s
         panel 'Sponsor', id: 'new_sponsor_panel' do
           h3 sponsor.name
+          text_node 'Request Fulfilled:'
+          label = sponsor.request_fulfilled ? 'Yes' : 'No'
+          label << %Q%
+             (#{sponsor.active_sponsorship_count}/#{sponsor.requested_orphan_count})
+          %
+          status_tag(sponsor.request_fulfilled ? 'yes' : 'no', label: label)
           para sponsor.additional_info
           para link_to 'Return to Sponsor page', admin_sponsor_path(sponsor)
         end
