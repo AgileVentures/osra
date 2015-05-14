@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if hq_admin_user_signed_in?  %>
-          <li> <%= link_to current_hq_admin_user.email, admin_admin_user_path(current_hq_admin_user.id) %></li>
+          <li><p class="nav navbar-text"> <%= current_hq_admin_user.email %></p></li>
           <li> <%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %> </li>
         <% end %>
       </ul>

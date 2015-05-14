@@ -8,7 +8,7 @@ RSpec.describe 'layouts/_header.html.erb', type: :view do
 
   it 'should show header information' do
     render
-    expect(rendered).to have_link(@admin.email, href: admin_admin_user_path(@admin.id))
+    expect(rendered).to match @admin.email
     expect(rendered).to have_link('logout', href: destroy_hq_admin_user_session_path)
   end
 end

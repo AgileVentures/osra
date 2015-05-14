@@ -34,8 +34,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
 
       render
 
-      expect(rendered).to have_link admin_user.email,
-        hq_admin_user_path(admin_user)
+      expect(rendered).to match admin_user.email
     end
 
     describe 'instance action links' do
