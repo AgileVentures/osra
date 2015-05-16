@@ -1,4 +1,4 @@
-<%- if @sponsor %>
+<% if @sponsor %>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
@@ -30,11 +30,17 @@
         <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
                     hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
                     class: 'btn btn-default', role: 'button' %>
+        <%= link_to 'Sponsored (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                    hq_orphans_path(scope: :sponsored),
+                    class: 'btn btn-default', role: 'button' %>
     <%- else %>
         <%= link_to 'All (' + @orphans_count.to_s + ')', hq_orphans_path(scope: :all),
                     class: 'btn btn-default', role: 'button' %>
         <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
                     hq_orphans_path(scope: :eligible_for_sponsorship),
+                    class: 'btn btn-default', role: 'button' %>
+        <%= link_to 'Sponsored (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                    hq_orphans_path(scope: :sponsored),
                     class: 'btn btn-default', role: 'button' %>
     <%- end %>
   </div>
@@ -150,9 +156,11 @@
           </tr>
         <%- end %>
       </tbody>
-    </table>
+ 
+   </table>
   </div>
   <div class="pagination">
     <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
   </div>
 <%- end %>
+

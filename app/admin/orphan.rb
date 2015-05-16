@@ -64,7 +64,8 @@ ActiveAdmin.register Orphan do
   config.sort_order= ''
   scope :all, default: true, show_count: true
   scope :eligible_for_sponsorship, :sort_by_eligibility, default: false, show_count: true
-
+  scope :sponsored, default: false, show_count: true
+  
   permit_params :name, :father_name, :father_given_name, :family_name, :father_is_martyr,
                 :father_occupation, :father_place_of_death, :father_cause_of_death,
                 :father_date_of_death, :mother_name, :mother_alive, :father_deceased,
