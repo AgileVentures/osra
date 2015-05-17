@@ -191,4 +191,42 @@ RSpec.describe SponsorAttrFilter do
       end
     end
   end
+
+  describe 'SponsorAttrFilter::WhereWithCondition module' do
+    describe ".where_with_condition method" do
+      class TestClass
+        include SponsorAttrFilter::WhereWithCondition
+
+        def where(q)
+        end
+      end
+
+      let(:test_instance) {TestClass.new}
+      let(:active_relation_instance_double) {instance_double Sponsor::ActiveRecord_Relation}
+
+      it "method should exist" do
+        expect(TestClass.instance_methods.include? :where_with_condition).to be true
+      end
+
+      it "should return an ActiveRecord_Relation when conditions are met" do
+        expect(test_instance).to receive(:where).and_return(active_relation_instance_double)
+
+        expect(test_instance.where_with_condition([],[true])).to be active_relation_instance_double
+      end
+
+      it "should return self when conditions are not met" do
+        expect(test_instance.where_with_condition([],[false])).to be test_instance
+      end
+    end
+
+    describe "should extend" do
+      specify "Sponsor class methods" do
+        expect(Sponsor.methods.include? :where_with_condition).to be true
+      end
+
+      specify "Sponsor::ActiveRecord_Relation instance methods" do
+        expect(Sponsor::ActiveRecord_Relation.instance_methods.include? :where_with_condition).to be true
+      end
+    end
+  end
 end
