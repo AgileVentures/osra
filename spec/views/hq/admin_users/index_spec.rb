@@ -30,7 +30,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
     end
 
     it 'should render user info' do
-      allow(view).to receive(:current_admin_user).and_return(nil)
+      allow(view).to receive(:current_hq_admin_user).and_return(nil)
 
       render
 
@@ -39,7 +39,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
 
     describe 'instance action links' do
       it 'should render Edit' do
-        allow(view).to receive(:current_admin_user).and_return(nil)
+        allow(view).to receive(:current_hq_admin_user).and_return(nil)
 
         render
 
@@ -48,7 +48,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
       end
 
       it 'should render Delete for non-signed-in admin users' do
-        allow(view).to receive(:current_admin_user).and_return(nil)
+        allow(view).to receive(:current_hq_admin_user).and_return(nil)
 
         render
 
@@ -57,7 +57,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
       end
 
       it 'should not render Delete for signed-in admin user' do
-        allow(view).to receive(:current_admin_user).and_return(admin_user)
+        allow(view).to receive(:current_hq_admin_user).and_return(admin_user)
 
         render
 
