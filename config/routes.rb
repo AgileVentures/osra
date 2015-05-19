@@ -11,7 +11,19 @@ Osra::Application.routes.draw do
       end
     end
     resources :users, except: [:destroy]
+<<<<<<< HEAD
     resources :sponsors, except: [:destroy]
+=======
+    resources :sponsors, except: [:destroy] do
+      resources :sponsorships, only: [:create, :destroy] , shallow: true do
+        put "inactivate", on: :member
+      end
+    end
+    resources :orphans, except: [:new, :create, :destroy]
+
+    #build a new sponsorship on the Orphan class instead of the Sponsorship class
+    get '/sponsors/:sponsor_id/sponsorships/new', to: 'orphans#index', as: :new_sponsorship
+>>>>>>> b52b4e0... Fixed a view's test and added integration test
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config

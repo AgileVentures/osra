@@ -1,7 +1,14 @@
 %div.action_items
   %div.instance
+<<<<<<< HEAD
     = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id), 
         class: 'btn btn-default', role: 'button'
+=======
+    = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id),
+      class: 'btn btn-default', role: 'button'
+    = link_to 'Link to Orphan', hq_new_sponsorship_path(@sponsor.id, scope: :eligible_for_sponsorship),
+      class: 'btn btn-default', role: 'button'
+>>>>>>> b52b4e0... Fixed a view's test and added integration test
 
 %dl.dl-horizontal
   %dt Sponsor Name
