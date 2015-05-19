@@ -1,0 +1,46 @@
+
+        <%  orphans_filter(atrr, orphans).each do |orphan| %>
+          <tr>
+            <td>
+              <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= link_to orphan.name, hq_orphan_path(orphan) %>
+            </td>
+            <td>
+              <%= orphan.father_given_name %>
+            </td>
+            <td>
+              <%= orphan.date_of_birth %>
+            </td>
+            <td>
+              <%= orphan.gender %>
+            </td>
+            <td>
+              <%= orphan.original_address.province.name %>
+            </td>
+            <td>
+              <%= orphan.orphan_list.partner.name %>
+            </td>
+            <td>
+              <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.father_deceased ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.mother_alive ? 'Yes' : 'No' %>
+            </td>
+            <td>
+              <%= orphan.priority %>
+            </td>
+            <td>
+              <%= orphan.status.humanize %>
+            </td>
+            <td>
+              <%= orphan.sponsorship_status.humanize %>
+            </td>
+          </tr>
+        <% end %>
+      
+
