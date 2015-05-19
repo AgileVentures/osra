@@ -1,0 +1,51 @@
+<div class="action_items">
+  <%= link_to 'New Admin User', new_hq_admin_user_path,
+    class: 'btn btn-default', role: 'button' %>
+</div>
+
+<div class="table-responsive">
+  <table class="table" id="admin-users-index">
+    <thead>
+      <tr>
+        <th>
+          Email
+        </th>
+        <th>
+          Current Sign In At
+        </th>
+        <th>
+          Sign In Count
+          <th>
+            Actions
+          </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @admin_users.each do |admin_user| %>
+        <tr>
+          <td>
+            <%= link_to admin_user.email, hq_admin_user_path(admin_user) %>
+          </td>
+          <td>
+            <%= admin_user.current_sign_in_at %>
+          </td>
+          <td>
+            <%= admin_user.sign_in_count %>
+          </td>
+          <td>
+            <%= link_to 'Edit', edit_hq_admin_user_path(admin_user) %>
+            &nbsp;
+            <% unless admin_user == current_admin_user %>
+              <%= link_to 'Delete', admin_user, method: :delete,
+                data: { confirm: 'Are you sure?' } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination">
+  <%= will_paginate @admin_users, renderer: BootstrapPagination::Rails %>
+</div>

@@ -20,6 +20,7 @@ Osra::Application.routes.draw do
       end
     end
     resources :orphans, except: [:new, :create, :destroy]
+    resources :admin_users, except: [:show]
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
