@@ -5,6 +5,6 @@ module SponsorshipTotalsHelper
   end
 
   def total_requested_sponsorships
-    Sponsor.pluck(:requested_orphan_count).sum
+    Sponsor.all_active.pluck(:requested_orphan_count).sum
   end
 end
