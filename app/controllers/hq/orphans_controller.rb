@@ -4,6 +4,7 @@ class Hq::OrphansController < HqController
 
   def index
     @orphans = Orphan.paginate(:page => params[:page])
+    load_scope
   end
 
   def show
@@ -22,6 +23,17 @@ class Hq::OrphansController < HqController
   end
 
 private
+
+  def load_scope
+    @orphans_all = Orphan.all().size
+    @orphans_sort_by_eligibility = Orphan.sort_by_eligibility.size
+    if params[:scope] == 'eligible_for_sponsorship'
+      @orphans = @orphans.sort_by_eligibility
+    end
+    if params[:sponsor_id]
+      @sponsor = Sponsor.find(params[:sponsor_id])
+    end
+  end
 
   def load_orphan
     @orphan = Orphan.find(params[:id])

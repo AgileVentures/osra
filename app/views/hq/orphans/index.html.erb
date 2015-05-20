@@ -1,3 +1,45 @@
+<%- if params[:sponsor_id] %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Sponsor
+        </h3>
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Name</dt>
+          <dd><%= @sponsor.name %></dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>Request Fulfilled</dt>
+          <dd><%= @sponsor.request_fulfilled ? 'Yes' : 'No'%>
+            (<%= @sponsor.active_sponsorship_count %>/<%= @sponsor.requested_orphan_count %>)
+          </dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <%= link_to 'Return to Sponsor Page', hq_sponsor_path(params[:sponsor_id]) %>
+        </dl>
+      </div>
+    </div>
+<%- end %>
+<div class="action_items">
+  <div class="instance">
+    <%- if params[:sponsor_id] %>
+        <%= link_to 'All (' + @orphans_all.to_s + ')', hq_new_sponsorship_path(scope: :all),
+                    class: 'btn btn-default', role: 'button' %>
+        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility.to_s + ')',
+                    hq_new_sponsorship_path(scope: :eligible_for_sponsorship),
+                    class: 'btn btn-default', role: 'button' %>
+    <% else %>
+        <%= link_to 'All (' + @orphans_all.to_s + ')', hq_orphans_path(scope: :all),
+                    class: 'btn btn-default', role: 'button' %>
+        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility.to_s + ')',
+                    hq_orphans_path(scope: :eligible_for_sponsorship),
+                    class: 'btn btn-default', role: 'button' %>
+    <%- end %>
+  </div>
+</div>
+
 <%- if @orphans.empty? %>
   <div class="panel-body">
     <em>No Orphans found</em>
@@ -46,11 +88,12 @@
           <th>
             Sponsorship
           </th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <%- @orphans.each do |orphan| %>
-          <tr>
+          <tr id="orphan_<%= orphan.id %>">
             <td>
               <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
             </td>
@@ -89,6 +132,21 @@
             </td>
             <td>
               <%= orphan.sponsorship_status.humanize %>
+            </td>
+            <td>
+              <%- if params[:sponsor_id] and params[:scope] == 'eligible_for_sponsorship' %>
+                  <form action=<%= "/hq/sponsors/#{@sponsor.id}/sponsorships" %> method="post">
+                    <input name="_method" type="hidden" value="post">
+                    <input name="utf8" type="hidden" value="&#x2713;" />
+                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+                    <div class="form-group">
+                      <label for="title">Beginning</label>
+                      <input name="sponsorship_start_date" type="text" value="<%= Date.current.to_s %>" class="form-control date-picker">
+                      <input name="orphan_id" type="hidden" value="<%= orphan.id %>" />
+                      <input type="submit" value="Sponsor this orphan" class="btn btn-primary" />
+                    </div>
+                  </form>
+              <%- end %>
             </td>
           </tr>
         <%- end %>

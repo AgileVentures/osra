@@ -4,7 +4,7 @@
       No currently sponsored orphans
 - else
   .table-responsive
-    %table.table
+    %table.table#currently_sponsored_orphans
       .table_title
         = "#{sponsorships.count} currently sponsored #{'orphan'.pluralize(sponsorships.count)}"
       %thead
