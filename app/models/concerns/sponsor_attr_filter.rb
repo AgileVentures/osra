@@ -1,13 +1,6 @@
 module SponsorAttrFilter
   extend ActiveSupport::Concern
 
-  module WhereWithCondition
-    # use example: Sponsor.where_with_conditions(["gender LIKE ?", params(:gender)], conditions: [params(:gender)])
-    def where_with_conditions querry=[], conditions_hash={conditions: []}
-      conditions_valid = conditions_hash[:conditions].all? {|c| c ? true : false}
-      conditions_valid ? self.where(querry) : self
-    end
-  end
   Sponsor.extend WhereWithCondition
   Sponsor::ActiveRecord_Relation.include WhereWithCondition
 
