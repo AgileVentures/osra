@@ -1,6 +1,6 @@
 require 'rails_helper' 
 
-describe 'hq/admin_users/new.html.erb', type: :view do
+describe 'hq/admin_users/edit.html.erb', type: :view do
 
   before :each do
     assign :admin_user, build_stubbed(:admin_user)
@@ -8,12 +8,12 @@ describe 'hq/admin_users/new.html.erb', type: :view do
 
   it 'renders the form, its fields and submit button' do
     render
-    expect(view).to render_template(:new)
+    expect(view).to render_template(:edit)
     expect(rendered).to have_selector("form")
     ["email", "password", "password_confirmation"].each do |field|
       expect(rendered).to have_selector("input[id='admin_user_#{field}']")
     end
-    expect(rendered).to have_selector("input[type='submit'][value='Create Admin User']")
+    expect(rendered).to have_selector("input[type='submit'][value='Update Admin User']")
   end
 
   it 'has a cancel button going to the index page' do

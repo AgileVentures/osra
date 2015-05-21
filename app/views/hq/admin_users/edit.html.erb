@@ -10,14 +10,14 @@
     <%= f.label :password, "New password" %>
     <!-- Use f.label instead of f.label_for_field because label_for is monkey-patched to add the red "(required)" -->
     <!-- for mandatory fields in the database and within edit admin user it's not necessary to update the password -->
-    <%= f.password_field :password, class: "form-control", placeholder: "***" %>
+    <%= f.password_field :password, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label_for_field :password_confirmation %>
     <%= f.password_field :password_confirmation, class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= f.submit class: "btn btn-primary" %>
+    <%= f.submit "Update Admin User", class: "btn btn-primary" %>
     <%= link_to 'Cancel', hq_admin_users_path, class: "btn btn-cancel" %>
   </div>
 <% end %>
