@@ -19,6 +19,14 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
     it 'should not indicate no orphans were found' do
       render and expect(rendered).to_not match /No Orphans found/
     end
+    
+    it 'should have a button' do
+      render and expect(rendered).to have_selector('button#all_orphans_403')
+    end
+    
+    it 'shold show all orphans' do
+      render and expect(rendered).to have_selector('td')
+    end
 
     it "calls will_paginate gem " do
       allow(view).to receive(:will_paginate).and_return('success')
