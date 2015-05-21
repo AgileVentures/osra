@@ -1,4 +1,4 @@
-<%- if params[:sponsor_id] %>
+<%- if @sponsor %>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
@@ -17,20 +17,20 @@
           </dd>
         </dl>
         <dl class="dl-horizontal">
-          <%= link_to 'Return to Sponsor Page', hq_sponsor_path(params[:sponsor_id]) %>
+          <%= link_to 'Return to Sponsor Page', hq_sponsor_path(@sponsor.id) %>
         </dl>
       </div>
     </div>
 <%- end %>
 <div class="action_items">
   <div class="instance">
-    <%- if params[:sponsor_id] %>
-        <%= link_to 'All (' + @orphans_all.to_s + ')', hq_new_sponsorship_path(scope: :all),
+    <%- if @sponsor %>
+        <%= link_to 'All (' + @orphans_all.to_s + ')', hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
                     class: 'btn btn-default', role: 'button' %>
         <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility.to_s + ')',
-                    hq_new_sponsorship_path(scope: :eligible_for_sponsorship),
+                    hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
                     class: 'btn btn-default', role: 'button' %>
-    <% else %>
+    <%- else %>
         <%= link_to 'All (' + @orphans_all.to_s + ')', hq_orphans_path(scope: :all),
                     class: 'btn btn-default', role: 'button' %>
         <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility.to_s + ')',
@@ -134,18 +134,17 @@
               <%= orphan.sponsorship_status.humanize %>
             </td>
             <td>
-              <%- if params[:sponsor_id] and params[:scope] == 'eligible_for_sponsorship' %>
-                  <form action=<%= "/hq/sponsors/#{@sponsor.id}/sponsorships" %> method="post">
-                    <input name="_method" type="hidden" value="post">
-                    <input name="utf8" type="hidden" value="&#x2713;" />
-                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+              <%- if @sponsor and @eligible_for_sponsorship %>
+                  <%= form_tag hq_sponsor_sponsorships_path(@sponsor), method: :post do %>
                     <div class="form-group">
-                      <label for="title">Beginning</label>
-                      <input name="sponsorship_start_date" type="text" value="<%= Date.current.to_s %>" class="form-control date-picker">
-                      <input name="orphan_id" type="hidden" value="<%= orphan.id %>" />
-                      <input type="submit" value="Sponsor this orphan" class="btn btn-primary" />
+                      <%= label_tag :title, 'Beginning' %>
+                      <%= text_field_tag :sponsorship_start_date,
+                                         Date.current.to_s,
+                                         class: "form-control date-picker" %>
+                      <%= hidden_field_tag :orphan_id, orphan.id %>
+                      <%= submit_tag "Sponsor this orphan", class: "btn btn-primary" %>
                     </div>
-                  </form>
+                  <% end %>
               <%- end %>
             </td>
           </tr>

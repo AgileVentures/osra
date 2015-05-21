@@ -7,7 +7,6 @@ class Hq::SponsorshipsController < HqController
     sponsorship = sponsor.sponsorships.build(orphan_id: params[:orphan_id],
                                              start_date: params[:sponsorship_start_date])
 
-
     @sponsorship_creator = CreateSponsorship.new(sponsorship)
 
     create_sponsorship_for(sponsor, orphan) or

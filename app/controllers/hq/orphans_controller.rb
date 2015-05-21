@@ -25,10 +25,11 @@ class Hq::OrphansController < HqController
 private
 
   def load_scope
-    @orphans_all = Orphan.all().size
-    @orphans_sort_by_eligibility = Orphan.sort_by_eligibility.size
+    @orphans_all = Orphan.count
+    @orphans_sort_by_eligibility = Orphan.sort_by_eligibility.count
     if params[:scope] == 'eligible_for_sponsorship'
       @orphans = @orphans.sort_by_eligibility
+      @eligible_for_sponsorship = true
     end
     if params[:sponsor_id]
       @sponsor = Sponsor.find(params[:sponsor_id])
