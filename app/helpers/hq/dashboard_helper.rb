@@ -1,0 +1,2 @@
+module Hq::DashboardHelper
+end
