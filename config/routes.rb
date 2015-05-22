@@ -1,14 +1,11 @@
 Osra::Application.routes.draw do
 
-  namespace :hq do
-  get 'dashboard/index'
-  end
 
   devise_for :admin_users, path: "hq", as: "hq", path_names: { sign_in: 'login', sign_out: 'logout' },
                            :controllers => { :sessions => "hq/devise/sessions" }
   namespace :hq do
     root to: "dashboard#index"
-    resources :dashboard, only: [:index]
+    get :dashboard, to:'dashboard#index'
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
       resources :pending_orphan_lists do
