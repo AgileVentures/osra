@@ -9,7 +9,9 @@ RSpec.describe SponsorshipTotalsHelper, :type => :helper do
   end
 
   specify 'total_requested_sponsorships returns total of requested sponsorships' do
-    allow(Sponsor).to receive(:pluck).with(:requested_orphan_count).
+    sponsors = double
+    allow(Sponsor).to receive(:all_active).and_return sponsors
+    allow(sponsors).to receive(:pluck).with(:requested_orphan_count).
       and_return([1, 3, 5])
 
     expect(total_requested_sponsorships).to eq 9
