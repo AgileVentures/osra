@@ -5,7 +5,7 @@ Osra::Application.routes.draw do
                            :controllers => { :sessions => "hq/devise/sessions" }
   namespace :hq do
     root to: "dashboard#index"
-    get :dashboard, to:'dashboard#index'
+    resources :dashboard, only: [:index]
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
       resources :pending_orphan_lists do
