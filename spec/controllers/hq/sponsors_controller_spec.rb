@@ -1,30 +1,50 @@
 require 'rails_helper'
-require 'will_paginate/array'
 
 RSpec.describe Hq::SponsorsController, type: :controller do
   let(:sponsorships_active) {build_stubbed_list :sponsorship, 3, active: true}
   let(:sponsorships_inactive) {build_stubbed_list :sponsorship, 2, active: false}
   let(:sponsor_with_sponsorships) {build_stubbed :sponsor, sponsorships: (sponsorships_active + sponsorships_inactive)}
   let(:sponsor) {build_stubbed :sponsor}
-  let(:sponsors) {build_stubbed_list :sponsor, 5}
+  let(:sponsors) {build_stubbed_list :sponsor, 2}
 
   before :each do
     sign_in instance_double(AdminUser)
   end
 
-  specify '#index' do
-    expect(Sponsor).to receive(:paginate).with(page: "2").
-                  and_return( sponsors.paginate(per_page: 2) )
-    get :index, page: 2
-    expect(assigns(:sponsors).count).to eq 2
-    expect(response).to render_template 'index'
+  describe '#index' do
+    specify "without filters" do
+      allow(Sponsor).to receive(:filter).and_return Sponsor
+      expect(Sponsor).to receive(:paginate).with(page: "1").and_return sponsors
+      get :index, page: 1
+      expect(assigns(:filters).empty?).to be true
+      expect(assigns(:sponsors)).to eq sponsors
+      expect(response).to render_template 'index'
+    end
+
+    specify "Filter" do
+      filter = build :sponsor_filter
+      expect(Sponsor).to receive_message_chain(:filter,:paginate).with(page: "1").and_return( sponsors )
+      get :index, {page: 1, filters: filter, commit: "Filter"}
+
+      filter.each_key do |k|
+        expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
+      end
+
+      expect(assigns(:sponsors)).to eq sponsors
+      expect(response).to render_template 'index'
+    end
+
+    specify "Clear Filters" do
+      get :index, {page: 1, commit: "Clear Filters"}
+      expect(response).to redirect_to hq_sponsors_path
+    end
   end
 
   specify '#show' do
     expect(Sponsor).to receive(:find).and_return(sponsor_with_sponsorships)
     expect(Sponsorship).to receive(:where).and_return(sponsorships_active + sponsorships_inactive)
     get :show, id: sponsor_with_sponsorships.id
-    
+
     expect(assigns(:sponsor)).to eq sponsor_with_sponsorships
     expect(assigns(:sponsorships_active)).to eq sponsorships_active
     expect(assigns(:sponsorships_inactive)).to eq sponsorships_inactive

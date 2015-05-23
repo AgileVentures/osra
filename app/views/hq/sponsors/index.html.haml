@@ -8,4 +8,4 @@
     Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
     out of #{total_requested_sponsorships} requested.
 
-= render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors}
+=render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors, filters: @filters}

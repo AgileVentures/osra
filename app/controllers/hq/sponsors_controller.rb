@@ -1,6 +1,9 @@
 class Hq::SponsorsController < HqController
   def index
-    @sponsors = Sponsor.paginate(:page => params[:page])
+    redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
+
+    @filters = filters_params
+    @sponsors = Sponsor.filter(@filters).paginate(:page => params[:page])
   end
 
   def show
@@ -80,6 +83,16 @@ private
                 :additional_info, :status_id, :start_date, :sponsor_type_id,
                 :gender, :branch_id, :organization_id, :osra_num, :sequential_id,
                 :requested_orphan_count, :agent_id, :city, :new_city_name, :payment_plan)
+  end
+
+  def filters_params
+    params[:filters] ||= {}
+    permited_filters = params[:filters]
+          .permit(:name_option, :name_value, :gender, :branch_id, :organization_id, :status_id,
+           :sponsor_type_id, :agent_id, :city, :country, :created_at_from, :created_at_until,
+           :updated_at_from, :updated_at_until, :start_date_from, :start_date_until,
+           :request_fulfilled, :active_sponsorship_count_option, :active_sponsorship_count_value)
+          .transform_values {|v| v=="" ? nil : v}
   end
 
 end

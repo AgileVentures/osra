@@ -346,6 +346,7 @@ describe Sponsor, type: :model do
     end
 
     describe 'scopes' do
+      let(:sponsor) { create :sponsor }
       let(:active_sponsor) { create :sponsor, status: active_status }
       let(:inactive_sponsor) { create :sponsor, status: inactive_status }
       let(:on_hold_sponsor) { create :sponsor, status: on_hold_status }
@@ -356,6 +357,10 @@ describe Sponsor, type: :model do
 
       specify '.all_inactive should return sponsors with Inactive status only' do
         expect(Sponsor.all_inactive).to match_array [inactive_sponsor]
+      end
+
+      specify '.filter' do
+        expect(Sponsor.methods.include? :filter).to be true
       end
     end
   end

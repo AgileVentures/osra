@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cgi'
 require 'will_paginate/array'
 
 RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
@@ -9,7 +8,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     end
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1)}
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
     end
 
     it 'should render something besides "No Sponsors found"' do
@@ -26,16 +25,27 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     it 'should have pagination buttons' do
       expect(rendered).to have_selector('div.pagination')
     end
+
+    it 'should have filters form' do
+      expect(response).to render_template(:partial => '_filters.html.haml')
+    end
   end
 
   describe 'no sponsors exist' do
+    before :each do
+      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: [], filters: {}}
+    end
+
     it 'should indicate no sponsors were found' do
-      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: []}
       expect(rendered).to match /No Sponsors found/
     end
 
     it 'should not have pagination buttons' do
       expect(rendered).to_not have_selector('div.pagination')
+    end
+
+    it 'should have filters form' do
+      expect(response).to render_template(:partial => '_filters.html.haml')
     end
   end
 

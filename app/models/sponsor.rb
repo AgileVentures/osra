@@ -1,6 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
   include DateHelpers
+  include SponsorAttrFilter
 
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -70,7 +71,7 @@ class Sponsor < ActiveRecord::Base
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
-  private
+private
 
   def default_type_to_individual
     self.sponsor_type ||= SponsorType.find_by_name 'Individual'
@@ -131,4 +132,5 @@ class Sponsor < ActiveRecord::Base
       self.city = new_city_name
     end
   end
+
 end

@@ -4,7 +4,7 @@
       No Sponsors found
 - else
   .table-responsive
-    %table.table
+    %table.table{name: 'sponsors'}
       %thead
         %tr
           %th
@@ -42,3 +42,5 @@
 
   .pagination
     = will_paginate sponsors, renderer: BootstrapPagination::Rails
+
+= render(partial: '/hq/sponsors/filters.html.haml', locals: {filters: filters}) if defined?(filters)
