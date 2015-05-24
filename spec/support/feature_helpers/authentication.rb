@@ -16,6 +16,13 @@ module FeatureHelpers
       click_button 'Log in'
     end
 
+    def i_sign_in_with_credentials(usr, pwd)
+      visit new_hq_admin_user_session_path
+      fill_in 'Email', with: usr
+      fill_in 'Password', with: pwd
+      click_button 'Log in'
+    end
+
     def i_sign_out
       click_link 'logout'
       expect(page.find('.flashes')).to have_text "Logged out successfully"

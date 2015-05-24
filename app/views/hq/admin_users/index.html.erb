@@ -11,7 +11,7 @@
           Email
         </th>
         <th>
-          Current Sign In At
+          Last Sign In At
         </th>
         <th>
           Sign In Count
@@ -24,10 +24,14 @@
       <% @admin_users.each do |admin_user| %>
         <tr>
           <td>
-            <%= link_to admin_user.email, hq_admin_user_path(admin_user) %>
+            <%= admin_user.email %>
           </td>
           <td>
             <%= admin_user.current_sign_in_at %>
+          <!-- See http://www.rubydoc.info/github/plataformatec/devise/Devise/Models/Trackable -->
+          <!-- current_sign_in_at holds the timestamp of when the user last logged in          -->
+          <!-- last_sign_in_at holds the timestamp of the user's previous login                -->
+          <!-- but generally the term Last Sign In At refers to the last login, so current_sign_in_at -->
           </td>
           <td>
             <%= admin_user.sign_in_count %>
