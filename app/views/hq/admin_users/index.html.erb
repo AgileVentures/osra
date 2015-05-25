@@ -40,7 +40,7 @@
             <%= link_to 'Edit', edit_hq_admin_user_path(admin_user) %>
             &nbsp;
             <% unless admin_user == current_hq_admin_user %>
-              <%= link_to 'Delete', admin_user, method: :delete,
+              <%= link_to 'Delete', hq_admin_user_path(admin_user), method: :delete,
                 data: { confirm: 'Are you sure?' } %>
             <% end %>
           </td>

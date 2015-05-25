@@ -46,6 +46,12 @@ class Hq::AdminUsersController < HqController
     end
   end
 
+  def destroy
+    AdminUser.find(params[:id]).destroy
+    flash[:success] = 'Admin User successfully deleted'
+    redirect_to hq_admin_users_path
+  end
+
 private
 
   def admin_user_params

@@ -83,4 +83,16 @@ RSpec.describe Hq::AdminUsersController, type: :controller do
 
   end
 
+  describe '#destroy' do
+
+    specify 'should redirect to the index page' do
+      allow(AdminUser).to receive(:find).and_return(admin_user)
+      expect(admin_user).to receive(:destroy).and_return(true)
+      delete :destroy, id: admin_user.id
+      expect(flash[:success]).to_not be_nil
+      expect(response).to redirect_to(hq_admin_users_path)
+    end
+
+  end
+
 end
