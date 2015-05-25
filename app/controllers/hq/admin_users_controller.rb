@@ -22,6 +22,30 @@ class Hq::AdminUsersController < HqController
     render 'new'
   end
 
+  def edit
+    @admin_user = AdminUser.find(params[:id])
+  end
+
+  def update
+    @admin_user = AdminUser.find(params[:id])
+    # if just the admin user's email is changed (and password is untouched) then remove the password and
+    # password confirmation from the params, so that Devise allows the update to happen
+    if params[:admin_user][:password].blank?
+      params[:admin_user].delete("password")
+      params[:admin_user].delete("password_confirmation")
+    end
+    if @admin_user.update_attributes(admin_user_params)
+      # if the password for a user is changed in this way then Devise automatically logs that user out 
+      # (security feature in case the user has hacked in).
+      # Hence if admin user changes his own pwd he will be logged out, so log him back in again automatically
+      sign_in(@admin_user, :bypass => true) if @admin_user == current_hq_admin_user
+      flash[:success] = 'Admin User successfully saved'
+      redirect_to hq_admin_users_url
+    else
+      render 'edit'
+    end
+  end
+
 private
 
   def admin_user_params
