@@ -336,6 +336,18 @@ describe Orphan, type: :model do
           expect(active_sponsored_orphan.eligible_for_sponsorship?).to eq false
           expect(inactive_unsponsored_orphan.eligible_for_sponsorship?).to eq false
         end
+        
+        specify '#sponsored? should return true for sponsored orphan & false for unsponsored' do
+          expect(active_unsponsored_orphan.sponsored?).to eq false
+          expect(active_previously_sponsored_orphan.sponsored?).to eq false
+          expect(active_previously_sponsored_high_priority_orphan.sponsored?).to eq false
+          expect(active_unsponsored_high_priority_orphan.sponsored?).to eq false
+          expect(active_on_hold_orphan.sponsored?).to eq false
+          expect(on_hold_sponsored_orphan.sponsored?).to eq false
+          expect(under_revision_unsponsored_orphan.sponsored?).to eq false
+          expect(active_sponsored_orphan.sponsored?).to eq true
+          expect(inactive_unsponsored_orphan.sponsored?).to eq false
+        end
 
         describe '#qualify_for_sponsorship_by_status' do
           describe 'does not erroneously change sponsorship_status' do
