@@ -12,6 +12,11 @@ RSpec.describe "hq/orphans/show.html.erb", type: :view do
     it 'should have an Edit Orphan button' do
       expect(rendered).to have_link('Edit Orphan', edit_hq_orphan_path(orphan.id))
     end
+    
+    
+    it 'should have partner field' do
+      expect(rendered).to have_selector("dd", text: orphan.orphan_list.partner.name)
+    end
   end
-
+  
 end
