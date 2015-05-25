@@ -12,13 +12,35 @@ RSpec.describe Hq::OrphansController, type: :controller do
     sign_in instance_double(AdminUser)
   end
 
-  specify '#index' do
+  specify '#index with pagination' do
     expect(Orphan).to receive(:paginate).with(page: "2")
-      .and_return(orphans.paginate(per_page: 2, page: 1))
+      .and_return(orphans.paginate(per_page: 3, page: 1))
     get :index, page: "2"
 
     expect(assigns(:orphans)).to eq orphans
     expect(response).to render_template 'index'
+  end
+
+  context '#index with sorting' do
+
+
+    let(:orphans_for_sorting) { FactoryGirl.create_list(:orphan, 3) }
+    let(:orphans_sorted_by_name_asc) { orphans_for_sorting.sort{|o1, o2| o1.name <=> o2.name} }
+
+    specify 'ascending' do
+
+      get :index, page: "1", sort_by: "name", direction: "asc"
+
+      expect(assigns(:orphans)).to eq orphans_sorted_by_name_asc
+    end
+
+    specify 'descending' do
+
+      get :index, page: "1", sort_by: "date_of_birth", direction: "desc"
+
+      expect(assigns(:orphans)).to eq orphans_for_sorting.sort{|o1, o2| o1.date_of_birth <=> o2.date_of_birth}.reverse
+    end
+
   end
 
   specify '#show' do

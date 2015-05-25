@@ -39,3 +39,11 @@ ul.nav-stacked li a {
   margin: 40px auto;
   padding-left: 80px;
 }
+
+th .sort-column-asc {
+  background-color: palegreen;
+}
+
+th .sort-column-desc {
+  background-color: peachpuff;
+}
