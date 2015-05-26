@@ -13,10 +13,12 @@ RSpec.describe Hq::OrphansController, type: :controller do
   end
 
   specify '#index' do
-    expect(Orphan).to receive(:paginate).with(page: "2")
-                          .and_return(orphans.paginate(per_page: 2, page: 1))
-    get :index, page: "2"
+    allow(Orphan).to receive(:filter).and_return Orphan
+    expect(Orphan).to receive(:paginate).with(page: "1").and_return orphans
 
+    get :index, page: "1"
+
+    expect(assigns(:filters).empty?).to be true
     expect(assigns(:orphans)).to eq orphans
     expect(response).to render_template 'index'
   end

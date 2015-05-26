@@ -46,7 +46,7 @@
   </div>
 <%- else %>
   <div class='panel-body table-responsive'>
-    <table class='table'>
+    <table class='table' name='orphans'>
       <thead>
         <tr>
           <th>
@@ -156,3 +156,4 @@
     <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
   </div>
 <%- end %>
+<%= render(partial: '/hq/orphans/filters.html.erb', locals: {orphans: @orphans, filters: @filters}) %>

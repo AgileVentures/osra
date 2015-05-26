@@ -27,6 +27,7 @@ class Orphan < ActiveRecord::Base
 
   include Initializer
   include DateHelpers
+  include OrphanAttrFilter
 
   after_initialize :set_defaults
 
