@@ -25,13 +25,12 @@ RSpec.describe Hq::OrphansController, type: :controller do
 
 
     let(:orphans_for_sorting) { FactoryGirl.create_list(:orphan, 3) }
-    let(:orphans_sorted_by_name_asc) { orphans_for_sorting.sort{|o1, o2| o1.name <=> o2.name} }
 
     specify 'ascending' do
 
       get :index, page: "1", sort_by: "name", direction: "asc"
 
-      expect(assigns(:orphans)).to eq orphans_sorted_by_name_asc
+      expect(assigns(:orphans)).to eq orphans_for_sorting.sort{|o1, o2| o1.name <=> o2.name}
     end
 
     specify 'descending' do

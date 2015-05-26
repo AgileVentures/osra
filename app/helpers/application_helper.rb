@@ -11,13 +11,14 @@ module ApplicationHelper
   end
 
 # sortable_column is a method used in views where the column header can be clicked to sort the records by that column
-# This solution follows the railscast http://railscasts.com/episodes/228-sortable-table-columns
+# This solution follows the railscast http://railscasts.com/episodes/228-sortable-table-columns and part of
+# http://railscasts.com/episodes/240-search-sort-paginate-with-ajax
   def sortable_column(column, title = nil)
     title ||= column.titleize
     # if the same column is clicked twice, change the sort order from asc to desc or vice versa
     direction = column == params[:sort_by] && sort_direction == 'asc' ? 'desc' : 'asc'
     css_class = column == params[:sort_by] ? "sort-column-#{sort_direction}" : nil
-    link_to title, { sort_by: column, direction: direction }, { class: css_class }
+    link_to title, params.merge(sort_by: column, direction: direction, page: nil), { class: css_class }
   end
 
 end
