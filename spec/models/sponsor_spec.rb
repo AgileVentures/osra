@@ -362,6 +362,43 @@ describe Sponsor, type: :model do
       specify '.filter' do
         expect(Sponsor.methods.include? :filter).to be true
       end
+
+
+
+
+
+      describe '.column_sort', focus: true do
+        let(:sponsor_list) { build_stubbed_list(:sponsor, 3) }
+
+        specify '.column_sort' do
+          expect(Sponsor.methods.include? :column_sort).to be true
+        end
+
+        context'with good params' do
+          specify 'asc' do
+            expect(Sponsor).to receive(:order).at_least(:once).with("name" => :asc).and_return(sponsor_list).at_least(:once)
+
+            expect(Sponsor.column_sort("name", "asc")).to be sponsor_list
+            expect(Sponsor.column_sort("name")).to be sponsor_list
+          end
+
+          specify 'desc' do
+            expect(Sponsor).to receive(:order).with("name" => "desc").and_return(sponsor_list)
+            expect(Sponsor.column_sort("name", "desc")).to be sponsor_list
+          end
+        end
+
+        specify 'with bad params' do
+          expect(Sponsor.column_sort("missing_collumn")).to be Sponsor
+          expect(Sponsor.column_sort(nil, nil)).to be Sponsor
+        end
+      end
+
+
+
+
+
+
     end
   end
 

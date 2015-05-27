@@ -71,6 +71,16 @@ class Sponsor < ActiveRecord::Base
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
+  scope :column_sort, ->(column, direction = :asc) do
+    #validate first
+    if !(self.column_names.include?(column.to_s))
+      return self
+    end
+    direction = :asc unless direction.to_sym == :desc
+
+    return order(column => direction)
+  end
+
 private
 
   def default_type_to_individual
