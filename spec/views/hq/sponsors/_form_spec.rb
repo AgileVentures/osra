@@ -49,7 +49,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
       ["name", "requested_orphan_count", "start_date", "new_city_name", "address", "email",
        "contact1", "contact2", "additional_info"].each do |field|
         if sponsor_full[field]
-          expect(rendered).to have_selector("input[id='sponsor_#{field}'][value='#{sponsor_full[field].to_s}']")
+          expect(rendered).to have_selector("input[id='sponsor_#{field}'][value=\"#{sponsor_full[field].to_s}\"]")
         else
           expect(rendered).to have_selector("input[id='sponsor_#{field}']")
           expect(rendered).to_not have_selector("input[id='sponsor_#{field}'][value]")
