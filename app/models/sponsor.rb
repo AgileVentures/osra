@@ -71,7 +71,9 @@ class Sponsor < ActiveRecord::Base
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
-  scope :column_sort, ->(column, direction = :asc) do
+  scope :column_sort, ->(column, direction = nil) do
+    direction ||= :asc
+
     #validate first
     if !(self.column_names.include?(column.to_s))
       return self
