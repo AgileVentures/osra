@@ -1,3 +1,6 @@
+- sort_by ||= {}
+- sortable_by_column ||= false
+
 - if sponsors.empty?
   .panel.panel-default
     .panel-body
@@ -8,19 +11,54 @@
       %thead
         %tr
           %th
-            = link_to "Osra Num", params.merge(sort_by: {column: :osra_num, direction: set_sort_by_direction(:osra_num, @sort_by)})
+            -if sortable_by_column
+              =link_to "Osra Num", params.merge(sort_by: {column: :osra_num, direction: set_sort_by_direction(:osra_num, sort_by)})
+              -if sort_by["column"] == "osra_num"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:osra_num, sort_by).to_s}"}
+            -else
+              Osra Num
           %th
-            = link_to "Name", params.merge(sort_by: {column: :name, direction: set_sort_by_direction(:name, @sort_by)})
+            -if sortable_by_column
+              =link_to "Name", params.merge(sort_by: {column: :name, direction: set_sort_by_direction(:name, sort_by)})
+              -if sort_by["column"] == "name"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:name, sort_by).to_s}"}
+            -else
+              Name
           %th
-            Status
+            -if sortable_by_column
+              =link_to "Status", params.merge(sort_by: {column: :status, direction: set_sort_by_direction(:status, sort_by)})
+              -if sort_by["column"] == "status"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:status, sort_by).to_s}"}
+            -else
+              Status
           %th
-            Start Date
+            -if sortable_by_column
+              =link_to "Start Date", params.merge(sort_by: {column: :start_date, direction: set_sort_by_direction(:start_date, sort_by)})
+              -if sort_by["column"] == "start_date"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:start_date, sort_by).to_s}"}
+            -else
+              Start Date
           %th
-            Request Fulfilled
+            -if sortable_by_column
+              =link_to "Request Fulfilled", params.merge(sort_by: {column: :request_fulfilled, direction: set_sort_by_direction(:request_fulfilled, sort_by)})
+              -if sort_by["column"] == "request_fulfilled"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:request_fulfilled, sort_by).to_s}"}
+            -else
+              Request Fulfilled
           %th
-            Sponsor Type
+            -if sortable_by_column
+              =link_to "Sponsor Type", params.merge(sort_by: {column: :sponsor_type, direction: set_sort_by_direction(:sponsor_type, sort_by)})
+              -if sort_by["column"] == "sponsor_type"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:sponsor_type, sort_by).to_s}"}
+            -else
+              Sponsor Type
           %th
-            Country
+            -if sortable_by_column
+              =link_to "Country", params.merge(sort_by: {column: :country, direction: set_sort_by_direction(:country, sort_by)})
+              -if sort_by["column"] == "country"
+                %span{class: "glyphicon th_sort_#{set_sort_by_direction(:country, sort_by).to_s}"}
+            -else
+              Country
       %tbody
         - sponsors.each do |sponsor|
           %tr

@@ -41,6 +41,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
       expect(assigns(:sort_by)["column"].to_s).to eq sort_by[:column].to_s
       expect(assigns(:sort_by)["direction"].to_s).to eq sort_by[:direction].to_s
+      expect(assigns(:sortable)).to eq true
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
     end

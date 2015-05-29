@@ -11,11 +11,14 @@ module ApplicationHelper
   end
 
   def set_sort_by_direction current_column, sort_by_params
-    if (current_column.to_sym == sort_by_params[:column].to_sym && sort_by_params[:direction].to_sym != :desc)
+    if (current_column.to_sym == sort_by_params["column"].to_sym && sort_by_params["direction"].to_sym != :desc)
       return :desc
     else
       return :asc
     end
+
+  rescue #for undefind arguments
+    return :asc
   end
 
 end

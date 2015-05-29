@@ -4,6 +4,7 @@ class Hq::SponsorsController < HqController
 
     @filters = filters_params
     @sort_by = sort_by_params
+    @sortable = true
     @sponsors = Sponsor.filter(@filters).column_sort(@sort_by["column"], @sort_by["direction"]).paginate(:page => params[:page])
   end
 
