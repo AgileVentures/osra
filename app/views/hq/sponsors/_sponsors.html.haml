@@ -8,9 +8,9 @@
       %thead
         %tr
           %th
-            Osra Num
+            = link_to "Osra Num", params.merge(sort_by: {column: :osra_num, direction: :asc})
           %th
-            Name
+            = link_to "Name", params.merge(sort_by: {column: :name, direction: :asc})
           %th
             Status
           %th

@@ -363,11 +363,7 @@ describe Sponsor, type: :model do
         expect(Sponsor.methods.include? :filter).to be true
       end
 
-
-
-
-
-      describe '.column_sort', focus: true do
+      describe '.column_sort' do
         let(:sponsor_list) { build_stubbed_list(:sponsor, 3) }
 
         specify '.column_sort' do
@@ -393,11 +389,6 @@ describe Sponsor, type: :model do
           expect(Sponsor.column_sort(nil, nil)).to be Sponsor
         end
       end
-
-
-
-
-
 
     end
   end
