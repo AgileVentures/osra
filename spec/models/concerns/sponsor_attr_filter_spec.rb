@@ -39,6 +39,9 @@ RSpec.describe SponsorAttrFilter do
       end
 
       describe 'on each param' do
+        before(:all) { travel_to Date.parse "15-12-2012" }
+        after(:all) { travel_back }
+
         before :each do
           create_list :sponsor, 4, { gender: "Male", sponsor_type: individual_type,
                                      branch: Branch.first(2).sample }
