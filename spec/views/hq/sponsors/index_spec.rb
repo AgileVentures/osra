@@ -5,13 +5,13 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
     assign(:sponsors, [])
     assign(:filters, {})
     assign(:sort_by, {})
-    assign(:sortable, true)
+    assign(:sortable_by_column, true)
   end
   it 'should delegate to partial' do
     render
 
     expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
-                                    locals: {sponsors: [], filters: {}, sort_by: {}, sortable: true}
+                                    locals: {sponsors: [], filters: {}, sort_by: {}, sortable_by_column: true}
   end
 
   it 'shows active & requested sponsorship totals' do

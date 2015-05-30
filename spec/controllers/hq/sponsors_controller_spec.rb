@@ -14,6 +14,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   describe '#index' do
     specify "without filters" do
       allow(Sponsor).to receive(:filter).and_return Sponsor
+      allow(Sponsor).to receive(:column_sort).and_return Sponsor
       expect(Sponsor).to receive(:paginate).with(page: "1").and_return sponsors
       get :index, page: 1
       expect(assigns(:filters).empty?).to be true
@@ -41,7 +42,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
       expect(assigns(:sort_by)["column"].to_s).to eq sort_by[:column].to_s
       expect(assigns(:sort_by)["direction"].to_s).to eq sort_by[:direction].to_s
-      expect(assigns(:sortable)).to eq true
+      expect(assigns(:sortable_by_column)).to eq true
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
     end

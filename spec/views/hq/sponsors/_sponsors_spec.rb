@@ -81,7 +81,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
   describe 'table headers' do
     let(:sponsor) { build_stubbed(:sponsor) }
 
-    context "when sortable_by_column? is true" do
+    context "when sortable_by_column is true" do
       it 'table headers should be links' do
         render :partial => 'hq/sponsors/sponsors.html.haml',
          :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => true }
@@ -104,7 +104,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
       end
     end
 
-    context "when sortable_by_column? is false" do
+    context "when sortable_by_column is false" do
       it "table headers should be text" do
         render :partial => 'hq/sponsors/sponsors.html.haml',
          :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => false}

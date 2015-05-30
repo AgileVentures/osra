@@ -384,9 +384,9 @@ describe Sponsor, type: :model do
           end
         end
 
-        specify 'with bad params' do
-          expect(Sponsor.column_sort("missing_collumn")).to be Sponsor
-          expect(Sponsor.column_sort(nil, nil)).to be Sponsor
+        specify 'with bad params should return ActiveRelation object' do
+          expect(Sponsor.column_sort("missing_collumn").class).to be Sponsor::ActiveRecord_Relation
+          expect(Sponsor.column_sort(nil, nil).class).to be Sponsor::ActiveRecord_Relation
         end
       end
 

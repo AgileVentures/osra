@@ -26,7 +26,7 @@ RSpec.describe SponsorAttrFilter do
       specify "with NO params" do
         sponsor = create :sponsor
 
-        expect(Sponsor.filter({})).to eq Sponsor
+        expect(Sponsor.filter({}).class).to eq Sponsor::ActiveRecord_Relation
       end
 
       specify "with only NON empty params" do
@@ -35,7 +35,7 @@ RSpec.describe SponsorAttrFilter do
           name_option: "contains",
           active_sponsorship_count_option: "equals"
         }
-        expect(Sponsor.filter(filter_params)).to eq Sponsor
+        expect(Sponsor.filter(filter_params).class).to eq Sponsor::ActiveRecord_Relation
       end
 
       describe 'on each param' do
