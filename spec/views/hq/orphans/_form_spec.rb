@@ -44,7 +44,7 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
      "guardian_name", "guardian_relationship",
      "guardian_id_num", "contact_number", "alt_contact_number"].each do |field|
       if orphan_full[field]
-        expect(rendered).to have_selector("input[id='orphan_#{field}'][value='#{orphan_full[field].to_s}']")
+        expect(rendered).to have_selector("input[id='orphan_#{field}'][value=\"#{orphan_full[field].to_s}\"]")
       else
         expect(rendered).to have_selector("input[id='orphan_#{field}']")
         expect(rendered).to_not have_selector("input[id='orphan_#{field}'][value]")
@@ -77,22 +77,22 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
                              options: %w(Normal High))
 
     # Original Address
-    expect(rendered).to have_selector("input#orphan_original_address_attributes_city[value='#{orphan_full.original_address.city}']")
+    expect(rendered).to have_selector("input#orphan_original_address_attributes_city[value=\"#{orphan_full.original_address.city}\"]")
     expect(rendered).to have_select("orphan_original_address_attributes_province_id",
                               selected: orphan_full.original_address.province.name,
                               options: provinces.map(&:name))
-    expect(rendered).to have_selector("input#orphan_original_address_attributes_neighborhood[value='#{orphan_full.original_address.neighborhood}']")
-    expect(rendered).to have_selector("input#orphan_original_address_attributes_street[value='#{orphan_full.original_address.street}']")
-    expect(rendered).to have_selector("input#orphan_original_address_attributes_details[value='#{orphan_full.original_address.details}']")
+    expect(rendered).to have_selector("input#orphan_original_address_attributes_neighborhood[value=\"#{orphan_full.original_address.neighborhood}\"]")
+    expect(rendered).to have_selector("input#orphan_original_address_attributes_street[value=\"#{orphan_full.original_address.street}\"]")
+    expect(rendered).to have_selector("input#orphan_original_address_attributes_details[value=\"#{orphan_full.original_address.details}\"]")
 
     # Current Address
-    expect(rendered).to have_selector("input#orphan_current_address_attributes_city[value='#{orphan_full.current_address.city}']")
+    expect(rendered).to have_selector("input#orphan_current_address_attributes_city[value=\"#{orphan_full.current_address.city}\"]")
     expect(rendered).to have_select("orphan_current_address_attributes_province_id",
                           selected: orphan_full.current_address.province.name,
                           options: provinces.map(&:name))
-    expect(rendered).to have_selector("input#orphan_current_address_attributes_neighborhood[value='#{orphan_full.current_address.neighborhood}']")
-    expect(rendered).to have_selector("input#orphan_current_address_attributes_street[value='#{orphan_full.current_address.street}']")
-    expect(rendered).to have_selector("input#orphan_current_address_attributes_details[value='#{orphan_full.current_address.details}']")
+    expect(rendered).to have_selector("input#orphan_current_address_attributes_neighborhood[value=\"#{orphan_full.current_address.neighborhood}\"]")
+    expect(rendered).to have_selector("input#orphan_current_address_attributes_street[value=\"#{orphan_full.current_address.street}\"]")
+    expect(rendered).to have_selector("input#orphan_current_address_attributes_details[value=\"#{orphan_full.current_address.details}\"]")
 
     # Additional Details
     if orphan_full.sponsored_by_another_org
@@ -100,9 +100,9 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
     else
       expect(rendered).to have_unchecked_field("orphan_sponsored_by_another_org")
     end
-    expect(rendered).to have_selector("input#orphan_minor_siblings_count[value='#{orphan_full.minor_siblings_count}']")
-    expect(rendered).to have_selector("input#orphan_sponsored_minor_siblings_count[value='#{orphan_full.sponsored_minor_siblings_count}']")
-    expect(rendered).to have_selector("input#orphan_comments[value='#{orphan_full.comments}']")
+    expect(rendered).to have_selector("input#orphan_minor_siblings_count[value=\"#{orphan_full.minor_siblings_count}\"]")
+    expect(rendered).to have_selector("input#orphan_sponsored_minor_siblings_count[value=\"#{orphan_full.sponsored_minor_siblings_count}\"]")
+    expect(rendered).to have_selector("input#orphan_comments[value=\"#{orphan_full.comments}\"]")
 
     #submit button
     expect(rendered).to have_selector("input[type='submit'][value='Update Orphan']")
