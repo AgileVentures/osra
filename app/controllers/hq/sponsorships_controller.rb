@@ -46,7 +46,7 @@ class Hq::SponsorshipsController < HqController
   end
 
   def redirect_back_to_new_sponsorship_for(sponsor)
-    flash[:warning] = @sponsorship_creator.error_msg
+    flash[:error] = @sponsorship_creator.error_msg
     redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
   end
 

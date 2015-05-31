@@ -33,7 +33,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
 
         it 'sets flash[:success] message' do
           expect(flash[:success]).not_to be_nil
-          expect(flash[:warning]).to be_nil
+          expect(flash[:error]).to be_nil
         end
 
         it 'redirects to sponsor show view' do
@@ -49,9 +49,9 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
           post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
         end
 
-        it 'sets flash[:warning] message' do
+        it 'sets flash[:error] message' do
           expect(flash[:success]).not_to be_nil
-          expect(flash[:warning]).to be_nil
+          expect(flash[:error]).to be_nil
         end
 
         it 'redirects back to sponsorship view' do
@@ -68,9 +68,9 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
         post :create, { id: 1, orphan_id: 1, sponsor_id: 1, start_date: '1-1-2013' }
       end
 
-      it 'sets flash[:warning] message' do
+      it 'sets flash[:error] message' do
         expect(flash[:success]).to be_nil
-        expect(flash[:warning]).to eq 'No go'
+        expect(flash[:error]).to eq 'No go'
       end
 
       it 'redirects to new sponsorship view' do

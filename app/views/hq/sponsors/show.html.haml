@@ -2,8 +2,12 @@
   %div.instance
     = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id),
       class: 'btn btn-default', role: 'button'
-    = link_to 'Link to Orphan', hq_new_sponsorship_path(@sponsor.id, scope: :eligible_for_sponsorship),
+    = link_to 'New Sponsor', new_hq_sponsor_path,
       class: 'btn btn-default', role: 'button'
+    - if @sponsor.status.name != 'Inactive' and @sponsor.status.name != 'On Hold'
+      = link_to 'Link to Orphan', hq_new_sponsorship_path(@sponsor.id, scope: :eligible_for_sponsorship),
+        class: 'btn btn-default', role: 'button'
+
 
 %dl.dl-horizontal
   %dt Sponsor Name

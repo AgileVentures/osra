@@ -25,8 +25,8 @@ class Hq::OrphansController < HqController
 private
 
   def load_scope
-    @orphans_all = Orphan.count
-    @orphans_sort_by_eligibility = Orphan.sort_by_eligibility.count
+    @orphans_count = Orphan.count
+    @orphans_sort_by_eligibility_count = Orphan.sort_by_eligibility.count
     if params[:scope] == 'eligible_for_sponsorship'
       @orphans = @orphans.sort_by_eligibility
       @eligible_for_sponsorship = true
