@@ -9,6 +9,7 @@ RSpec.feature 'User views a filtered orphans list by using the filter form', :ty
 
   scenario 'User filters the orphans list' do
     when_i_fill_in_orphan_filter_form
+    save_and_open_page
     and_i_click_filter_button
 
     then_i_should_see_a_filtered_orphans_list
@@ -24,7 +25,12 @@ def a_list_of_orphans_exists
 end
 
 def when_i_fill_in_orphan_filter_form
+  unsponsored_sponsorship_status = Orphan.sponsorship_statuses[:unsponsored]
+  active_status = Orphan.statuses[:active]
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
+  orphan_filter[:sponsorship_status] = unsponsored_sponsorship_status
+  orphan_filter[:status] = active_status
+
   visit hq_orphans_path
 
   within "#filters" do
@@ -38,11 +44,11 @@ def when_i_fill_in_orphan_filter_form
     select orphan_filter[:gender], from: 'filters[gender]'
     select orphan_filter[:priority], from: 'filters[priority]'
 
-    find("select[name='filters[province_code]']").find("option", text: orphan_filter[:province_code]).select_option
+    find("select[name='filters[province_code]']").find("option[value='#{orphan_filter[:province_code]}']").select_option
     find("select[name='filters[original_address_city]']").find("option", text: orphan_filter[:original_address_city]).select_option
-    find("select[name='filters[sponsorship_status]']").find("option", text: orphan_filter[:sponsorship_status].capitalize).select_option
-    find("select[name='filters[status]']").find("option", text: orphan_filter[:status].capitalize).select_option
-    find("select[name='filters[orphan_list_partner_name]']").find("option", text: orphan_filter[:orphan_list_partner_name]).select_option
+    find("select[name='filters[sponsorship_status]']").find("option[value='#{orphan_filter[:sponsorship_status]}']").select_option
+    find("select[name='filters[status]']").find("option[value='#{orphan_filter[:status]}']").select_option
+    #find("select[name='filters[orphan_list_partner_name]']").find("option", text: orphan_filter[:orphan_list_partner_name]).select_option
     find("select[name='filters[health_status]']").find("option", text: orphan_filter[:health_status]).select_option if orphan_filter[:health_status]
 
     fill_in 'filters[date_of_birth_from]', with: orphan_filter[:date_of_birth_from]

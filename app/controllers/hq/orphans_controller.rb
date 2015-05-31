@@ -6,6 +6,7 @@ class Hq::OrphansController < HqController
     redirect_to(hq_orphans_path) if params["commit"]=="Clear Filters"
 
     @filters = filters_params
+    binding.pry
     @orphans = Orphan.filter(@filters).paginate(:page => params[:page])
     load_scope
   end
