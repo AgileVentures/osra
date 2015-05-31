@@ -2,6 +2,7 @@ class Sponsor < ActiveRecord::Base
   include Initializer
   include DateHelpers
   include SponsorAttrFilter
+  include ColumnSort
 
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -70,17 +71,6 @@ class Sponsor < ActiveRecord::Base
 
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
-
-  scope :column_sort, ->(column, direction = nil) do
-    direction ||= :asc
-    #validate first
-    if column.nil? || !(self.column_names.include?(column.to_s))
-      return order(nil)
-    end
-    direction = :asc unless direction.to_sym == :desc
-
-    return order(column => direction)
-  end
 
 private
 
