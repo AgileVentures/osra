@@ -3,12 +3,11 @@ module ColumnSort
 
   included do
     scope :column_sort, ->(column, direction = nil) do
-      direction ||= :asc
       #validate first
       if column.nil? || !(self.column_names.include?(column.to_s))
         return order(nil)
       end
-      direction = :asc unless direction.to_sym == :desc
+      direction = :asc if !direction || direction.to_sym != :desc
 
       return order(column => direction)
     end
