@@ -28,7 +28,7 @@
         <div class="form-group">
           <%= label_tag :province_code, "Partner province name" %>
           <%= select_tag "filters[province_code]",
-                         options_for_select(Province.distinct.map { |p| [p.name, p.code] },
+                         options_for_select(Province.distinct.pluck(:name, :code),
                                             filters[:province_code]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
@@ -37,6 +37,13 @@
           <%= select_tag "filters[original_address_city]",
                          options_for_select(Orphan.distinct.pluck(:city).sort.map{|c| [c, c]},
                                             filters[:original_address_city]),
+                         {include_blank: "Any", class: "form-control"} %>
+        </div>
+        <div class="form-group">
+          <%= label_tag :priority %>
+          <%= select_tag "filters[priority]",
+                         options_for_select(Orphan.distinct.pluck(:priority),
+                                            filters[:priority]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
         <div class="form-group">
@@ -52,13 +59,14 @@
           <%= label_tag :status %>
           <%= select_tag "filters[status]",
                          options_for_select(
-                                 Orphan.distinct.pluck(:status).map { |s| [Orphan.statuses.key(s).humanize, s] },
+                                 Orphan.distinct.pluck(:status).map {
+                                         |s| [Orphan.statuses.key(s).humanize, s] },
                                  filters[:status]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
         <div class="form-group">
           <%= label_tag :orphan_list_partner_name, "Partner name" %>
-          <%= select_tag "filters[status]",
+          <%= select_tag "filters[orphan_list_partner_name]",
                          options_for_select(Partner.all_names, filters[:orphan_list_partner_name]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
@@ -98,7 +106,13 @@
                                             filters[:mother_alive]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
-        <!-- Don't see health status -->
+        <div class="form-group">
+          <%= label_tag :health_status %>
+          <%= select_tag "filters[health_status]",
+                         options_for_select(Orphan.distinct.pluck(:health_status),
+                                            filters[:health_status]),
+                         {include_blank: "Any", class: "form-control"} %>
+        </div>
         <div class="form-group">
           <%= label_tag :goes_to_school %>
           <%= select_tag "filters[goes_to_school]",
@@ -119,6 +133,10 @@
                              class: "form-control date-picker" %>
           <%= text_field_tag "filters[updated_at_until]", filters[:updated_at_until],
                              class: "form-control date-picker" %>
+        </div>
+        <div class="form-group">
+          <%= submit_tag "Filter", class: 'btn btn-primary' %>
+          <%= submit_tag "Clear Filters", class: 'btn btn-default' %>
         </div>
     <% end %>
 <%- end %>

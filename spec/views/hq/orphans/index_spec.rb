@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'will_paginate/array'
 
 RSpec.describe "hq/orphans/index.html.erb", type: :view do
+
   describe 'orphans exist' do
     let(:sponsor) { build_stubbed(:sponsor) }
     let(:orphans_count) { build_stubbed_list(:orphan, 5).count }
@@ -14,6 +15,7 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
 
     before :each do
       assign(:orphans, orphans)
+      assign(:filters, {})
     end
 
     it 'should not indicate no orphans were found' do
@@ -64,12 +66,23 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
       end
     end
 
+    it 'should have filters form' do
+      render and expect(response).to render_template(:partial => '_filters.html.erb')
+    end
   end
 
   context 'no orphans exist' do
-    it 'should indicate no orphans were found' do
+    before :each do
       assign(:orphans, [])
+      assign(:filters, {})
+    end
+
+    it 'should indicate no orphans were found' do
       render and expect(rendered).to match /No Orphans found/
+    end
+
+    it 'should have filters form' do
+      render and expect(response).to render_template(:partial => '_filters.html.erb')
     end
   end
 end
