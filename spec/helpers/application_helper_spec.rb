@@ -21,21 +21,21 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  context 'set_sort_by_direction' do
+  context 'get_sorting_direction' do
     specify ":desc" do
       sort_by_params = {"column" => "osra_num", "direction" => "asc"}
-      expect(set_sort_by_direction(:osra_num, sort_by_params)).to eq :desc
+      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :desc
 
       sort_by_params = {"column" => "osra_num", "direction" => "asc"}
-      expect(set_sort_by_direction(:osra_num, sort_by_params)).to eq :desc
+      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :desc
     end
 
     specify ":asc" do
       sort_by_params = {"column" => "osra_num", "direction" => "desc"}
-      expect(set_sort_by_direction(:osra_num, sort_by_params)).to eq :asc
+      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :asc
 
       sort_by_params = {"column" => "osra_num", "direction" => "desc"}
-      expect(set_sort_by_direction(:osra_num, sort_by_params)).to eq :asc
+      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :asc
     end
   end
 

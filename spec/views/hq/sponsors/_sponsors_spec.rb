@@ -81,30 +81,22 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
   describe 'table headers' do
     let(:sponsor) { build_stubbed(:sponsor) }
 
-    context "when sortable_by_column is true" do
-      it 'table headers should be links' do
+    context "when sortable_by_column" do
+      it "should render partial: shared/sortable_table_header_link.erb" do
         render :partial => 'hq/sponsors/sponsors.html.haml',
-         :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => true }
+          :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => true }
 
-        ["Osra Num", "Name", "Status", "Start Date", "Request Fulfilled", "Sponsor Type", "Country"].each do |th_name|
-          expect(rendered).to have_link th_name
-          expect(rendered).to_not have_selector "th[text='#{th_name}']"
+        [{text: "Osra Num", column: :osra_num}, {text: "Name", column: :name},{text: "Status", column: :status},
+          {text: "Start Date", column: :start_date},{text: "Request Fulfilled", column: :request_fulfilled},
+          {text: "Sponsor Type", column: :sponsor_type}, {text: "Country", column: :country}
+        ].each do |table_header|
+          expect(rendered).to render_template partial: 'shared/sortable_table_header_link',
+                                    locals: {text: table_header[:text], column: table_header[:column], sort_by: {}}
         end
-      end
-
-      it 'table headers should show glyphicon for selected field' do
-        render :partial => 'hq/sponsors/sponsors.html.haml',
-            :locals => {
-              :sponsors => [sponsor].paginate(page: 1),
-              :sort_by => {"column" => "name", "direction" => "asc"},
-              :sortable_by_column => true
-            }
-
-        expect(rendered).to have_css "span.glyphicon"
       end
     end
 
-    context "when sortable_by_column is false" do
+    context "when NOT sortable_by_column" do
       it "table headers should be text" do
         render :partial => 'hq/sponsors/sponsors.html.haml',
          :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => false}
@@ -115,6 +107,5 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
         end
       end
     end
-
   end
 end

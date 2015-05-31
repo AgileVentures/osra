@@ -10,7 +10,11 @@ module ApplicationHelper
     (date || NullDate.new).strftime(MONTH_YEAR_DATE_FORMAT_STRING)
   end
 
-  def set_sort_by_direction current_column, sort_by_params
+  #use in views for generating column header links and glyphicons
+  #current_collumn: column_name of current table header
+  #sort_by_params: a hash containing column and direction. e.g.: {"column":"name", "direction":"asc"}
+  #Returns :asc or :desc based on if sorting is done on current_column and it's direction
+  def get_sorting_direction current_column, sort_by_params
     if (current_column.to_sym == sort_by_params["column"].to_sym && sort_by_params["direction"].to_sym != :desc)
       return :desc
     else
