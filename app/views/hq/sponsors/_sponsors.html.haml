@@ -21,10 +21,7 @@
             -else
               Name
           %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Status", column: :status, sort_by: sort_by}
-            -else
-              Status
+            Status
           %th
             -if sortable_by_column
               =render partial: 'shared/sortable_table_header_link', locals: {text: "Start Date", column: :start_date, sort_by: sort_by}

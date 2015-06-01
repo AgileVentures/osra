@@ -86,7 +86,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
         render :partial => 'hq/sponsors/sponsors.html.haml',
           :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => true }
 
-        [{text: "Osra Num", column: :osra_num}, {text: "Name", column: :name},{text: "Status", column: :status},
+        [{text: "Osra Num", column: :osra_num}, {text: "Name", column: :name},
           {text: "Start Date", column: :start_date},{text: "Request Fulfilled", column: :request_fulfilled},
           {text: "Country", column: :country}
         ].each do |table_header|
