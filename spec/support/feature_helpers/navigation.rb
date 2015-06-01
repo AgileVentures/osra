@@ -15,6 +15,10 @@ module FeatureHelpers
       click_button button
     end
 
+    def and_i_click_link link
+      click_link link
+    end
+
     def and_i_should_see text
       expect(page).to have_text text
     end
