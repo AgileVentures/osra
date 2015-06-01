@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ViewHelpers
 
-RSpec.feature 'User views a sorted sponsors list by clicking the table headers', :type => :feature , focus: true do
+RSpec.feature 'User views a sorted sponsors list by clicking the table headers', :type => :feature do
   background do
     an_unordered_list_of_sponsors_exists
     i_sign_in_as_admin

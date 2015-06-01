@@ -158,7 +158,6 @@ Feature:
     Given I am on the "Show Sponsor" page for sponsor "Second Sponsor"
     And I click the "Link to Orphan" button
     Then I should see a New Sponsor panel
-    Then show me the page
     When I click the "All" button
     Then I should not see a New Sponsor panel
     When I click the "Eligible For Sponsorship" button
