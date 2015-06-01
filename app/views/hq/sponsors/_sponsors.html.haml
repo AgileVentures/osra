@@ -36,10 +36,7 @@
             -else
               Request Fulfilled
           %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Sponsor Type", column: :sponsor_type, sort_by: sort_by}
-            -else
-              Sponsor Type
+            Sponsor Type
           %th
             -if sortable_by_column
               =render partial: 'shared/sortable_table_header_link', locals: {text: "Country", column: :country, sort_by: sort_by}

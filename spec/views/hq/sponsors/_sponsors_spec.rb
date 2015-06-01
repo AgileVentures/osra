@@ -88,7 +88,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
 
         [{text: "Osra Num", column: :osra_num}, {text: "Name", column: :name},{text: "Status", column: :status},
           {text: "Start Date", column: :start_date},{text: "Request Fulfilled", column: :request_fulfilled},
-          {text: "Sponsor Type", column: :sponsor_type}, {text: "Country", column: :country}
+          {text: "Country", column: :country}
         ].each do |table_header|
           expect(rendered).to render_template partial: 'shared/sortable_table_header_link',
                                     locals: {text: table_header[:text], column: table_header[:column], sort_by: {}}
