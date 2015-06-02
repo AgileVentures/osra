@@ -4,9 +4,12 @@
       class: 'btn btn-default', role: 'button'
     = link_to 'New Sponsor', new_hq_sponsor_path,
       class: 'btn btn-default', role: 'button'
-    - if @sponsor.status.name != 'Inactive' and @sponsor.status.name != 'On Hold'
+    - if @sponsor.eligible_for_sponsorship?
       = link_to 'Link to Orphan', hq_new_sponsorship_path(@sponsor.id, scope: :eligible_for_sponsorship),
         class: 'btn btn-default', role: 'button'
+    - else
+      = link_to 'Link to Orphan', hq_new_sponsorship_path(@sponsor.id, scope: :eligible_for_sponsorship),
+        class: 'btn btn-default', role: 'button', disabled: true
 
 
 %dl.dl-horizontal
