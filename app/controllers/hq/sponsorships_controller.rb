@@ -1,7 +1,6 @@
 class Hq::SponsorshipsController < HqController
 
   def create
-    params.permit :orphan_id
     sponsor = Sponsor.find(params[:sponsor_id])
     orphan = Orphan.find(params[:orphan_id])
     sponsorship = sponsor.sponsorships.build(orphan_id: params[:orphan_id],
