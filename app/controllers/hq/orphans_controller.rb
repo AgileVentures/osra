@@ -1,9 +1,20 @@
 class Hq::OrphansController < HqController
 
+# the solution for handling sorting basically follows the Railscast http://railscasts.com/episodes/228-sortable-table-columns
+  helper_method :sort_column, :sort_direction
+
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    @orphans = Orphan.paginate(:page => params[:page])
+    if params[:sort_by] == 'original_address_province_name'
+      @orphans = Orphan.includes(:original_address).order("provinces.name " + sort_direction).paginate(:page => params[:page])
+    elsif params[:sort_by] == 'orphan_list_partner_name'
+      @orphans = Orphan.includes(:orphan_list).includes(:partner).order("partners.name " + sort_direction).paginate(:page => params[:page])
+    elsif sort_column
+      @orphans = Orphan.order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+    else
+      @orphans = Orphan.paginate(:page => params[:page])
+    end
   end
 
   def show
@@ -63,5 +74,15 @@ private
               :father_deceased, original_address_attributes: ADDRESS_DETAILS,
               current_address_attributes: ADDRESS_DETAILS
             )
+  end
+
+  def sort_column
+    # This method is just to verify the sort_by column passed in params, to prevent SQL injection attacks
+    Orphan.column_names.include?(params[:sort_by]) ? params[:sort_by] : nil
+  end
+
+  def sort_direction
+    # This method is just to verify the sort direction passed in params, to prevent SQL injection attacks
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
   end
 end
