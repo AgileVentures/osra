@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe OrphanAttrFilter do
 
   let(:orphan) { create :orphan_full }
+  let(:sample_province) { Province.first }
+  let(:unsponsored_sponsorship_status) { Orphan.sponsorship_statuses[:unsponsored] }
+  let(:sponsored_sponsorship_status) { Orphan.sponsorship_statuses[:sponsored] }
+  let(:inactive_status) { Orphan.statuses[:inactive] }
+  let(:active_status) { Orphan.statuses[:active] }
 
   describe 'filter scope' do
     describe "when finds nothing" do
@@ -15,6 +20,8 @@ RSpec.describe OrphanAttrFilter do
     describe "when finds something" do
       specify "with all valid params" do
         filter_params = build :orphan_filter, orphan: orphan
+        filter_params[:status] = Orphan.statuses[filter_params[:status]]
+        filter_params[:sponsorship_status] = Orphan.sponsorship_statuses[filter_params[:sponsorship_status]]
 
         expect(Orphan.filter filter_params).to eq [orphan]
       end
@@ -38,7 +45,8 @@ RSpec.describe OrphanAttrFilter do
         before :each do
           create_list :orphan, 4, { gender: "Male", father_is_martyr: false,
                                     mother_alive: false, goes_to_school: false,
-                                    priority: "High"
+                                    priority: "High", status: inactive_status,
+                                    sponsorship_status: unsponsored_sponsorship_status,
                                   }
           @filter_params = {}
         end
@@ -161,15 +169,15 @@ RSpec.describe OrphanAttrFilter do
         end
 
         specify "province_code" do
-          unique_orphan = create :orphan, province_code: Province.first.id
+          unique_orphan = create :orphan, province_code: sample_province
           @filter_params[:province_code] = unique_orphan.province_code
 
           expect(Orphan.filter @filter_params).to eq [unique_orphan]
         end
 
         specify "original_address_city" do
-          unique_orphan = create :orphan, original_address_city: sample_address_city
-          @filter_params[:original_address_city] = unique_orphan.original_address_city
+          unique_orphan = create :orphan
+          @filter_params[:original_address_city] = unique_orphan.original_address.city
 
           expect(Orphan.filter @filter_params).to eq [unique_orphan]
         end
@@ -182,22 +190,15 @@ RSpec.describe OrphanAttrFilter do
         end
 
         specify "sponsorship_status" do
-          unique_orphan = create :orphan, sponsorship_status: Orphan.sponsorship_statuses.values.sample
+          unique_orphan = create :orphan, sponsorship_status: sponsored_sponsorship_status
           @filter_params[:sponsorship_status] = Orphan.sponsorship_statuses[unique_orphan.sponsorship_status]
 
           expect(Orphan.filter @filter_params).to eq [unique_orphan]
         end
 
         specify "status" do
-          unique_orphan = create :orphan, status: Orphan.statuses.values.sample
+          unique_orphan = create :orphan, status: active_status
           @filter_params[:status] = Orphan.statuses[unique_orphan.status]
-
-          expect(Orphan.filter @filter_params).to eq [unique_orphan]
-        end
-
-        specify "father_is_martyr" do
-          unique_orphan = create :orphan, father_is_martyr: true
-          @filter_params[:father_is_martyr] = unique_orphan.father_is_martyr
 
           expect(Orphan.filter @filter_params).to eq [unique_orphan]
         end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :orphan do
     name { Faker::Name.first_name }
-    date_of_birth { 2.years.ago }
+    date_of_birth { 2.days.ago }
     gender { %w(Male Female).sample }
     contact_number { Faker::PhoneNumber.phone_number }
     father_given_name { Faker::Name.first_name }

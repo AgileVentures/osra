@@ -34,7 +34,11 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
     end
 
     specify "filled" do
-      allow(Province).to receive_message_chain(:distinct, :pluck).with(:name, :code).and_return([["code1", "code2"], [orphans_filters[:province_code].to_s, orphans_filters[:province_code].to_s]])
+      allow(Province).to receive_message_chain(:distinct, :pluck)
+                             .with(:name, :code)
+                             .and_return([["code1", "code2"],
+                                          [orphans_filters[:province_code].to_s,
+                                           orphans_filters[:province_code].to_s]])
 
       render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
 
@@ -46,10 +50,10 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
 
       #select fields
       expect(rendered).to have_select("filters[gender]", selected: orphans_filters[:gender])
-      expect(rendered).to have_selector("select[name='filters[province_code]'] option[value='#{orphans_filters[:province_code]}'][selected]")
+      expect(rendered).to have_selector("filters[province_code]", text: orphans_filters[:province_code]) if not orphans_filters[:province_code].nil?
       expect(rendered).to have_select("filters[father_is_martyr]", selected: (orphans_filters[:father_is_martyr] ? "Yes" : "No"))
       expect(rendered).to have_select("filters[mother_alive]", selected: (orphans_filters[:mother_alive] ? "Yes" : "No"))
-      expect(rendered).to have_select("filters[goes_to_school]", orphans_filters[:goes_to_school] ? "Yes" : "No")
+      expect(rendered).to have_select("filters[goes_to_school]", selected: (orphans_filters[:goes_to_school] ? "Yes" : "No")) if not orphans_filters[:goes_to_school].nil?
     end
 
     specify "priority" do
