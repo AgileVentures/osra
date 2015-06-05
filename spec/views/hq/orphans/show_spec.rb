@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "hq/orphans/show.html.erb", type: :view do
-  let(:orphan) { FactoryGirl.build_stubbed(:orphan) }
+  let(:orphan) { FactoryGirl.create(:orphan) }
 
   describe 'the orphan exists' do
     before :each do
