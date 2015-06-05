@@ -209,6 +209,10 @@
   </div>
   <div class="panel-body">
     <dl class="dl-horizontal">
+      <dt>Partner</dt>
+      <dd><%= @orphan.partner.name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
       <dt>Sponsored by Another Org.</dt>
       <dd><%= @orphan.sponsored_by_another_org ? 'Yes' : 'No' %></dd>
     </dl>
