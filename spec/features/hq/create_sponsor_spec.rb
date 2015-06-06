@@ -14,6 +14,12 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
     and_i_should_be_on :new_sponsor_page
   end
 
+  scenario 'With invalid input' do
+    visit new_hq_sponsor_path
+    click_button 'Create and Add Another'
+    expect(page).to have_content 'Please fix the errors below and resubmit the form.'
+  end
+
   def when_i_register_new_sponsor
     FactoryGirl.create(:sponsor, city: 'Sigurdland')
     visit new_hq_sponsor_path
