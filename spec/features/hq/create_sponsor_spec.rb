@@ -11,10 +11,11 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
     when_i_register_new_sponsor
 
     then_the_sponsor_should_be_saved
-    and_i_should_be_on :hq_sponsor_path
+    and_i_should_be_on :new_sponsor_page
   end
 
   def when_i_register_new_sponsor
+    FactoryGirl.create(:sponsor, city: 'Sigurdland')
     visit new_hq_sponsor_path
     t = Time.now + 5.days
     mDate = t.strftime("%Y-%m-%d")
@@ -28,7 +29,7 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
     select '(Afghanistan) أفغانستان', from: 'sponsor[country]'
     select 'Sigurdland', from: 'sponsor[city]'
     select 'Trisha Marquardt 1', from: 'sponsor[agent_id]'
-    click_button 'Create Sponsor'
+    click_button 'Create and Add Another'
   end
 
   def then_the_sponsor_should_be_saved
