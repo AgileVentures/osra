@@ -3,7 +3,9 @@ class Hq::SponsorsController < HqController
     redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
 
     @filters = filters_params
-    @sponsors = Sponsor.filter(@filters).paginate(:page => params[:page])
+    @sort_by = sort_by_params
+    @sortable_by_column = true
+    @sponsors = Sponsor.filter(@filters).column_sort(@sort_by["column"], @sort_by["direction"]).paginate(:page => params[:page])
   end
 
   def show
@@ -93,6 +95,12 @@ private
            :updated_at_from, :updated_at_until, :start_date_from, :start_date_until,
            :request_fulfilled, :active_sponsorship_count_option, :active_sponsorship_count_value)
           .transform_values {|v| v=="" ? nil : v}
+  end
+
+  def sort_by_params
+    params[:sort_by] ||= {}
+    permited_filters = params[:sort_by].permit(:column, :direction)
+      .transform_values {|v| v=="" ? nil : v}
   end
 
 end

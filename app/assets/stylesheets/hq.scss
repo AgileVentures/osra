@@ -39,3 +39,11 @@ ul.nav-stacked li a {
   margin: 40px auto;
   padding-left: 80px;
 }
+
+.th_sort_asc {
+  @extend .glyphicon-triangle-top;
+}
+
+.th_sort_desc{
+  @extend .glyphicon-triangle-bottom;
+}

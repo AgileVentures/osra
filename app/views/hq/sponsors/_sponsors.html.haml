@@ -1,3 +1,6 @@
+- sort_by ||= {}
+- sortable_by_column ||= false
+
 - if sponsors.empty?
   .panel.panel-default
     .panel-body
@@ -8,19 +11,34 @@
       %thead
         %tr
           %th
-            Osra Num
+            -if sortable_by_column
+              =render partial: 'shared/sortable_table_header_link', locals: {text: "Osra Num", column: :osra_num, sort_by: sort_by}
+            -else
+              Osra Num
           %th
-            Name
+            -if sortable_by_column
+              =render partial: 'shared/sortable_table_header_link', locals: {text: "Name", column: :name, sort_by: sort_by}
+            -else
+              Name
           %th
             Status
           %th
-            Start Date
+            -if sortable_by_column
+              =render partial: 'shared/sortable_table_header_link', locals: {text: "Start Date", column: :start_date, sort_by: sort_by}
+            -else
+              Start Date
           %th
-            Request Fulfilled
+            -if sortable_by_column
+              =render partial: 'shared/sortable_table_header_link', locals: {text: "Request Fulfilled", column: :request_fulfilled, sort_by: sort_by}
+            -else
+              Request Fulfilled
           %th
             Sponsor Type
           %th
-            Country
+            -if sortable_by_column
+              =render partial: 'shared/sortable_table_header_link', locals: {text: "Country", column: :country, sort_by: sort_by}
+            -else
+              Country
       %tbody
         - sponsors.each do |sponsor|
           %tr

@@ -27,8 +27,8 @@ FactoryGirl.define do
       created_at { 2.years.ago }
       updated_at { 1.years.ago }
       father_occupation { Faker::Lorem.word }
-      father_place_of_death { Faker::Lorem.word }
-      father_cause_of_death { Faker::Lorem.word }
+      father_place_of_death { Faker::Lorem.word if father_deceased }
+      father_cause_of_death { Faker::Lorem.word if father_deceased }
       guardian_name { Faker::Name.first_name }
       guardian_relationship { Faker::Lorem.word }
       guardian_id_num { Faker::Number.number(5) }

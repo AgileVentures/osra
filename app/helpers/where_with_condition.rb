@@ -12,7 +12,7 @@ protected
   # example: Sponsor.where_with_conditions(["gender LIKE ?", params(:gender)], conditions: [params(:gender)])
   def where_with_conditions query=[], options_hash={conditions: []}
     conditions_valid = options_hash[:conditions].all? {|c| c ? true : false}
-    conditions_valid ? self.where(query) : self
+    conditions_valid ? self.where(query) : self.where(nil)
   end
 
 end
