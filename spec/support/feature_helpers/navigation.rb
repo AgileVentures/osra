@@ -39,5 +39,9 @@ module FeatureHelpers
     def and_i_should_not_see text
       expect(page).not_to have_text text
     end
+    
+    def and_i_click_a_link link
+      click_link link
+    end
   end
 end
