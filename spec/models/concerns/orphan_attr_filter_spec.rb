@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe OrphanAttrFilter do
 
   let(:orphan) { create :orphan_full }
-  let(:sample_province) { Province.first }
   let(:unsponsored_sponsorship_status) { Orphan.sponsorship_statuses[:unsponsored] }
   let(:sponsored_sponsorship_status) { Orphan.sponsorship_statuses[:sponsored] }
   let(:inactive_status) { Orphan.statuses[:inactive] }
@@ -29,16 +28,15 @@ RSpec.describe OrphanAttrFilter do
       specify "with NO params" do
         orphan = create :orphan
 
-        expect(Orphan.filter({})).to eq Orphan
+        expect(Orphan.filter({}).class).to eq Orphan::ActiveRecord_Relation
       end
 
       specify "with only NON empty params" do
         orphan = create :orphan
         filter_params = {
           name_option: "contains",
-          active_orphanship_count_option: "equals"
         }
-        expect(Orphan.filter(filter_params)).to eq Orphan
+        expect(Orphan.filter(filter_params).class).to eq Orphan::ActiveRecord_Relation
       end
 
       describe 'on each param' do
@@ -47,6 +45,7 @@ RSpec.describe OrphanAttrFilter do
                                     mother_alive: false, goes_to_school: false,
                                     priority: "High", status: inactive_status,
                                     sponsorship_status: unsponsored_sponsorship_status,
+                                    province_code: 0
                                   }
           @filter_params = {}
         end
@@ -169,7 +168,7 @@ RSpec.describe OrphanAttrFilter do
         end
 
         specify "province_code" do
-          unique_orphan = create :orphan, province_code: sample_province
+          unique_orphan = create :orphan
           @filter_params[:province_code] = unique_orphan.province_code
 
           expect(Orphan.filter @filter_params).to eq [unique_orphan]

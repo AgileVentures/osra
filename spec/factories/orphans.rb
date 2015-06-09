@@ -32,6 +32,7 @@ FactoryGirl.define do
       guardian_id_num { Faker::Number.number(5) }
       alt_contact_number { Faker::PhoneNumber.phone_number }
       comments { Faker::Lorem.paragraph }
+      province_code { Province.all.sample.code }
     end
 
     factory :orphan_full, traits: [:random_optional_fields]

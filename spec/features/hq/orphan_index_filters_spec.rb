@@ -12,10 +12,10 @@ RSpec.feature 'User views a filtered orphans list by using the filter form', :ty
     and_i_click_filter_button
 
     then_i_should_see_a_filtered_orphans_list
-    and_i_should_see_filters_form_filled
+    and_i_should_see_filters_form_filled_for_orphan
 
     when_i_click_clear_filters_button
-    then_i_should_see_filters_form_clear
+    then_i_should_see_filters_form_clear_for_orphan
   end
 end
 
@@ -81,7 +81,7 @@ def then_i_should_see_a_filtered_orphans_list
   expect(page.find("table[name='orphans']")).to have_selector "tbody tr", count: 1
 end
 
-def and_i_should_see_filters_form_filled
+def and_i_should_see_filters_form_filled_for_orphan
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
 
   within "#filters" do
@@ -89,7 +89,7 @@ def and_i_should_see_filters_form_filled
     [:name_value, :father_given_name_value, :family_name_value,
      :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
      :date_of_birth_from, :date_of_birth_until].each do |field|
-        expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value='#{orphan_filter[field]}']")
+      expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value='#{orphan_filter[field]}']")
     end
 
     #select fields
@@ -100,9 +100,9 @@ def and_i_should_see_filters_form_filled
         .to have_selector("option[value='#{orphan_filter[:province_code]}'][selected]")
     expect(page.find("select[name='filters[original_address_city]']"))
         .to have_selector("option[value='#{orphan_filter[:original_address_city]}'][selected]")
-    expect(page.find("select[name='filters[orphan_list_partner_name]']"))
-        .to have_selector("option[value='#{orphan_filter[:orphan_list_partner_name]}'][selected]")
 
+    expect(page).to have_select("filters[orphan_list_partner_name]",
+                                selected: orphan_filter[:orphan_list_partner_name])
     expect(page).to have_select("filters[sponsorship_status]",
                                 selected: orphan_filter[:sponsorship_status].capitalize)
     expect(page).to have_select("filters[status]",
@@ -119,14 +119,14 @@ def and_i_should_see_filters_form_filled
   end
 end
 
-def then_i_should_see_filters_form_clear
+def then_i_should_see_filters_form_clear_for_orphan
   within "#filters" do
     #text fields
     [:name_value, :father_given_name_value, :family_name_value,
      :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
      :date_of_birth_from, :date_of_birth_until ].each do |field|
-        expect(page).to have_selector("input[name='filters[#{field.to_s}]']")
-        expect(page).to_not have_selector("input[name='filters[#{field.to_s}]'][value]")
+      expect(page).to have_selector("input[name='filters[#{field.to_s}]']")
+      expect(page).to_not have_selector("input[name='filters[#{field.to_s}]'][value]")
     end
 
     #select fields
