@@ -13,10 +13,6 @@ protected
   # example: Sponsor.where_with_conditions(["gender LIKE ?", params(:gender)], conditions: [params(:gender)], join: :table)
   def where_with_conditions query=[], options_hash={conditions: [], join: nil}
     conditions_valid = options_hash[:conditions].all? {|c| c ? true : false}
-    if options_hash[:join].nil?
-      conditions_valid ? self.where(query) : self.where(nil)
-    else
-      conditions_valid ? self.joins(options_hash[:join]).where(query) : self.where(nil)
-    end
+    conditions_valid ? self.joins(options_hash[:join]).where(query) : self.where(nil)
   end
 end

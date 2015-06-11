@@ -20,15 +20,13 @@ RSpec.feature 'User views a filtered orphans list by using the filter form', :ty
 end
 
 def a_list_of_orphans_exists
-  FactoryGirl.create_list(:orphan, 5)
+  FactoryGirl.create_list(:orphan_full, 5)
 end
 
 def when_i_fill_in_orphan_filter_form
-  unsponsored_sponsorship_status = Orphan.sponsorship_statuses[:unsponsored]
-  active_status = Orphan.statuses[:active]
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
-  orphan_filter[:sponsorship_status] = unsponsored_sponsorship_status
-  orphan_filter[:status] = active_status
+  orphan_filter[:sponsorship_status] = Orphan.sponsorship_statuses[orphan_filter[:sponsorship_status]]
+  orphan_filter[:status] = Orphan.statuses[orphan_filter[:status]]
 
   visit hq_orphans_path
 
@@ -60,7 +58,6 @@ def when_i_fill_in_orphan_filter_form
     find("select[name='filters[father_is_martyr]']").find("option[value='#{orphan_filter[:father_is_martyr]}']").select_option
     find("select[name='filters[mother_alive]']").find("option[value='#{orphan_filter[:mother_alive]}']").select_option
     find("select[name='filters[goes_to_school]']").find("option[value='#{orphan_filter[:goes_to_school]}']").select_option
-
   end
 end
 
@@ -104,9 +101,9 @@ def and_i_should_see_filters_form_filled_for_orphan
     expect(page).to have_select("filters[orphan_list_partner_name]",
                                 selected: orphan_filter[:orphan_list_partner_name])
     expect(page).to have_select("filters[sponsorship_status]",
-                                selected: orphan_filter[:sponsorship_status].capitalize)
+                                selected: orphan_filter[:sponsorship_status].humanize)
     expect(page).to have_select("filters[status]",
-                                selected: orphan_filter[:status].capitalize)
+                                selected: orphan_filter[:status].humanize)
     expect(page).to have_select("filters[health_status]",
                                 selected: orphan_filter[:health_status]) if orphan_filter[:health_status]
 

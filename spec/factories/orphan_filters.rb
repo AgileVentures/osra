@@ -7,7 +7,7 @@ end
 # FactoryGirl.build(:orphan_filter, name_option: "contains", orphan: FactoryGirl.create(:orphan, name: "AA")) to overwrite attributes
 FactoryGirl.define do
   factory :orphan_filter do
-    orphan {build_stubbed :orphan}
+    orphan {build_stubbed :orphan_full}
 
     name_option {"equals"}
     father_given_name_option {"equals"}
