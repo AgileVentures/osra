@@ -1,5 +1,18 @@
 class Orphan < ActiveRecord::Base
 
+  self.per_page = 3
+
+  scope :orphan_sort, ->(sort_column, sort_direction) do  
+    return nil if sort_column.nil?
+    if sort_column == 'original_address_province_name'
+      includes(:original_address).order("provinces.name " + sort_direction)
+    elsif sort_column == 'orphan_list_partner_name'
+      includes(:orphan_list).includes(:partner).order("partners.name " + sort_direction)
+    else
+      order(sort_column + ' ' + sort_direction)
+    end
+  end
+
   enum status: [
     :active,
     :inactive,

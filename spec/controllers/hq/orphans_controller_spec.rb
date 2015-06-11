@@ -13,8 +13,9 @@ RSpec.describe Hq::OrphansController, type: :controller do
   end
 
   specify '#index with pagination' do
+    allow(Orphan).to receive(:orphan_sort).and_return(Orphan)
     expect(Orphan).to receive(:paginate).with(page: "2")
-      .and_return(orphans.paginate(per_page: 3, page: 1))
+      .and_return(orphans.paginate(per_page: 2, page: 1))
     get :index, page: "2"
 
     expect(assigns(:orphans)).to eq orphans

@@ -6,15 +6,7 @@ class Hq::OrphansController < HqController
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    if params[:sort_by] == 'original_address_province_name'
-      @orphans = Orphan.includes(:original_address).order("provinces.name " + sort_direction).paginate(:page => params[:page])
-    elsif params[:sort_by] == 'orphan_list_partner_name'
-      @orphans = Orphan.includes(:orphan_list).includes(:partner).order("partners.name " + sort_direction).paginate(:page => params[:page])
-    elsif sort_column
-      @orphans = Orphan.order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
-    else
-      @orphans = Orphan.paginate(:page => params[:page])
-    end
+    @orphans = Orphan.orphan_sort(sort_column, sort_direction).paginate(:page => params[:page])
   end
 
   def show
@@ -78,7 +70,7 @@ private
 
   def sort_column
     # This method is just to verify the sort_by column passed in params, to prevent SQL injection attacks
-    Orphan.column_names.include?(params[:sort_by]) ? params[:sort_by] : nil
+    (Orphan.column_names + ['original_address_province_name','orphan_list_partner_name']).include?(params[:sort_by]) ? params[:sort_by] : nil
   end
 
   def sort_direction
