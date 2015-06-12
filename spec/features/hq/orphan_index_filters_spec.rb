@@ -25,8 +25,6 @@ end
 
 def when_i_fill_in_orphan_filter_form
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
-  orphan_filter[:sponsorship_status] = Orphan.sponsorship_statuses[orphan_filter[:sponsorship_status]]
-  orphan_filter[:status] = Orphan.statuses[orphan_filter[:status]]
 
   visit hq_orphans_path
 
@@ -100,10 +98,8 @@ def and_i_should_see_filters_form_filled_for_orphan
 
     expect(page).to have_select("filters[orphan_list_partner_name]",
                                 selected: orphan_filter[:orphan_list_partner_name])
-    expect(page).to have_select("filters[sponsorship_status]",
-                                selected: orphan_filter[:sponsorship_status].humanize)
-    expect(page).to have_select("filters[status]",
-                                selected: orphan_filter[:status].humanize)
+    expect(page.find("select[name='filters[sponsorship_status]']")).to have_selector("option[value='#{orphan_filter[:sponsorship_status]}']")
+    expect(page.find("select[name='filters[status]']")).to have_selector("option[value='#{orphan_filter[:status]}']")
     expect(page).to have_select("filters[health_status]",
                                 selected: orphan_filter[:health_status]) if orphan_filter[:health_status]
 

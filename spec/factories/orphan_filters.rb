@@ -23,8 +23,8 @@ FactoryGirl.define do
         province_code: orphan.province_code,
         original_address_city: orphan.original_address.city,
         priority: orphan.priority,
-        sponsorship_status: orphan.sponsorship_status,
-        status: orphan.status,
+        sponsorship_status: Orphan.sponsorship_statuses[orphan.sponsorship_status], #digit
+        status: Orphan.statuses[orphan.status], #digit
         orphan_list_partner_name: orphan.orphan_list.partner.name,
         father_given_name_option: father_given_name_option,
         father_given_name_value: orphan.father_given_name,
