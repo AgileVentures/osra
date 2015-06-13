@@ -6,11 +6,12 @@ RSpec.feature 'Navigation menu', :type => :feature do
   background do
     i_sign_in_as_admin
   end
-  scenario 'user cilco on OSRA link' do
+  scenario 'user click on OSRA link' do
+    pending( "waiting for index path implementation" )
     within "#main_nav_bar" do
       click_link "OSRA"
     end
-   # expect(page).to eq hq_index_path
+    expect(page).to eq hq_index_path
   end
   scenario 'user click on Dashboard nav link' do
     within "#main_nav_bar" do
