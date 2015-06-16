@@ -43,5 +43,6 @@ module FeatureHelpers
     def and_i_should_not_see text
       expect(page).not_to have_text text
     end
+    
   end
 end
