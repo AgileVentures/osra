@@ -27,9 +27,14 @@ private
   def load_scope
     @orphans_count = Orphan.count
     @orphans_sort_by_eligibility_count = Orphan.sort_by_eligibility.count
+    @orphans_count_sponsored = Orphan.sort_by_sponsored.count
     if params[:scope] == 'eligible_for_sponsorship'
       @orphans = @orphans.sort_by_eligibility
       @eligible_for_sponsorship = true
+    end
+    if params[:scope] == 'sponsored'
+      @orphans = @orphans.sort_by_sponsored
+      @eligible_for_sponsorship = false
     end
     if params[:sponsor_id]
       @sponsor = Sponsor.find(params[:sponsor_id])

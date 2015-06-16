@@ -444,6 +444,10 @@ describe Orphan, type: :model do
                                                                     active_previously_sponsored_high_priority_orphan,
                                                                     active_unsponsored_high_priority_orphan]
         end
+        
+        specify '.currently_sponsored should correctly select sponsored orphans only' do
+          expect(Orphan.currently_sponsored.to_a).to match_array([ active_sponsored_orphan, on_hold_sponsored_orphan ])
+        end
 
         specify '.high_priority should correctly return high-priority orphans' do
           expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
@@ -457,6 +461,10 @@ describe Orphan, type: :model do
             active_unsponsored_high_priority_orphan,
             active_unsponsored_orphan
           ]
+        end
+        
+        specify '.sort_by_sponsored should sort sponsored orphans by sponsored_status' do
+          expect(Orphan.sort_by_sponsored).to eq [ active_sponsored_orphan ]
         end
 
       end
