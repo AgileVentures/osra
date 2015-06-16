@@ -19,21 +19,9 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
     it 'should not indicate no orphans were found' do
       render and expect(rendered).to_not match /No Orphans found/
     end
-    
-    it 'should have a button for filter all orphans' do
-      render and expect(rendered).to have_selector('button#all_orphans_403')
-    end
-    
-    it 'should have a button for filter unsponsored orphans' do
-      render and expect(rendered).to have_selector('button#unsponsored_orphans_403')
-    end
-    
+
     it 'should have a button for filter sponsored orphans' do
-      render and expect(rendered).to have_selector('button#sponsored_orphans_403')
-    end
-    
-    it 'shold show all orphans' do
-      render and expect(rendered).to have_selector('td')
+      render and expect(rendered).to have_link( "Sponsored" , hq_orphans_path( scope: :sponsored ) )
     end
 
     it "calls will_paginate gem " do

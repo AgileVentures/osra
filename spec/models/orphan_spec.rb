@@ -336,18 +336,6 @@ describe Orphan, type: :model do
           expect(active_sponsored_orphan.eligible_for_sponsorship?).to eq false
           expect(inactive_unsponsored_orphan.eligible_for_sponsorship?).to eq false
         end
-        
-        specify '#sponsored? should return true for sponsored orphan & false for unsponsored' do
-          expect(active_unsponsored_orphan.sponsored?).to eq false
-          expect(active_previously_sponsored_orphan.sponsored?).to eq false
-          expect(active_previously_sponsored_high_priority_orphan.sponsored?).to eq false
-          expect(active_unsponsored_high_priority_orphan.sponsored?).to eq false
-          expect(active_on_hold_orphan.sponsored?).to eq false
-          expect(on_hold_sponsored_orphan.sponsored?).to eq false
-          expect(under_revision_unsponsored_orphan.sponsored?).to eq false
-          expect(active_sponsored_orphan.sponsored?).to eq true
-          expect(inactive_unsponsored_orphan.sponsored?).to eq false
-        end
 
         describe '#qualify_for_sponsorship_by_status' do
           describe 'does not erroneously change sponsorship_status' do
@@ -456,6 +444,10 @@ describe Orphan, type: :model do
                                                                     active_previously_sponsored_high_priority_orphan,
                                                                     active_unsponsored_high_priority_orphan]
         end
+        
+        specify '.currently_sponsored should correctly select sponsored orphans only' do
+          expect(Orphan.currently_sponsored.to_a).to match_array([ active_sponsored_orphan, on_hold_sponsored_orphan ])
+        end
 
         specify '.high_priority should correctly return high-priority orphans' do
           expect(Orphan.high_priority.to_a).to match_array [active_previously_sponsored_high_priority_orphan,
@@ -469,6 +461,10 @@ describe Orphan, type: :model do
             active_unsponsored_high_priority_orphan,
             active_unsponsored_orphan
           ]
+        end
+        
+        specify '.sort_by_sponsored should sort sponsored orphans by sponsored_status' do
+          expect(Orphan.sort_by_sponsored).to eq [ active_sponsored_orphan ]
         end
 
       end

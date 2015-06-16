@@ -101,7 +101,8 @@ class Orphan < ActiveRecord::Base
   scope :high_priority, -> { where(priority: 'High') }
   scope :sort_by_eligibility, -> { active.currently_unsponsored.
                                    order(NEW_SPONSORSHIP_SORT_SQL) }
-
+  scope :sort_by_sponsored, -> { active.currently_sponsored.
+                                   order(NEW_SPONSORSHIP_SORT_SQL) }
   acts_as_sequenced scope: :province_code
 
   def father_name
@@ -114,10 +115,6 @@ class Orphan < ActiveRecord::Base
 
   def eligible_for_sponsorship?
     Orphan.active.currently_unsponsored.include? self
-  end
-  
-  def sponsored?
-    Orphan.active.currently_sponsored.include? self
   end
   
   def current_sponsorship
