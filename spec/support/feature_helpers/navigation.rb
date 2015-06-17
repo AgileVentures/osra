@@ -11,6 +11,9 @@ module FeatureHelpers
           get_path page, sponsor.id
         when :sponsor_id
           get_path page, field_hash[:sponsor_id]
+        when :orphan_name
+          orphan = Orphan.find_by(name: field_hash[:orphan_name])
+          get_path page, orphan.id
         else raise('path to specified object is not displayed')
       end
     end
@@ -22,6 +25,8 @@ module FeatureHelpers
                     when :new_sponsor_page then new_hq_sponsor_path
                     when :hq_sponsor_path then hq_sponsor_path object_id
                     when :hq_new_sponsorship_path then hq_new_sponsorship_path object_id
+                    when :hq_orphan_path then hq_orphan_path object_id
+                    when :edit_hq_orphan_path then edit_hq_orphan_path object_id
                     else raise('path to specified is not listed in #path_to')
                   end
 
