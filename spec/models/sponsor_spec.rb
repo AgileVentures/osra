@@ -16,64 +16,6 @@ describe Sponsor, type: :model do
     expect(Sponsor::PAYMENT_PLANS).to be_present
   end
 
-  it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :requested_orphan_count }
-  it { is_expected.to validate_presence_of :country }
-  it { is_expected.to validate_presence_of :city }
-  it { is_expected.not_to allow_value(Sponsor::NEW_CITY_MENU_OPTION).for(:city).
-                              with_message 'Please enter city name below. &darr;' }
-  it { is_expected.to validate_presence_of :sponsor_type }
-  it { is_expected.to validate_presence_of :agent }
-
-  it { is_expected.to validate_presence_of :gender }
-  it { is_expected.to validate_presence_of :status_id }
-  it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
-  it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
-  it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
-
-
-  it { is_expected.to validate_numericality_of(:requested_orphan_count).
-                          only_integer.is_greater_than(0) }
-
-  context "requested_orphan_count_less_than_active_sponsorships validation" do
-    let(:sponsor) { build_stubbed :sponsor, requested_orphan_count: 4 }
-
-    before :each do
-      2.times do
-        sponsorship = build :sponsorship, sponsor: sponsor
-        CreateSponsorship.new(sponsorship).call
-      end
-    end
-
-    it "can't be less than the number of active sponsorships" , focus: true do
-      sponsor.requested_orphan_count = 1
-      expect(sponsor).to_not be_valid
-      expect(sponsor.errors.full_messages).to_not be_empty
-    end
-
-    it "can be greather or equal than the number of active sponsorships" , focus: true do
-      sponsor.requested_orphan_count = 2
-      expect(sponsor).to be_valid
-      expect(sponsor.errors.full_messages).to be_empty
-    end
-  end
-
-  context 'start_date validation' do
-      it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
-      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
-      it { is_expected.to have_validation :date_not_beyond_first_of_next_month, :on => :start_date }
-  end
-
-  context 'email validation' do
-    it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
-        'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
-    ['not_email', 'also@not_email', 'really_not@', 'not_emal@em..com', '"not@an.em'].each do |bad_email_value|
-      it { is_expected.to_not allow_value(bad_email_value).for :email }
-    end
-  end
-
-
-
   it { is_expected.to belong_to :branch }
   it { is_expected.to belong_to :organization }
   it { is_expected.to belong_to :status }
@@ -81,6 +23,65 @@ describe Sponsor, type: :model do
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
 
+  describe "validations" do
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :requested_orphan_count }
+    it { is_expected.to validate_presence_of :country }
+    it { is_expected.to validate_presence_of :city }
+    it { is_expected.not_to allow_value(Sponsor::NEW_CITY_MENU_OPTION).for(:city).
+                                with_message 'Please enter city name below. &darr;' }
+    it { is_expected.to validate_presence_of :sponsor_type }
+    it { is_expected.to validate_presence_of :agent }
+
+    it { is_expected.to validate_presence_of :gender }
+    it { is_expected.to validate_presence_of :status_id }
+    it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
+    it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
+    it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+
+
+    it { is_expected.to validate_numericality_of(:requested_orphan_count).
+                            only_integer.is_greater_than(0) }
+
+    context "requested_orphan_count_not_less_than_active_sponsorships_count" do
+      let(:sponsor) { build_stubbed :sponsor, requested_orphan_count: 4 }
+
+      before :each do
+        2.times do
+          sponsorship = build :sponsorship, sponsor: sponsor
+          CreateSponsorship.new(sponsorship).call
+        end
+      end
+
+      it "requested_orphan_count can't be less than the number of active sponsorships" do
+        sponsor.requested_orphan_count = 1
+        expect(sponsor).to_not be_valid
+        expect(sponsor.errors.full_messages).to_not be_empty
+      end
+
+      it "requested_orphan_count can be greather or equal than the number of active sponsorships" do
+        [2,3].each do |count|
+          sponsor.requested_orphan_count = count
+          expect(sponsor).to be_valid
+          expect(sponsor.errors.full_messages).to be_empty
+        end
+      end
+    end
+
+    context 'start_date' do
+      it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
+      it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
+      it { is_expected.to have_validation :date_not_beyond_first_of_next_month, :on => :start_date }
+    end
+
+    context 'email' do
+      it { is_expected.to allow_value(nil, '', 'admin@example.com', 'some.email@192.168.100.100', 'grüner@grü.üne',
+          'تللتنمي@تنمي.نمي', 'لتتت@تمت.متت', 'あいうえお@うえ.いえ', "+valid@email.com").for :email }
+      ['not_email', 'also@not_email', 'really_not@', 'not_emal@em..com', '"not@an.em'].each do |bad_email_value|
+        it { is_expected.to_not allow_value(bad_email_value).for :email }
+      end
+    end
+  end
 
   describe '.request_fulfilled' do
     let(:sponsor) { build(:sponsor, requested_orphan_count: 2) }
@@ -262,77 +263,77 @@ describe Sponsor, type: :model do
         end
       end
     end
-  end
 
-  describe 'before_create #generate_osra_num' do
-    let(:branch) { Branch.all.sample }
-    let(:organization) { Organization.all.sample }
+    describe 'before_create #generate_osra_num' do
+      let(:branch) { Branch.all.sample }
+      let(:organization) { Organization.all.sample }
 
-    let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
+      let(:sponsor) { build :sponsor, :organization => nil, :branch => nil }
 
-    it 'sets osra_num' do
-      sponsor.branch = branch
-      sponsor.sponsor_type = individual_type
-      sponsor.save!
-      expect(sponsor.osra_num).not_to be_nil
-    end
-
-    describe 'when recruited by osra branch' do
-      before(:each) do
+      it 'sets osra_num' do
         sponsor.branch = branch
         sponsor.sponsor_type = individual_type
         sponsor.save!
+        expect(sponsor.osra_num).not_to be_nil
       end
 
-      it 'sets the first digit to 5' do
-        expect(sponsor.osra_num[0]).to eq "5"
+      describe 'when recruited by osra branch' do
+        before(:each) do
+          sponsor.branch = branch
+          sponsor.sponsor_type = individual_type
+          sponsor.save!
+        end
+
+        it 'sets the first digit to 5' do
+          expect(sponsor.osra_num[0]).to eq "5"
+        end
+
+        it 'sets the second and third digits to the branch code' do
+          expect(sponsor.osra_num[1...3]).to eq "%02d" % branch.code
+        end
       end
 
-      it 'sets the second and third digits to the branch code' do
-        expect(sponsor.osra_num[1...3]).to eq "%02d" % branch.code
-      end
-    end
+      describe 'when recruited by a sister organization' do
+        before(:each) do
+          sponsor.organization = organization
+          sponsor.sponsor_type = organization_type
+          sponsor.save!
+        end
 
-    describe 'when recruited by a sister organization' do
-      before(:each) do
-        sponsor.organization = organization
-        sponsor.sponsor_type = organization_type
+        it 'sets the first digit to an 8 ' do
+          expect(sponsor.osra_num[0]).to eq "8"
+        end
+
+        it 'sets the second and third digits to the organization code' do
+          expect(sponsor.osra_num[1...3]).to eq "%02d" % organization.code
+        end
+      end
+
+      it 'sets the last 4 digits of osra_num to sequential_id' do
+        sponsor.branch = branch
+        sponsor.sponsor_type = individual_type
+        sponsor.sequential_id = 999
         sponsor.save!
-      end
-
-      it 'sets the first digit to an 8 ' do
-        expect(sponsor.osra_num[0]).to eq "8"
-      end
-
-      it 'sets the second and third digits to the organization code' do
-        expect(sponsor.osra_num[1...3]).to eq "%02d" % organization.code
+        expect(sponsor.osra_num[3..-1]).to eq '0999'
       end
     end
 
-    it 'sets the last 4 digits of osra_num to sequential_id' do
-      sponsor.branch = branch
-      sponsor.sponsor_type = individual_type
-      sponsor.sequential_id = 999
-      sponsor.save!
-      expect(sponsor.osra_num[3..-1]).to eq '0999'
-    end
-  end
+    describe 'before_validation #set_city' do
+      let(:sponsor) { create :sponsor, city: 'London' }
 
-  describe 'before_validation #set_city' do
-    let(:sponsor) { create :sponsor, city: 'London' }
+      before do
+        sponsor.city = Sponsor::NEW_CITY_MENU_OPTION
+      end
 
-    before do
-      sponsor.city = Sponsor::NEW_CITY_MENU_OPTION
-    end
+      it 'sets city to new name' do
+        sponsor.new_city_name = 'Riyadh'
+        sponsor.save!
+        expect(sponsor.city).to eq 'Riyadh'
+      end
 
-    it 'sets city to new name' do
-      sponsor.new_city_name = 'Riyadh'
-      sponsor.save!
-      expect(sponsor.city).to eq 'Riyadh'
-    end
-
-    it 'raises an error if **Add New** is given as city without new_city_name' do
-      expect { sponsor.save! }.to raise_error ActiveRecord::RecordInvalid
+      it 'raises an error if **Add New** is given as city without new_city_name' do
+        expect { sponsor.save! }.to raise_error ActiveRecord::RecordInvalid
+      end
     end
   end
 
@@ -369,6 +370,17 @@ describe Sponsor, type: :model do
       end
     end
 
+    describe '.all_cities' do
+      before do
+        2.times { create :sponsor, city: 'London' }
+        create :sponsor, city: 'Toronto'
+      end
+
+      it 'returns all unique city names' do
+        expect(Sponsor.all_cities).to match_array %w{London Toronto}
+      end
+    end
+
     describe 'scopes' do
       let(:sponsor) { create :sponsor }
       let(:active_sponsor) { create :sponsor, status: active_status }
@@ -393,14 +405,4 @@ describe Sponsor, type: :model do
     end
   end
 
-  describe '.all_cities' do
-    before do
-      2.times { create :sponsor, city: 'London' }
-      create :sponsor, city: 'Toronto'
-    end
-
-    it 'returns all unique city names' do
-      expect(Sponsor.all_cities).to match_array %w{London Toronto}
-    end
-  end
 end

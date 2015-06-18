@@ -22,7 +22,6 @@ class Sponsor < ActiveRecord::Base
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validate :requested_orphan_count_less_than_active_sponsorships
 
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :city, presence: true,
@@ -38,6 +37,7 @@ class Sponsor < ActiveRecord::Base
                          date_not_beyond_first_of_next_month: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
+  validate :requested_orphan_count_not_less_than_active_sponsorships_count
   validates_format_of :email,
       with: /\A([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)(\.[\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)*\@([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+\.)+([[:word:]]+)(\:[0-9]+)?\z/i,
       allow_blank: true
@@ -130,7 +130,7 @@ private
     end
   end
 
-  def requested_orphan_count_less_than_active_sponsorships
+  def requested_orphan_count_not_less_than_active_sponsorships_count
     if requested_orphan_count < sponsorships.all_active.count
       errors[:requested_orphan_count] << "can't be less than the number of active sponsorships"
     end
