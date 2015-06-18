@@ -22,6 +22,8 @@ class Sponsor < ActiveRecord::Base
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validate :requested_orphan_count_less_than_active_sponsorships
+
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :city, presence: true,
             exclusion: { in: [NEW_CITY_MENU_OPTION],
@@ -125,6 +127,12 @@ private
   def type_affiliation_mismatch
     if sponsor_type
       (sponsor_type.name == 'Individual' && branch.nil?) || (sponsor_type.name == 'Organization' && organization.nil?)
+    end
+  end
+
+  def requested_orphan_count_less_than_active_sponsorships
+    if requested_orphan_count < sponsorships.all_active.count
+      errors[:requested_orphan_count] << "can't be less than the number of active sponsorships"
     end
   end
 
