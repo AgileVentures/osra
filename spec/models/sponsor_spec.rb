@@ -35,6 +35,29 @@ describe Sponsor, type: :model do
   it { is_expected.to validate_numericality_of(:requested_orphan_count).
                           only_integer.is_greater_than(0) }
 
+  context "requested_orphan_count_less_than_active_sponsorships validation" do
+    let(:sponsor) { build_stubbed :sponsor, requested_orphan_count: 4 }
+
+    before :each do
+      2.times do
+        sponsorship = build :sponsorship, sponsor: sponsor
+        CreateSponsorship.new(sponsorship).call
+      end
+    end
+
+    it "can't be less than the number of active sponsorships" , focus: true do
+      sponsor.requested_orphan_count = 1
+      expect(sponsor).to_not be_valid
+      expect(sponsor.errors.full_messages).to_not be_empty
+    end
+
+    it "can be greather or equal than the number of active sponsorships" , focus: true do
+      sponsor.requested_orphan_count = 2
+      expect(sponsor).to be_valid
+      expect(sponsor.errors.full_messages).to be_empty
+    end
+  end
+
   context 'start_date validation' do
       it { is_expected.to have_validation :valid_date_presence, :on => :start_date }
       it { is_expected.to have_validation :date_beyond_osra_establishment, :on => :start_date }
@@ -48,6 +71,7 @@ describe Sponsor, type: :model do
       it { is_expected.to_not allow_value(bad_email_value).for :email }
     end
   end
+
 
 
   it { is_expected.to belong_to :branch }
