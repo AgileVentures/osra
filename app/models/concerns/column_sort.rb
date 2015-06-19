@@ -8,15 +8,23 @@ module ColumnSort
     # direction:  is "asc" or "desc" and represent the direction of sorting
     # add `include ColumnSort` to your Model class
     # use like:  `Sponsor.column_sort("name", "asc")
-    scope :column_sort, ->(column, direction = nil) do
-      #validating first
-      if column.nil? || !(self.column_names.include?(column.to_s))
-        return order(nil)
-      end
-      direction = :asc if !direction || direction.to_sym != :desc
 
-      return order(column => direction)
+    # scope :column_sort, ->(column, direction = nil) do
+    #   #validating first
+    #   if column.nil? || !(self.column_names.include?(column.to_s))
+    #     return order(nil)
+    #   end
+    #   direction = :asc if !direction || direction.to_sym != :desc
+
+    #   return order(column => direction)
+    # end
+
+    scope :column_sort, ->(sort_column, sort_direction, sort_include=nil) do
+      self.includes(sort_include).order(sort_column + " " +  sort_direction)
     end
+
   end
 
 end
+
+

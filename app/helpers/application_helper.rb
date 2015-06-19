@@ -2,11 +2,13 @@ module ApplicationHelper
   FULL_DATE_FORMAT_STRING= '%d %B %Y'
   MONTH_YEAR_DATE_FORMAT_STRING= '%m/%Y'
 
-  def sortable(column, title = nil)
+  def sortable(column, title = nil, includ = nil)
   	title ||= column.titleize
-  	css_class = column == sort_column ? "current #{sort_direction}" : nil
+    icon = ''
   	direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-  	link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+  	link = link_to title, {:sort => column, :direction => direction, :includ => includ}
+    icon = "<span class=\"glyphicon th_sort_#{sort_direction}\"></span>" if column == sort_column
+    return(link + icon.html_safe)
   end
 
   def format_full_date(date)
