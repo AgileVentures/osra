@@ -11,8 +11,8 @@ module FeatureHelpers
           get_path page, sponsor.id
         when :sponsor_id
           get_path page, field_hash[:sponsor_id]
-        when :orphan_name
-          orphan = Orphan.find_by(name: field_hash[:orphan_name])
+        when :orphan_id
+          orphan = Orphan.find_by(id: field_hash[:orphan_id])
           get_path page, orphan.id
         else raise('path to specified object is not displayed')
       end
