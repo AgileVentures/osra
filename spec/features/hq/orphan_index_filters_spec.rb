@@ -20,15 +20,11 @@ RSpec.feature 'User views a filtered orphans list by using the filter form', :ty
 end
 
 def a_list_of_orphans_exists
-  FactoryGirl.create_list(:orphan, 5)
+  FactoryGirl.create_list(:orphan_full, 5)
 end
 
 def when_i_fill_in_orphan_filter_form
-  unsponsored_sponsorship_status = Orphan.sponsorship_statuses[:unsponsored]
-  active_status = Orphan.statuses[:active]
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
-  orphan_filter[:sponsorship_status] = unsponsored_sponsorship_status
-  orphan_filter[:status] = active_status
 
   visit hq_orphans_path
 
@@ -60,7 +56,6 @@ def when_i_fill_in_orphan_filter_form
     find("select[name='filters[father_is_martyr]']").find("option[value='#{orphan_filter[:father_is_martyr]}']").select_option
     find("select[name='filters[mother_alive]']").find("option[value='#{orphan_filter[:mother_alive]}']").select_option
     find("select[name='filters[goes_to_school]']").find("option[value='#{orphan_filter[:goes_to_school]}']").select_option
-
   end
 end
 
@@ -89,7 +84,7 @@ def and_i_should_see_filters_form_filled_for_orphan
     [:name_value, :father_given_name_value, :family_name_value,
      :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
      :date_of_birth_from, :date_of_birth_until].each do |field|
-      expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value='#{orphan_filter[field]}']")
+      expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value=\"#{orphan_filter[field]}\"]")
     end
 
     #select fields
@@ -99,14 +94,12 @@ def and_i_should_see_filters_form_filled_for_orphan
     expect(page.find("select[name='filters[province_code]']"))
         .to have_selector("option[value='#{orphan_filter[:province_code]}'][selected]")
     expect(page.find("select[name='filters[original_address_city]']"))
-        .to have_selector("option[value='#{orphan_filter[:original_address_city]}'][selected]")
+        .to have_selector("option[value=\"#{orphan_filter[:original_address_city]}\"][selected]")
 
     expect(page).to have_select("filters[orphan_list_partner_name]",
                                 selected: orphan_filter[:orphan_list_partner_name])
-    expect(page).to have_select("filters[sponsorship_status]",
-                                selected: orphan_filter[:sponsorship_status].capitalize)
-    expect(page).to have_select("filters[status]",
-                                selected: orphan_filter[:status].capitalize)
+    expect(page.find("select[name='filters[sponsorship_status]']")).to have_selector("option[value='#{orphan_filter[:sponsorship_status]}']")
+    expect(page.find("select[name='filters[status]']")).to have_selector("option[value='#{orphan_filter[:status]}']")
     expect(page).to have_select("filters[health_status]",
                                 selected: orphan_filter[:health_status]) if orphan_filter[:health_status]
 

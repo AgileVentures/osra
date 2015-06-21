@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "hq/orphans/filters.html.erb", type: :view do
-  let(:orphans_filters) {build :orphan_filter, name_option: "equals",
-                               father_given_name_option: "equals", family_name_option: "equals"}
-  let(:orphans) {build_stubbed_list(:orphan,5)}
+  let(:orphans_filters) {build :orphan_filter}
 
   it 'has a form' do
     render partial: "hq/orphans/filters.html.erb", locals: {filters: {}}
@@ -12,6 +10,21 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
   end
 
   describe 'has form fields' do
+    before :each do
+      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:health_status)
+                            .and_return(["health_status1", "health_status2", orphans_filters[:health_status].to_s])
+      allow(Province).to receive_message_chain(:distinct, :pluck).with(:name, :code)
+                            .and_return([["province1", "1"],["Selected Province", orphans_filters[:province_code].to_s]])
+      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:priority)
+                            .and_return(["priority1","priority2", orphans_filters[:priority].to_s])
+      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:city)
+                            .and_return(["city1","city2", orphans_filters[:original_address_city].to_s])
+      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:sponsorship_status)
+                            .and_return( (0..(Orphan.sponsorship_statuses.size-1)).to_a )
+      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:status)
+                            .and_return( (0..(Orphan.statuses.size-1)).to_a )
+      allow(Partner).to receive_message_chain(:all_names).and_return(["partner1", "partner2", orphans_filters[:orphan_list_partner_name]])
+    end
 
     specify "empty" do
       render partial: "hq/orphans/filters.html.erb", locals: {filters: {}}
@@ -33,13 +46,8 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
       end
     end
 
-    specify "filled" do
-      allow(Province).to receive_message_chain(:distinct, :pluck)
-                             .with(:name, :code)
-                             .and_return([["code1", "code2"],
-                                          [orphans_filters[:province_code].to_s,
-                                           orphans_filters[:province_code].to_s]])
 
+    specify "filled" do
       render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
 
       #text fields
@@ -50,46 +58,15 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
 
       #select fields
       expect(rendered).to have_select("filters[gender]", selected: orphans_filters[:gender])
-      expect(rendered).to have_selector("filters[province_code]", text: orphans_filters[:province_code]) if not orphans_filters[:province_code].nil?
+      expect(rendered).to have_select("filters[province_code]", selected: "Selected Province") if not orphans_filters[:province_code].nil?
       expect(rendered).to have_select("filters[father_is_martyr]", selected: (orphans_filters[:father_is_martyr] ? "Yes" : "No"))
       expect(rendered).to have_select("filters[mother_alive]", selected: (orphans_filters[:mother_alive] ? "Yes" : "No"))
       expect(rendered).to have_select("filters[goes_to_school]", selected: (orphans_filters[:goes_to_school] ? "Yes" : "No")) if not orphans_filters[:goes_to_school].nil?
-    end
-
-    specify "priority" do
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :sort, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:priority).and_return(["priority1","priority2", orphans_filters[:priority].to_s])
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
       expect(rendered).to have_select("filters[priority]", selected: orphans_filters[:priority])
-    end
-
-    specify "health_status" do
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :sort, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:health_status).and_return(["health_status1","health_status2", orphans_filters[:health_status].to_s])
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
       expect(rendered).to have_selector("select[name='filters[health_status]'] option[value='#{orphans_filters[:health_status]}']")
-    end
-
-    specify "status" do
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :sort, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :map) {([])}
-      allow(Orphan).to receive_message_chain(:statuses, :key, :humanize) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:status).and_return([orphans_filters[:status]])
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
       expect(rendered).to have_selector("select[name='filters[status]'] option[value='#{orphans_filters[:status]}']")
-    end
-
-    specify "sponsorship_status" do
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :sort, :map) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck, :map) {([])}
-      allow(Orphan).to receive_message_chain(:sponsorship_statuses, :key, :humanize) {([])}
-      allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:sponsorship_status).and_return([orphans_filters[:sponsorship_status]])
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
       expect(rendered).to have_selector("select[name='filters[sponsorship_status]'] option[value='#{orphans_filters[:sponsorship_status]}']")
     end
-
   end
 
   it "has submit buttons" do

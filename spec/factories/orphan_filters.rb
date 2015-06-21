@@ -7,7 +7,7 @@ end
 # FactoryGirl.build(:orphan_filter, name_option: "contains", orphan: FactoryGirl.create(:orphan, name: "AA")) to overwrite attributes
 FactoryGirl.define do
   factory :orphan_filter do
-    orphan {build_stubbed :orphan}
+    orphan {build_stubbed :orphan_full}
 
     name_option {"equals"}
     father_given_name_option {"equals"}
@@ -23,8 +23,8 @@ FactoryGirl.define do
         province_code: orphan.province_code,
         original_address_city: orphan.original_address.city,
         priority: orphan.priority,
-        sponsorship_status: orphan.sponsorship_status,
-        status: orphan.status,
+        sponsorship_status: Orphan.sponsorship_statuses[orphan.sponsorship_status], #digit
+        status: Orphan.statuses[orphan.status], #digit
         orphan_list_partner_name: orphan.orphan_list.partner.name,
         father_given_name_option: father_given_name_option,
         father_given_name_value: orphan.father_given_name,

@@ -16,6 +16,7 @@ RSpec.describe Hq::OrphansController, type: :controller do
       allow(Orphan).to receive(:filter).and_return Orphan
       expect(Orphan).to receive(:paginate).with(page: "1").and_return orphans
       get :index, page: 1
+
       expect(assigns(:filters).empty?).to be true
       expect(assigns(:orphans)).to eq orphans
       expect(response).to render_template 'index'
@@ -29,13 +30,13 @@ RSpec.describe Hq::OrphansController, type: :controller do
       filter.each_key do |k|
         expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
       end
-
       expect(assigns(:orphans)).to eq orphans
       expect(response).to render_template 'index'
     end
 
     specify "Clear Filters" do
       get :index, {page: 1, commit: "Clear Filters"}
+
       expect(response).to redirect_to hq_orphans_path
     end
   end
