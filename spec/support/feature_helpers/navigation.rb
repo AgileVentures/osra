@@ -11,6 +11,7 @@ module FeatureHelpers
           get_path page, sponsor.id
         when :sponsor_id
           get_path page, field_hash[:sponsor_id]
+<<<<<<< HEAD
         when :orphan_id
           orphan = Orphan.find_by(id: field_hash[:orphan_id])
           get_path page, orphan.id
@@ -19,6 +20,11 @@ module FeatureHelpers
           get_path page, user.id
         when :user_id
           get_path page, field_hash[:user_id]
+=======
+        when :partner_name
+          partner = Partner.find_by(name: field_hash[:partner_name])
+          get_path page, partner.id
+>>>>>>> Added integration test for partner
         else raise('path to specified object is not displayed')
       end
     end
@@ -35,6 +41,9 @@ module FeatureHelpers
                     when :new_hq_user_path then new_hq_user_path
                     when :hq_user_path then hq_user_path object_id
                     when :edit_hq_user_path then edit_hq_user_path object_id
+                    when :hq_partner_page then hq_partner_path object_id
+                    when :new_hq_partner_page then new_hq_partner_path
+                    when :edit_hq_partner_page then edit_hq_partner_path object_id
                     else raise('path to specified is not listed in #path_to')
                   end
 
