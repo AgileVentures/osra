@@ -37,7 +37,7 @@ def when_i_fill_in_sponsor_filter_form
     find("select[name='filters[status_id]']").find("option[value='#{sponsor_filter[:status_id]}']").select_option
     find("select[name='filters[sponsor_type_id]']").find("option[value='#{sponsor_filter[:sponsor_type_id]}']").select_option
     find("select[name='filters[agent_id]']").find("option[value='#{sponsor_filter[:agent_id]}']").select_option
-    find("select[name='filters[country]']").find("option[value='#{sponsor_filter[:country]}']").select_option
+    find("select[name='filters[country]']").find("option[value=\"#{sponsor_filter[:country]}\"]").select_option
     select sponsor_filter[:city], from: 'filters[city]'
 
     fill_in 'filters[created_at_from]', with: sponsor_filter[:created_at_from]
@@ -78,7 +78,7 @@ def and_i_should_see_filters_form_filled
     #text fields
     [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
       :start_date_from, :start_date_until, :active_sponsorship_count_value].each do |field|
-        expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value='#{sponsor_filter[field]}']")
+        expect(page).to have_selector("input[name='filters[#{field.to_s}]'][value=\"#{sponsor_filter[field]}\"]")
     end
 
     #select fields
@@ -94,7 +94,7 @@ def and_i_should_see_filters_form_filled
     expect(page.find("select[name='filters[agent_id]']"))
         .to have_selector("option[value='#{sponsor_filter[:agent_id]}'][selected]")
     expect(page.find("select[name='filters[country]']"))
-        .to have_selector("option[value='#{sponsor_filter[:country]}'][selected]")
+        .to have_selector("option[value=\"#{sponsor_filter[:country]}\"][selected]")
     expect(page).to have_select("filters[city]", selected: sponsor_filter[:city])
 
     expect(page).to have_select("filters[name_option]", selected: "Equals")

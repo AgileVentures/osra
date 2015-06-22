@@ -435,7 +435,6 @@ describe Orphan, type: :model do
       end
 
       describe 'scopes' do
-
         specify '.currently_unsponsored should correctly select unsponsored orphans only' do
           expect(Orphan.currently_unsponsored.to_a).to match_array [active_unsponsored_orphan,
                                                                     inactive_unsponsored_orphan,
@@ -459,6 +458,9 @@ describe Orphan, type: :model do
           ]
         end
 
+        specify '.filter' do
+          expect(Orphan.methods.include? :filter).to be true
+        end
       end
     end
   end

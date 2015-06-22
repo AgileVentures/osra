@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'will_paginate/array'
 
 RSpec.describe Hq::OrphansController, type: :controller do
   let(:orphans) {build_stubbed_list(:orphan, 2)}
@@ -12,13 +11,34 @@ RSpec.describe Hq::OrphansController, type: :controller do
     sign_in instance_double(AdminUser)
   end
 
-  specify '#index' do
-    expect(Orphan).to receive(:paginate).with(page: "2")
-                          .and_return(orphans.paginate(per_page: 2, page: 1))
-    get :index, page: "2"
+  describe '#index' do
+    specify "without filters" do
+      allow(Orphan).to receive(:filter).and_return Orphan
+      expect(Orphan).to receive(:paginate).with(page: "1").and_return orphans
+      get :index, page: 1
 
-    expect(assigns(:orphans)).to eq orphans
-    expect(response).to render_template 'index'
+      expect(assigns(:filters).empty?).to be true
+      expect(assigns(:orphans)).to eq orphans
+      expect(response).to render_template 'index'
+    end
+
+    specify "Filter" do
+      filter = build :orphan_filter
+      expect(Orphan).to receive_message_chain(:filter,:paginate).with(page: "1").and_return(orphans)
+      get :index, {page: 1, filters: filter, commit: "Filter"}
+
+      filter.each_key do |k|
+        expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
+      end
+      expect(assigns(:orphans)).to eq orphans
+      expect(response).to render_template 'index'
+    end
+
+    specify "Clear Filters" do
+      get :index, {page: 1, commit: "Clear Filters"}
+
+      expect(response).to redirect_to hq_orphans_path
+    end
   end
 
   specify '#show' do

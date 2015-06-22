@@ -9,8 +9,8 @@ module SponsorAttrFilter
       self
         .where_with_conditions(["name ILIKE ?", "%#{filters[:name_value]}%"], conditions: [filters[:name_value], filters[:name_option]=="contains"])
         .where_with_conditions(["name ILIKE ?", filters[:name_value]], conditions: [filters[:name_value], filters[:name_option]=="equals"])
-        .where_with_conditions(["name ~ ?", "^#{filters[:name_value]}"], conditions: [filters[:name_value], filters[:name_option]=="starts_with"])
-        .where_with_conditions(["name ~ ?", "#{filters[:name_value]}$"], conditions: [filters[:name_value], filters[:name_option]=="ends_with"])
+        .where_with_conditions(["name ~* ?", "^#{filters[:name_value]}"], conditions: [filters[:name_value], filters[:name_option]=="starts_with"])
+        .where_with_conditions(["name ~* ?", "#{filters[:name_value]}$"], conditions: [filters[:name_value], filters[:name_option]=="ends_with"])
         .where_with_conditions(["gender LIKE ?", filters[:gender]], conditions: [filters[:gender]])
         .where_with_conditions(["branch_id = ?", filters[:branch_id]], conditions: [filters[:branch_id]])
         .where_with_conditions(["organization_id = ?", filters[:organization_id]], conditions: [filters[:organization_id]])

@@ -49,7 +49,7 @@ RSpec.describe SponsorAttrFilter do
         end
 
         describe "name" do
-          specify "name_option: eqauls" do
+          specify "name_option: equals" do
             unique_sponsor = create :sponsor, name: "Unique001"
             @filter_params[:name_option] = "equals"
             @filter_params[:name_value] = unique_sponsor.name
