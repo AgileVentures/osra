@@ -10,7 +10,6 @@ RSpec.feature 'User views a sorted sponsors list by clicking the table headers',
   scenario 'User can sort the sponsors list' do
     visit hq_sponsors_path
 
-    i_should_see_sponsors_ordered_as ["Carl", "Aaron", "Tom", "John", "Bob"]
     and_i_click_link "Name"
     i_should_see_sponsors_ordered_as ["Aaron", "Bob", "Carl", "John", "Tom"]
     and_i_click_link "Name"
