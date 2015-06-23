@@ -1,6 +1,9 @@
 class Hq::PartnersController < HqController
+helper_method :sort_column, :sort_direction
+
   def index
-    @partners = Partner.paginate(:page => params[:page])
+    @partners = Partner.order(sort_column + " " +  sort_direction).paginate(:page => params[:page])
+    # @partners = Partner.paginate(:page => params[:page])
   end
 
   def new
@@ -29,6 +32,15 @@ class Hq::PartnersController < HqController
   end
 
 private
+
+  def sort_column
+    Partner.column_names.include?(params[:sort])  ? params[:sort] : "name"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
   def load_partner
     @partner = Partner.find(params[:id])
   end

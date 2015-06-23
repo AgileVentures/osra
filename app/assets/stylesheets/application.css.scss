@@ -10,3 +10,17 @@
  *
  */
 @import "hq";
+
+th .current {
+	padding-right: 12px;
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+
+th .asc {
+	background-image: url(/images/up_arrow.gif);
+}
+
+th .desc {
+	background-image: url(/images/down_arrow.gif);
+}
