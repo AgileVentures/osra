@@ -13,7 +13,9 @@ $default-color-light: #F2F2F2;
 @import "header";
 @import "navbar";
 @import "content";
+@import "dashboard";
 @import "pagination";
+@import "footer";
 
 
 .no-horiz-padding {
@@ -30,12 +32,4 @@ $default-color-light: #F2F2F2;
   max-width: 400px;
   margin: 40px auto;
   padding-left: 80px;
-}
-
-.footer {
-  border-top: $border-line;
-  height: 50px;
-  padding: 15px 0;
-  margin: 0;
-  width: 100%;
 }
