@@ -1,27 +1,21 @@
+$border-line: 1px solid #bfbfbf;
+$main_nav_bar-width: 100px;
+$container-title-height: 100px;
+$links-color: #31a7e1;
+$default-color: #717171;
+$default-color-light: #F2F2F2;
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-$border-line: 1px solid #bfbfbf;
+@import "defaults";
+@import "header";
+@import "navbar";
+
 
 .no-horiz-padding {
   padding-left: 0px;
   padding-right: 0px;
-}
-
-ul.nav-stacked li a {
-  text-align: center;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-@media (min-width: 768px) {
-  .navbar {
-    width:80px;
-  }
-  .content {
-    width:calc(100% - 80px);
-    float:left;
-  }
 }
 
 .required_field::after {

@@ -9,6 +9,7 @@
     padding: 17px 1%;
     font-size: 1.6em;
     float: left;
+    a { color: $default-color; }
   }
 
   .logout-nav {
@@ -22,5 +23,7 @@
   .logout-nav div {
     float: right;
     padding: 0 5px;
+    color: $default-color;
+    a { color: $default-color; }
   }
 }
