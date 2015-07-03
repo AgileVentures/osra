@@ -1,3 +1,15 @@
+@media (min-width: 768px) {
+  .nav {
+    margin: $container-title-height 0;
+  }
+  .navbar, .nav-pills {
+    width: $main_nav_bar-width;
+  }
+  .navbar-header {
+    width: 0;
+  }
+}
+
 #main_nav_bar {
   .nav-pills > li > a {
     padding-left: 5px;
@@ -7,21 +19,6 @@
     box-sizing: border-box;
   }
 
-  @media (min-width: 768px) {
-    .nav {
-      margin: $container-title-height 0;
-    }
-    .navbar, .nav-pills {
-      width: $main_nav_bar-width;
-    }
-    .content {
-      width: calc(100% - $main_nav_bar-width);
-      float: left;
-    }
-    .navbar-header {
-      width: 0;
-    }
-  }
 
   .navbar-toggle {
     margin-left: 10px;
@@ -41,5 +38,6 @@
   border-radius: 0;
   border: none;
   background: none;
-  border-bottom: $border-line;
+  margin-bottom: 0;
+  // border-bottom: $border-line;
 }

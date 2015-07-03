@@ -12,6 +12,7 @@ $default-color-light: #F2F2F2;
 @import "defaults";
 @import "header";
 @import "navbar";
+@import "content";
 @import "pagination";
 
 
@@ -31,10 +32,10 @@ $default-color-light: #F2F2F2;
   padding-left: 80px;
 }
 
-.th_sort_asc {
-  @extend .glyphicon-triangle-top;
-}
-
-.th_sort_desc{
-  @extend .glyphicon-triangle-bottom;
+.footer {
+  border-top: $border-line;
+  height: 50px;
+  padding: 15px 0;
+  margin: 0;
+  width: 100%;
 }

@@ -18,3 +18,23 @@ a, a:hover {
   color: $links-color;
   border-color: $links-color;
 }
+
+// sort glyphicons
+.th_sort_asc {
+  @extend .glyphicon-triangle-top;
+  color: $links-color;
+  top: 3px;
+}
+
+.th_sort_desc{
+  @extend .glyphicon-triangle-bottom;
+  color: $links-color;
+  top: 3px;
+}
+
+// other
+.table-responsive {
+  border: none;
+}
+
+
