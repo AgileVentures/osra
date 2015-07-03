@@ -2,3 +2,19 @@
 a, a:hover {
   color: $links-color;
 }
+
+// buttons
+.btn-primary {
+  background-color: $links-color;
+  border-color: $links-color;
+}
+
+.btn-primary:hover {
+  background-color: $links-color-dark;
+  border-color: $links-color-dark;
+}
+
+.btn-default, .btn-default:hover {
+  color: $links-color;
+  border-color: $links-color;
+}

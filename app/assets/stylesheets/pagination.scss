@@ -1,0 +1,12 @@
+.pagination {
+  .active > span {
+    background-color: $links-color;
+    border-color: $links-color;
+  }
+  .active > span:hover {
+    background-color: $links-color-dark;
+  }
+  li > a, li > a:hover {
+    color: $links-color;
+  }
+}

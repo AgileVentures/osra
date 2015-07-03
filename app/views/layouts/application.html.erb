@@ -15,7 +15,7 @@
         <%= render 'layouts/navigation' unless devise_controller? %>
         <div class="content">
           <%= render 'layouts/flashes' %>
-          <%= yield %>
+          <div> <%= yield %> </div>
         </div>
       </div>
       <%= render 'layouts/footer' %>

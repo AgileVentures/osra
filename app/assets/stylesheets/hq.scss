@@ -2,6 +2,7 @@ $border-line: 1px solid #bfbfbf;
 $main_nav_bar-width: 100px;
 $container-title-height: 100px;
 $links-color: #31a7e1;
+$links-color-dark: darken( $links-color, 10% );
 $default-color: #717171;
 $default-color-light: #F2F2F2;
 
@@ -11,6 +12,7 @@ $default-color-light: #F2F2F2;
 @import "defaults";
 @import "header";
 @import "navbar";
+@import "pagination";
 
 
 .no-horiz-padding {
