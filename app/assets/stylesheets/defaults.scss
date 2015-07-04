@@ -32,9 +32,23 @@ a, a:hover {
   top: 3px;
 }
 
-// other
-.table-responsive {
-  border: none;
+// table
+.table {
+  font-size: 0.9em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  //removes thead border
+  thead > tr > th { border-bottom: 0px; }
+  tbody > tr:first-child > td { border-top: 0px; }
+
+  // changes thead color
+  th, th > a, th > .glyphicon { color: $default-color; }
+
+  // left/right table padding
+  tr > td:first-child, tr > th:first-child { padding-left: 20px; }
+  tr > td:last-child, tr > th:last-child { padding-right: 20px; }
 }
 
-
+// flashes
+.alert { margin-bottom: 0 }
