@@ -24,22 +24,21 @@
       </div>
     </div>
 <%- end %>
-<div class="action_items">
-  <div class="instance">
-    <%- if @sponsor %>
-        <%= link_to 'All (' + @orphans_count.to_s + ')', hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
-                    class: 'btn btn-default', role: 'button' %>
-        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
-                    hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
-                    class: 'btn btn-default', role: 'button' %>
-    <%- else %>
-        <%= link_to 'All (' + @orphans_count.to_s + ')', hq_orphans_path(scope: :all),
-                    class: 'btn btn-default', role: 'button' %>
-        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
-                    hq_orphans_path(scope: :eligible_for_sponsorship),
-                    class: 'btn btn-default', role: 'button' %>
-    <%- end %>
-  </div>
+
+<div class="main-content-header">
+  <%- if @sponsor %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- else %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', hq_orphans_path(scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  hq_orphans_path(scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- end %>
 </div>
 
 <%- if @orphans.empty? %>
@@ -158,4 +157,5 @@
     <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
   </div>
 <%- end %>
+
 <%= render(partial: '/hq/orphans/filters.html.erb', locals: {orphans: @orphans, filters: @filters}) %>

@@ -1,9 +1,10 @@
 <%=render partial: "layouts/content_title.erb", locals: {title: "Users"} %>
 
-<div class="action_items">
+<div class="main-content-header">
   <%= link_to('New User', new_hq_user_path,
               class: 'btn btn-default', role: 'button') %>
 </div>
+
 <% if @users.empty? %>
   <em>No Users Found</em>
 <% else %>
