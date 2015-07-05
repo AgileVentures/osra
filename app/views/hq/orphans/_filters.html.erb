@@ -2,17 +2,15 @@
 
   <div id="filters_content" class="filters_content">
 
-  <div class="filters_button_container">
-    <button id="btn-filters-toggle" class="btn btn-filters" type="button">
-      Filters
-      <span class="glyphicon th_sort_desc"></span>
-    </button>
-  </div>
+    <div class="filters_button_container">
+      <button id="btn-filters-toggle" class="btn btn-filters" type="button">
+        Filters
+        <span class="glyphicon th_sort_desc"></span>
+      </button>
+    </div>
 
     <%= form_tag({action: "index"}, {method: :get, id: "filters", role: "form"}) do %>
       <fieldset>
-        <!-- <legend>Filters</legend> -->
-
         <div class="form-group-sm">
           <%= label_tag :name %>
           <div class="row">
