@@ -1,142 +1,217 @@
 <%- if filters %>
-    <h3>Filters</h3>
 
-    <%= form_tag({action: "index"}, {method: :get, id: "filters"}) do %>
-        <div class="form-group">
-          <%= label_tag :name %>
-          <%= select_tag "filters[name_option]",
-                         options_for_select([["Contains","contains"], ["Equals","equals"],
-                                             ["Starts with","starts_with"],
-                                             ["Ends width","ends_with"]],
-                                            filters[:name_option]),
-                         class: "form-control" %>
-          <%= text_field_tag "filters[name_value]", filters[:name_value], class: "form-control" %>
+  <%= form_tag({action: "index"}, {method: :get, id: "filters", role: "form"}) do %>
+    <fieldset>
+      <legend>Filters</legend>
+
+      <div class="form-group">
+        <%= label_tag :name %>
+        <div class="row">
+          <div class="col-xs-4">
+            <%= select_tag "filters[name_option]",
+                           options_for_select([["Contains","contains"], ["Equals","equals"],
+                                               ["Starts with","starts_with"],
+                                               ["Ends width","ends_with"]],
+                                              filters[:name_option]),
+                           class: "form-control" %>
+          </div>
+          <div class="col-xs-8">
+            <%= text_field_tag "filters[name_value]", filters[:name_value], class: "form-control" %>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :date_of_birth %>
-          <%= text_field_tag "filters[date_of_birth_from]", filters[:date_of_birth_from],
-                             class: "form-control date-picker" %>
-          <%= text_field_tag "filters[date_of_birth_until]", filters[:date_of_birth_until],
-                             class: "form-control date-picker" %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :date_of_birth %>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">from</div>
+              <%= text_field_tag "filters[date_of_birth_from]", filters[:date_of_birth_from],
+                                 class: "form-control date-picker" %>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">until</div>
+              <%= text_field_tag "filters[date_of_birth_until]", filters[:date_of_birth_until],
+                                 class: "form-control date-picker" %>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :gender %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :gender %>
           <%= select_tag "filters[gender]", options_for_select(Settings.lookup.gender,
                                                                filters[:gender]),
                         {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :province_code, "Partner province name" %>
+        <%= select_tag "filters[province_code]",
+                       options_for_select(Province.distinct.pluck(:name, :code),
+                                          filters[:province_code]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :original_address_city, "Orphan city of origin" %>
+        <%= select_tag "filters[original_address_city]",
+                       options_for_select(Orphan.distinct.pluck(:city).sort.map{|c| [c, c]},
+                                          filters[:original_address_city]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :priority %>
+        <%= select_tag "filters[priority]",
+                       options_for_select(Orphan.distinct.pluck(:priority),
+                                          filters[:priority]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :sponsorship_status %>
+        <%= select_tag "filters[sponsorship_status]",
+                       options_for_select(
+                               Orphan.distinct.pluck(:sponsorship_status).map {
+                                       |ss| [Orphan.sponsorship_statuses.key(ss).humanize, ss] },
+                               filters[:sponsorship_status]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :status %>
+        <%= select_tag "filters[status]",
+                       options_for_select(
+                               Orphan.distinct.pluck(:status).map {
+                                       |s| [Orphan.statuses.key(s).humanize, s] },
+                               filters[:status]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :orphan_list_partner_name, "Partner name" %>
+        <%= select_tag "filters[orphan_list_partner_name]",
+                       options_for_select(Partner.all_names, filters[:orphan_list_partner_name]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :father_given_name %>
+        <div class="row">
+          <div class="col-xs-4">
+            <%= select_tag "filters[father_given_name_option]",
+                           options_for_select([["Contains","contains"], ["Equals","equals"],
+                                               ["Starts with","starts_with"],
+                                               ["Ends width","ends_with"]],
+                                              filters[:father_given_name_option]),
+                           class: "form-control" %>
+          </div>
+          <div class="col-xs-8">
+            <%= text_field_tag "filters[father_given_name_value]",
+                               filters[:father_given_name_value], class: "form-control" %>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :province_code, "Partner province name" %>
-          <%= select_tag "filters[province_code]",
-                         options_for_select(Province.distinct.pluck(:name, :code),
-                                            filters[:province_code]),
-                         {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :family_name %>
+        <div class="row">
+          <div class="col-xs-4">
+            <%= select_tag "filters[family_name_option]",
+                           options_for_select([["Contains","contains"], ["Equals","equals"],
+                                               ["Starts with","starts_with"],
+                                               ["Ends width","ends_with"]],
+                                              filters[:family_name_option]),
+                           class: "form-control" %>
+          </div>
+          <div class="col-xs-8">
+            <%= text_field_tag "filters[family_name_value]",
+                               filters[:family_name_value], class: "form-control" %>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :original_address_city, "Orphan city of origin" %>
-          <%= select_tag "filters[original_address_city]",
-                         options_for_select(Orphan.distinct.pluck(:city).sort.map{|c| [c, c]},
-                                            filters[:original_address_city]),
-                         {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :father_is_martyr %>
+        <%= select_tag "filters[father_is_martyr]",
+                       options_for_select([["Yes", true], ["No", false]],
+                                          filters[:father_is_martyr]),
+                   {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :mother_alive %>
+        <%= select_tag "filters[mother_alive]",
+                       options_for_select([["Yes", true], ["No", false]],
+                                          filters[:mother_alive]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :health_status %>
+        <%= select_tag "filters[health_status]",
+                       options_for_select(Orphan.distinct.pluck(:health_status),
+                                          filters[:health_status]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :goes_to_school %>
+        <%= select_tag "filters[goes_to_school]",
+                       options_for_select([["Yes", true], ["No", false]],
+                                          filters[:goes_to_school]),
+                       {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :created_at %>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">from</div>
+              <%= text_field_tag "filters[created_at_from]", filters[:created_at_from],
+                           class: "form-control date-picker" %>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">until</div>
+              <%= text_field_tag "filters[created_at_until]", filters[:created_at_until],
+                           class: "form-control date-picker" %>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :priority %>
-          <%= select_tag "filters[priority]",
-                         options_for_select(Orphan.distinct.pluck(:priority),
-                                            filters[:priority]),
-                         {include_blank: "Any", class: "form-control"} %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :updated_at %>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">from</div>
+              <%= text_field_tag "filters[updated_at_from]", filters[:updated_at_from],
+                           class: "form-control date-picker" %>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <div class="input-group-addon">until</div>
+              <%= text_field_tag "filters[updated_at_until]", filters[:updated_at_until],
+                           class: "form-control date-picker" %>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <%= label_tag :sponsorship_status %>
-          <%= select_tag "filters[sponsorship_status]",
-                         options_for_select(
-                                 Orphan.distinct.pluck(:sponsorship_status).map {
-                                         |ss| [Orphan.sponsorship_statuses.key(ss).humanize, ss] },
-                                 filters[:sponsorship_status]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :status %>
-          <%= select_tag "filters[status]",
-                         options_for_select(
-                                 Orphan.distinct.pluck(:status).map {
-                                         |s| [Orphan.statuses.key(s).humanize, s] },
-                                 filters[:status]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :orphan_list_partner_name, "Partner name" %>
-          <%= select_tag "filters[orphan_list_partner_name]",
-                         options_for_select(Partner.all_names, filters[:orphan_list_partner_name]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :father_given_name %>
-          <%= select_tag "filters[father_given_name_option]",
-                         options_for_select([["Contains","contains"], ["Equals","equals"],
-                                             ["Starts with","starts_with"],
-                                             ["Ends width","ends_with"]],
-                                            filters[:father_given_name_option]),
-                         class: "form-control" %>
-          <%= text_field_tag "filters[father_given_name_value]",
-                             filters[:father_given_name_value], class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :family_name %>
-          <%= select_tag "filters[family_name_option]",
-                         options_for_select([["Contains","contains"], ["Equals","equals"],
-                                             ["Starts with","starts_with"],
-                                             ["Ends width","ends_with"]],
-                                            filters[:family_name_option]),
-                         class: "form-control" %>
-          <%= text_field_tag "filters[family_name_value]",
-                             filters[:family_name_value], class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :father_is_martyr %>
-          <%= select_tag "filters[father_is_martyr]",
-                         options_for_select([["Yes", true], ["No", false]],
-                                            filters[:father_is_martyr]),
-                     {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :mother_alive %>
-          <%= select_tag "filters[mother_alive]",
-                         options_for_select([["Yes", true], ["No", false]],
-                                            filters[:mother_alive]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :health_status %>
-          <%= select_tag "filters[health_status]",
-                         options_for_select(Orphan.distinct.pluck(:health_status),
-                                            filters[:health_status]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :goes_to_school %>
-          <%= select_tag "filters[goes_to_school]",
-                         options_for_select([["Yes", true], ["No", false]],
-                                            filters[:goes_to_school]),
-                         {include_blank: "Any", class: "form-control"} %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :created_at %>
-          <%= text_field_tag "filters[created_at_from]", filters[:created_at_from],
-                             class: "form-control date-picker" %>
-          <%= text_field_tag "filters[created_at_until]", filters[:created_at_until],
-                             class: "form-control date-picker" %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :updated_at %>
-          <%= text_field_tag "filters[updated_at_from]", filters[:updated_at_from],
-                             class: "form-control date-picker" %>
-          <%= text_field_tag "filters[updated_at_until]", filters[:updated_at_until],
-                             class: "form-control date-picker" %>
-        </div>
-        <div class="form-group">
-          <%= submit_tag "Filter", class: 'btn btn-primary' %>
-          <%= submit_tag "Clear Filters", class: 'btn btn-default' %>
-        </div>
-    <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= submit_tag "Filter", class: 'btn btn-primary' %>
+        <%= submit_tag "Clear Filters", class: 'btn btn-default' %>
+      </div>
+    </fieldset>
+  <% end %>
+
 <%- end %>
