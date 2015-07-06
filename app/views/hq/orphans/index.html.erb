@@ -157,7 +157,7 @@
         </tbody>
       </table>
       <div class="pagination">
-        <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
+        <%= will_paginate @orphans, will_paginate_render_options %>
       </div>
     </div>
   <%- end %>

@@ -61,6 +61,4 @@
               %td
                 = en_ar_country(sponsor.country)
       .pagination
-        = will_paginate sponsors, renderer: BootstrapPagination::Rails
-
-
+        = will_paginate sponsors, will_paginate_render_options

@@ -41,6 +41,6 @@
     </table>
   </div>
   <div class="pagination">
-    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @users, will_paginate_render_options %>
   </div>
 <% end %>

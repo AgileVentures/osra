@@ -55,6 +55,6 @@
     </table>
   </div>
   <div class="pagination">
-    <%= will_paginate @partners, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @partners, will_paginate_render_options %>
   </div>
 <%- end %>
