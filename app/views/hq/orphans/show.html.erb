@@ -1,4 +1,4 @@
-<%=render partial: "layouts/content_title.erb", locals: {title: "Show orphan: #{@orphan.name}, OSRA num: #{@orphan.osra_num}"} %>
+<%=render partial: "layouts/content_title.erb", locals: {title: "Show Orphan: #{@orphan.name}, OSRA Number: #{@orphan.osra_num}"} %>
 
 <div class="main-content-header">
   <%= link_to('Edit Orphan', edit_hq_orphan_path(@orphan.id),

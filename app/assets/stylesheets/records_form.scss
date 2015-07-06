@@ -1,0 +1,11 @@
+.records_form{
+  width: 570px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .records_form{
+    margin: 0;
+  }
+}

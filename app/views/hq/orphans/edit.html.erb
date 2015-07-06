@@ -1,4 +1,5 @@
-<h1> Edit Orphan <%= @orphan.name %>, OSRA number <%= @orphan.osra_num %> </h1>
+<%= render partial: "layouts/content_title.erb",
+           locals: {title: "Edit Orphan #{@orphan.name}, OSRA Number #{@orphan.osra_num}"} %>
 <%= render partial: 'form', locals: { orphan: @orphan,
                                       statuses: @statuses,
                                       sponsorship_statuses: @sponsorship_statuses,

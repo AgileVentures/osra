@@ -1,4 +1,4 @@
-=render partial: "layouts/content_title.erb", locals: {title: "Show sponsor: #{@sponsor.name}, OSRA num: #{@sponsor.osra_num}"}
+=render partial: "layouts/content_title.erb", locals: {title: "Show Sponsor: #{@sponsor.name}, OSRA Number: #{@sponsor.osra_num}"}
 
 %div.main-content-header
   = link_to 'Edit Sponsor', edit_hq_sponsor_path(@sponsor.id), class: 'btn btn-default', role: 'button'
