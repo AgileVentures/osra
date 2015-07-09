@@ -1,7 +1,3 @@
-.filters_content {
-  margin: 0 15px;
-}
-
 //filters form
 #filters {
   max-width: 570px;
@@ -29,10 +25,9 @@
 }
 
 
-@media (min-width: 1200px) { //768px
+@media (min-width: 1200px) {
   .filters_content {
     float: left;
-    margin: 0 0 0 15px;
     padding-top: 15px;
     padding-left: 0;
     border-right: $border-line;
@@ -56,17 +51,12 @@
   }
   .filters_button_container {
     width: 34px;
-    height: 67px; //66px
+    height: 67px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
   .filters_content {
-    margin: 0 0 0 15px;
     border-bottom: $border-line;
-  }
-
-  .table-responsive {
-    margin-left: 15px;
   }
 }
