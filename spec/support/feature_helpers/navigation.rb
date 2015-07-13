@@ -41,6 +41,7 @@ module FeatureHelpers
                     when :hq_partner_page then hq_partner_path object_id
                     when :new_hq_partner_page then new_hq_partner_path
                     when :edit_hq_partner_page then edit_hq_partner_path object_id
+                    when :hq_admin_users_path then hq_admin_users_path
                     else raise('path to specified is not listed in #path_to')
                   end
 
