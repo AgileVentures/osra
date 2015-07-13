@@ -16,10 +16,6 @@ RSpec.feature 'CRUD Partner', :type => :feature do
     i_sign_in_as_admin
   end
 
-  scenario 'There should be a link to the partners page on the navbar' do
-    visit hq_root_path
-    expect(page).to have_link('Partners', href: hq_partners_path)
-  end
   scenario  'There should be a list of partners on the admin index page' do
     visit hq_partners_path
     and_i_should_see 'Partner1'
