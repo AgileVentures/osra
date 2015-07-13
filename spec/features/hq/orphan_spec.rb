@@ -36,85 +36,47 @@ RSpec.feature 'Orphan CRUD spec:', :type => :feature do
     and_i_should_be_on "hq_orphan_path", { orphan_id: 1 }
   end
   
-  scenario 'Should be able to edit an orphan from the orphan show page' do
+  scenario 'Should be inable to edit $osra_num field' do
     visit_orphan( "Orphan 1" )
     and_i_click_link "Edit Orphan"
-    and_i_should_be_on "edit_hq_orphan_path", { orphan_id: 1 }
     expect(page).to_not have_selector '#osra_num'
-    expect(page).to have_css '#orphan_sponsorship_status[disabled]'
-    fill_in 'orphan[name]', with: 'Orphan N'
-    fill_in 'orphan[date_of_birth]', with: '2010-01-01'
-    fill_in 'orphan[father_given_name]', with: 'Father N'
-    select "Female", :from => 'orphan[gender]'
-    fill_in 'orphan[health_status]', with: 'Good'
-    fill_in 'orphan[schooling_status]', with: 'goes to school'
-    check 'orphan[goes_to_school]'
-    select 'Active', :from => 'orphan[status]'
-    select 'High', :from => 'orphan[priority]'
-    fill_in 'orphan[father_given_name]', with: 'Orphan Nxy'
-    fill_in 'orphan[family_name]', with: 'Asdf'
-    check 'orphan[father_deceased]'
-    fill_in 'orphan[mother_name]', with: 'Aisha'
-    check 'orphan[mother_alive]'
-    check 'orphan[father_is_martyr]'
-    fill_in 'orphan[father_occupation]', with: 'Merchant'
-    fill_in 'orphan[father_place_of_death]', with: 'Gaza'
-    fill_in 'orphan[father_cause_of_death]', with: 'natural'
-    fill_in 'orphan[father_date_of_death]', with: '2015-06-01'
-    fill_in 'orphan[guardian_name]', with: 'Goku'
-    fill_in 'orphan[guardian_relationship]', with: 'sister'
-    fill_in 'orphan[guardian_id_num]', with: '123'
-    fill_in 'orphan[contact_number]', with: '321123'
-    fill_in 'orphan[alt_contact_number]', with: '000999'
-    fill_in 'orphan[original_address_attributes][city]', with: 'Rome'
-    select 'Hama', :from => 'orphan[original_address_attributes][province_id]'
-    fill_in 'orphan[original_address_attributes][neighborhood]', with: 'neighborhood'
-    fill_in 'orphan[original_address_attributes][street]', with: 'infinite loop 1'
-    fill_in 'orphan[original_address_attributes][details]', with: 'Lorem Ipsum'
-    fill_in 'orphan[current_address_attributes][city]', with: 'New Town'
-    select 'Homs', :from => 'orphan[current_address_attributes][province_id]'
-    fill_in 'orphan[current_address_attributes][neighborhood]', with: 'NewTownHood'
-    fill_in 'orphan[current_address_attributes][street]', with: 'NewTownStreet'
-    fill_in 'orphan[current_address_attributes][details]', with: 'NewTown details'
-    check 'orphan[sponsored_by_another_org]'
-    fill_in 'orphan[minor_siblings_count]', with: '10'
-    fill_in 'orphan[sponsored_minor_siblings_count]', with: '5'
-    fill_in 'orphan[comments]', with: 'This is a comment'
+    expect(page).to have_css '#orphan_sponsorship_status[disabled]'    
+  end
+  
+  scenario 'Should be able to edit an orphan from the orphan show page' do
+    # names of the input fields for text input
+    fields = ['orphan[name]', 'orphan[date_of_birth]', 'orphan[father_given_name]', 'orphan[health_status]',
+    'orphan[schooling_status]' ,'orphan[father_given_name]', 'orphan[family_name]', 'orphan[mother_name]', 
+    'orphan[father_occupation]', 'orphan[father_place_of_death]', 'orphan[father_cause_of_death]', 'orphan[father_date_of_death]',
+    'orphan[guardian_name]', 'orphan[guardian_relationship]', 'orphan[guardian_id_num]', 'orphan[contact_number]',
+    'orphan[alt_contact_number]', 'orphan[original_address_attributes][city]', 'orphan[original_address_attributes][neighborhood]',
+    'orphan[original_address_attributes][street]', 'orphan[original_address_attributes][details]', 'orphan[current_address_attributes][city]',
+    'orphan[current_address_attributes][neighborhood]','orphan[current_address_attributes][street]','orphan[current_address_attributes][details]',
+    'orphan[minor_siblings_count]','orphan[sponsored_minor_siblings_count]', 'orphan[comments]']
+    # inputs for the text fields
+    inputs = ['Orphan N', '2010-01-01', 'Father N', 'Good', 'goes to school', 'Orphan Nxy', 'Asdf', 'Aisha', 
+    'Merchant', 'Gaza', 'natural', '2015-06-01', 'Goku', 'sister', '123', '321123', '000999', 'Rome', 'neighborhood',
+    'infinite loop 1', 'Lorem Ipsum', 'New Town', 'NewTownHood','NewTownStreet','NewTown details', '10', '5', 'This is a comment' ]
+    # expected output for the updated orphan 
+    output = ["Orphan successfuly saved", "Orphan N", "01 January 2010", 'Good', 'goes to school', 'Active', 'High', 
+    'Orphan Nxy', 'Asdf', 'Aisha', 'Merchant', 'Gaza', 'natural', '01 June 2015', 'Goku', 'sister', 'Rome', '123', 
+    '321123', '000999', 'Hama', 'neighborhood', 'infinite loop 1', 'Lorem Ipsum', 'New Town', 'Homs', 'NewTownHood',
+    'NewTownStreet', 'NewTown details', 'Sponsored by Another Org. Yes', '10', '5', 'This is a comment']
+    
+    visit_orphan( "Orphan 1" )
+    and_i_click_link "Edit Orphan"
+    fill_in_multiple_fields fields, inputs
+    
+    select_multiple_options ['Female', 'Active', 'High', 'Hama', 'Homs'], ['orphan[gender]','orphan[status]','orphan[priority]',
+    'orphan[original_address_attributes][province_id]', 'orphan[current_address_attributes][province_id]']
+
+    select_multiple_check_box ['orphan[goes_to_school]', 'orphan[father_deceased]', 'orphan[mother_alive]', 'orphan[father_is_martyr]',
+    'orphan[sponsored_by_another_org]'] 
+    
     and_i_click_button "Update Orphan"
     and_i_should_be_on "hq_orphan_path", { orphan_id: 1 }
-    and_i_should_see "Orphan successfuly saved"
-    and_i_should_see "Orphan N"
-    and_i_should_see "01 January 2010"
-    and_i_should_see 'Good'
-    and_i_should_see 'goes to school'
-    and_i_should_see 'Active'
-    and_i_should_see 'High'
-    and_i_should_see 'Orphan Nxy'
-    and_i_should_see 'Asdf'
-    and_i_should_see 'Aisha'
-    and_i_should_see 'Merchant'
-    and_i_should_see 'Gaza'
-    and_i_should_see 'natural'
-    and_i_should_see '01 June 2015'
-    and_i_should_see 'Goku'
-    and_i_should_see 'sister'
-    and_i_should_see 'Rome'
-    and_i_should_see '123'
-    and_i_should_see '321123'
-    and_i_should_see '000999'
-    and_i_should_see 'Hama'
-    and_i_should_see 'neighborhood'
-    and_i_should_see 'infinite loop 1'
-    and_i_should_see 'Lorem Ipsum'
-    and_i_should_see 'New Town'
-    and_i_should_see 'Homs'
-    and_i_should_see 'NewTownHood'
-    and_i_should_see 'NewTownStreet'
-    and_i_should_see 'NewTown details'
-    and_i_should_see 'Sponsored by Another Org. Yes'
-    and_i_should_see '10'
-    and_i_should_see '5'
-    and_i_should_see 'This is a comment'
+    checks_multiple_fields output
+
   end
   
   scenario 'Should not be able to delete an orphan from the orphan show page' do
@@ -159,5 +121,32 @@ RSpec.feature 'Orphan CRUD spec:', :type => :feature do
     orphan = Orphan.find_by name: orphan_name
     visit hq_orphan_path orphan.id
   end
-
+  
+  def fill_in_multiple_fields( fields, inputs )
+    count = 0
+    fields.each do |field|
+      fill_in field, with: inputs[count]
+      count += 1
+    end
+  end
+  
+  def checks_multiple_fields( outputs )
+    outputs.each do |output|
+      and_i_should_see output
+    end
+  end
+  
+  def select_multiple_options( options, fields )
+    count = 0
+    options.each do |option|
+      select option, :from => fields[count]
+      count += 1
+    end
+  end
+  
+  def select_multiple_check_box( fields )
+    fields.each do |field|
+      check field
+    end
+  end
 end
