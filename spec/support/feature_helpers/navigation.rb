@@ -14,6 +14,11 @@ module FeatureHelpers
         when :orphan_id
           orphan = Orphan.find_by(id: field_hash[:orphan_id])
           get_path page, orphan.id
+        when :user_name
+          user = User.find_by( user_name: field_hash[:user_name] )
+          get_path page, user.id
+        when :user_id
+          get_path page, field_hash[:user_id]
         else raise('path to specified object is not displayed')
       end
     end
@@ -27,6 +32,9 @@ module FeatureHelpers
                     when :hq_new_sponsorship_path then hq_new_sponsorship_path object_id
                     when :hq_orphan_path then hq_orphan_path object_id
                     when :edit_hq_orphan_path then edit_hq_orphan_path object_id
+                    when :new_hq_user_path then new_hq_user_path
+                    when :hq_user_path then hq_user_path object_id
+                    when :edit_hq_user_path then edit_hq_user_path object_id
                     else raise('path to specified is not listed in #path_to')
                   end
 
