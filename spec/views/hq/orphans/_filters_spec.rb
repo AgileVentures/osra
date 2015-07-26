@@ -53,7 +53,7 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
        :date_of_birth_from, :date_of_birth_until].each do |field|
-        expect(rendered).to have_selector("input[name='filters[#{field.to_s}]'][value='#{orphans_filters[field]}']") if orphans_filters[field]
+        expect(rendered).to have_selector("input[name='filters[#{field.to_s}]'][value=\"#{orphans_filters[field]}\"]") if orphans_filters[field]
       end
 
       #select fields
