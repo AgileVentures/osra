@@ -43,7 +43,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
         :start_date_from, :start_date_until, :active_sponsorship_count_value].each do |field|
-        expect(rendered).to have_selector("input[name='filters[#{field.to_s}]'][value='#{sponsors_filters[field]}']") if sponsors_filters[field]
+        expect(rendered).to have_selector("input[name='filters[#{field.to_s}]'][value=\"#{sponsors_filters[field]}\"]") if sponsors_filters[field]
       end
 
       #select fields
@@ -53,7 +53,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
       expect(rendered).to have_selector("select[name='filters[status_id]'] option[value='#{sponsors_filters[:status_id]}'][selected]")
       expect(rendered).to have_selector("select[name='filters[sponsor_type_id]'] option[value='#{sponsors_filters[:sponsor_type_id]}'][selected]")
       expect(rendered).to have_selector("select[name='filters[agent_id]'] option[value='#{sponsors_filters[:agent_id]}'][selected]")
-      expect(rendered).to have_selector("select[name='filters[country]'] option[value='#{sponsors_filters[:country]}'][selected]")
+      expect(rendered).to have_selector("select[name='filters[country]'] option[value=\"#{sponsors_filters[:country]}\"][selected]")
       expect(rendered).to have_select("filters[city]", selected: sponsors_filters[:city])
       expect(rendered).to have_select("filters[name_option]", selected: "Equals")
       expect(rendered).to have_select("filters[request_fulfilled]", selected: (sponsors_filters[:request_fulfilled] ? "Yes" : "No"))
