@@ -21,7 +21,7 @@ FactoryGirl.define do
     trait :random_optional_fields do
       status { Orphan.statuses.values.sample }
       sponsorship_status { Orphan.sponsorship_statuses.values.sample }
-      health_status { Faker::Lorem.word }
+      health_status { Faker::Lorem.words(3).join(" ") }
       schooling_status { Faker::Lorem.word }
       goes_to_school { [true, false].sample }
       created_at { 2.years.ago }
