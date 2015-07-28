@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       <% @admin_users.each do |admin_user| %>
-        <tr>
+        <tr id="admin_user_<%= admin_user.id %>">
           <td>
             <%= admin_user.email %>
           </td>
