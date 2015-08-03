@@ -98,20 +98,8 @@
       %dd
         = format_full_date @sponsor.updated_at
 
-.panel.panel-default
-  .panel-heading
-    %h3.panel-title
-      = pluralize(@sponsorships_active.count.to_s, 'Currently Sponsored Orphan')
-  - if @sponsorships_active.count > 0
-    .active_sponsors_index
-      = render partial: 'hq/sponsors/sponsorships_active.html.haml',
-               locals: {sponsorships: @sponsorships_active}
+= render partial: 'hq/sponsors/sponsorships_active.html.haml',
+         locals: {sponsorships: @sponsorships_active}
 
-.panel.panel-default
-  .panel-heading
-    %h3.panel-title
-      = pluralize(@sponsorships_inactive.count.to_s, 'Previously Sponsored Orphan')
-  - if @sponsorships_inactive.count > 0
-    .active_sponsors_index
-      = render partial: 'hq/sponsors/sponsorships_inactive.html.haml',
-               locals: {sponsorships: @sponsorships_inactive}
+= render partial: 'hq/sponsors/sponsorships_inactive.html.haml',
+         locals: {sponsorships: @sponsorships_inactive}

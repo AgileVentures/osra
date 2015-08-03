@@ -44,7 +44,12 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
      "guardian_name", "guardian_relationship",
      "guardian_id_num", "contact_number", "alt_contact_number"].each do |field|
       if orphan_full[field]
-        expect(rendered).to have_selector("input[id='orphan_#{field}'][value=\"#{orphan_full[field].to_s}\"]")
+        if !expect(rendered).to have_selector("input[id='orphan_#{field}'][value=\"#{orphan_full[field].to_s}\"]")
+          show_me_redered
+          binding.pry
+          puts
+          raise
+        end
       else
         expect(rendered).to have_selector("input[id='orphan_#{field}']")
         expect(rendered).to_not have_selector("input[id='orphan_#{field}'][value]")
