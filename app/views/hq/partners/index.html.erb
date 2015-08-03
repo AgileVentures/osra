@@ -1,16 +1,17 @@
-<div class="panel-heading">
-  <div class="action_items">
+<%=render partial: "layouts/content_title.erb", locals: {title: "Partners"} %>
+
+<div class="main-content-header">
     <%= link_to('New Partner', new_hq_partner_path,
                 class: 'btn btn-default', role: 'button') %>
-  </div>
 </div>
+
 <%- if @partners.empty? %>
   <div class="panel-body">
     <em>No Partners found</em>
   </div>
 <%- else %>
-  <div class='panel-body table-responsive'>
-    <table class='table'>
+  <div class='table-responsive'>
+    <table class='table table-hover'>
       <thead>
         <tr>
           <th>
@@ -54,6 +55,6 @@
     </table>
   </div>
   <div class="pagination">
-    <%= will_paginate @partners, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @partners, will_paginate_render_options %>
   </div>
 <%- end %>

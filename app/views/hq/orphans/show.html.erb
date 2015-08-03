@@ -1,9 +1,11 @@
-<div class="action_items">
-  <div class="instance">
-    <%= link_to('Edit Orphan', edit_hq_orphan_path(@orphan.id),
-                class: 'btn btn-default', role: 'button') %>
-  </div>
+<%=render partial: "layouts/content_title.erb", locals: {title: "Show Orphan: #{@orphan.name}, OSRA Number: #{@orphan.osra_num}"} %>
+
+<div class="main-content-header">
+  <%= link_to('Edit Orphan', edit_hq_orphan_path(@orphan.id),
+              class: 'btn btn-default', role: 'button') %>
 </div>
+
+<br>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">

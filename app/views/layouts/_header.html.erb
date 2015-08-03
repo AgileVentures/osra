@@ -1,17 +1,12 @@
-<nav class="navbar navbar-default osra-nav-header">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href= "<%= hq_root_path %>">OSRA Support System</a>
-    </div>
+<header class="osra-header">
+  <div class="brand">
+    <a href= "<%= hq_root_path %>">OSRA Support System</a>
+  </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <% if hq_admin_user_signed_in?  %>
-          <li><p class="nav navbar-text"> <%= current_hq_admin_user.email %></p></li>
-          <li> <%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %> </li>
-        <% end %>
-      </ul>
-  </div><!-- /.container-fluid -->
-</nav>
+  <div class="logout-nav">
+    <% if hq_admin_user_signed_in? %>
+      <div><%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %></div>
+      <div><%= current_hq_admin_user.email %></div>
+    <% end %>
+  </div>
+</header>

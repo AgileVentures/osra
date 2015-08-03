@@ -1,64 +1,64 @@
 - sort_by ||= {}
 - sortable_by_column ||= false
 
-- if sponsors.empty?
-  .panel.panel-default
-    .panel-body
+.row
+  = render(partial: '/hq/sponsors/filters.html.haml',
+           locals: {filters: filters}) if defined?(filters)
+
+  - if sponsors.empty?
+    .center
       No Sponsors found
-- else
-  .table-responsive
-    %table.table{name: 'sponsors'}
-      %thead
-        %tr
-          %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Osra Num", column: :osra_num, sort_by: sort_by}
-            -else
-              Osra Num
-          %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Name", column: :name, sort_by: sort_by}
-            -else
-              Name
-          %th
-            Status
-          %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Start Date", column: :start_date, sort_by: sort_by}
-            -else
-              Start Date
-          %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Request Fulfilled", column: :request_fulfilled, sort_by: sort_by}
-            -else
-              Request Fulfilled
-          %th
-            Sponsor Type
-          %th
-            -if sortable_by_column
-              =render partial: 'shared/sortable_table_header_link', locals: {text: "Country", column: :country, sort_by: sort_by}
-            -else
-              Country
-      %tbody
-        - sponsors.each do |sponsor|
+  - else
+    .table-responsive
+      %table.table.table-hover{name: 'sponsors'}
+        %thead
           %tr
-            %td
-              = link_to sponsor.osra_num, hq_sponsor_path(sponsor)
-            %td
-              = link_to sponsor.name, hq_sponsor_path(sponsor)
-            %td
-              = sponsor.status.name
-            %td
-              = format_full_date sponsor.start_date
-            %td
-              = sponsor.request_fulfilled ? 'Yes' : 'No'
-              (#{sponsor.active_sponsorship_count}/#{sponsor.requested_orphan_count})
-            %td
-              = sponsor.sponsor_type.name
-            %td
-              = en_ar_country(sponsor.country)
-
-  .pagination
-    = will_paginate sponsors, renderer: BootstrapPagination::Rails
-
-= render(partial: '/hq/sponsors/filters.html.haml', locals: {filters: filters}) if defined?(filters)
+            %th
+              -if sortable_by_column
+                =render partial: 'shared/sortable_table_header_link', locals: {text: "Osra Num", column: :osra_num, sort_by: sort_by}
+              -else
+                Osra Num
+            %th
+              -if sortable_by_column
+                =render partial: 'shared/sortable_table_header_link', locals: {text: "Name", column: :name, sort_by: sort_by}
+              -else
+                Name
+            %th
+              Status
+            %th
+              -if sortable_by_column
+                =render partial: 'shared/sortable_table_header_link', locals: {text: "Start Date", column: :start_date, sort_by: sort_by}
+              -else
+                Start Date
+            %th
+              -if sortable_by_column
+                =render partial: 'shared/sortable_table_header_link', locals: {text: "Request Fulfilled", column: :request_fulfilled, sort_by: sort_by}
+              -else
+                Request Fulfilled
+            %th
+              Sponsor Type
+            %th
+              -if sortable_by_column
+                =render partial: 'shared/sortable_table_header_link', locals: {text: "Country", column: :country, sort_by: sort_by}
+              -else
+                Country
+        %tbody
+          - sponsors.each do |sponsor|
+            %tr
+              %td
+                = link_to sponsor.osra_num, hq_sponsor_path(sponsor)
+              %td
+                = link_to sponsor.name, hq_sponsor_path(sponsor)
+              %td
+                = sponsor.status.name
+              %td
+                = format_full_date sponsor.start_date
+              %td
+                = sponsor.request_fulfilled ? 'Yes' : 'No'
+                (#{sponsor.active_sponsorship_count}/#{sponsor.requested_orphan_count})
+              %td
+                = sponsor.sponsor_type.name
+              %td
+                = en_ar_country(sponsor.country)
+      .pagination
+        = will_paginate sponsors, will_paginate_render_options

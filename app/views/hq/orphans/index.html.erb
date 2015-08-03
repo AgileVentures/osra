@@ -1,3 +1,5 @@
+<%=render partial: "layouts/content_title.erb", locals: {title: "Orphans"} %>
+
 <%- if @sponsor %>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -22,138 +24,142 @@
       </div>
     </div>
 <%- end %>
-<div class="action_items">
-  <div class="instance">
-    <%- if @sponsor %>
-        <%= link_to 'All (' + @orphans_count.to_s + ')', hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
-                    class: 'btn btn-default', role: 'button' %>
-        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
-                    hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
-                    class: 'btn btn-default', role: 'button' %>
-    <%- else %>
-        <%= link_to 'All (' + @orphans_count.to_s + ')', hq_orphans_path(scope: :all),
-                    class: 'btn btn-default', role: 'button' %>
-        <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
-                    hq_orphans_path(scope: :eligible_for_sponsorship),
-                    class: 'btn btn-default', role: 'button' %>
-    <%- end %>
-  </div>
+
+<div class="main-content-header">
+  <%- if @sponsor %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  hq_new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- else %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', hq_orphans_path(scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  hq_orphans_path(scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- end %>
 </div>
 
-<%- if @orphans.empty? %>
-  <div class="panel-body">
-    <em>No Orphans found</em>
-  </div>
-<%- else %>
-  <div class='panel-body table-responsive'>
-    <table class='table' name='orphans'>
-      <thead>
-        <tr>
-          <th>
-            Osra Num
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Father Name
-          </th>
-          <th>
-            Date of Birth
-          </th>
-          <th>
-            Gender
-          </th>
-          <th>
-            Original Province
-          </th>
-          <th>
-            Partner
-          </th>
-          <th>
-            Father is Martyr
-          </th>
-          <th>
-            Father Deceased
-          </th>
-          <th>
-            Mother Alive
-          </th>
-          <th>
-            Priority
-          </th>
-          <th>
-            Orphan Status
-          </th>
-          <th>
-            Sponsorship
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <%- @orphans.each do |orphan| %>
-          <tr id="orphan_<%= orphan.id %>">
-            <td>
-              <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
-            </td>
-            <td>
-              <%= link_to orphan.name, hq_orphan_path(orphan) %>
-            </td>
-            <td>
-              <%= orphan.father_given_name %>
-            </td>
-            <td>
-              <%= orphan.date_of_birth %>
-            </td>
-            <td>
-              <%= orphan.gender %>
-            </td>
-            <td>
-              <%= orphan.original_address.province.name %>
-            </td>
-            <td>
-              <%= orphan.orphan_list.partner.name %>
-            </td>
-            <td>
-              <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
-            </td>
-            <td>
-              <%= orphan.father_deceased ? 'Yes' : 'No' %>
-            </td>
-            <td>
-              <%= orphan.mother_alive ? 'Yes' : 'No' %>
-            </td>
-            <td>
-              <%= orphan.priority %>
-            </td>
-            <td>
-              <%= orphan.status.humanize %>
-            </td>
-            <td>
-              <%= orphan.sponsorship_status.humanize %>
-            </td>
-            <td>
-              <%- if @sponsor and @eligible_for_sponsorship %>
-                  <%= form_tag hq_sponsor_sponsorships_path(@sponsor), method: :post do %>
-                    <div class="form-group">
-                      <%= label_tag :title, 'Beginning' %>
-                      <%= text_field_tag :sponsorship_start_date,
-                                         Date.current.to_s,
-                                         class: "form-control date-picker" %>
-                      <%= hidden_field_tag :orphan_id, orphan.id %>
-                      <%= submit_tag "Sponsor this orphan", class: "btn btn-primary" %>
-                    </div>
-                  <% end %>
-              <%- end %>
-            </td>
+<div class="row">
+  <%= render(partial: '/hq/orphans/filters.html.erb',
+             locals: {orphans: @orphans, filters: @filters}) %>
+
+  <%- if @orphans.empty? %>
+    <div class="center">
+      <em>No Orphans found</em>
+    </div>
+  <%- else %>
+    <div class='table-responsive'>
+      <table class='table table-hover' name='orphans'>
+        <thead>
+          <tr>
+            <th>
+              Osra Num
+            </th>
+            <th>
+              Name
+            </th>
+            <th>
+              Father Name
+            </th>
+            <th>
+              Date of Birth
+            </th>
+            <th>
+              Gender
+            </th>
+            <th>
+              Original Province
+            </th>
+            <th>
+              Partner
+            </th>
+            <th>
+              Father is Martyr
+            </th>
+            <th>
+              Father Deceased
+            </th>
+            <th>
+              Mother Alive
+            </th>
+            <th>
+              Priority
+            </th>
+            <th>
+              Orphan Status
+            </th>
+            <th>
+              Sponsorship
+            </th>
+            <th></th>
           </tr>
-        <%- end %>
-      </tbody>
-    </table>
-  </div>
-  <div class="pagination">
-    <%= will_paginate @orphans, renderer: BootstrapPagination::Rails %>
-  </div>
-<%- end %>
-<%= render(partial: '/hq/orphans/filters.html.erb', locals: {orphans: @orphans, filters: @filters}) %>
+        </thead>
+        <tbody>
+          <%- @orphans.each do |orphan| %>
+            <tr id="orphan_<%= orphan.id %>">
+              <td>
+                <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
+              </td>
+              <td>
+                <%= link_to orphan.name, hq_orphan_path(orphan) %>
+              </td>
+              <td>
+                <%= orphan.father_given_name %>
+              </td>
+              <td>
+                <%= orphan.date_of_birth %>
+              </td>
+              <td>
+                <%= orphan.gender %>
+              </td>
+              <td>
+                <%= orphan.original_address.province.name %>
+              </td>
+              <td>
+                <%= orphan.orphan_list.partner.name %>
+              </td>
+              <td>
+                <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.father_deceased ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.mother_alive ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.priority %>
+              </td>
+              <td>
+                <%= orphan.status.humanize %>
+              </td>
+              <td>
+                <%= orphan.sponsorship_status.humanize %>
+              </td>
+              <td>
+                <%- if @sponsor and @eligible_for_sponsorship %>
+                    <%= form_tag hq_sponsor_sponsorships_path(@sponsor), method: :post do %>
+                      <div class="form-group">
+                        <%= label_tag :title, 'Beginning' %>
+                        <%= text_field_tag :sponsorship_start_date,
+                                           Date.current.to_s,
+                                           class: "form-control date-picker" %>
+                        <%= hidden_field_tag :orphan_id, orphan.id %>
+                        <%= submit_tag "Sponsor this orphan", class: "btn btn-primary" %>
+                      </div>
+                    <% end %>
+                <%- end %>
+              </td>
+            </tr>
+          <%- end %>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <%= will_paginate @orphans, will_paginate_render_options %>
+      </div>
+    </div>
+  <%- end %>
+
+</div>

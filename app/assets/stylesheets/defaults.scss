@@ -1,0 +1,70 @@
+//content
+.row, .container-fluid {
+  margin: 0;
+  padding: 0;
+}
+
+// links
+a, a:hover {
+  color: $links-color;
+}
+
+// buttons
+.btn-primary {
+  background-color: $links-color;
+  border-color: $links-color;
+}
+
+.btn-primary:hover {
+  background-color: $links-color-dark;
+  border-color: $links-color-dark;
+}
+
+.btn-default, .btn-default:hover {
+  color: $links-color;
+  border-color: $links-color;
+}
+
+// sort glyphicons
+.th_sort_asc {
+  @extend .glyphicon-triangle-top;
+  color: $links-color;
+  top: 3px;
+}
+
+.th_sort_desc{
+  @extend .glyphicon-triangle-bottom;
+  color: $links-color;
+  top: 3px;
+}
+
+// table
+.table {
+  font-size: 0.9em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  //removes thead border
+  thead > tr > th { border-bottom: 0px; }
+  tbody > tr:first-child > td { border-top: 0px; }
+
+  // changes thead color
+  th, th > a, th > .glyphicon { color: $default-color; }
+
+  // left/right table padding
+  tr > td:first-child, tr > th:first-child { padding-left: 20px; }
+  tr > td:last-child, tr > th:last-child { padding-right: 20px; }
+}
+
+// flashes
+.alert {
+  margin-bottom: 0;
+  border-radius: 0;
+  border: none;
+}
+
+// other
+.center {
+  text-align: center;
+  margin-top: 10px;
+}
