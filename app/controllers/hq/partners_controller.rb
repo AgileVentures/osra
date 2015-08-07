@@ -1,12 +1,11 @@
 class Hq::PartnersController < HqController
 
   def index
-    @current_sort_column = params[:sort_column] || :name #params permit
-    @current_sort_column = @current_sort_column.to_sym
-    @current_sort_direction = sort_direction_params #params permit
+    @current_sort_column = valid_sort_column
+    @current_sort_direction = valid_sort_direction
 
     @partners = Partner
-      .includes(params[:sort_columns_included_resource])
+      .includes(valid_sort_columns_included_resource)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
       .paginate(:page => params[:page])
   end
@@ -38,35 +37,6 @@ class Hq::PartnersController < HqController
 
 private
 
-  # #validates model relation
-  # def sort_include
-  #   return nil if params[:includ].nil?
-  #   partner_associations = Partner.reflect_on_all_associations(:belongs_to).map(&:name)
-  #   partner_associations.include?(params[:includ].to_sym) ? params[:includ] : nil
-  # end
-
-  # #validates sorting column
-  # def sort_column
-  #   if params[:sort] && params[:sort].include?(".")                 #if "provinces.name"
-  #     associated_model = params[:sort].split(".")[0].singularize    #-> "province"
-  #     associated_model_field = params[:sort].split(".")[1]          #-> "name"
-  #     partner_associations = Partner.reflect_on_all_associations(:belongs_to).map(&:name)
-
-  #     return "name" unless partner_associations.include?(associated_model.to_sym) #check that Partner has_one "province"
-  #     return "name" unless eval(associated_model.capitalize).
-  #                     column_names.include? associated_model_field  #check that Province has column "name"
-  #   else                                                            #if "start_date"
-  #     return "name" unless Partner.column_names.include?(params[:sort])
-  #   end
-
-  #   return params[:sort]
-  # end
-
-  #validates sorting direction
-  def sort_direction_params
-    %w[asc desc].include?(params[:sort_direction]) ? params[:sort_direction] : "asc"
-  end
-
   def load_partner
     @partner = Partner.find(params[:id])
   end
@@ -97,6 +67,18 @@ private
     params.require(:partner)
           .permit(:name, :region, :contact_details,
                   :province_id, :status_id, :start_date)
+  end
+
+  def valid_sort_direction
+    %w[asc desc].include?(params[:sort_direction]) ? params[:sort_direction] : "asc"
+  end
+
+  def valid_sort_column
+    %w[osra_num name start_date provinces.name].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
+  end
+
+  def valid_sort_columns_included_resource
+    %w[province].include?(params[:sort_columns_included_resource]) ? params[:sort_columns_included_resource].to_sym : nil
   end
 
 end
