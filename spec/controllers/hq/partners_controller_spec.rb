@@ -50,9 +50,21 @@ RSpec.describe Hq::PartnersController, type: :controller do
   end
 
   describe '#index' do
+    let(:partner_double) { double(Partner) }
+
     specify 'pagination' do
-      expect(Partner).to receive(:paginate).with(page: "2")
+      allow(Partner).to receive_message_chain(:includes, :order).and_return(partner_double)
+      expect(partner_double).to receive(:paginate).with(page: "2")
+
       get :index, page: "2"
+    end
+
+    specify 'column_sort' do
+      expect(Partner).to receive(:includes).with("included_resource").and_return(partner_double)
+      expect(partner_double).to receive(:order).with("column_name desc").and_return(partner_double)
+      allow(partner_double).to receive(:paginate)
+
+      get :index, sort_column: "column_name", sort_direction: "desc", includ: "included_resource"
     end
   end
 end
