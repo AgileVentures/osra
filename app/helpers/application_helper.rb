@@ -5,9 +5,9 @@ module ApplicationHelper
   def sortable_link(db_column, table_header = nil, includ = nil)
   	table_header ||= db_column.titleize
     icon = ''
-  	direction = db_column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-  	link = link_to table_header, {:sort => db_column, :direction => direction, :includ => includ}
-    icon = "<span class=\"glyphicon th_sort_#{sort_direction}\"></span>" if db_column == sort_column
+  	direction = db_column == @current_sort_column && @current_sort_direction == "asc" ? "desc" : "asc"
+  	link = link_to table_header, {:sort_column => db_column, :sort_direction => direction, :includ => includ}
+    icon = "<span class=\"glyphicon th_sort_#{@current_sort_direction}\"></span>" if db_column == @current_sort_column
     return(link + icon.html_safe)
   end
 

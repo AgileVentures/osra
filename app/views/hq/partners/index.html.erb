@@ -1,8 +1,8 @@
 <%=render partial: "layouts/content_title.erb", locals: {title: "Partners"} %>
 
 <div class="main-content-header">
-    <%= link_to('New Partner', new_hq_partner_path,
-                class: 'btn btn-default', role: 'button') %>
+  <%= link_to('New Partner', new_hq_partner_path,
+              class: 'btn btn-default', role: 'button') %>
 </div>
 
 <%- if @partners.empty? %>
@@ -15,7 +15,7 @@
       <thead>
         <tr>
           <th>
-          <%= sortable_link "osra_num" %>
+            <%= sortable_link "osra_num" %>
           </th>
           <th>
            <%= sortable_link "name" %>
