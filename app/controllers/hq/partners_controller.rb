@@ -1,12 +1,13 @@
 class Hq::PartnersController < HqController
 
   def index
-    @current_sort_column = params[:sort_column] || "name" #params permit
+    @current_sort_column = params[:sort_column] || :name #params permit
+    @current_sort_column = @current_sort_column.to_sym
     @current_sort_direction = sort_direction_params #params permit
 
     @partners = Partner
-      .includes(params[:includ])
-      .order(@current_sort_column + " " +  @current_sort_direction)
+      .includes(params[:sort_columns_included_resource])
+      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
       .paginate(:page => params[:page])
   end
 
