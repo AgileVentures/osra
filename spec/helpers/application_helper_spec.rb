@@ -21,7 +21,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  context ':sortable_link', focus: true do
+  context ':sortable_link' do
     it 'generates active table header link' do
       expect(self)
         .to receive(:link_to)
