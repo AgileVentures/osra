@@ -2,7 +2,7 @@ class Hq::PartnersController < HqController
 helper_method :sort_column, :sort_direction
 
   def index
-    @partners = Partner.column_sort(sort_column, sort_direction, sort_include).paginate(:page => params[:page])
+    @partners = Partner.sort_by_column(sort_column, sort_direction, sort_include).paginate(:page => params[:page])
   end
 
   def new
