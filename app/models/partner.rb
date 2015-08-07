@@ -1,6 +1,5 @@
 class Partner < ActiveRecord::Base
   include Initializer
-  include ColumnSort
 
   self.per_page = 10
   attr_readonly :province_id

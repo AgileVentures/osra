@@ -4,7 +4,9 @@ class Hq::PartnersController < HqController
     @current_sort_column = params[:sort_column] || "name" #params permit
     @current_sort_direction = sort_direction_params #params permit
 
-    @partners = Partner.sort_by_column(@current_sort_column, @current_sort_direction, params[:includ])
+    @partners = Partner
+      .includes(params[:includ])
+      .order(@current_sort_column + " " +  @current_sort_direction)
       .paginate(:page => params[:page])
   end
 
