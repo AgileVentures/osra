@@ -60,13 +60,13 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
 
     specify 'column_sort' do
-      expect(Partner).to receive(:includes).with("included_resource").and_return(partner_double)
-      expect(partner_double).to receive(:order).with("column_name desc").and_return(partner_double)
+      expect(Partner).to receive(:includes).with(:province).and_return(partner_double)
+      expect(partner_double).to receive(:order).with("name desc").and_return(partner_double)
       allow(partner_double).to receive(:paginate)
 
-      get :index, sort_column: "column_name", sort_direction: "desc", sort_columns_included_resource: "included_resource"
+      get :index, sort_column: "name", sort_direction: "desc", sort_columns_included_resource: "province"
 
-      expect(assigns(:current_sort_column)).to eq :column_name
+      expect(assigns(:current_sort_column)).to eq :name
       expect(assigns(:current_sort_direction)).to eq "desc"
     end
   end
