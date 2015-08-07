@@ -27,10 +27,12 @@ module ApplicationHelper
       icon = "<span class=\"glyphicon th_sort_#{link_direction}\"></span>"
     end
 
-    link = link_to options[:table_header], {:sort_column => sort_column, :sort_direction => link_direction, :sort_columns_included_resource => options[:sort_columns_included_resource]}
+    th_link = link_to options[:table_header], {:sort_column => sort_column, :sort_direction => link_direction, :sort_columns_included_resource => options[:sort_columns_included_resource]}
 
-    return (link + icon.html_safe)
+    return (th_link + icon.html_safe)
   end
+
+private
 
   def invert_sort_direction_of direction
     (direction == "asc") ? "desc" : "asc"
