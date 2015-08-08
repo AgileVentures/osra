@@ -398,10 +398,6 @@ describe Sponsor, type: :model do
       specify '.filter' do
         expect(Sponsor.methods.include? :filter).to be true
       end
-
-      specify '.column_sort' do
-        expect(Sponsor.methods.include? :column_sort).to be true
-      end
     end
   end
 
