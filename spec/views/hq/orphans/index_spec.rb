@@ -69,6 +69,12 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
     it 'should have filters form' do
       render and expect(response).to render_template(:partial => '_filters.html.erb')
     end
+
+    it "should generate sorted links for table headers" do
+      expect(view).to receive(:sortable_link).at_least(:once)
+
+      render
+    end
   end
 
   context 'no orphans exist' do
