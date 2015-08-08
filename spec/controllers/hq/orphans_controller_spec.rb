@@ -12,9 +12,12 @@ RSpec.describe Hq::OrphansController, type: :controller do
   end
 
   describe '#index' do
+    let(:orphan_double) { double(Orphan) }
+
     specify "without filters" do
-      allow(Orphan).to receive(:filter).and_return Orphan
-      expect(Orphan).to receive(:paginate).with(page: "1").and_return orphans
+      expect(Orphan).to receive(:filter).and_return(orphan_double)
+      allow(orphan_double).to receive_message_chain(:includes,:order,:paginate).and_return(orphans)
+
       get :index, page: 1
 
       expect(assigns(:filters).empty?).to be true
@@ -24,7 +27,10 @@ RSpec.describe Hq::OrphansController, type: :controller do
 
     specify "Filter" do
       filter = build :orphan_filter
-      expect(Orphan).to receive_message_chain(:filter,:paginate).with(page: "1").and_return(orphans)
+
+      expect(Orphan).to receive(:filter).and_return(orphan_double)
+      allow(orphan_double).to receive_message_chain(:includes,:order,:paginate).and_return(orphans)
+
       get :index, {page: 1, filters: filter, commit: "Filter"}
 
       filter.each_key do |k|
@@ -38,6 +44,19 @@ RSpec.describe Hq::OrphansController, type: :controller do
       get :index, {page: 1, commit: "Clear Filters"}
 
       expect(response).to redirect_to hq_orphans_path
+    end
+
+    specify 'column_sort' do
+      allow(Orphan).to receive(:filter).and_return(orphan_double)
+      expect(orphan_double).to receive(:includes).with(:orphan_list).and_return(orphan_double)
+      expect(orphan_double).to receive(:order).with("partners.name desc").and_return(orphan_double)
+      allow(orphan_double).to receive(:paginate).and_return(orphans)
+
+      get :index, sort_column: "partners.name", sort_direction: "desc", sort_columns_included_resource: "orphan_list"
+
+      expect(assigns(:current_sort_column)).to eq :"partners.name"
+      expect(assigns(:current_sort_direction)).to eq "desc"
+      expect(assigns(:orphans)).to eq orphans
     end
   end
 

@@ -16,8 +16,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
     specify "without filters" do
       expect(Sponsor).to receive(:filter).and_return(sponsor_double)
-      allow(sponsor_double).to receive(:order).and_return(sponsor_double)
-      allow(sponsor_double).to receive(:paginate).and_return(sponsors)
+      allow(sponsor_double).to receive_message_chain(:order,:paginate).and_return(sponsors)
 
       get :index, page: 1
 
@@ -29,8 +28,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
     specify "Filter" do
       filter = build :sponsor_filter
       expect(Sponsor).to receive(:filter).and_return(sponsor_double)
-      allow(sponsor_double).to receive(:order).and_return(sponsor_double)
-      allow(sponsor_double).to receive(:paginate).and_return(sponsors)
+      allow(sponsor_double).to receive_message_chain(:order,:paginate).and_return(sponsors)
 
       get :index, {filters: filter, commit: "Filter"}
 

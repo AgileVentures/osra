@@ -51,6 +51,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
 
   describe '#index' do
     let(:partner_double) { double(Partner) }
+    let(:partner_instance_double) { instance_double(Partner) }
 
     specify 'pagination' do
       allow(Partner).to receive_message_chain(:includes, :order).and_return(partner_double)
@@ -62,12 +63,13 @@ RSpec.describe Hq::PartnersController, type: :controller do
     specify 'column_sort' do
       expect(Partner).to receive(:includes).with(:province).and_return(partner_double)
       expect(partner_double).to receive(:order).with("name desc").and_return(partner_double)
-      allow(partner_double).to receive(:paginate)
+      allow(partner_double).to receive(:paginate).and_return(partner_instance_double)
 
       get :index, sort_column: "name", sort_direction: "desc", sort_columns_included_resource: "province"
 
       expect(assigns(:current_sort_column)).to eq :name
       expect(assigns(:current_sort_direction)).to eq "desc"
+      expect(assigns(:partners)).to eq partner_instance_double
     end
   end
 end
