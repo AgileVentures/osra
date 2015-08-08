@@ -74,7 +74,9 @@ private
   end
 
   def valid_sort_column
-    %w[osra_num name start_date provinces.name].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
+    %w[
+      osra_num name start_date provinces.name
+    ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
   end
 
   def valid_sort_columns_included_resource

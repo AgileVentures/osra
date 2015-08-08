@@ -108,10 +108,10 @@ private
 
   def valid_sort_column
     %w[
-      osra_num name father_given_name date_of_birth gender
+      osra_num orphans.name father_given_name date_of_birth gender
       provinces.name partners.name father_is_martyr father_deceased
       mother_alive priority status sponsorship_status
-    ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
+    ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :"orphans.name"
   end
 
   def valid_sort_columns_included_resource

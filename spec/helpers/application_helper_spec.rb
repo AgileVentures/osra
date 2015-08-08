@@ -23,6 +23,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   context ':sortable_link' do
     it 'generates active table header link' do
+      expect(self).to receive_message_chain(:request, :query_parameters).and_return({})
       expect(self)
         .to receive(:link_to)
         .with("Full Name", {
@@ -44,6 +45,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'generates inactive table header link' do
+      expect(self).to receive_message_chain(:request, :query_parameters).and_return({})
       expect(self)
         .to receive(:link_to)
         .with("Full Name", {
@@ -61,7 +63,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         })
 
       expect(rendered_link).to include("<a>generated_link</a>")
-      expect(rendered_link).to_not include("<span")
+      expect(rendered_link).to include("<div class='asc_desc'>")
     end
   end
 end

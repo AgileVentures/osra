@@ -61,9 +61,10 @@
               }) %>
             </th>
             <th>
-              <%= sortable_link("name", {
+              <%= sortable_link("orphans.name", {
                   sort_direction: @current_sort_direction,
-                  sort_column_is_active: (@current_sort_column == :name)
+                  table_header: "Name",
+                  sort_column_is_active: (@current_sort_column == :"orphans.name")
               }) %>
             </th>
             <th>
