@@ -7,27 +7,36 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
       [FactoryGirl.build_stubbed(:sponsor), FactoryGirl.build_stubbed(:sponsor)]
     end
 
-    before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
-    end
-
     it 'should render something besides "No Sponsors found"' do
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+
       expect(rendered).to_not be_empty
       expect(rendered).to_not match /No Sponsors found/
     end
 
     it 'should link to #show actions' do
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+
       sponsors.each do |sponsor|
         expect(rendered).to match link_to(sponsor.name, hq_sponsor_path(sponsor.id))
       end
     end
 
     it 'should have pagination buttons' do
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+
       expect(rendered).to have_selector('div.pagination')
     end
 
     it 'should have filters form' do
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+
       expect(response).to render_template(:partial => '_filters.html.haml')
+    end
+
+    it "should generate sorted links for table headers" do
+      expect(view).to receive(:sortable_link).at_least(:once)
+      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
     end
   end
 
@@ -78,34 +87,4 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     end
   end
 
-  describe 'table headers' do
-    let(:sponsor) { build_stubbed(:sponsor) }
-
-    context "when sortable_by_column" do
-      it "should render partial: shared/sortable_table_header_link.erb" do
-        render :partial => 'hq/sponsors/sponsors.html.haml',
-          :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => true }
-
-        [{text: "Osra Num", column: :osra_num}, {text: "Name", column: :name},
-          {text: "Start Date", column: :start_date},{text: "Request Fulfilled", column: :request_fulfilled},
-          {text: "Country", column: :country}
-        ].each do |table_header|
-          expect(rendered).to render_template partial: 'shared/sortable_table_header_link',
-                                    locals: {text: table_header[:text], column: table_header[:column], sort_by: {}}
-        end
-      end
-    end
-
-    context "when NOT sortable_by_column" do
-      it "table headers should be text" do
-        render :partial => 'hq/sponsors/sponsors.html.haml',
-         :locals => { :sponsors => [sponsor].paginate(page: 1), :sort_by => {}, :sortable_by_column => false}
-
-        ["Osra Num", "Name", "Status", "Start Date", "Request Fulfilled", "Sponsor Type", "Country"].each do |th_name|
-          expect(rendered).to_not have_selector "th[text='#{th_name}']"
-          expect(rendered).to_not have_link th_name
-        end
-      end
-    end
-  end
 end
