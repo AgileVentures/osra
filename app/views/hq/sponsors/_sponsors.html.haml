@@ -14,34 +14,19 @@
         %thead
           %tr
             %th
-              -if sortable_by_column
-                =render partial: 'shared/sortable_table_header_link', locals: {text: "Osra Num", column: :osra_num, sort_by: sort_by}
-              -else
-                Osra Num
+              = sortable_link("osra_num", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :osra_num) })
             %th
-              -if sortable_by_column
-                =render partial: 'shared/sortable_table_header_link', locals: {text: "Name", column: :name, sort_by: sort_by}
-              -else
-                Name
+              = sortable_link("name", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :name) })
             %th
               Status
             %th
-              -if sortable_by_column
-                =render partial: 'shared/sortable_table_header_link', locals: {text: "Start Date", column: :start_date, sort_by: sort_by}
-              -else
-                Start Date
+              = sortable_link("start_date", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :start_date) })
             %th
-              -if sortable_by_column
-                =render partial: 'shared/sortable_table_header_link', locals: {text: "Request Fulfilled", column: :request_fulfilled, sort_by: sort_by}
-              -else
-                Request Fulfilled
+              = sortable_link("request_fulfilled", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :request_fulfilled) })
             %th
               Sponsor Type
             %th
-              -if sortable_by_column
-                =render partial: 'shared/sortable_table_header_link', locals: {text: "Country", column: :country, sort_by: sort_by}
-              -else
-                Country
+              = sortable_link("country", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :country) })
         %tbody
           - sponsors.each do |sponsor|
             %tr
