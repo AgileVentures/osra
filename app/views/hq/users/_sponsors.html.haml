@@ -1,10 +1,4 @@
-- sort_by ||= {}
-- sortable_by_column ||= false
-
 .row
-  = render(partial: '/hq/sponsors/filters.html.haml',
-           locals: {filters: filters}) if defined?(filters)
-
   - if sponsors.empty?
     .center
       No Sponsors found
@@ -14,19 +8,19 @@
         %thead
           %tr
             %th
-              = sortable_link("osra_num", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :osra_num) })
+              Osra Num
             %th
-              = sortable_link("name", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :name) })
+              Name
             %th
               Status
             %th
-              = sortable_link("start_date", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :start_date) })
+              Start Date
             %th
-              = sortable_link("request_fulfilled", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :request_fulfilled) })
+              Request Fulfilled
             %th
               Sponsor Type
             %th
-              = sortable_link("country", { sort_direction: @current_sort_direction, sort_column_is_active: (@current_sort_column == :country) })
+              Country
         %tbody
           - sponsors.each do |sponsor|
             %tr
@@ -45,5 +39,3 @@
                 = sponsor.sponsor_type.name
               %td
                 = en_ar_country(sponsor.country)
-      .pagination
-        = will_paginate sponsors, will_paginate_render_options

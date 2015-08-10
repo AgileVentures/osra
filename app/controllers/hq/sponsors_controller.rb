@@ -2,10 +2,17 @@ class Hq::SponsorsController < HqController
   def index
     redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
 
+    @current_sort_column = valid_sort_column
+    @current_sort_direction = valid_sort_direction
+
     @filters = filters_params
     @sort_by = sort_by_params
     @sortable_by_column = true
-    @sponsors = Sponsor.filter(@filters).column_sort(@sort_by["column"], @sort_by["direction"]).paginate(:page => params[:page])
+
+    @sponsors = Sponsor
+      .filter(@filters)
+      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+      .paginate(:page => params[:page])
   end
 
   def show
@@ -101,6 +108,14 @@ private
     params[:sort_by] ||= {}
     permited_filters = params[:sort_by].permit(:column, :direction)
       .transform_values {|v| v=="" ? nil : v}
+  end
+
+  def valid_sort_direction
+    %w[asc desc].include?(params[:sort_direction]) ? params[:sort_direction] : "asc"
+  end
+
+  def valid_sort_column
+    %w[osra_num name start_date request_fulfilled country].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
   end
 
 end

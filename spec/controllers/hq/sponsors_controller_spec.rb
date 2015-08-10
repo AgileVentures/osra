@@ -12,11 +12,14 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   end
 
   describe '#index' do
+    let(:sponsor_double) { double(Sponsor) }
+
     specify "without filters" do
-      allow(Sponsor).to receive(:filter).and_return Sponsor
-      allow(Sponsor).to receive(:column_sort).and_return Sponsor
-      expect(Sponsor).to receive(:paginate).with(page: "1").and_return sponsors
+      expect(Sponsor).to receive(:filter).and_return(sponsor_double)
+      allow(sponsor_double).to receive_message_chain(:order,:paginate).and_return(sponsors)
+
       get :index, page: 1
+
       expect(assigns(:filters).empty?).to be true
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
@@ -24,27 +27,28 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
     specify "Filter" do
       filter = build :sponsor_filter
-      expect(Sponsor).to receive_message_chain(:filter, :column_sort, :paginate).and_return( sponsors )
+      expect(Sponsor).to receive(:filter).and_return(sponsor_double)
+      allow(sponsor_double).to receive_message_chain(:order,:paginate).and_return(sponsors)
+
       get :index, {filters: filter, commit: "Filter"}
 
       filter.each_key do |k|
         expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
       end
-
       expect(assigns(:sponsors)).to eq sponsors
       expect(response).to render_template 'index'
     end
 
-    specify "Sort_by" do
-      sort_by = {column: Sponsor.column_names.sample.to_s, direction: ["asc", "desc"].sample}
-      expect(Sponsor).to receive_message_chain(:filter, :column_sort, :paginate).and_return( sponsors )
-      get :index, {sort_by: {column: sort_by[:column], direction: sort_by[:direction]}}
+    specify 'column_sort' do
+      allow(Sponsor).to receive(:filter).and_return(sponsor_double)
+      expect(sponsor_double).to receive(:order).with("name desc").and_return(sponsor_double)
+      allow(sponsor_double).to receive(:paginate).and_return(sponsors)
 
-      expect(assigns(:sort_by)["column"].to_s).to eq sort_by[:column].to_s
-      expect(assigns(:sort_by)["direction"].to_s).to eq sort_by[:direction].to_s
-      expect(assigns(:sortable_by_column)).to eq true
+      get :index, sort_column: "name", sort_direction: "desc"
+
+      expect(assigns(:current_sort_column)).to eq :name
+      expect(assigns(:current_sort_direction)).to eq "desc"
       expect(assigns(:sponsors)).to eq sponsors
-      expect(response).to render_template 'index'
     end
 
     specify "Clear Filters" do

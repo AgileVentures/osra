@@ -10,19 +10,40 @@ module ApplicationHelper
     (date || NullDate.new).strftime(MONTH_YEAR_DATE_FORMAT_STRING)
   end
 
-  #use in views for generating column header links and glyphicons
-  #current_collumn: column_name of current table header
-  #sort_by_params: a hash containing column and direction. e.g.: {"column":"name", "direction":"asc"}
-  #Returns :asc or :desc based on if sorting is done on current_column and it's direction
-  def get_sorting_direction current_column, sort_by_params
-    if (current_column.to_sym == sort_by_params["column"].to_sym && sort_by_params["direction"].to_sym != :desc)
-      return :desc
+  def sortable_link(sort_column, options = {})
+    options.reverse_merge!({
+          sort_direction: nil,
+          table_header: nil,
+          sort_columns_included_resource: nil,
+          sort_column_is_active: false
+         })
+    options[:table_header] ||= sort_column.titleize
+
+    link_direction = nil
+
+    if options[:sort_column_is_active]
+      link_direction = invert_sort_direction_of(options[:sort_direction])
+      icon = "<span class=\"glyphicon th_sort_#{link_direction}\"></span>"
     else
-      return :asc
+      icon = "<div class='asc_desc'>" +
+              "<span class=\"glyphicon th_sort_asc\"></span>" +
+              "<span class=\"glyphicon th_sort_desc\"></span>" +
+             "</div>"
     end
 
-  rescue #for undefind arguments
-    return :asc
+    query_params = request.query_parameters.merge({
+      :sort_column => sort_column,
+      :sort_direction => link_direction,
+      :sort_columns_included_resource => options[:sort_columns_included_resource]
+    })
+    th_link = link_to options[:table_header], query_params
+
+    return (th_link + icon.html_safe)
   end
 
+private
+
+  def invert_sort_direction_of direction
+    (direction == "asc") ? "desc" : "asc"
+  end
 end

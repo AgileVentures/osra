@@ -21,23 +21,49 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  context 'get_sorting_direction' do
-    specify ":desc" do
-      sort_by_params = {"column" => "osra_num", "direction" => "asc"}
-      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :desc
+  context ':sortable_link' do
+    it 'generates active table header link' do
+      expect(self).to receive_message_chain(:request, :query_parameters).and_return({})
+      expect(self)
+        .to receive(:link_to)
+        .with("Full Name", {
+          :sort_column => "name",
+          :sort_direction => "asc",
+          :sort_columns_included_resource => "included_resource"
+        })
+        .and_return("<a>generated_link</a>")
 
-      sort_by_params = {"column" => "osra_num", "direction" => "asc"}
-      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :desc
+      rendered_link = sortable_link("name", {
+          sort_direction: "desc",
+          table_header: "Full Name",
+          sort_columns_included_resource: "included_resource",
+          sort_column_is_active: true
+        })
+
+      expect(rendered_link).to include("<a>generated_link</a>")
+      expect(rendered_link).to include("<span class=\"glyphicon th_sort_asc\"></span>")
     end
 
-    specify ":asc" do
-      sort_by_params = {"column" => "osra_num", "direction" => "desc"}
-      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :asc
+    it 'generates inactive table header link' do
+      expect(self).to receive_message_chain(:request, :query_parameters).and_return({})
+      expect(self)
+        .to receive(:link_to)
+        .with("Full Name", {
+          :sort_column => "name",
+          :sort_direction => nil,
+          :sort_columns_included_resource => "included_resource"
+        })
+        .and_return("<a>generated_link</a>")
 
-      sort_by_params = {"column" => "osra_num", "direction" => "desc"}
-      expect(get_sorting_direction(:osra_num, sort_by_params)).to eq :asc
+      rendered_link = sortable_link("name", {
+          sort_direction: "desc",
+          table_header: "Full Name",
+          sort_columns_included_resource: "included_resource",
+          sort_column_is_active: false
+        })
+
+      expect(rendered_link).to include("<a>generated_link</a>")
+      expect(rendered_link).to include("<div class='asc_desc'>")
     end
   end
-
-
 end

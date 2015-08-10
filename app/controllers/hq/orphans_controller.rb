@@ -5,8 +5,16 @@ class Hq::OrphansController < HqController
   def index
     redirect_to(hq_orphans_path) if params["commit"]=="Clear Filters"
 
+    @current_sort_column = valid_sort_column
+    @current_sort_direction = valid_sort_direction
+
     @filters = filters_params
-    @orphans = Orphan.filter(@filters).paginate(:page => params[:page])
+    @orphans = Orphan
+      .filter(@filters)
+      .includes(valid_sort_columns_included_resource)
+      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+      .paginate(:page => params[:page])
+
     load_scope
   end
 
@@ -93,4 +101,23 @@ private
                                    :created_at_until, :updated_at_from, :updated_at_until)
                            .transform_values {|v| v=="" ? nil : v}
   end
+
+  def valid_sort_direction
+    %w[asc desc].include?(params[:sort_direction]) ? params[:sort_direction] : "asc"
+  end
+
+  def valid_sort_column
+    %w[
+      osra_num orphans.name father_given_name date_of_birth gender
+      provinces.name partners.name father_is_martyr father_deceased
+      mother_alive priority status sponsorship_status
+    ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :"orphans.name"
+  end
+
+  def valid_sort_columns_included_resource
+    %w[
+      original_address orphan_list
+    ].include?(params[:sort_columns_included_resource]) ? params[:sort_columns_included_resource].to_sym : nil
+  end
+
 end

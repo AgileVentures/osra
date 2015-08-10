@@ -30,12 +30,28 @@ a, a:hover {
   @extend .glyphicon-triangle-top;
   color: $links-color;
   top: 3px;
+  padding-left: 3px;
 }
 
 .th_sort_desc{
   @extend .glyphicon-triangle-bottom;
   color: $links-color;
   top: 3px;
+  padding-left: 3px;
+}
+
+.asc_desc {
+  display: inline-block;
+  width: 0.75em;
+  line-height: 0.2em;
+  white-space: normal;
+
+  span {
+    height: 0.2em;
+    font-size: 0.75em;
+    top: 3px;
+    color: lighten( $default-color, 35% );
+  }
 }
 
 // table
@@ -45,7 +61,10 @@ a, a:hover {
   margin-bottom: 10px;
 
   //removes thead border
-  thead > tr > th { border-bottom: 0px; }
+  thead > tr > th {
+    border-bottom: 0px;
+    white-space: nowrap;
+  }
   tbody > tr:first-child > td { border-top: 0px; }
 
   // changes thead color
