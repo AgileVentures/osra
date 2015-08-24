@@ -7,10 +7,8 @@
               class: 'btn btn-default', role: 'button') %>
   <%= link_to('Upload Orphan List', upload_hq_partner_pending_orphan_lists_path(@partner.id),
               class: 'btn btn-primary', role: 'button') %>
-  <%- unless @partner.orphan_lists.empty? -%>
-    <%= link_to('Orphan lists', hq_partner_orphan_lists_path(@partner),
+    <%= link_to('Orphan lists', hq_partner_orphan_lists_path(@partner), disabled: @partner.orphan_lists.empty?,
               class: 'btn btn-default', role: 'button') %>
-  <%- end -%>
 </div>
 
 
