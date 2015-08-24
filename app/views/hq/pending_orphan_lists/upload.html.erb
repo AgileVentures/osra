@@ -1,7 +1,7 @@
 <%=render partial: "layouts/content_title.erb",
           locals: {title: "Upload Spreadsheet for partner: #{@partner.name}, OSRA Number: #{@partner.osra_num}"} %>
 
-<%= form_for :pending_orphan_list, url: {action: "import", partner_id: @partner.id},
+<%= form_for :pending_orphan_list, url: {action: "validate", partner_id: @partner},
         html: {class: "records_form", role: "form"} do |f| %>
   <%= render 'shared/errors', object: f.object %>
   <fieldset>
