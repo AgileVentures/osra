@@ -5,11 +5,9 @@ class Hq::PendingOrphanListsController < HqController
 
     unless @partner.active?
       flash[:error] = 'Partner is not Active. Orphan List cannot be uploaded.'
-      redirect_to hq_partner_path(params[:partner_id])
+      redirect_to hq_partner_path(@partner)
       return
     end
-
-    # render action: :upload, locals: { partner: @partner }
   end
 
 private

@@ -10,7 +10,7 @@ RSpec.describe "hq/pending_orphan_lists/upload.html.erb", type: :view do
   it 'should delegate to partials' do
     render
 
-    expect(view).to render_template partial: 'layouts/_content_title'
+    expect(view).to render_template partial: 'layouts/_content_title.erb'
     expect(view).to render_template partial: 'shared/_errors'
   end
 

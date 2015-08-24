@@ -1,4 +1,4 @@
-<%=render partial: "layouts/content_title",
+<%=render partial: "layouts/content_title.erb",
           locals: {title: "Upload Spreadsheet for partner: #{@partner.name}, OSRA Number: #{@partner.osra_num}"} %>
 
 <%= form_for :pending_orphan_list, url: {action: "import", partner_id: @partner.id},
