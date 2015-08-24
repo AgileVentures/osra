@@ -28,15 +28,12 @@ RSpec.describe 'Hq::PendingOrphanLists routing', type: :routing do
   end
   describe 'non-CRUD' do
     specify '#upload' do
-      pending('method-missing Hq::PendingOrphanListsController#upload')
       expect(get: '/hq/partners/1/pending_orphan_lists/upload').    to be_routable
     end
     specify '#validate' do
-      pending('method-missing Hq::PendingOrphanListsController#validate')
       expect(post: '/hq/partners/1/pending_orphan_lists/validate'). to be_routable
     end
     specify '#import' do
-      pending('method-missing Hq::PendingOrphanListsController#import')
       expect(post: '/hq/partners/1/pending_orphan_lists/import').   to be_routable
     end
   end
