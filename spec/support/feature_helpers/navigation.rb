@@ -32,6 +32,7 @@ module FeatureHelpers
                     when :sign_in_page then new_hq_admin_user_session_path
                     when :new_sponsor_page then new_hq_sponsor_path
                     when :hq_sponsor_path then hq_sponsor_path object_id
+                    when :edit_hq_sponsor_path then edit_hq_sponsor_path object_id
                     when :hq_new_sponsorship_path then hq_new_sponsorship_path object_id
                     when :hq_orphan_path then hq_orphan_path object_id
                     when :edit_hq_orphan_path then edit_hq_orphan_path object_id

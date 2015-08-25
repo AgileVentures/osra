@@ -29,7 +29,7 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
   end
 
   def then_the_sponsor_should_be_saved
-    expect(page.find('.flashes')).to have_text 'Sponsor successfuly created'
+    expect(page.find('.flashes')).to have_text 'Sponsor successfuly saved'
     expect(Sponsor.last.name).to eq 'C. Montgomery Burns'
   end
 end
