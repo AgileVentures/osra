@@ -1,0 +1,41 @@
+<%=render partial: "layouts/content_title.erb",
+          locals: {title: "Validate Spreadsheet for partner: #{partner.name}, OSRA Number: #{partner.osra_num}"} %>
+
+<h1 class="indent">Orphan list is invalid</h1>
+
+<p class="indent"> The following errors were encountered while processing the uploaded file: </p>
+
+<div class='table-responsive'>
+  <table class='table table-hover'>
+    <thead>
+      <tr>
+        <th> Location </th>
+        <th> Error details </th>
+    </thead>
+    <tbody>
+      <%- result.each do |message| %>
+        <tr>
+          <td>
+            <%= message[:ref] %>
+          </td>
+          <td>
+            <%= message[:error] %>
+          </td>
+        </tr>
+      <%- end %>
+    </tbody>
+  </table>
+</div>
+
+
+<%= form_for :orphan_list, url: import_hq_partner_pending_orphan_lists_path(partner),
+    html: {class: "records_form", role: "form"} do |f| %>
+  <fieldset>
+    <%= f.hidden_field :pending_id, value: pending_orphan_list.id %>
+    <div class="form-group">
+      <%= f.submit "Import", class: "btn btn-primary" %>
+      <%= link_to "Cancel", hq_partner_path(partner),
+            class: "btn btn-default btn-cancel", role: "button" %>
+    </div>
+  </fieldset>
+<% end %>
