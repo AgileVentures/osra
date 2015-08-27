@@ -31,7 +31,7 @@ FactoryGirl.define do
       father_cause_of_death { Faker::Lorem.word if father_deceased }
       guardian_name { Faker::Name.first_name }
       guardian_relationship { Faker::Lorem.word }
-      guardian_id_num { Faker::Number.number(5) }
+      guardian_id_num { Faker::Number.number(5).to_i }
       alt_contact_number { Faker::PhoneNumber.phone_number }
       comments { Faker::Lorem.paragraph }
       province_code { Province.all.sample.code }
