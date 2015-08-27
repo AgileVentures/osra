@@ -44,6 +44,25 @@ class Hq::PendingOrphanListsController < HqController
                      result:              result }
   end
 
+  def import
+    get_partner
+    get_pending_orphan_list
+    orphan_list  = @partner.orphan_lists.create!(spreadsheet:  @pending_orphan_list.spreadsheet,
+                                               orphan_count: 0)
+    @pending_orphan_list.pending_orphans.each do |pending_orphan|
+      orphan = pending_orphan.to_orphan
+      orphan_list.orphans << orphan
+    end
+
+    orphan_list.save!
+
+    @pending_orphan_list.destroy
+    flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
+                      Registered #{orphan_list.orphan_count}
+                      new #{'orphan'.pluralize orphan_list.orphan_count}."
+    redirect_to hq_partner_path(@partner)
+  end
+
 private
 
   def get_partner
