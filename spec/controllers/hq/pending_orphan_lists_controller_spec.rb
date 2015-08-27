@@ -68,6 +68,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
 
     context 'when partner is active' do
       let(:orphan_list_params) { { spreadsheet: fixture_file_upload('one_orphan_xls.xls') } }
+      let(:invalid_orphan_list_params) { { spreadsheet: fixture_file_upload('three_invalid_orphans_xlsx.xlsx') } }
 
       before do
         allow(partner).to receive(:active?).and_return true
@@ -75,21 +76,43 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
         allow(pending_orphan_list).to receive :pending_orphans=
         allow(orphan_importer).to receive :extract_orphans
         allow(orphan_importer).to receive(:valid?).and_return true
-        post :validate, partner_id: partner.id, pending_orphan_list: orphan_list_params
       end
 
-      it 'sets instance variables' do
-        expect(assigns :partner).to eq partner
-        expect(assigns :pending_orphan_list).to eq pending_orphan_list
+      context "valid orphan_list" do
+        before :each do
+          post :validate, partner_id: partner.id, pending_orphan_list: orphan_list_params
+        end
+
+
+        it 'sets instance variables' do
+          expect(assigns :partner).to eq partner
+          expect(assigns :pending_orphan_list).to eq pending_orphan_list
+        end
+
+        it 'saves pending_orphan_list' do
+          expect(pending_orphan_list).to have_received :save!
+        end
+
+        it 'renders :valid_list' do
+          expect(response).to render_template :valid_list
+        end
       end
 
-      it 'saves pending_orphan_list' do
-        expect(pending_orphan_list).to have_received :save!
+      context "invalid orphan_list" do
+        before :each do
+          post :validate, partner_id: partner.id, pending_orphan_list: invalid_orphan_list_params
+        end
+
+        it 'does not save invalid_orphan_list_params' do
+          expect(pending_orphan_list).not_to have_received :save!
+        end
+
+        it 'renders :invalid_list' do
+          expect(response).to render_template :invalid_list
+        end
       end
 
-      it 'renders :validate' do
-        expect(response).to render_template :valid_list
-      end
+
     end
   end
 
