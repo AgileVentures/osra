@@ -33,7 +33,7 @@ FactoryGirl.define do
       guardian_relationship { Faker::Lorem.word }
       guardian_id_num { Faker::Number.number(5).to_i }
       alt_contact_number { Faker::PhoneNumber.phone_number }
-      comments { Faker::Lorem.paragraph }
+      comments { Faker::Lorem.paragraph.truncate(250) }
       province_code { Province.all.sample.code }
     end
 
