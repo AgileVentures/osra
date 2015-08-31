@@ -14,20 +14,6 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     i_sign_in_as_admin
   end
 
-  scenario  'There should be a list of sponsors on the admin index page' do
-    visit hq_sponsors_path
-    @sponsors.each do |sponsor|
-      and_i_should_see sponsor.name
-    end
-  end
-
-  scenario 'I should see the generated osra numbers on the admin index page' do
-    visit hq_sponsors_path
-    @sponsors.each do |sponsor|
-      expect(page).to have_content(sponsor.osra_num)
-    end
-  end
-
   scenario 'I should see the required fields on the index page' do
     visit hq_sponsors_path
     @sponsors.each do |sponsor|
