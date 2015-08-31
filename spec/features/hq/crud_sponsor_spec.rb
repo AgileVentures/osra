@@ -14,7 +14,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     i_sign_in_as_admin
   end
 
-  scenario  'There should be a list of partners on the admin index page' do
+  scenario  'There should be a list of sponsors on the admin index page' do
     visit hq_sponsors_path
     @sponsors.each do |sponsor|
       and_i_should_see sponsor.name
@@ -43,7 +43,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     end
   end
 
-  scenario 'I should see the required fields on the partner show page' do
+  scenario 'I should see the required fields on the sponsor show page' do
     sponsor = @sponsors.first
     given_i_am_on_page_for_sponsor 'Show Sponsor', sponsor.name
     i_should_see_the_following_fields_on_the_page [
@@ -119,7 +119,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     and_i_should_not_see 'Delete Sponsor'
   end
 
-  scenario "returns to partner show page on cancelling edit partner" do
+  scenario "returns to sponsor show page on cancelling edit sponsor" do
     name = @sponsors.first.name
     given_i_am_on_page_for_sponsor 'Show Sponsor', name
     click_link 'Edit Sponsor'
