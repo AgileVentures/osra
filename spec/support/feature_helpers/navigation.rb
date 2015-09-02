@@ -5,21 +5,21 @@ module FeatureHelpers
         get_path page
         return
       end
-      page_path = case field_hash.keys.first.to_sym
-        when :sponsor_name
+      page_path = case field_hash.keys.map(&:to_sym)
+        when [:sponsor_name]
           sponsor = Sponsor.find_by(name: field_hash[:sponsor_name])
           get_path page, sponsor.id
-        when :sponsor_id
+        when [:sponsor_id]
           get_path page, field_hash[:sponsor_id]
-        when :orphan_id
+        when [:orphan_id]
           orphan = Orphan.find_by(id: field_hash[:orphan_id])
           get_path page, orphan.id
-        when :user_name
+        when [:user_name]
           user = User.find_by( user_name: field_hash[:user_name] )
           get_path page, user.id
-        when :user_id
+        when [:user_id]
           get_path page, field_hash[:user_id]
-        when :partner_name
+        when [:partner_name]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
         else raise('path to specified object is not displayed')
