@@ -5,7 +5,7 @@ module FeatureHelpers
         get_path page
         return
       end
-      case field_hash.keys.first.to_sym
+      page_path = case field_hash.keys.first.to_sym
         when :sponsor_name
           sponsor = Sponsor.find_by(name: field_hash[:sponsor_name])
           get_path page, sponsor.id
@@ -24,29 +24,28 @@ module FeatureHelpers
           get_path page, partner.id
         else raise('path to specified object is not displayed')
       end
+      expect(current_path).to eq page_path
     end
 
     def get_path page, object_id = ''
-      page_path = case page.to_sym
-                    when :root_page then hq_root_path
-                    when :sign_in_page then new_hq_admin_user_session_path
-                    when :new_sponsor_page then new_hq_sponsor_path
-                    when :hq_sponsor_path then hq_sponsor_path object_id
-                    when :edit_hq_sponsor_path then edit_hq_sponsor_path object_id
-                    when :hq_new_sponsorship_path then hq_new_sponsorship_path object_id
-                    when :hq_orphan_path then hq_orphan_path object_id
-                    when :edit_hq_orphan_path then edit_hq_orphan_path object_id
-                    when :new_hq_user_path then new_hq_user_path
-                    when :hq_user_path then hq_user_path object_id
-                    when :edit_hq_user_path then edit_hq_user_path object_id
-                    when :hq_partner_page then hq_partner_path object_id
-                    when :new_hq_partner_page then new_hq_partner_path
-                    when :edit_hq_partner_page then edit_hq_partner_path object_id
-                    when :hq_admin_users_path then hq_admin_users_path
-                    else raise('path to specified is not listed in #path_to')
-                  end
-
-      expect(current_path).to eq page_path
+      case page.to_sym
+        when :root_page then hq_root_path
+        when :sign_in_page then new_hq_admin_user_session_path
+        when :new_sponsor_page then new_hq_sponsor_path
+        when :hq_sponsor_page then hq_sponsor_path object_id
+        when :edit_hq_sponsor_page then edit_hq_sponsor_path object_id
+        when :hq_new_sponsorship_page then hq_new_sponsorship_path object_id
+        when :hq_orphan_page then hq_orphan_path object_id
+        when :edit_hq_orphan_page then edit_hq_orphan_path object_id
+        when :new_hq_user_page then new_hq_user_path
+        when :hq_user_page then hq_user_path object_id
+        when :edit_hq_user_page then edit_hq_user_path object_id
+        when :hq_partner_page then hq_partner_path object_id
+        when :new_hq_partner_page then new_hq_partner_path
+        when :edit_hq_partner_page then edit_hq_partner_path object_id
+        when :hq_admin_users_page then hq_admin_users_path
+        else raise('page to specified is not listed in #page_to')
+      end
     end
 
     def and_i_click_button button

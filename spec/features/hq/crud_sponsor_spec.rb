@@ -60,7 +60,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     sponsor = @sponsors.first
     visit hq_sponsors_path
     click_link sponsor.name
-    and_i_should_be_on :hq_sponsor_path, { sponsor_name: sponsor.name }
+    and_i_should_be_on :hq_sponsor_page, { sponsor_name: sponsor.name }
   end
 
   scenario 'Should be able to add a sponsor from the sponsor index page' do
@@ -76,7 +76,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     select Sponsor.all_cities.first, :from => 'City'
     select @sponsors.first.agent.user_name, :from => 'sponsor_agent_id'
     click_button 'Create Sponsor'
-    and_i_should_be_on :hq_sponsor_path, { sponsor_name: 'Sponsor1' }
+    and_i_should_be_on :hq_sponsor_page, { sponsor_name: 'Sponsor1' }
     and_i_should_see 'Sponsor successfuly saved'
     and_i_should_see 'Sponsor1'
   end
@@ -85,10 +85,10 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     name = @sponsors.first.name
     given_i_am_on_page_for_sponsor 'Show Sponsor', name
     click_link 'Edit Sponsor'
-    and_i_should_be_on :edit_hq_sponsor_path, { sponsor_name: name }
+    and_i_should_be_on :edit_hq_sponsor_page, { sponsor_name: name }
     fill_in 'Additional info', :with => 'Additional Information'
     click_button 'Update Sponsor'
-    and_i_should_be_on :hq_sponsor_path, { sponsor_name: name }
+    and_i_should_be_on :hq_sponsor_page, { sponsor_name: name }
     and_i_should_see 'Sponsor successfuly saved'
     and_i_should_see 'Additional Information'
   end
@@ -111,7 +111,7 @@ RSpec.feature 'CRUD Sponsor', :type => :feature do
     click_link 'Edit Sponsor'
     fill_in 'Additional info', :with => 'Additional Information'
     click_link 'Cancel'
-    and_i_should_be_on :hq_sponsor_path, { sponsor_name: name }
+    and_i_should_be_on :hq_sponsor_page, { sponsor_name: name }
     and_i_should_not_see 'Additional Information'
   end
 
