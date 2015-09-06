@@ -63,6 +63,12 @@ class Hq::PendingOrphanListsController < HqController
     redirect_to hq_partner_path(@partner)
   end
 
+  def destroy
+    pending_orphan_list = PendingOrphanList.find(params[:id])
+    pending_orphan_list.destroy!
+    redirect_to hq_partner_path(params[:partner_id]), alert: 'Orphan List was not imported.'
+  end
+
 private
 
   def get_partner
