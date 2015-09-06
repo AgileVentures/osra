@@ -79,11 +79,11 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
         allow(pending_orphan_list).to receive :save!
         allow(pending_orphan_list).to receive :pending_orphans=
         allow(orphan_importer).to receive(:extract_orphans)
-        allow(orphan_importer).to receive(:valid?).and_return true
       end
 
       context "valid orphan_list" do
         before :each do
+          expect(orphan_importer).to receive(:valid?).and_return true
           post :validate, partner_id: partner.id, pending_orphan_list: orphan_list_params
         end
 
@@ -102,8 +102,9 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
         end
       end
 
-      context "invalid orphan_list", focus: true do
+      context "invalid orphan_list" do
         before do
+          expect(orphan_importer).to receive(:valid?).and_return false
           post :validate, partner_id: partner.id, pending_orphan_list: invalid_orphan_list_params
         end
 

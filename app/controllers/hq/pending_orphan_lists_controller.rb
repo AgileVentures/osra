@@ -29,9 +29,6 @@ class Hq::PendingOrphanListsController < HqController
     importer = OrphanImporter.new(params['pending_orphan_list']['spreadsheet'], @partner)
     result = importer.extract_orphans
 
-    binding.pry
-    puts
-
     if importer.valid?
       @pending_orphan_list.pending_orphans = result
       @pending_orphan_list.save!
