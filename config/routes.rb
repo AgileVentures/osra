@@ -8,7 +8,7 @@ Osra::Application.routes.draw do
     resources :dashboard, only: [:index]
     resources :partners, except: [:destroy] do
       resources :orphan_lists, only: [:index]
-      resources :pending_orphan_lists do
+      resources :pending_orphan_lists, only: [] do
         delete 'destroy', on: :member
         get 'upload', on: :collection
         post 'validate', on: :collection
