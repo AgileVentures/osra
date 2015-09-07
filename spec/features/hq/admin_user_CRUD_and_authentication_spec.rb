@@ -73,7 +73,7 @@ RSpec.feature 'CRUD AdminUser', :type => :feature do
     fill_in 'Password confirmation', with: 'Password'
     click_button 'Create Admin User'
     click_on 'Delete'
-    and_i_should_be_on :hq_admin_users_path
+    and_i_should_be_on :hq_admin_users_page
     and_i_should_not_see 'newadmin.user@example.com'
   end
 

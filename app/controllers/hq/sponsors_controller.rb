@@ -68,7 +68,7 @@ private
 
   def save_sponsor
     if @sponsor.save
-      flash[:success]= "Sponsor successfuly created"
+      flash[:success]= "Sponsor successfuly saved"
       redirect_to_new_or_saved_sponsor
     end
   end
