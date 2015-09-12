@@ -27,11 +27,18 @@ RSpec.feature 'OrphanList', :type => :feature do
     visit_partner 'PartnerActive'
     and_i_click_link "Upload Orphan List"
     and_i_should_be_on :upload_hq_partner_pending_orphan_lists, { partner_name: 'PartnerActive' }
+
     and_i_upload_valid_orphan_list
     and_i_should_see "Orphan list is valid"
     and_i_click_button "Import"
     and_i_should_be_on :hq_partner_page, { partner_name: 'PartnerActive' }
     and_i_should_see "Orphan List (0001) was successfully imported. Registered 3 new orphans."
+
+    and_i_click_link "Orphan lists"
+    and_i_should_be_on :hq_partner_orphan_lists, { partner_name: 'PartnerActive' }
+    and_i_should_see "three_orphans_xlsx.xlsx"
+    and_i_should_not_see "No Orphan Lists found"
+
     and_i_click_link "Orphans"
     and_i_should_see_orphans
   end
@@ -82,6 +89,3 @@ RSpec.feature 'OrphanList', :type => :feature do
   end
 
 end
-
-
-
