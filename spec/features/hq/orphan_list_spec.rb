@@ -46,6 +46,13 @@ RSpec.feature 'OrphanList', :type => :feature do
     and_i_should_be_on :hq_partner_page, { partner_name: 'PartnerActive' }
   end
 
+  scenario "OrphanList index view for partner without orphan lists" do
+    visit_partner 'PartnerActive'
+    and_i_click_link "Orphan lists"
+    and_i_should_be_on :hq_partner_orphan_lists, { partner_name: 'PartnerActive' }
+    and_i_should_see "No Orphan Lists found"
+  end
+
 
   def visit_partner partner_name
     visit hq_partners_path
@@ -55,19 +62,23 @@ RSpec.feature 'OrphanList', :type => :feature do
   end
 
   def and_i_upload_valid_orphan_list
-    attach_file 'pending_orphan_list_spreadsheet', "spec/fixtures/three_orphans_xlsx.xlsx"
+    attach_file "pending_orphan_list_spreadsheet", "spec/fixtures/three_orphans_xlsx.xlsx"
     and_i_click_button "Upload"
     and_i_should_be_on :validate_hq_partner_pending_orphan_lists, { partner_name: 'PartnerActive' }
   end
 
   def and_i_upload_invalid_orphan_list
-    attach_file 'pending_orphan_list_spreadsheet', "spec/fixtures/three_invalid_orphans_xlsx.xlsx"
+    attach_file "pending_orphan_list_spreadsheet", "spec/fixtures/three_invalid_orphans_xlsx.xlsx"
     and_i_click_button "Upload"
     and_i_should_be_on :validate_hq_partner_pending_orphan_lists, { partner_name: 'PartnerActive' }
   end
 
   def and_i_should_see_orphans
     expect(page).to have_selector "table[name='orphans'] tbody tr"
+  end
+
+  def and_i_should_see_disabled_button text
+    expect(page).to have_selector "a[disabled][text='#{text}']"
   end
 
 end
