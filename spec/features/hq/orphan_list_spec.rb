@@ -12,6 +12,10 @@ RSpec.feature 'OrphanList', :type => :feature do
     and_i_should_see_link "Upload Orphan List"
     and_i_click_link "Upload Orphan List"
     and_i_should_be_on :upload_hq_partner_pending_orphan_lists, { partner_name: 'Partner1' }
+    attach_file 'pending_orphan_list_spreadsheet', "spec/fixtures/three_orphans_xlsx.xlsx"
+    and_i_click_button "Upload"
+    and_i_should_be_on :validate_hq_partner_pending_orphan_lists, { partner_name: 'Partner1' }
+    and_i_should_see "Orphan list is valid"
   end
 
 
