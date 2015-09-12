@@ -63,6 +63,14 @@ module FeatureHelpers
     def and_i_should_not_see text
       expect(page).not_to have_text text
     end
-    
+
+    def and_i_should_see_link text
+      expect(page).to have_link text
+    end
+
+    def and_i_should_not_see_link text
+      expect(page).not_to have_link text
+    end
+
   end
 end

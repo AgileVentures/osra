@@ -98,20 +98,6 @@ RSpec.feature 'CRUD Partner', :type => :feature do
     and_i_should_not_see 'New Region'
   end
 
-  def given_partners_exist table
-    table.each do |hash|
-      status = Status.find_by_name(hash[:status])
-      province = Province.find_by_name(hash[:province])
-      partner = Partner.new(name: hash[:name],
-                            region: hash[:region],
-                            start_date: hash[:start_date],
-                            contact_details: hash[:contact_details],
-                            province: province,
-                            status: status)
-      partner.save!
-    end
-  end
-
   def i_should_see_the_following_codes_for_partners table
     table.each do |hash|
       partner = Partner.find_by_name hash[:name]
