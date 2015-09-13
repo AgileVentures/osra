@@ -7,7 +7,7 @@ Feature:
     So that I may maintain the information about osra sponsors
     I can create, read and update sponsors in the admin section
 =end
-RSpec.feature 'CRUD Sponsor', :type => :feature do
+RSpec.feature 'Sponsor', :type => :feature do
 
   background do
     @sponsors = create_list :sponsor_full, 3
