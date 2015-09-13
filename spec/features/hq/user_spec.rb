@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.feature 'User CRUD spec:', :type => :feature do
+RSpec.feature 'User', :type => :feature do
 
   background do
     i_sign_in_as_admin
