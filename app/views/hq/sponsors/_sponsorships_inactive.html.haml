@@ -3,7 +3,7 @@
     %h3.panel-title
       = pluralize(sponsorships.count.to_s, 'Previously Sponsored Orphan')
 - if sponsorships.count > 0
-  .active_sponsors_index
+  .inactive_sponsors_index
     .table-responsive
       %table.table.table-hover
         %thead
