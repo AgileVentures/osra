@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Orphan CRUD spec:', :type => :feature do
+RSpec.feature 'Orphan', :type => :feature do
 
   background do
     i_sign_in_as_admin

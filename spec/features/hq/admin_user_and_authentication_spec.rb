@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'CRUD AdminUser', :type => :feature do
+RSpec.feature 'AdminUser', :type => :feature do
 
   scenario 'Restricted pages should be accessible to logged in users' do
     i_sign_in_as_admin
