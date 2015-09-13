@@ -61,6 +61,20 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     i_should_see_previously_sponsored
   end
 
+  scenario 'Delete sponsorship' do
+    sponsor = Sponsor.first
+    orphan = Orphan.first
+    given_sponsor_sponsors_orphan sponsor, orphan
+    visit hq_sponsor_path sponsor.id
+    i_should_see_one_active_sponsorship orphan
+    click_link 'X'
+    and_i_should_be_on "hq_sponsor_page", {sponsor_name: sponsor.name}
+    and_i_should_see "Sponsorship record was successfully destroyed"
+    i_should_see_no_sponsorships
+    visit hq_orphan_path orphan.id
+    i_should_see_unsponsored
+  end
+
   def a_sponsor_exists(sponsor_name)
     create :sponsor, name: sponsor_name, requested_orphan_count: 2
   end
@@ -95,8 +109,17 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     expect(page).to_not have_css(".active_sponsors_index")
   end
 
+  def i_should_see_no_sponsorships
+    expect(page).to_not have_css(".inactive_sponsors_index")
+    expect(page).to_not have_css(".active_sponsors_index")
+  end
+
   def i_should_see_previously_sponsored
     expect(page).to have_content "Previously sponsored"
+  end
+
+  def i_should_see_unsponsored
+    expect(page).to have_content "Unsponsored"
   end
 
   def given_sponsor_sponsors_orphan(sponsor, orphan)
