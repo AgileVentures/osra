@@ -45,6 +45,7 @@ RSpec.configure do |config|
   # Feature helpers
   config.include FeatureHelpers::Authentication, type: :feature
   config.include FeatureHelpers::Navigation, type: :feature
+  config.include FeatureHelpers::Factories, type: :feature
 
   # Use FactoryGirl methods without prefacing them with 'FactoryGirl.'
   config.include FactoryGirl::Syntax::Methods

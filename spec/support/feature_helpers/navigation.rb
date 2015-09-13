@@ -22,6 +22,15 @@ module FeatureHelpers
         when [:partner_name]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
+        when [:hq_partner_orphan_lists]
+          partner = Partner.find_by(name: field_hash[:partner_name])
+          get_path page, partner.id
+        when [:upload_hq_partner_pending_orphan_lists]
+          partner = Partner.find_by(name: field_hash[:partner_name])
+          get_path page, partner.id
+        when [:validate_hq_partner_pending_orphan_lists]
+          partner = Partner.find_by(name: field_hash[:partner_name])
+          get_path page, partner.id
         else raise('path to specified object is not displayed')
       end
       expect(current_path).to eq page_path
@@ -41,6 +50,9 @@ module FeatureHelpers
         when :hq_user_page then hq_user_path object_id
         when :edit_hq_user_page then edit_hq_user_path object_id
         when :hq_partner_page then hq_partner_path object_id
+        when :hq_partner_orphan_lists then hq_partner_orphan_lists_path object_id
+        when :upload_hq_partner_pending_orphan_lists then upload_hq_partner_pending_orphan_lists_path object_id
+        when :validate_hq_partner_pending_orphan_lists then validate_hq_partner_pending_orphan_lists_path object_id
         when :new_hq_partner_page then new_hq_partner_path
         when :edit_hq_partner_page then edit_hq_partner_path object_id
         when :hq_admin_users_page then hq_admin_users_path
@@ -63,6 +75,14 @@ module FeatureHelpers
     def and_i_should_not_see text
       expect(page).not_to have_text text
     end
-    
+
+    def and_i_should_see_link text
+      expect(page).to have_link text
+    end
+
+    def and_i_should_not_see_link text
+      expect(page).not_to have_link text
+    end
+
   end
 end
