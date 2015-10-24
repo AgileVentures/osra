@@ -28,11 +28,8 @@ describe DestroySponsorship do
       end
 
       it 'updates orphan sponsorship status' do
-        sponsored_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
-        unsponsored_status = OrphanSponsorshipStatus.find_by_name 'Unsponsored'
-
-        expect{ service.call }.to change(orphan, :orphan_sponsorship_status).
-          from(sponsored_status).to(unsponsored_status)
+        expect{ service.call }.to change(orphan, :sponsorship_status).
+          from('sponsored').to('unsponsored')
       end
 
       it 'return true' do
@@ -59,7 +56,7 @@ describe DestroySponsorship do
       end
 
       it 'does not update orphan sponsorship status' do
-        expect{ service.call }.not_to change(orphan, :orphan_sponsorship_status)
+        expect{ service.call }.not_to change(orphan, :sponsorship_status)
       end
 
       it 'sets @error_msg' do

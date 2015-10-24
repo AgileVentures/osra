@@ -1,0 +1,40 @@
+$border-line: 1px solid #bfbfbf;
+$main_nav_bar-width: 100px;
+$container-title-height: 100px;
+$links-color: #31a7e1;
+$links-color-dark: darken( $links-color, 10% );
+$default-color: #717171;
+$default-color-light: #F2F2F2;
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+@import "defaults";
+@import "header";
+@import "navbar";
+@import "content";
+@import "main_content_title";
+@import "main_content_header";
+@import "records_form";
+@import "filters_form";
+@import "datepicker";
+@import "pagination";
+@import "dashboard";
+@import "footer";
+
+
+.no-horiz-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.required_field::after {
+  content: " (required)";
+  @extend .text-danger;
+}
+
+.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding-left: 80px;
+}

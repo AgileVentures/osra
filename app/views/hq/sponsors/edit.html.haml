@@ -1,2 +1,3 @@
-%h1 Edit Sponsor #{@sponsor.name}, OSRA number #{@sponsor.osra_num}
+=render partial: "layouts/content_title.erb",
+        locals: {title: "Edit Sponsor: #{@sponsor.name}, OSRA Number: #{@sponsor.osra_num}"}
 = render partial: 'form', locals: { sponsor: @sponsor, statuses: @statuses, sponsor_types: @sponsor_types, organizations: @organizations, branches: @branches, cities: @cities }

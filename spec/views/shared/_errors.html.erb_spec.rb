@@ -10,11 +10,11 @@ RSpec.describe "shared/_errors.html.erb", type: :view do
   end
 
   it 'tells us we have errors' do
-    assert_select ".panel-title", /Please fix the errors below and resubmit the form/
+    expect(rendered).to have_selector(".panel-title", text: /Please fix the errors below and resubmit the form/)
   end
 
   it "tells us name can't be blank" do
-    assert_select ".panel-body", /Name can't be blank/
+    expect(rendered).to have_selector(".panel-body" ,text: /Name can't be blank/)
   end
 
 end

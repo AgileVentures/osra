@@ -10,11 +10,6 @@ namespace :cucumber do
     task :aa do
       sh 'cucumber -P -v -r features/aa -r features/support features/aa'
     end
-
-    desc 'run all hq features'
-    task :hq do
-      sh 'cucumber -P -v -r features/hq -r features/support features/hq'
-    end
 end
 
 namespace :spec do
@@ -30,12 +25,12 @@ namespace :spec do
 end
 
 desc 'run all rspec and cucumber tests for "aa" and "hq"'
-task :default => [:spec, 'cucumber:hq', 'cucumber:aa']
+task :default => [:spec, 'cucumber:aa']
 
 namespace :test do
   desc 'run all rspec and cucumber tests for "aa"'
   task :aa => ['spec:aa', 'cucumber:aa']
 
-  desc 'run all rspec and cucumber tests for "hq"'
-  task :hq => ['spec:hq', 'cucumber:hq']
-end 
+  desc 'run all rspec tests for "hq"'
+  task :hq => ['spec:hq']
+end

@@ -13,7 +13,8 @@ describe Partner, type: :model do
     it { is_expected.to validate_uniqueness_of :name }
   end
 
-  it { is_expected.to validate_presence_of :province }
+  it { is_expected.to validate_presence_of :province_id }
+  it { is_expected.to validate_presence_of :status_id }
   it { is_expected.to belong_to :province }
   it { is_expected.to belong_to :status }
 

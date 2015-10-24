@@ -1,0 +1,62 @@
+//filters form
+#filters {
+  max-width: 570px;
+  margin: 0 auto;
+  padding: 15px;
+  font-size: 0.9em;
+  .input-group-addon {
+    font-size: 0.9em;
+  }
+  .form-group-sm {
+    margin-bottom: 10px;
+  }
+}
+
+//filters toggle button
+.btn-filters {
+  color: $links-color;
+  background-color: #ffffff;
+  border-radius: 0;
+  z-index: 999;
+}
+.btn-filters:hover, .btn-filters:focus {
+  color: $links-color;
+  background-color: $default-color-light;
+}
+
+
+@media (min-width: 1200px) {
+  .filters_content {
+    float: left;
+    padding-top: 15px;
+    padding-left: 0;
+    border-right: $border-line;
+    border-bottom: $border-line;
+  }
+
+  //filters form
+  #filters {
+    width: 370px;
+  }
+
+  //filters toggle button
+  .btn-filters{
+    position: relative;
+    top: 11px;
+    left: -25px;
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+  }
+  .filters_button_container {
+    width: 34px;
+    height: 70px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .filters_content {
+    border-bottom: $border-line;
+  }
+}

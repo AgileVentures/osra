@@ -32,7 +32,7 @@ class InactivateSponsorship
   end
 
   def update_and_save_orphan!
-    UpdateOrphanSponsorshipStatus.new(orphan, 'Previously Sponsored').call
+    UpdateOrphanSponsorshipStatus.new(orphan, 'previously_sponsored').call
     orphan.save!
   end
 

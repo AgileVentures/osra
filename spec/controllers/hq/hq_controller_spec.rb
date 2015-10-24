@@ -6,7 +6,7 @@ RSpec.describe HqController, type: :controller do
   describe 'owns namespace controllers' do
     Rails.application.eager_load!
     ApplicationController.descendants.each do |_controller|
-      if _controller.to_s.include? 'Hq::'
+      if (_controller.to_s.include? 'Hq::') && !(_controller.superclass.to_s.include? 'Devise::')
         specify "HqController is the parent of #{_controller.to_s}" do
           expect(_controller.superclass).to eq HqController
         end
@@ -25,7 +25,7 @@ RSpec.describe HqController, type: :controller do
       routes.draw do
         get 'foobar_action', to: 'nyuks#foobar_action'
       end
-      expect_any_instance_of(Devise::Controllers::Helpers).to receive :authenticate_admin_user!
+      expect_any_instance_of(Devise::Controllers::Helpers).to receive :authenticate_hq_admin_user!
 
       get :foobar_action
     end

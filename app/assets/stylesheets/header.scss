@@ -1,0 +1,29 @@
+.osra-header {
+  width: 100%;
+  height: 65px;
+  border-bottom: $border-line;
+
+  .brand {
+    height: inherit;
+    width: 50%;
+    padding: 17px 1%;
+    font-size: 1.6em;
+    float: left;
+    a { color: $default-color; }
+  }
+
+  .logout-nav {
+    height: inherit;
+    width: 50%;
+    padding: 21px 2%;
+    font-size: 1.2em;
+    float: left;
+  }
+
+  .logout-nav div {
+    float: right;
+    padding: 0 5px;
+    color: $default-color;
+    a { color: $default-color; }
+  }
+}

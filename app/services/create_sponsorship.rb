@@ -31,7 +31,7 @@ class CreateSponsorship
   end
 
   def update_and_save_orphan!
-    UpdateOrphanSponsorshipStatus.new(orphan, 'Sponsored').call
+    UpdateOrphanSponsorshipStatus.new(orphan, 'sponsored').call
     orphan.save!
   end
 

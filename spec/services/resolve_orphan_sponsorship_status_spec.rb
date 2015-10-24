@@ -7,7 +7,7 @@ describe ResolveOrphanSponsorshipStatus do
 
   context 'when unsponsored' do
     it 'returns Unsponsored status' do
-      expect(service.call).to eq 'Unsponsored'
+      expect(service.call).to eq 'unsponsored'
     end
   end
 
@@ -19,7 +19,7 @@ describe ResolveOrphanSponsorshipStatus do
 
     context 'when currently sponsored' do
       it 'returns Sponsored status' do
-        expect(service.call).to eq 'Sponsored'
+        expect(service.call).to eq 'sponsored'
       end
     end
 
@@ -29,7 +29,7 @@ describe ResolveOrphanSponsorshipStatus do
       end
 
       it 'returns Previously Sponsored status' do
-        expect(service.call).to eq 'Previously Sponsored'
+        expect(service.call).to eq 'previously_sponsored'
       end
     end
   end

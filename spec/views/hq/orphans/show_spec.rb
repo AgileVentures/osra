@@ -1,17 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe "hq/orphans/show.html.haml", type: :view do
+RSpec.describe "hq/orphans/show.html.erb", type: :view do
+  let(:orphan) { FactoryGirl.create(:orphan) }
+
   describe 'the orphan exists' do
     before :each do
-      @orphan = build_stubbed :orphan
+      assign(:orphan, orphan)
       render
     end
 
-    it 'should show the assigned orphan details' do
-      expect(rendered).to match @orphan.name
+    it 'should have an Edit Orphan button' do
+      expect(rendered).to have_link('Edit Orphan', edit_hq_orphan_path(orphan.id))
     end
-
+    
+    it 'should have partner field' do
+      expect(rendered).to have_selector("dd", text: orphan.partner.name)
+    end
   end
-
+  
 end
-

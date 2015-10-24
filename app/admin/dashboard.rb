@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
     div class: "blank_slate_container" do
       height= (865 * IMAGE_SCALING).to_i.to_s
       width= (960 * IMAGE_SCALING).to_i.to_s
-      image= '<img src="/osra_logo.jpg" height="' + height + '" width="' + width + '" alt="Welcome to OSRA" />'
+      image= image_tag("osra_logo.jpg", height: height , width: width ,:alt => "Welcome to OSRA")
       text_node image.html_safe
     end
   end

@@ -9,7 +9,7 @@ RSpec.describe 'hq/sponsors/_sponsorships_active.html.haml', type: :view do
     end
 
     it "should show table title" do
-      expect(rendered).to have_text "3 currently sponsored orphans"
+      expect(rendered).to have_text "3 Currently Sponsored Orphans"
     end
 
     it "should show sponsorships and linked orphans details" do
@@ -39,7 +39,7 @@ RSpec.describe 'hq/sponsors/_sponsorships_active.html.haml', type: :view do
     end
 
     it "should show message" do
-      expect(rendered).to have_text "No currently sponsored orphans"
+      expect(rendered).to have_text "0 Currently Sponsored Orphans"
     end
   end
 
