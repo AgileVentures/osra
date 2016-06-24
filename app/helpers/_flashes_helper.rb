@@ -3,7 +3,7 @@ module FlashesHelper
   ACCEPTED_FLASH_HTML_CLASSES = {
     success: 'alert alert-success',
     error: 'alert alert-danger'
-  }  
+  }
 
   def flash_htmlclass_for type
     ACCEPTED_FLASH_HTML_CLASSES[type.to_sym] || nil
@@ -19,4 +19,7 @@ module FlashesHelper
     flash.any? {|k,_| flash_htmlclass_for k }
   end
 
+  def set_devise_notice_to_flash
+    flash[:success] = notice if notice
+  end
 end

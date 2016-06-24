@@ -36,11 +36,9 @@ describe InactivateSponsorship do
           from(1).to(0)
       end
 
-      it 'updates orphan_sponsorship_status' do
-        previous_status = OrphanSponsorshipStatus.find_by_name 'Previously Sponsored'
-
-        expect{ service.call }.to change(orphan, :orphan_sponsorship_status).
-          to(previous_status)
+      it 'updates orphan sponsorship_status' do
+        expect{ service.call }.to change(orphan, :sponsorship_status).
+          to('previously_sponsored')
       end
 
       it 'returns true' do
@@ -70,8 +68,8 @@ describe InactivateSponsorship do
         expect{ service.call }.not_to change(sponsor, :active_sponsorship_count)
       end
 
-      it 'does not update orphan_sponsorship_status' do
-        expect{ service.call }.not_to change(orphan, :orphan_sponsorship_status)
+      it 'does not update orphan sponsorship_status' do
+        expect{ service.call }.not_to change(orphan, :sponsorship_status)
       end
 
       it 'sets @error_msg' do

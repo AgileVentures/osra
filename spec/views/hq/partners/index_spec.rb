@@ -22,6 +22,12 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
       render
       expect(rendered).to match /success/
     end
+
+    it "should generate sorted links for table headers" do
+      expect(view).to receive(:sortable_link).at_least(:once)
+
+      render
+    end
   end
 
   context 'no partners exist' do

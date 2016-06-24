@@ -5,10 +5,9 @@ describe UpdateOrphanSponsorshipStatus do
   let(:orphan) { FactoryGirl.create :orphan }
 
   it 'updates orphan sponsorship status' do
-    sponsored_status = OrphanSponsorshipStatus.find_by_name 'Sponsored'
-    service = UpdateOrphanSponsorshipStatus.new(orphan, 'Sponsored')
+    service = UpdateOrphanSponsorshipStatus.new(orphan, 'sponsored')
 
-    expect{ service.call }.to change(orphan, :orphan_sponsorship_status).
-      to(sponsored_status)
+    expect{ service.call }.to change(orphan, :sponsorship_status).
+      to('sponsored')
   end
 end

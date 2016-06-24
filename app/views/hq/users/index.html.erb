@@ -1,12 +1,15 @@
-<div class="action_items">
+<%=render partial: "layouts/content_title.erb", locals: {title: "Users"} %>
+
+<div class="main-content-header">
   <%= link_to('New User', new_hq_user_path,
               class: 'btn btn-default', role: 'button') %>
 </div>
+
 <% if @users.empty? %>
   <em>No Users Found</em>
 <% else %>
   <div class='table-responsive'>
-    <table class='table' id="users-index">
+    <table class='table table-hover' id="users-index">
       <thead>
         <tr>
           <th>
@@ -38,6 +41,6 @@
     </table>
   </div>
   <div class="pagination">
-    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @users, will_paginate_render_options %>
   </div>
 <% end %>

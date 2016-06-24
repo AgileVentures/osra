@@ -9,16 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
+    <%= render 'layouts/header' %>
     <div class="container-fluid">
-      <%= render 'layouts/header' %>
       <div class="row">
-        <%= render 'layouts/navigation' %>
+        <%= render 'layouts/navigation' unless devise_controller? %>
         <div class="content">
           <%= render 'layouts/flashes' %>
           <%= yield %>
         </div>
       </div>
-      <%= render 'layouts/footer' %>
     </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

@@ -1,6 +1,7 @@
 class Sponsor < ActiveRecord::Base
   include Initializer
   include DateHelpers
+  include SponsorAttrFilter
 
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
@@ -20,19 +21,22 @@ class Sponsor < ActiveRecord::Base
 
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
+
   validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
   validates :city, presence: true,
             exclusion: { in: [NEW_CITY_MENU_OPTION],
                          message: 'Please enter city name below. &darr;' }
   validates :request_fulfilled, inclusion: { in: [true, false] }
   validates :sponsor_type, presence: true
-  validates :gender, inclusion: { in: Settings.lookup.gender }
+  validates :status_id, presence: true
+  validates :gender, inclusion: { in: Settings.lookup.gender }, presence: true
   validates :payment_plan, allow_nil: false, allow_blank: true, inclusion: { in: PAYMENT_PLANS }
   validates :start_date, valid_date_presence: true,
                          date_beyond_osra_establishment: true,
                          date_not_beyond_first_of_next_month: true
   validate :belongs_to_one_branch_or_organization
   validate :can_be_inactivated, if: :being_inactivated?, on: :update
+  validate :requested_orphan_count_not_less_than_active_sponsorships_count, if: :requested_orphan_count
   validates_format_of :email,
       with: /\A([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)(\.[\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+)*\@([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~[[:word:]]]+\.)+([[:word:]]+)(\:[0-9]+)?\z/i,
       allow_blank: true
@@ -69,7 +73,7 @@ class Sponsor < ActiveRecord::Base
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
   scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
 
-  private
+private
 
   def default_type_to_individual
     self.sponsor_type ||= SponsorType.find_by_name 'Individual'
@@ -125,9 +129,16 @@ class Sponsor < ActiveRecord::Base
     end
   end
 
+  def requested_orphan_count_not_less_than_active_sponsorships_count
+    if requested_orphan_count < sponsorships.all_active.size
+      errors[:requested_orphan_count] << "can't be less than the number of active sponsorships"
+    end
+  end
+
   def set_city
     if (city == NEW_CITY_MENU_OPTION) && new_city_name.present?
       self.city = new_city_name
     end
   end
+
 end

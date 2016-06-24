@@ -1,0 +1,8 @@
+@media (min-width: 768px) {
+  .content {
+    width: calc(100% - #{$main_nav_bar-width});
+    min-height: 704px;
+    float: left;
+    border-left: $border-line;
+  }
+}

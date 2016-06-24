@@ -11,9 +11,8 @@ RSpec.describe 'layouts/_navigation.html.erb', type: :view do
     end
 
     specify 'one higlighted' do
-      assert_select 'div.no-horiz-padding>ul>li.active', {count: 1}
-      assert_select 'div.no-horiz-padding>ul>li.dormant',
-                    {count: (HqController::NAVIGATION_BUTTONS.count - 1)}
+      expect(rendered).to have_selector('div.no-horiz-padding>ul>li.active', count: 1)
+      expect(rendered).to have_selector('div.no-horiz-padding>ul>li.dormant', count: (HqController::NAVIGATION_BUTTONS.count - 1))
     end
   end
 
@@ -23,10 +22,8 @@ RSpec.describe 'layouts/_navigation.html.erb', type: :view do
         { text: 'foobar', href: '"/pathname/file.extension"', path_regex: /baz/, glyph: 'lorem_ipsum' } ])
       render
 
-      assert_select 'li' do
-        assert_select 'span.glyphicon'
-        assert_select 'span.lorem_ipsum'
-      end
+      expect(rendered).to have_selector('li span.glyphicon')
+      expect(rendered).to have_selector('li span.lorem_ipsum')
     end
 
     specify 'generates link from href code' do
@@ -34,7 +31,7 @@ RSpec.describe 'layouts/_navigation.html.erb', type: :view do
         { text: 'foobar', href: '"/pathname/file.extension".reverse', path_regex: /baz/, glyph: 'lorem_ipsum' } ])
       render
 
-      assert_select 'a', href: 'noisnetxe.elif/emanhtap/', text: 'foobar'
+      expect(rendered).to have_link("foobar", "noisnetxe.elif/emanhtap/")
     end
   end
 end
