@@ -4,8 +4,8 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
 
   background do
     i_sign_in_as_admin
-    a_sponsor_exists "First Sponsor"
-    an_orphan_exists name: "First Orphan", father_given_name: "father1", family_name: "family1"
+    @first_sponsor = a_sponsor_exists "First Sponsor"
+    @first_orphan = an_orphan_exists name: "First Orphan", father_given_name: "father1", family_name: "family1"
     an_orphan_exists name: "Second Orphan", father_given_name: "father2", family_name: "family2"
   end
 
@@ -73,6 +73,14 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     i_should_see_no_sponsorships
     visit hq_orphan_path orphan.id
     i_should_see_unsponsored
+  end
+
+  scenario 'Link to Sponsor from Orphan page' do
+    given_sponsor_sponsors_orphan @first_sponsor, @first_orphan
+    visit hq_orphan_path @first_orphan.id
+    and_i_should_see "First Sponsor"
+    and_i_click_link "First Sponsor"
+    and_i_should_be_on "hq_sponsor_page", {sponsor_name: @first_sponsor.name}
   end
 
   def a_sponsor_exists(sponsor_name)
