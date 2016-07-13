@@ -5,8 +5,8 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
   background do
     i_sign_in_as_admin
     a_sponsor_exists "First Sponsor"
-    an_orphan_exists "First Orphan"
-    an_orphan_exists "Second Orphan"
+    an_orphan_exists name: "First Orphan", father_given_name: "father1", family_name: "family1"
+    an_orphan_exists name: "Second Orphan", father_given_name: "father2", family_name: "family2"
   end
 
   scenario 'Pairing a sponsor with orphans' do
@@ -27,7 +27,7 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     fill_orphan_with "sponsorship_start_date", "Second Orphan", "2014-02-01"
     when_i_click "Sponsor this orphan", "Second Orphan"
     and_i_should_be_on "hq_sponsor_page", {sponsor_name: "First Sponsor"}
-    and_i_should_see_within "Currently Sponsored Orphans", "First Orphan"
+    and_i_should_see_within "Currently Sponsored Orphans", "First Orphan father1 family1"
     and_i_should_see "2014-01-01"
     and_i_should_see_within "Currently Sponsored Orphans", "Second Orphan"
     and_i_should_see "Sponsorship link was successfully created."
@@ -79,8 +79,8 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     create :sponsor, name: sponsor_name, requested_orphan_count: 2
   end
 
-  def an_orphan_exists(orphan_name)
-    create :orphan, name: orphan_name
+  def an_orphan_exists(name:, father_given_name:, family_name:)
+    create :orphan, name: name, father_given_name: father_given_name, family_name: family_name
   end
 
   def given_sponsor_on_hold(sponsor_name)
