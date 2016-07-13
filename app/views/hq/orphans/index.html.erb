@@ -74,6 +74,13 @@
               }) %>
             </th>
             <th>
+              <%= sortable_link("orphans.family_name", {
+                      sort_direction: @current_sort_direction,
+                      table_header: "Family name",
+                      sort_column_is_active: (@current_sort_column == :"orphans.family_name")
+              }) %>
+            </th>
+            <th>
               <%= sortable_link("date_of_birth", {
                   sort_direction: @current_sort_direction,
                   sort_column_is_active: (@current_sort_column == :date_of_birth)
@@ -153,6 +160,9 @@
               </td>
               <td>
                 <%= orphan.father_given_name %>
+              </td>
+              <td>
+                <%=  orphan.family_name %>
               </td>
               <td>
                 <%= orphan.date_of_birth %>
