@@ -65,6 +65,7 @@ RSpec.describe Hq::OrphansController, type: :controller do
     get :show, id: orphan.id
 
     expect(assigns(:orphan)).to eq orphan
+    expect(assigns(:sponsor)).to eq orphan.current_sponsor
     expect(response).to render_template 'show'
   end
 
