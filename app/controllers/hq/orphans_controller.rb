@@ -20,6 +20,7 @@ class Hq::OrphansController < HqController
 
   def show
     load_orphan
+    @sponsor = @orphan.current_sponsor
   end
 
   def edit
