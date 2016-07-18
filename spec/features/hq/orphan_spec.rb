@@ -10,16 +10,12 @@ RSpec.feature 'Orphan', :type => :feature do
 
   scenario 'There should be a list of orphans on the admin index page' do
     visit hq_orphans_path
-    and_i_should_see "Orphan 1"
-    and_i_should_see_within "Orphan 1", "Father 1"
-    and_i_should_see_within "Orphan 1", "family 1"
+    and_i_should_see "Orphan 1 Father 1 family 1"
+    and_i_should_see_within "Orphan 1", "Father 1 family 1"
     and_i_should_see_within "Orphan 1", "2012-01-01"
-    and_i_should_see "Orphan 2"
-    and_i_should_see_within "Orphan 2", "Father 2"
-    and_i_should_see_within "Orphan 2", "family 2"
+    and_i_should_see "Orphan 2 Father 2 family 2"
+    and_i_should_see_within "Orphan 2", "Father 2 family 2"
     and_i_should_see_within "Orphan 2", "2011-01-01"
-    and_i_should_see "Orphan 1 Father 1"
-    and_i_should_see "Orphan 2 Father 2"
     and_i_should_see_within "Orphan 1", "2012-01-01"
     and_i_should_see_within "Orphan 2", "High"
     and_i_should_see_within "Orphan 1", "Male"

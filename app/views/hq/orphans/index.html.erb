@@ -63,21 +63,15 @@
             <th>
               <%= sortable_link("orphans.name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Name",
+                  table_header: "Full Name",
                   sort_column_is_active: (@current_sort_column == :"orphans.name")
               }) %>
             </th>
             <th>
               <%= sortable_link("father_given_name", {
                   sort_direction: @current_sort_direction,
+                  table_header: "Father Name",
                   sort_column_is_active: (@current_sort_column == :father_given_name)
-              }) %>
-            </th>
-            <th>
-              <%= sortable_link("orphans.family_name", {
-                      sort_direction: @current_sort_direction,
-                      table_header: "Family name",
-                      sort_column_is_active: (@current_sort_column == :"orphans.family_name")
               }) %>
             </th>
             <th>
@@ -156,13 +150,10 @@
                 <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= link_to orphan.name, hq_orphan_path(orphan) %>
+                <%= link_to orphan.full_name, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= orphan.father_given_name %>
-              </td>
-              <td>
-                <%=  orphan.family_name %>
+                <%= orphan.father_name %>
               </td>
               <td>
                 <%= orphan.date_of_birth %>
