@@ -9,7 +9,7 @@
         %thead
           %tr
             %th
-              Orphan name
+              Orphan full name
             %th
               Orphan date of birth
             %th
@@ -24,7 +24,7 @@
           - sponsorships.each do |sponsorship|
             %tr
               %td
-                = link_to sponsorship.orphan.name, hq_orphan_path(sponsorship.orphan)
+                = link_to sponsorship.orphan.full_name, hq_orphan_path(sponsorship.orphan)
               %td
                 = sponsorship.orphan.date_of_birth
               %td
