@@ -3,7 +3,7 @@ class Hq::OrphansController < HqController
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    redirect_to(hq_orphans_path) if params["commit"]=="Clear Filters"
+    redirect_to(hq_orphans_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
@@ -16,6 +16,11 @@ class Hq::OrphansController < HqController
       .paginate(:page => params[:page])
 
     load_scope
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Orphan.to_csv(@orphans), filename: "orphans-#{Date.today}.csv" }
+    end
   end
 
   def show

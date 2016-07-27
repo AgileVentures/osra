@@ -368,6 +368,16 @@ describe Sponsor, type: :model do
       it 'returns only orphans that are currently sponsored' do
         expect(new_sponsor.currently_sponsored_orphans).to match_array [current_orphan]
       end
+
+      describe '#to_csv' do
+        let!(:sponsor) {build(:sponsor, name: 'John Doe', gender: 'Male', requested_orphan_count: 4, active_sponsorship_count: 1, request_fulfilled: false)}
+        it 'generates csv content for given sponsors' do
+          output = "Osra Num,Name,Status,Start Date,Request Fulfilled,Sponsor Type,Country\n," + 
+            ["John Doe","#{sponsor.status.name}","#{sponsor.start_date}","No (1/4)","#{sponsor.sponsor_type.name}","#{en_ar_country(sponsor.country)}"].to_csv
+          expect(Sponsor.to_csv([sponsor])).to eq(output)
+
+        end
+      end
     end
 
     describe '.all_cities' do

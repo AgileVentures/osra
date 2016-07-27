@@ -112,6 +112,11 @@ RSpec.feature 'Sponsor', :type => :feature do
     and_i_should_not_see 'Additional Information'
   end
 
+  scenario 'export Sponsors to csv' do
+    visit hq_sponsors_path
+    and_i_should_see "Export to csv"
+  end
+
   private
 
   def i_should_see_the_following_fields_on_the_page table

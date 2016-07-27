@@ -1,3 +1,4 @@
+require 'csv'
 class Orphan < ActiveRecord::Base
 
   enum status: [
@@ -88,6 +89,8 @@ class Orphan < ActiveRecord::Base
   has_one :partner, through: :orphan_list, autosave: false
 
   delegate :province_code, to: :partner, prefix: true
+  delegate :province_name, to: :original_address
+  delegate :name, to: :partner, prefix: true
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
@@ -121,6 +124,17 @@ class Orphan < ActiveRecord::Base
 
   def current_sponsor
     current_sponsorship.sponsor if sponsored?
+  end
+
+  def self.to_csv(records = [])
+    attributes = %w(osra_num full_name father_name date_of_birth gender province_name partner_name 
+      father_is_martyr father_deceased mother_alive priority status sponsorship_status)
+    CSV.generate(headers: true) do |csv|
+      csv << attributes.map(&:titleize)
+      records.each do |orphan|
+        csv << attributes.map { |attr| orphan.public_send(attr) }
+      end
+    end
   end
 
 private

@@ -99,6 +99,11 @@ RSpec.feature 'Orphan', :type => :feature do
     and_i_click_link "Cancel"
     and_i_should_be_on "hq_orphan_page", { orphan_id: 1 }
   end
+  
+  scenario 'export Orphans to csv' do
+    visit hq_orphans_path
+    and_i_should_see "Export to csv"
+  end
 
   def when_i_click( link, orphan_name )
     orphan = Orphan.find_by_name orphan_name
