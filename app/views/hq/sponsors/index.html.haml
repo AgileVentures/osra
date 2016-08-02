@@ -2,6 +2,7 @@
 
 %div.main-content-header
   = link_to('New Sponsor', new_hq_sponsor_path, class: 'btn btn-default', role: 'button')
+  = link_to('Export to csv', hq_sponsors_path(format: :csv), class: 'btn btn-default', role: 'button')
   %p
     Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
     out of #{total_requested_sponsorships} requested.

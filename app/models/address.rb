@@ -8,4 +8,8 @@ class Address < ActiveRecord::Base
 
   scope :original, -> { where.not(orphan_original_address_id: nil) }
 
+  def province_name
+    province.name 
+  end
+
 end

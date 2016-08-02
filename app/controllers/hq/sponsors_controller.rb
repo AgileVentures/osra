@@ -1,6 +1,6 @@
 class Hq::SponsorsController < HqController
   def index
-    redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
+    redirect_to(hq_sponsors_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
@@ -13,6 +13,11 @@ class Hq::SponsorsController < HqController
       .filter(@filters)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
       .paginate(:page => params[:page])
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Sponsor.to_csv(@sponsors), filename: "sponsors-#{Date.today}.csv" }
+    end
   end
 
   def show
