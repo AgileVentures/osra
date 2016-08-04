@@ -19,7 +19,7 @@ class Hq::OrphansController < HqController
 
     respond_to do |format|
       format.html
-      format.csv { send_data Orphan.to_csv(@orphans), filename: "orphans-#{Date.today}.csv" }
+      format.csv { send_data Orphan.to_csv(Orphan.all), filename: "orphans-#{Date.today}.csv" }
     end
   end
 

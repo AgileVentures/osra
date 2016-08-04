@@ -16,7 +16,7 @@ class Hq::SponsorsController < HqController
 
     respond_to do |format|
       format.html
-      format.csv { send_data Sponsor.to_csv(@sponsors), filename: "sponsors-#{Date.today}.csv" }
+      format.csv { send_data Sponsor.to_csv(Sponsor.all), filename: "sponsors-#{Date.today}.csv" }
     end
   end
 
