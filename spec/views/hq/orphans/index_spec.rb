@@ -75,6 +75,14 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
 
       render
     end
+
+    it "should show link for export orphans list as csv" do
+      assign(:filters, {})
+      assign(:sort_by, {})
+      assign(:sort_direction, {})
+      render and expect(rendered).to have_link('Export to csv',
+                                    href: hq_orphans_path(format: :csv, filters: {}, sort_column: {}, sort_direction: {}))
+    end
   end
 
   context 'no orphans exist' do
