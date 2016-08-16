@@ -31,4 +31,9 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
       expect(rendered).to have_link('New Sponsor', new_hq_sponsor_path)
     end
   end
+
+  it "should have link for export sponsors list as csv" do
+    render and expect(rendered).to have_link('Export to csv',
+                                             href: hq_sponsors_path(format: :csv, filters: {}, sort_column: {}, sort_direction: {}))
+  end
 end
