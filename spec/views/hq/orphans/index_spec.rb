@@ -76,12 +76,20 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
       render
     end
 
-    it "should show link for export orphans list as csv" do
+    it "should show link for export orphans list as csv with default values" do
       assign(:filters, {})
-      assign(:sort_by, {})
-      assign(:sort_direction, {})
+      assign(:current_sort_column, "orphans.name")
+      assign(:current_sort_direction, "asc")
       render and expect(rendered).to have_link('Export to csv',
-                                    href: hq_orphans_path(format: :csv, filters: {}, sort_column: {}, sort_direction: {}))
+                                    href: hq_orphans_path(format: :csv, sort_column: "orphans.name", sort_direction: "asc"))
+    end
+
+    it "should add filters and params to the export to csv link" do
+      assign(:filters, {"created_at_from"=>"", "created_at_until"=>"", "date_of_birth_from"=>"", "date_of_birth_until"=>"", "family_name_option"=>"contains", "family_name_value"=>"", "father_given_name_option"=>"contains", "father_given_name_value"=>"", "father_is_martyr"=>"", "gender"=>"Female", "goes_to_school"=>"", "health_status"=>"", "mother_alive"=>"true", "name_option"=>"contains", "name_value"=>"", "original_address_city"=>"", "orphan_list_partner_name"=>"", "priority"=>"", "province_code"=>"", "sponsorship_status"=>"", "status"=>"", "updated_at_from"=>"", "updated_at_until"=>""})
+      assign(:current_sort_column, "orphans.name")
+      assign(:current_sort_direction, "desc")
+      render and expect(rendered).to have_link('Export to csv',
+                                    href: hq_orphans_path(format: :csv, filters: {"created_at_from"=>"", "created_at_until"=>"", "date_of_birth_from"=>"", "date_of_birth_until"=>"", "family_name_option"=>"contains", "family_name_value"=>"", "father_given_name_option"=>"contains", "father_given_name_value"=>"", "father_is_martyr"=>"", "gender"=>"Female", "goes_to_school"=>"", "health_status"=>"", "mother_alive"=>"true", "name_option"=>"contains", "name_value"=>"", "original_address_city"=>"", "orphan_list_partner_name"=>"", "priority"=>"", "province_code"=>"", "sponsorship_status"=>"", "status"=>"", "updated_at_from"=>"", "updated_at_until"=>""}, sort_column: "orphans.name", sort_direction: "desc"))
     end
   end
 
