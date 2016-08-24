@@ -8,3 +8,6 @@
     out of #{total_requested_sponsorships} requested.
 
 =render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors, filters: @filters, sort_by: @sort_by, sortable_by_column: @sortable_by_column}
+
+%div.pagination_information
+  Displaying #{@sponsors.count.to_s} of #{@sponsors_count.to_s} Sponsors.
