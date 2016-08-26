@@ -39,7 +39,7 @@
                   hq_orphans_path(scope: :eligible_for_sponsorship),
                   class: 'btn btn-default', role: 'button' %>
   <%- end %>
-  <%= link_to 'Export to csv', hq_orphans_path(format: :csv), class: 'btn btn-default', role: 'button' %>
+  <%= link_to 'Export to csv', hq_orphans_path(format: :csv, filters: @filters, sort_column: @current_sort_column, sort_direction: @current_sort_direction), class: 'btn btn-default', role: 'button' %>
 </div>
 
 <div class="row">
