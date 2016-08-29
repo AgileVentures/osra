@@ -40,6 +40,9 @@
                   class: 'btn btn-default', role: 'button' %>
   <%- end %>
   <%= link_to 'Export to csv', hq_orphans_path(format: :csv), class: 'btn btn-default', role: 'button' %>
+    <div class="pagination_information">
+        Displaying <%=@orphans.count.to_s%> of <%=@orphans_count.to_s%> Orphans.
+    </div>
 </div>
 
 <div class="row">
@@ -204,9 +207,6 @@
           <%- end %>
         </tbody>
       </table>
-      <div class="pagination_information">
-        Displaying <%=@orphans.count.to_s%> of <%=@orphans_count.to_s%> Orphans.
-      </div>
       <div class="pagination">
         <%= will_paginate @orphans, will_paginate_render_options %>
       </div>
