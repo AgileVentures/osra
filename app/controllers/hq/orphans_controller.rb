@@ -9,17 +9,17 @@ class Hq::OrphansController < HqController
     @current_sort_direction = valid_sort_direction
 
     @filters = filters_params
-    @orphans = Orphan
+    @orphans_before_paginate = Orphan
       .filter(@filters)
       .includes(valid_sort_columns_included_resource)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
 
     respond_to do |format|
       format.html
-      format.csv { send_data Orphan.to_csv(Orphan.all), filename: "orphans-#{Date.today}.csv" }
+      format.csv { send_data Orphan.to_csv(@orphans_before_paginate), filename: "orphans-#{Date.today}.csv" }
     end
   end
 

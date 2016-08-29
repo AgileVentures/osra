@@ -40,6 +40,22 @@ RSpec.describe Hq::OrphansController, type: :controller do
       expect(response).to render_template 'index'
     end
 
+    specify "Filter-CSV" do
+      filter = build :orphan_filter
+      expect(Orphan).to receive(:filter).and_return(orphan_double)
+      allow(orphan_double).to receive_message_chain(:includes,:order,:paginate).and_return(orphans)
+      expect(Orphan).to receive(:to_csv).and_return(orphan_double)
+      expect(@controller).to receive(:send_data) {
+        @controller.render nothing: true
+      }
+
+      get :index, format: :csv, filters: filter
+
+      filter.each_key do |k|
+        expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
+      end
+    end
+
     specify "Clear Filters" do
       get :index, {page: 1, commit: "Clear Filters"}
 

@@ -9,16 +9,16 @@ class Hq::SponsorsController < HqController
     @sort_by = sort_by_params
     @sortable_by_column = true
 
-    @sponsors = Sponsor
+    @sponsors_before_paginate = Sponsor
       .filter(@filters)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @sponsors = @sponsors_before_paginate.paginate(:page => params[:page])
 
     load_scope
 
     respond_to do |format|
       format.html
-      format.csv { send_data Sponsor.to_csv(Sponsor.all), filename: "sponsors-#{Date.today}.csv" }
+      format.csv { send_data Sponsor.to_csv(@sponsors_before_paginate), filename: "sponsors-#{Date.today}.csv" }
     end
   end
 
