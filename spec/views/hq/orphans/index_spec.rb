@@ -28,6 +28,12 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
       expect(rendered).to match /success/
     end
 
+    it 'should show total number of orphans' do
+      assign(:orphans_count, orphans_count)
+      render
+      expect(rendered).to have_content('Displaying ' + orphans.count.to_s + ' of ' + orphans_count.to_s + ' Orphans.')
+    end
+
     context 'sponsors exists' do
       before :each do
         assign(:sponsor, sponsor)

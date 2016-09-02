@@ -14,6 +14,8 @@ class Hq::SponsorsController < HqController
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
     @sponsors = @sponsors_before_paginate.paginate(:page => params[:page])
 
+    load_scope
+
     respond_to do |format|
       format.html
       format.csv { send_data Sponsor.to_csv(@sponsors_before_paginate), filename: "sponsors-#{Date.today}.csv" }
@@ -121,6 +123,10 @@ private
 
   def valid_sort_column
     %w[osra_num name start_date request_fulfilled country].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
+  end
+
+  def load_scope
+    @sponsors_count = Sponsor.count
   end
 
 end

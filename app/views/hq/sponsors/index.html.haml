@@ -6,5 +6,7 @@
   %p
     Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
     out of #{total_requested_sponsorships} requested.
+  %p
+    Displaying #{@sponsors.count.to_s} of #{@sponsors_count.to_s} Sponsors.
 
 =render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors, filters: @filters, sort_by: @sort_by, sortable_by_column: @sortable_by_column}
