@@ -11,6 +11,7 @@ class Hq::OrphansController < HqController
     @filters = filters_params
     @orphans = Orphan
       .filter(@filters)
+      .includes(:active_sponsor)
       .includes(valid_sort_columns_included_resource)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
       .paginate(:page => params[:page])
@@ -48,7 +49,7 @@ private
   end
 
   def load_orphan
-    @orphan = Orphan.find(params[:id])
+    @orphan = Orphan.includes([:active_sponsorship, :active_sponsor]).find(params[:id])
   end
 
   def load_associations

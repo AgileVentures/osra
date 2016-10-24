@@ -139,6 +139,8 @@
                   sort_column_is_active: (@current_sort_column == :sponsorship_status)
               }) %>
             </th>
+            <th>
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -183,6 +185,13 @@
               </td>
               <td>
                 <%= orphan.sponsorship_status.humanize %>
+              </td>
+              <td>
+                <% if orphan.active_sponsor %>
+                  <%= link_to orphan.active_sponsor.name, hq_sponsor_path(orphan.active_sponsor) %>
+                <% else %>
+                  --
+                <% end %>
               </td>
               <td>
                 <%- if @sponsor and @eligible_for_sponsorship %>

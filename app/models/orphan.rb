@@ -83,6 +83,8 @@ class Orphan < ActiveRecord::Base
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
   has_many :sponsorships
   has_many :sponsors, through: :sponsorships
+  has_one :active_sponsorship, -> { where active: true }, class_name: "Sponsorship"
+  has_one :active_sponsor, through: :active_sponsorship, class_name: "Sponsor", source: :sponsor
 
   belongs_to :orphan_list
   has_one :partner, through: :orphan_list, autosave: false
