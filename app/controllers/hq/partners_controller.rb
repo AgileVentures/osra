@@ -5,6 +5,7 @@ class Hq::PartnersController < HqController
     @current_sort_direction = valid_sort_direction
 
     @partners = Partner
+      .includes(:status, :province)
       .includes(valid_sort_columns_included_resource)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
       .paginate(:page => params[:page])

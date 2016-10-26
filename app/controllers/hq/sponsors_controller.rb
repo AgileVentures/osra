@@ -10,6 +10,7 @@ class Hq::SponsorsController < HqController
     @sortable_by_column = true
 
     @sponsors_before_paginate = Sponsor
+      .includes(:status, :sponsor_type)
       .filter(@filters)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
     @sponsors = @sponsors_before_paginate.paginate(:page => params[:page])
