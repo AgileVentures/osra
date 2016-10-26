@@ -9,16 +9,22 @@ class Hq::OrphansController < HqController
     @current_sort_direction = valid_sort_direction
 
     @filters = filters_params
-    @orphans_before_paginate = Orphan
-      .joins("LEFT OUTER JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true")
-      .joins("LEFT OUTER JOIN sponsors ON sponsorships.sponsor_id = sponsors.id")
-      .joins("LEFT OUTER JOIN addresses ON addresses.orphan_original_address_id = orphans.id")
-      .joins("LEFT OUTER JOIN provinces ON addresses.province_id = provinces.id")
-      .joins("LEFT OUTER JOIN orphan_lists ON orphan_lists.id = orphans.orphan_list_id")
-      .joins("LEFT OUTER JOIN partners ON orphan_lists.partner_id = partners.id")
-      .select("orphans.*, sponsors.id AS sponsor_id, sponsors.name AS sponsor_name, sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name, partners.name AS partner_name")
-      .filter(@filters)
-      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+    selects = <<-EOF
+      orphans.*, sponsors.id AS sponsor_id, sponsors.name AS sponsor_name,
+      sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name,
+      partners.name AS partner_name
+    EOF
+
+    @orphans_before_paginate = Orphan.
+      joins("LEFT OUTER JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true").
+      joins("LEFT OUTER JOIN sponsors ON sponsorships.sponsor_id = sponsors.id").
+      joins("LEFT OUTER JOIN addresses ON addresses.orphan_original_address_id = orphans.id").
+      joins("LEFT OUTER JOIN provinces ON addresses.province_id = provinces.id").
+      joins("LEFT OUTER JOIN orphan_lists ON orphan_lists.id = orphans.orphan_list_id").
+      joins("LEFT OUTER JOIN partners ON orphan_lists.partner_id = partners.id").
+      select(selects).
+      filter(@filters).
+      order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
     @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
