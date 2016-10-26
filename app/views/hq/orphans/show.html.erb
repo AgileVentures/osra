@@ -81,14 +81,14 @@
     </h3>
   </div>
   <div class="panel-body">
-    <% if @sponsor %>
+    <% if @orphan.current_sponsor %>
       <dl class="dl-horizontal">
         <dt>Name</dt>
-        <dd><%= link_to @sponsor.name, hq_sponsor_path(@sponsor) %></dd>
+        <dd><%= link_to @orphan.current_sponsor.name, hq_sponsor_path(@orphan.current_sponsor) %></dd>
       </dl>
       <dl class="dl-horizontal">
         <dt>OSRA Num</dt>
-        <dd><%= @sponsor.osra_num %></dd>
+        <dd><%= @orphan.current_sponsor.osra_num %></dd>
       </dl>
       <dl class="dl-horizontal">
         <dt>Sponsoring since</dt>
