@@ -92,12 +92,11 @@ class Orphan < ActiveRecord::Base
 
   delegate :province_code, to: :partner, prefix: true
   delegate :province_name, to: :original_address
-  delegate :name, to: :partner, prefix: true
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
-  default_scope { includes(:partner, original_address: :province) }
+  default_scope { includes(original_address: :province) }
 
   scope :currently_unsponsored,
     -> { where(sponsorship_status: [ Orphan.sponsorship_statuses[:unsponsored],

@@ -91,19 +91,17 @@
               }) %>
             </th>
             <th>
-              <%= sortable_link("provinces.name", {
+              <%= sortable_link("province_name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Provinces Name",
-                  sort_columns_included_resource: :original_address,
-                  sort_column_is_active: (@current_sort_column == :"provinces.name")
+                  table_header: "Province Name",
+                  sort_column_is_active: (@current_sort_column == :province_name)
               }) %>
             </th>
             <th>
-              <%= sortable_link("partners.name", {
+              <%= sortable_link("partner_name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Partners Name",
-                  sort_columns_included_resource: :orphan_list,
-                  sort_column_is_active: (@current_sort_column == :"partners.name")
+                  table_header: "Partner Name",
+                  sort_column_is_active: (@current_sort_column == :partner_name)
               }) %>
             </th>
             <th>
@@ -145,10 +143,10 @@
               }) %>
             </th>
             <th>
-              <%= sortable_link("current_sponsor", {
+              <%= sortable_link("sponsor_name", {
                   sort_direction: @current_sort_direction,
                   table_header: "Current Sponsor",
-                  sort_column_is_active: (@current_sort_column == :current_sponsor)
+                  sort_column_is_active: (@current_sort_column == :sponsor_name)
               }) %>
             </th>
             <th>
@@ -178,7 +176,7 @@
                 <%= orphan.original_address.province.name %>
               </td>
               <td>
-                <%= orphan.orphan_list.partner.name %>
+                <%= orphan.partner_name %>
               </td>
               <td>
                 <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
@@ -199,8 +197,8 @@
                 <%= orphan.sponsorship_status.humanize %>
               </td>
               <td>
-                <% if orphan.current_sponsor %>
-                  <%= link_to orphan.current_sponsor.name, hq_sponsor_path(orphan.current_sponsor) %>
+                <% if orphan.sponsor_id %>
+                  <%= link_to orphan.sponsor_name, hq_sponsor_path(orphan.sponsor_id) %>
                 <% else %>
                   --
                 <% end %>
