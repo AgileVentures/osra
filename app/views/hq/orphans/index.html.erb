@@ -145,10 +145,10 @@
               }) %>
             </th>
             <th>
-              <%= sortable_link("current_sponsor", {
+              <%= sortable_link("sponsors.name", {
                   sort_direction: @current_sort_direction,
                   table_header: "Current Sponsor",
-                  sort_column_is_active: (@current_sort_column == :current_sponsor)
+                  sort_column_is_active: (@current_sort_column == :"sponsors.name")
               }) %>
             </th>
             <th>

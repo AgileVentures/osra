@@ -10,10 +10,13 @@ class Hq::OrphansController < HqController
 
     @filters = filters_params
     @orphans_before_paginate = Orphan
-      .filter(@filters)
+      .joins("LEFT JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true")
+      .joins("LEFT JOIN sponsors ON sponsorships.sponsor_id = sponsors.id")
       .includes(:current_sponsor)
+      .filter(@filters)
       .includes(valid_sort_columns_included_resource)
-      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+      .order("#{@current_sort_column.to_s} #{@current_sort_direction.to_s}")
+
     @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
@@ -117,7 +120,7 @@ private
     %w[
       osra_num orphans.name father_given_name date_of_birth gender
       provinces.name partners.name father_is_martyr father_deceased
-      mother_alive priority status sponsorship_status
+      mother_alive priority status sponsorship_status sponsors.name
     ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :"orphans.name"
   end
 
