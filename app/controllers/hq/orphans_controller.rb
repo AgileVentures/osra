@@ -3,24 +3,30 @@ class Hq::OrphansController < HqController
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    redirect_to(hq_orphans_path) if params["commit"]=="Clear Filters"
+    redirect_to(hq_orphans_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
 
     @filters = filters_params
-    @orphans = Orphan
+    @orphans_before_paginate = Orphan
       .filter(@filters)
       .includes(:active_sponsor)
       .includes(valid_sort_columns_included_resource)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Orphan.to_csv(@orphans_before_paginate), filename: "orphans-#{Date.today}.csv" }
+    end
   end
 
   def show
     load_orphan
+    @sponsor = @orphan.current_sponsor
   end
 
   def edit

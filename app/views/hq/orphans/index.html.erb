@@ -39,6 +39,10 @@
                   hq_orphans_path(scope: :eligible_for_sponsorship),
                   class: 'btn btn-default', role: 'button' %>
   <%- end %>
+  <%= link_to 'Export to csv', hq_orphans_path(format: :csv, filters: @filters, sort_column: @current_sort_column, sort_direction: @current_sort_direction), class: 'btn btn-default', role: 'button' %>
+    <div class="pagination_information">
+        Displaying <%=@orphans.count.to_s%> of <%=@orphans_count.to_s%> Orphans.
+    </div>
 </div>
 
 <div class="row">
@@ -63,13 +67,14 @@
             <th>
               <%= sortable_link("orphans.name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Name",
+                  table_header: "Full Name",
                   sort_column_is_active: (@current_sort_column == :"orphans.name")
               }) %>
             </th>
             <th>
               <%= sortable_link("father_given_name", {
                   sort_direction: @current_sort_direction,
+                  table_header: "Father Name",
                   sort_column_is_active: (@current_sort_column == :father_given_name)
               }) %>
             </th>
@@ -151,10 +156,10 @@
                 <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= link_to orphan.name, hq_orphan_path(orphan) %>
+                <%= link_to orphan.full_name, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= orphan.father_given_name %>
+                <%= orphan.father_name %>
               </td>
               <td>
                 <%= orphan.date_of_birth %>

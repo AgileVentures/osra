@@ -1,6 +1,6 @@
 class Hq::SponsorsController < HqController
   def index
-    redirect_to(hq_sponsors_path) if params["commit"]=="Clear Filters"
+    redirect_to(hq_sponsors_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
@@ -9,10 +9,17 @@ class Hq::SponsorsController < HqController
     @sort_by = sort_by_params
     @sortable_by_column = true
 
-    @sponsors = Sponsor
+    @sponsors_before_paginate = Sponsor
       .filter(@filters)
       .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @sponsors = @sponsors_before_paginate.paginate(:page => params[:page])
+
+    load_scope
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Sponsor.to_csv(@sponsors_before_paginate), filename: "sponsors-#{Date.today}.csv" }
+    end
   end
 
   def show
@@ -116,6 +123,10 @@ private
 
   def valid_sort_column
     %w[osra_num name start_date request_fulfilled country].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
+  end
+
+  def load_scope
+    @sponsors_count = Sponsor.count
   end
 
 end

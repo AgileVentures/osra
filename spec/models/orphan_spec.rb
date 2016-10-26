@@ -432,6 +432,15 @@ describe Orphan, type: :model do
             end
           end
         end
+
+        describe '#to_csv' do
+          let!(:orphan) {build(:orphan, name: 'John', gender: 'Male', father_given_name: 'Mark', family_name: 'Doe')}
+          it 'generate csv content for givens orphans' do
+            allow(orphan).to receive(:partner_name).and_return('partner name')
+            output = "Osra Num,Full Name,Father Name,Date Of Birth,Gender,Province Name,Partner Name,Father Is Martyr,Father Deceased,Mother Alive,Priority,Status,Sponsorship Status\n,John Mark Doe,Mark Doe,#{orphan.date_of_birth},Male,#{orphan.province_name},partner name,#{orphan.father_is_martyr},#{orphan.father_deceased},#{orphan.mother_alive},#{orphan.priority},#{orphan.status},#{orphan.sponsorship_status}\n"
+            expect(Orphan.to_csv([orphan])).to eq(output)
+          end
+        end
       end
 
       describe 'scopes' do

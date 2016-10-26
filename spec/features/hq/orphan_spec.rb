@@ -4,20 +4,18 @@ RSpec.feature 'Orphan', :type => :feature do
 
   background do
     i_sign_in_as_admin
-    an_orphan_exists 1, "Orphan 1", "Father 1", "2012-01-01", "Male", "Normal"
-    an_orphan_exists 2, "Orphan 2", "Father 2", "2011-01-01", "Female", "High"
+    an_orphan_exists 1, "Orphan 1", "Father 1", "family 1", "2012-01-01", "Male", "Normal"
+    an_orphan_exists 2, "Orphan 2", "Father 2", "family 2", "2011-01-01", "Female", "High"
   end
 
   scenario 'There should be a list of orphans on the admin index page' do
     visit hq_orphans_path
-    and_i_should_see "Orphan 1"
-    and_i_should_see_within "Orphan 1", "Father 1"
+    and_i_should_see "Orphan 1 Father 1 family 1"
+    and_i_should_see_within "Orphan 1", "Father 1 family 1"
     and_i_should_see_within "Orphan 1", "2012-01-01"
-    and_i_should_see "Orphan 2"
-    and_i_should_see_within "Orphan 2", "Father 2"
+    and_i_should_see "Orphan 2 Father 2 family 2"
+    and_i_should_see_within "Orphan 2", "Father 2 family 2"
     and_i_should_see_within "Orphan 2", "2011-01-01"
-    and_i_should_see "Orphan 1 Father 1"
-    and_i_should_see "Orphan 2 Father 2"
     and_i_should_see_within "Orphan 1", "2012-01-01"
     and_i_should_see_within "Orphan 2", "High"
     and_i_should_see_within "Orphan 1", "Male"
@@ -101,6 +99,11 @@ RSpec.feature 'Orphan', :type => :feature do
     and_i_click_link "Cancel"
     and_i_should_be_on "hq_orphan_page", { orphan_id: 1 }
   end
+  
+  scenario 'export Orphans to csv' do
+    visit hq_orphans_path
+    and_i_should_see "Export to csv"
+  end
 
   def when_i_click( link, orphan_name )
     orphan = Orphan.find_by_name orphan_name
@@ -108,8 +111,8 @@ RSpec.feature 'Orphan', :type => :feature do
     within(tr_id) { click_link link }
   end
 
-  def an_orphan_exists( id, orphan_name, father_given_name,  birth_date, gender, priority )
-    create :orphan, id: id, name: orphan_name, father_given_name: father_given_name, date_of_birth: birth_date, gender: gender, priority: priority
+  def an_orphan_exists( id, orphan_name, father_given_name, family_name, birth_date, gender, priority )
+    create :orphan, id: id, name: orphan_name, father_given_name: father_given_name, family_name: family_name, date_of_birth: birth_date, gender: gender, priority: priority
   end
 
   def and_i_should_see_within( panel, orphan_name )

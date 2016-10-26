@@ -51,6 +51,9 @@ class Sponsor < ActiveRecord::Base
   has_many :orphans, through: :sponsorships
   belongs_to :agent, :class_name => 'User', :foreign_key => 'agent_id'
 
+  delegate :name, to: :status, prefix: true
+  delegate :name, to: :sponsor_type, prefix: true
+
   acts_as_sequenced scope: [:organization_id, :branch_id]
 
   def affiliate
@@ -68,6 +71,17 @@ class Sponsor < ActiveRecord::Base
 
   def self.all_cities
     pluck(:city).uniq
+  end
+
+  def self.to_csv(records = [])
+    attributes = %w(osra_num name status start_date request_fulfilled sponsor_type country)
+    CSV.generate(headers: true) do |csv|
+      csv << attributes.map(&:titleize)
+      records.each do |sponsor|
+        row = [sponsor.osra_num, sponsor.name, sponsor.status.name, sponsor.start_date, sponsor.send(:request_fulfilled_description), sponsor.sponsor_type.name, en_ar_country(sponsor.country) ]
+        csv << row
+      end
+    end
   end
 
   scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
@@ -140,5 +154,15 @@ private
       self.city = new_city_name
     end
   end
+
+  def request_fulfilled_description
+    if request_fulfilled
+      res = 'Yes'
+    else
+      res = 'No'
+    end
+    "#{res} (#{active_sponsorship_count}/#{requested_orphan_count})"
+  end
+
 
 end
