@@ -73,33 +73,6 @@
     </dl>
   </div>
 </div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      Current Sponsor Details
-    </h3>
-  </div>
-  <div class="panel-body">
-    <% if @orphan.current_sponsor %>
-      <dl class="dl-horizontal">
-        <dt>Name</dt>
-        <dd><%= link_to @orphan.current_sponsor.name, hq_sponsor_path(@orphan.current_sponsor) %></dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>OSRA Num</dt>
-        <dd><%= @orphan.current_sponsor.osra_num %></dd>
-      </dl>
-      <dl class="dl-horizontal">
-        <dt>Sponsoring since</dt>
-        <dd><%= @orphan.current_sponsorship.start_date %></dd>
-      </dl>
-    </div>
-  <% else %>
-    <p>Not currently sponsored</p>
-  <% end %>
-</div>
-
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">

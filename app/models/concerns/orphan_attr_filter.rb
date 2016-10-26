@@ -13,7 +13,7 @@ module OrphanAttrFilter
         .where_with_conditions(["orphans.name ~* ?", "#{filters[:name_value]}$"], conditions: [filters[:name_value], filters[:name_option]=="ends_with"])
         .where_with_conditions(["date_of_birth > ?", filters[:date_of_birth_from]], conditions: [filters[:date_of_birth_from]])
         .where_with_conditions(["date_of_birth < ?", filters[:date_of_birth_until]], conditions: [filters[:date_of_birth_until]])
-        .where_with_conditions(["gender ILIKE ?", filters[:gender]], conditions: [filters[:gender]])
+        .where_with_conditions(["orphans.gender ILIKE ?", filters[:gender]], conditions: [filters[:gender]])
         .where_with_conditions(["province_code = ?", filters[:province_code]], conditions: [filters[:province_code]])
         .where_with_conditions(["addresses.city ILIKE ?", filters[:original_address_city]], conditions: [filters[:original_address_city]])
         .where_with_conditions(["priority ILIKE ?", filters[:priority]], conditions: [filters[:priority]])
