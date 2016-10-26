@@ -84,8 +84,8 @@ class Orphan < ActiveRecord::Base
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
   has_many :sponsorships
   has_many :sponsors, through: :sponsorships
-  has_one :active_sponsorship, -> { where active: true }, class_name: "Sponsorship"
-  has_one :active_sponsor, through: :active_sponsorship, class_name: "Sponsor", source: :sponsor
+  has_one :current_sponsorship, -> { where active: true }, class_name: "Sponsorship"
+  has_one :current_sponsor, through: :current_sponsorship, class_name: "Sponsor", source: :sponsor
 
   belongs_to :orphan_list
   has_one :partner, through: :orphan_list, autosave: false
@@ -120,21 +120,18 @@ class Orphan < ActiveRecord::Base
     Orphan.active.currently_unsponsored.include? self
   end
 
-  def current_sponsorship
-    sponsorships.all_active.first if sponsored?
-  end
-
-  def current_sponsor
-    current_sponsorship.sponsor if sponsored?
-  end
-
   def self.to_csv(records = [])
-    attributes = %w(osra_num full_name father_name date_of_birth gender province_name partner_name 
-      father_is_martyr father_deceased mother_alive priority status sponsorship_status)
+    attributes = %w(osra_num full_name father_name date_of_birth gender
+                    province_name partner_name father_is_martyr father_deceased
+                    mother_alive priority status sponsorship_status)
     CSV.generate(headers: true) do |csv|
-      csv << attributes.map(&:titleize)
+      headers = attributes.map(&:titleize)
+      headers << "Current Sponsor"
+      csv << headers
       records.each do |orphan|
-        csv << attributes.map { |attr| orphan.public_send(attr) }
+        row = attributes.map { |attr| orphan.public_send(attr) }
+        row << (orphan.current_sponsor ? orphan.current_sponsor.name : "--")
+        csv << row
       end
     end
   end

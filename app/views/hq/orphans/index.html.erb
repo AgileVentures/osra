@@ -145,6 +145,13 @@
               }) %>
             </th>
             <th>
+              <%= sortable_link("current_sponsor", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Current Sponsor",
+                  sort_column_is_active: (@current_sort_column == :current_sponsor)
+              }) %>
+            </th>
+            <th>
             </th>
             <th></th>
           </tr>
@@ -192,8 +199,8 @@
                 <%= orphan.sponsorship_status.humanize %>
               </td>
               <td>
-                <% if orphan.active_sponsor %>
-                  <%= link_to orphan.active_sponsor.name, hq_sponsor_path(orphan.active_sponsor) %>
+                <% if orphan.current_sponsor %>
+                  <%= link_to orphan.current_sponsor.name, hq_sponsor_path(orphan.current_sponsor) %>
                 <% else %>
                   --
                 <% end %>
