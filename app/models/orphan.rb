@@ -26,6 +26,12 @@ class Orphan < ActiveRecord::Base
 
   NEW_SPONSORSHIP_SORT_SQL = "#{SPONSORSHIP_STATUS_ORDERING}, priority ASC"
 
+  JOINS_SELECTS = <<-EOF
+    orphans.*, sponsors.id AS sponsor_id, sponsors.name AS sponsor_name,
+    sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name,
+    partners.name AS partner_name
+  EOF
+
   include Initializer
   include DateHelpers
   include OrphanAttrFilter
@@ -104,6 +110,17 @@ class Orphan < ActiveRecord::Base
   scope :high_priority, -> { where(priority: 'High') }
   scope :sort_by_eligibility, -> { active.currently_unsponsored.
                                    order(NEW_SPONSORSHIP_SORT_SQL) }
+
+  scope :with_filter_fields,
+    -> {
+      joins("LEFT OUTER JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true").
+      joins("LEFT OUTER JOIN sponsors ON sponsorships.sponsor_id = sponsors.id").
+      joins("LEFT OUTER JOIN addresses ON addresses.orphan_original_address_id = orphans.id").
+      joins("LEFT OUTER JOIN provinces ON addresses.province_id = provinces.id").
+      joins("LEFT OUTER JOIN orphan_lists ON orphan_lists.id = orphans.orphan_list_id").
+      joins("LEFT OUTER JOIN partners ON orphan_lists.partner_id = partners.id").
+      select(JOINS_SELECTS)
+  }
 
   acts_as_sequenced scope: :province_code
 
