@@ -12,13 +12,12 @@ RSpec.describe Hq::OrphansController, type: :controller do
   end
 
   describe '#index' do
-    let(:joins_double) { double("joins") }
     let(:query_double) { double("query") }
 
     before(:each) do
-      allow(Orphan).to receive(:joins).and_return joins_double
-      allow(joins_double).to receive(:joins).and_return joins_double
-      allow(joins_double).
+      allow(Orphan).to receive(:joins).and_return query_double
+      allow(query_double).to receive(:joins).and_return query_double
+      allow(query_double).
         to receive_message_chain(:select, :filter, :order, :paginate).
         and_return orphans
     end

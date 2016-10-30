@@ -53,6 +53,20 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     given_sponsor_sponsors_orphan sponsor, orphan
     visit hq_sponsor_path sponsor.id
     i_should_see_one_active_sponsorship orphan
+    click_button 'End Sponsorship'
+    and_i_should_be_on "hq_sponsor_page", {sponsor_name: sponsor.name}
+    and_i_should_see "Sponsorship Ended"
+    i_should_see_one_inactive_sponsorship orphan
+    visit hq_orphan_path orphan.id
+    i_should_see_previously_sponsored
+  end
+
+  scenario 'Delete sponsorship' do
+    sponsor = Sponsor.first
+    orphan = Orphan.first
+    given_sponsor_sponsors_orphan sponsor, orphan
+    visit hq_sponsor_path sponsor.id
+    i_should_see_one_active_sponsorship orphan
     click_link 'X'
     and_i_should_be_on "hq_sponsor_page", {sponsor_name: sponsor.name}
     and_i_should_see "Sponsorship record was successfully destroyed"
