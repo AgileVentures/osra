@@ -2,13 +2,13 @@ source 'https://rubygems.org'
 
 ruby '2.2.0'
 
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 4.2.7'
 
 gem 'pg', '~> 0.18.1' # Ruby interface to PostgreSQL
 gem 'sass-rails', '~> 5.0.0' # use SASS instead of CSS
 gem 'bootstrap-sass', '~> 3.3.3' # sass powered version of bootstrap
 gem 'bootstrap-datepicker-rails', '~> 1.3.1' # bootstrap datepicker
-gem 'autoprefixer-rails', '~> 5.1.5' # auto add vendor prefixes to CSS rules
+gem 'autoprefixer-rails', '~> 6.5.1' # auto add vendor prefixes to CSS rules
 gem 'coffee-rails', '~> 4.1.0' # use Coffeescript
 gem 'uglifier', '>= 2.6.0' # compressor for JavaScript assets
 gem 'activeadmin', github: 'activeadmin' # data administration framework
@@ -38,7 +38,7 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.2.0' # RSpec test framework for Rails
+  gem 'rspec-rails', '~> 3.5' # RSpec test framework for Rails
   gem 'faker', '~> 1.4.3' # easily generate fake data
   gem 'factory_girl_rails', '~> 4.5.0' # use factories to produce objects
   gem 'awesome_print', '~> 1.6.1' # Well Formatted output in console
