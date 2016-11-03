@@ -132,7 +132,7 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
 
   def given_sponsor_sponsors_orphan(sponsor, orphan)
     sponsorship = sponsor.sponsorships.build(orphan_id: orphan.id,
-                                             start_date: Date.today)
+                                             start_date: Date.yesterday)
     @sponsorship_creator = CreateSponsorship.new(sponsorship)
     status = @sponsorship_creator.call
     expect(sponsor.active_sponsorship_count).to eq(1)

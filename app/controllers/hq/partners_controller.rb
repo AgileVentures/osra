@@ -4,10 +4,10 @@ class Hq::PartnersController < HqController
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
 
-    @partners = Partner
-      .includes(valid_sort_columns_included_resource)
-      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @partners = Partner.
+      includes(:status, :province).
+      order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s).
+      paginate(:page => params[:page])
   end
 
   def new
@@ -78,10 +78,5 @@ private
       osra_num name start_date provinces.name
     ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :name
   end
-
-  def valid_sort_columns_included_resource
-    %w[province].include?(params[:sort_columns_included_resource]) ? params[:sort_columns_included_resource].to_sym : nil
-  end
-
 end
 

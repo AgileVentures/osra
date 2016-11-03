@@ -28,8 +28,6 @@ class Sponsorship < ActiveRecord::Base
   scope :all_active, -> { where(active: true) }
   scope :all_inactive, -> { where(active: false) }
 
-  default_scope { includes(:sponsor, :orphan) }
-
 private
 
   def start_date_no_later_than_1st_of_next_month

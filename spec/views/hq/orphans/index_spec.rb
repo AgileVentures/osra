@@ -9,7 +9,18 @@ RSpec.describe "hq/orphans/index.html.erb", type: :view do
     let(:orphans_sort_by_eligibility_count) { Orphan.sort_by_eligibility.count }
     let(:eligible_for_sponsorship ) { true }
     let(:orphans) do
-      items = build_stubbed_list :orphan, 5
+      items = attributes_for_list :orphan, 5
+      extra_attrs = {
+        partner_name: "Partner",
+        province_name: "Province",
+        sponsor_id: 1,
+        sponsor_name: "Sponsor",
+        sponsor_osra_num: 1,
+        status: "Active",
+        sponsorship_status: "Unsponsored",
+      }
+      items.map! { |item| item.merge(extra_attrs) }
+      items.map! { |item| OpenStruct.new(item) }
       items.paginate(:page => 2, :per_page => 2)
     end
 

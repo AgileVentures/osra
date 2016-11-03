@@ -61,7 +61,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
     end
 
     specify 'column_sort' do
-      expect(Partner).to receive(:includes).with(:province).and_return(partner_double)
+      expect(Partner).to receive(:includes).with(:status, :province).and_return(partner_double)
       expect(partner_double).to receive(:order).with("name desc").and_return(partner_double)
       allow(partner_double).to receive(:paginate).and_return(partner_instance_double)
 
