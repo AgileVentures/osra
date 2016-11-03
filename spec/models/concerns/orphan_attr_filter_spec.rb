@@ -22,7 +22,7 @@ RSpec.describe OrphanAttrFilter do
         filter_params[:status] = Orphan.statuses[filter_params[:status]]
         filter_params[:sponsorship_status] = Orphan.sponsorship_statuses[filter_params[:sponsorship_status]]
 
-        expect(Orphan.filter filter_params).to eq [orphan]
+        expect(Orphan.with_filter_fields.filter filter_params).to eq [orphan]
       end
 
       specify "with NO params" do
@@ -178,7 +178,7 @@ RSpec.describe OrphanAttrFilter do
           unique_orphan = create :orphan
           @filter_params[:original_address_city] = unique_orphan.original_address.city
 
-          expect(Orphan.filter @filter_params).to eq [unique_orphan]
+          expect(Orphan.with_filter_fields.filter @filter_params).to eq [unique_orphan]
         end
 
         specify "priority" do

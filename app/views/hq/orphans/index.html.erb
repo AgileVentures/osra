@@ -39,6 +39,10 @@
                   hq_orphans_path(scope: :eligible_for_sponsorship),
                   class: 'btn btn-default', role: 'button' %>
   <%- end %>
+  <%= link_to 'Export to csv', hq_orphans_path(format: :csv, filters: @filters, sort_column: @current_sort_column, sort_direction: @current_sort_direction), class: 'btn btn-default', role: 'button' %>
+    <div class="pagination_information">
+        Displaying <%=@orphans.count.to_s%> of <%=@orphans_count.to_s%> Orphans.
+    </div>
 </div>
 
 <div class="row">
@@ -63,13 +67,14 @@
             <th>
               <%= sortable_link("orphans.name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Name",
+                  table_header: "Full Name",
                   sort_column_is_active: (@current_sort_column == :"orphans.name")
               }) %>
             </th>
             <th>
               <%= sortable_link("father_given_name", {
                   sort_direction: @current_sort_direction,
+                  table_header: "Father Name",
                   sort_column_is_active: (@current_sort_column == :father_given_name)
               }) %>
             </th>
@@ -86,19 +91,17 @@
               }) %>
             </th>
             <th>
-              <%= sortable_link("provinces.name", {
+              <%= sortable_link("province_name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Provinces Name",
-                  sort_columns_included_resource: :original_address,
-                  sort_column_is_active: (@current_sort_column == :"provinces.name")
+                  table_header: "Province Name",
+                  sort_column_is_active: (@current_sort_column == :province_name)
               }) %>
             </th>
             <th>
-              <%= sortable_link("partners.name", {
+              <%= sortable_link("partner_name", {
                   sort_direction: @current_sort_direction,
-                  table_header: "Partners Name",
-                  sort_columns_included_resource: :orphan_list,
-                  sort_column_is_active: (@current_sort_column == :"partners.name")
+                  table_header: "Partner Name",
+                  sort_column_is_active: (@current_sort_column == :partner_name)
               }) %>
             </th>
             <th>
@@ -139,6 +142,15 @@
                   sort_column_is_active: (@current_sort_column == :sponsorship_status)
               }) %>
             </th>
+            <th>
+              <%= sortable_link("sponsor_name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Current Sponsor",
+                  sort_column_is_active: (@current_sort_column == :sponsor_name)
+              }) %>
+            </th>
+            <th>
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -149,10 +161,10 @@
                 <%= link_to orphan.osra_num, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= link_to orphan.name, hq_orphan_path(orphan) %>
+                <%= link_to orphan.full_name, hq_orphan_path(orphan) %>
               </td>
               <td>
-                <%= orphan.father_given_name %>
+                <%= orphan.father_name %>
               </td>
               <td>
                 <%= orphan.date_of_birth %>
@@ -161,10 +173,10 @@
                 <%= orphan.gender %>
               </td>
               <td>
-                <%= orphan.original_address.province.name %>
+                <%= orphan.province_name %>
               </td>
               <td>
-                <%= orphan.orphan_list.partner.name %>
+                <%= orphan.partner_name %>
               </td>
               <td>
                 <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
@@ -183,6 +195,13 @@
               </td>
               <td>
                 <%= orphan.sponsorship_status.humanize %>
+              </td>
+              <td>
+                <% if orphan.sponsor_id %>
+                  <%= link_to orphan.sponsor_name, hq_sponsor_path(orphan.sponsor_id) %>
+                <% else %>
+                  --
+                <% end %>
               </td>
               <td>
                 <%- if @sponsor and @eligible_for_sponsorship %>

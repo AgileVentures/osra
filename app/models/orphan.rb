@@ -1,3 +1,4 @@
+require 'csv'
 class Orphan < ActiveRecord::Base
 
   enum status: [
@@ -24,6 +25,12 @@ class Orphan < ActiveRecord::Base
   }
 
   NEW_SPONSORSHIP_SORT_SQL = "#{SPONSORSHIP_STATUS_ORDERING}, priority ASC"
+
+  JOINS_SELECTS = <<-EOF
+    orphans.*, sponsors.id AS sponsor_id, sponsors.name AS sponsor_name,
+    sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name,
+    partners.name AS partner_name
+  EOF
 
   include Initializer
   include DateHelpers
@@ -83,16 +90,19 @@ class Orphan < ActiveRecord::Base
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
   has_many :sponsorships
   has_many :sponsors, through: :sponsorships
+  has_one :current_sponsorship, -> { where active: true }, class_name: "Sponsorship"
+  has_one :current_sponsor, through: :current_sponsorship, class_name: "Sponsor", source: :sponsor
 
   belongs_to :orphan_list
   has_one :partner, through: :orphan_list, autosave: false
 
   delegate :province_code, to: :partner, prefix: true
+  delegate :province_name, to: :original_address
 
   accepts_nested_attributes_for :current_address, allow_destroy: true
   accepts_nested_attributes_for :original_address, allow_destroy: true
 
-  default_scope { includes(:partner, original_address: :province) }
+  default_scope { includes(original_address: :province) }
 
   scope :currently_unsponsored,
     -> { where(sponsorship_status: [ Orphan.sponsorship_statuses[:unsponsored],
@@ -100,6 +110,17 @@ class Orphan < ActiveRecord::Base
   scope :high_priority, -> { where(priority: 'High') }
   scope :sort_by_eligibility, -> { active.currently_unsponsored.
                                    order(NEW_SPONSORSHIP_SORT_SQL) }
+
+  scope :with_filter_fields,
+    -> {
+      joins("LEFT OUTER JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true").
+      joins("LEFT OUTER JOIN sponsors ON sponsorships.sponsor_id = sponsors.id").
+      joins("LEFT OUTER JOIN addresses ON addresses.orphan_original_address_id = orphans.id").
+      joins("LEFT OUTER JOIN provinces ON addresses.province_id = provinces.id").
+      joins("LEFT OUTER JOIN orphan_lists ON orphan_lists.id = orphans.orphan_list_id").
+      joins("LEFT OUTER JOIN partners ON orphan_lists.partner_id = partners.id").
+      select(JOINS_SELECTS)
+  }
 
   acts_as_sequenced scope: :province_code
 
@@ -115,12 +136,20 @@ class Orphan < ActiveRecord::Base
     Orphan.active.currently_unsponsored.include? self
   end
 
-  def current_sponsorship
-    sponsorships.all_active.first if sponsored?
-  end
-
-  def current_sponsor
-    current_sponsorship.sponsor if sponsored?
+  def self.to_csv(records = [])
+    attributes = %w(osra_num full_name father_name date_of_birth gender
+                    province_name partner_name father_is_martyr father_deceased
+                    mother_alive priority status sponsorship_status)
+    CSV.generate(headers: true) do |csv|
+      headers = attributes.map(&:titleize)
+      headers << "Current Sponsor"
+      csv << headers
+      records.each do |orphan|
+        row = attributes.map { |attr| orphan.public_send(attr) }
+        row << (orphan.current_sponsor ? orphan.current_sponsor.name : "--")
+        csv << row
+      end
+    end
   end
 
 private

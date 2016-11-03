@@ -39,6 +39,23 @@ RSpec.describe Hq::SponsorsController, type: :controller do
       expect(response).to render_template 'index'
     end
 
+    specify "Filter-CSV" do
+      filter = build :sponsor_filter
+      expect(Sponsor).to receive(:filter).and_return(sponsor_double)
+      allow(sponsor_double).to receive_message_chain(:order,:paginate).and_return(sponsors)
+      expect(Sponsor).to receive(:to_csv).and_return(sponsor_double)
+      expect(@controller).to receive(:send_data) {
+        @controller.render nothing: true
+      }
+
+      get :index, format: :csv, filters: filter
+
+      filter.each_key do |k|
+        expect(assigns(:filters)[k].to_s).to eq filter[k].to_s
+      end
+    end
+
+
     specify 'column_sort' do
       allow(Sponsor).to receive(:filter).and_return(sponsor_double)
       expect(sponsor_double).to receive(:order).with("name desc").and_return(sponsor_double)

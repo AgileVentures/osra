@@ -3,23 +3,27 @@ class Hq::OrphansController < HqController
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    redirect_to(hq_orphans_path) if params["commit"]=="Clear Filters"
+    redirect_to(hq_orphans_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
 
     @filters = filters_params
-    @orphans = Orphan
-      .filter(@filters)
-      .includes(valid_sort_columns_included_resource)
-      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
-      .paginate(:page => params[:page])
+    @orphans_before_paginate = Orphan.with_filter_fields.filter(@filters).
+      order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+    @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Orphan.to_csv(@orphans_before_paginate), filename: "orphans-#{Date.today}.csv" }
+    end
   end
 
   def show
     load_orphan
+    @sponsor = @orphan.current_sponsor
   end
 
   def edit
@@ -48,7 +52,7 @@ private
   end
 
   def load_orphan
-    @orphan = Orphan.find(params[:id])
+    @orphan = Orphan.includes([:current_sponsorship, :current_sponsor]).find(params[:id])
   end
 
   def load_associations
@@ -109,8 +113,8 @@ private
   def valid_sort_column
     %w[
       osra_num orphans.name father_given_name date_of_birth gender
-      provinces.name partners.name father_is_martyr father_deceased
-      mother_alive priority status sponsorship_status
+      province_name partner_name father_is_martyr father_deceased
+      mother_alive priority status sponsorship_status sponsor_name
     ].include?(params[:sort_column]) ? params[:sort_column].to_sym : :"orphans.name"
   end
 
