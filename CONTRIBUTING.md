@@ -155,3 +155,12 @@ into any problems during this process, please reach out to the OSRA team on
 Slack or, if you don't have access to that yet, by creating a GitHub issue.
 
 We look forward to having you on our team!
+
+
+#### staging
+
+The test server is at http://osra-new-staging.herokuapp.com/
+
+#### production
+
+The production server is at http://osra.herokuapp.com/
