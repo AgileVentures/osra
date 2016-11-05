@@ -28,7 +28,6 @@ gem 'will_paginate-bootstrap', '~> 1.0.1' # bootstrap integration with will_pagi
 
 group :test do
   gem 'capybara', '~> 2.4.4' # interact with pages in tests
-  gem 'cucumber-rails', '~> 1.4.2', require: false # BDD framework
   gem 'capybara-webkit', '~> 1.4.1' # headless webkit driver for capybara
   gem 'poltergeist', '~> 1.6' # headless driver for capybara by phantomjs
   gem 'headless', '~> 1.0.2' # gem that allows capybara-webkit to run without calling xvfb directly
