@@ -1,5 +1,4 @@
-module Admin::CountryHelper
-
+module CountryHelper
   def en_ar_country(country)
     en_country = ISO3166::Country[country]
     ar_country = I18n.with_locale :ar do
