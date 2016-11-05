@@ -28,10 +28,6 @@ gem 'will_paginate-bootstrap', '~> 1.0.1' # bootstrap integration with will_pagi
 
 group :test do
   gem 'capybara', '~> 2.4.4' # interact with pages in tests
-  # gem 'capybara-webkit', '~> 1.4.1' # headless webkit driver for capybara
-  # gem 'poltergeist', '~> 1.6' # headless driver for capybara by phantomjs
-  # gem 'headless', '~> 1.0.2' # gem that allows capybara-webkit to run without calling xvfb directly
-  # gem 'database_cleaner', '~> 1.4' # clean db in tests
   gem 'shoulda-matchers', '~> 2.8', require: false # one-line tests for common Rails validations
 end
 
