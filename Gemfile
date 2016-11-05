@@ -11,7 +11,6 @@ gem 'bootstrap-datepicker-rails', '~> 1.3.1' # bootstrap datepicker
 gem 'autoprefixer-rails', '~> 6.5.1' # auto add vendor prefixes to CSS rules
 gem 'coffee-rails', '~> 4.1.0' # use Coffeescript
 gem 'uglifier', '>= 2.6.0' # compressor for JavaScript assets
-gem 'activeadmin', github: 'activeadmin' # data administration framework
 gem 'sequenced', '>= 2.0.0' # sequential IDs in Models
 gem 'devise', '~> 3.4.1' # authentication solution
 gem 'jquery-rails', '~> 4.0.3' # use jquery with Rails
