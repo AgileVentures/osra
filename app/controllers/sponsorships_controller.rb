@@ -1,4 +1,4 @@
-class Hq::SponsorshipsController < HqController
+class SponsorshipsController < ApplicationController
 
   def create
     sponsor = Sponsor.find(params[:sponsor_id])
@@ -18,7 +18,7 @@ class Hq::SponsorshipsController < HqController
 
     @sponsorship_inactivator = InactivateSponsorship.new(sponsorship: sponsorship,
                                                          end_date: params[:sponsorship][:end_date])
-    inactivate_sponsorship and redirect_to hq_sponsor_path(sponsor)
+    inactivate_sponsorship and redirect_to sponsor_path(sponsor)
   end
 
   def destroy
@@ -27,7 +27,7 @@ class Hq::SponsorshipsController < HqController
 
     @sponsorship_destructor = DestroySponsorship.new(sponsorship)
 
-    destroy_sponsorship and redirect_to hq_sponsor_path(sponsor)
+    destroy_sponsorship and redirect_to sponsor_path(sponsor)
   end
 
   private
@@ -36,17 +36,17 @@ class Hq::SponsorshipsController < HqController
     if @sponsorship_creator.call
       if sponsor.request_fulfilled
         flash[:success] = 'Sponsorship link was successfully created.'
-        redirect_to hq_sponsor_path(sponsor)
+        redirect_to sponsor_path(sponsor)
       else
         flash[:success] = "Sponsorship link was successfully created for #{orphan.full_name}"
-        redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end
 
   def redirect_back_to_new_sponsorship_for(sponsor)
     flash[:error] = @sponsorship_creator.error_msg
-    redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+    redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
   end
 
   def inactivate_sponsorship

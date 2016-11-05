@@ -1,4 +1,4 @@
-class Hq::AdminUsersController < HqController
+class AdminUsersController < ApplicationController
   def index
     @admin_users = AdminUser.paginate(page: params[:page])
   end
@@ -12,7 +12,7 @@ class Hq::AdminUsersController < HqController
     @admin_user.attributes = admin_user_params
     if @admin_user.save
       flash[:success] = 'Admin User successfully created'
-      redirect_to hq_admin_users_url
+      redirect_to admin_users_url
     else
       render 'new'
     end
@@ -40,7 +40,7 @@ class Hq::AdminUsersController < HqController
       # Hence if admin user changes his own pwd he will be logged out, so log him back in again automatically
       sign_in(@admin_user, :bypass => true) if @admin_user == current_hq_admin_user
       flash[:success] = 'Admin User successfully saved'
-      redirect_to hq_admin_users_url
+      redirect_to admin_users_url
     else
       render 'edit'
     end
@@ -49,7 +49,7 @@ class Hq::AdminUsersController < HqController
   def destroy
     AdminUser.find(params[:id]).destroy
     flash[:success] = 'Admin User successfully deleted'
-    redirect_to hq_admin_users_path
+    redirect_to admin_users_path
   end
 
 private

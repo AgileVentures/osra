@@ -1,4 +1,4 @@
-class Hq::OrphanListsController < HqController
+class OrphanListsController < ApplicationController
 
   def index
     @partner = Partner.find(params[:partner_id])

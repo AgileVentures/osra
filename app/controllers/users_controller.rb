@@ -1,4 +1,4 @@
-class Hq::UsersController < HqController
+class UsersController < ApplicationController
   def index
     @users = User.paginate(page: params[:page])
   end
@@ -15,7 +15,7 @@ class Hq::UsersController < HqController
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = 'User successfully saved'
-      redirect_to hq_user_url(@user)
+      redirect_to user_url(@user)
     else
       render 'edit'
     end
@@ -30,7 +30,7 @@ class Hq::UsersController < HqController
     @user.attributes = user_params
     if @user.save
       flash[:success] = 'User successfully created'
-      redirect_to hq_user_url(@user)
+      redirect_to user_url(@user)
     else
       render 'new'
     end

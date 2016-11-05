@@ -1,4 +1,4 @@
-class Hq::PartnersController < HqController
+class PartnersController < ApplicationController
 
   def index
     @current_sort_column = valid_sort_column
@@ -54,7 +54,7 @@ private
   def save_partner
     if @partner.save
       flash[:success] = 'Partner successfuly saved'
-      redirect_to hq_partner_url(@partner)
+      redirect_to partner_url(@partner)
     end
   end
 

@@ -1,11 +1,11 @@
-class Hq::PendingOrphanListsController < HqController
+class PendingOrphanListsController < ApplicationController
 
   def upload
     get_partner
 
     unless @partner.active?
       flash[:error] = 'Partner is not Active. Orphan List cannot be uploaded.'
-      redirect_to hq_partner_path(@partner)
+      redirect_to partner_path(@partner)
       return
     end
   end
@@ -15,13 +15,13 @@ class Hq::PendingOrphanListsController < HqController
 
     unless @partner.active?
       flash[:alert] = 'Partner is not Active. Orphan List cannot be uploaded.'
-      redirect_to hq_partner_path(@partner)
+      redirect_to partner_path(@partner)
       return
     end
 
     if params['pending_orphan_list'].nil?  # no spreadsheet has been specified
       flash[:error] = 'Please specify the spreadsheet to be uploaded'
-      redirect_to upload_hq_partner_pending_orphan_lists_path(@partner)
+      redirect_to upload_partner_pending_orphan_lists_path(@partner)
       return
     end
 
@@ -60,13 +60,13 @@ class Hq::PendingOrphanListsController < HqController
     flash[:notice] = "Orphan List (#{orphan_list.osra_num}) was successfully imported.
                       Registered #{orphan_list.orphan_count}
                       new #{'orphan'.pluralize orphan_list.orphan_count}."
-    redirect_to hq_partner_path(@partner)
+    redirect_to partner_path(@partner)
   end
 
   def destroy
     pending_orphan_list = PendingOrphanList.find(params[:id])
     pending_orphan_list.destroy!
-    redirect_to hq_partner_path(params[:partner_id]), alert: 'Orphan List was not imported.'
+    redirect_to partner_path(params[:partner_id]), alert: 'Orphan List was not imported.'
   end
 
 private

@@ -1,9 +1,9 @@
-class Hq::OrphansController < HqController
+class OrphansController < ApplicationController
 
   ADDRESS_DETAILS = [:id, :city, :province_id, :street, :neighborhood, :details]
 
   def index
-    redirect_to(hq_orphans_path) and return if params["commit"]=="Clear Filters"
+    redirect_to(orphans_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
@@ -66,7 +66,7 @@ private
   def save_orphan
     if @orphan.save
       flash[:success] = 'Orphan successfuly saved'
-      redirect_to hq_orphan_url(@orphan)
+      redirect_to orphan_url(@orphan)
     end
   end
 

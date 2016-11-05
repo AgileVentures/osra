@@ -1,6 +1,6 @@
-class Hq::SponsorsController < HqController
+class SponsorsController < ApplicationController
   def index
-    redirect_to(hq_sponsors_path) and return if params["commit"]=="Clear Filters"
+    redirect_to(sponsors_path) and return if params["commit"]=="Clear Filters"
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
@@ -83,9 +83,9 @@ private
 
   def redirect_to_new_or_saved_sponsor
     if params[:commit] == 'Create and Add Another'
-      redirect_to new_hq_sponsor_path
+      redirect_to new_sponsor_path
     else
-      redirect_to hq_sponsor_path(@sponsor)
+      redirect_to sponsor_path(@sponsor)
     end
   end
 
