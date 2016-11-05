@@ -2,8 +2,10 @@ Osra::Application.routes.draw do
 
   root to: "dashboard#index"
 
-  devise_for :admin_users, path_names: { sign_in: 'login', sign_out: 'logout' },
-                           :controllers => { :sessions => "devise/sessions" }
+  devise_for :admin_users,
+    path: '',
+    path_names: { sign_in: 'login', sign_out: 'logout' },
+    controllers: { :sessions => "devise/sessions" }
 
   resources :dashboard, only: [:index]
   resources :partners, except: [:destroy] do
