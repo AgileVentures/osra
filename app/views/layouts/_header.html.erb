@@ -5,7 +5,7 @@
 
   <div class="logout-nav">
     <% if hq_admin_user_signed_in? %>
-      <div><%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %></div>
+      <div><%= link_to "log out", :destroy_hq_admin_user_session, method: :delete %></div>
       <div><%= current_hq_admin_user.email %></div>
     <% end %>
   </div>
