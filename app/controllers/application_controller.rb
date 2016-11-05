@@ -13,5 +13,5 @@ class ApplicationController < ActionController::Base
     { text: 'Users', href: 'users_path', path_regex: /^\/users/, glyph: 'glyphicon-user' }
   ]
 
-  before_action :authenticate_hq_admin_user!
+  before_action :authenticate_admin_user!
 end

@@ -1,0 +1,74 @@
+<%=render partial: "layouts/content_title.erb", locals: {title: "Partners"} %>
+
+<div class="main-content-header">
+  <%= link_to('New Partner', new_partner_path,
+              class: 'btn btn-default', role: 'button') %>
+</div>
+
+<%- if @partners.empty? %>
+  <div class="panel-body">
+    <em>No Partners found</em>
+  </div>
+<%- else %>
+  <div class='table-responsive'>
+    <table class='table table-hover'>
+      <thead>
+        <tr>
+          <th>
+            <%= sortable_link("osra_num", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :osra_num)
+            }) %>
+          </th>
+          <th>
+            <%= sortable_link("name", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :name)
+            }) %>
+          </th>
+          <th>
+            Status
+          </th>
+          <th>
+            <%= sortable_link("start_date", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :start_date)
+            }) %>
+          </th>
+          <th>
+            <%= sortable_link("provinces.name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Province",
+                  sort_columns_included_resource: :province,
+                  sort_column_is_active: (@current_sort_column == :"provinces.name")
+            }) %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- @partners.each do |partner| %>
+          <tr>
+            <td>
+              <%= link_to partner.osra_num, partner_path(partner) %>
+            </td>
+            <td>
+              <%= link_to partner.name, partner_path(partner) %>
+            </td>
+            <td>
+              <%= partner.status.name %>
+            </td>
+            <td>
+              <%= format_full_date partner.start_date %>
+            </td>
+            <td>
+              <%= partner.province.name %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @partners, will_paginate_render_options %>
+  </div>
+<%- end %>

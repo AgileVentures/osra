@@ -1,0 +1,47 @@
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = pluralize(sponsorships.count.to_s, 'Currently Sponsored Orphan')
+- if sponsorships.count > 0
+  .active_sponsors_index
+    .table-responsive
+      %table.table.table-hover#currently_sponsored_orphans
+        %thead
+          %tr
+            %th
+              Orphan full name
+            %th
+              Orphan date of birth
+            %th
+              Orphan gender
+            %th
+              Sponsorship Began
+            %th
+
+            %th
+
+        %tbody
+          - sponsorships.each do |sponsorship|
+            %tr
+              %td
+                = link_to sponsorship.orphan.full_name, orphan_path(sponsorship.orphan)
+              %td
+                = sponsorship.orphan.date_of_birth
+              %td
+                = sponsorship.orphan.gender
+              %td
+                = sponsorship.start_date
+              %td
+                =form_for(sponsorship,
+                    :url => {controller: :sponsorships, action: :inactivate, id: sponsorship.id},
+                    html: {method: :put, class: "form-inline"}) do |f|
+                  =f.submit "End Sponsorship", class: "btn btn-default"
+                  .form-group
+                    =f.label :end_date, "on"
+                    =f.text_field :end_date, value: Date.current, class: "form-control"
+              %td
+                =link_to "X",
+                    sponsorship_path(sponsorship),
+                    method: :delete,
+                    data: { confirm: 'WARNING: You are about to permanently delete the record of this sponsorship!'},
+                    class: "btn btn-xs btn-danger"

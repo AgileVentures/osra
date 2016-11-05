@@ -1,0 +1,39 @@
+<%= form_for @partner, :builder => OsraFormBuilder,
+             html: {class: "records_form", role: "form"} do |f| %>
+  <%= render 'shared/errors', object: f.object %>
+  <fieldset>
+    <div class="form-group">
+      <%= f.label_for_field :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :region %>
+      <%= f.text_field :region, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :contact_details %>
+      <%= f.text_field :contact_details, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :province_id %>
+      <%= f.collection_select :province_id,
+       @provinces, :id, :name , {},  class: "form-control", disabled: !f.object.new_record? %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :status_id %>
+      <%= f.collection_select :status_id,
+        @statuses, :id, :name, {}, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :start_date %>
+      <%= f.text_field :start_date, class: "form-control date-picker" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit class: 'btn btn-primary' %>
+      <%= link_to('Cancel',
+                  (@partner.id ? partner_path(@partner.id) : partners_path),
+                  class: 'btn btn-default btn-cancel', role: 'button') %>
+    </div>
+  </fieldset>
+<% end %>
+
