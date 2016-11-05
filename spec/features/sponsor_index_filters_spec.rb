@@ -25,7 +25,7 @@ end
 
 def when_i_fill_in_sponsor_filter_form
   sponsor_filter = FactoryGirl.build(:sponsor_filter, sponsor: Sponsor.first)
-  visit hq_sponsors_path
+  visit sponsors_path
 
   within "#filters" do
     find("select[name='filters[name_option]']").find("option[value='#{sponsor_filter[:name_option]}']").select_option

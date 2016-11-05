@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::PendingOrphanListsController, type: :controller do
+RSpec.describe PendingOrphanListsController, type: :controller do
   let(:partner) { build_stubbed :partner }
   let(:pending_orphan_list) { instance_double PendingOrphanList, id: 1, spreadsheet: 'sheet', destroy: true, destroy!: true }
   let(:orphan_importer) { double }
@@ -27,7 +27,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
         expect(partner).to receive(:active?).and_return false
         get :upload, partner_id: partner.id
 
-        expect(response).to redirect_to hq_partner_path(partner)
+        expect(response).to redirect_to partner_path(partner)
       end
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
         expect(partner).to receive(:active?).and_return false
         post :validate, partner_id: partner.id
 
-        expect(response).to redirect_to hq_partner_path(partner.id)
+        expect(response).to redirect_to partner_path(partner.id)
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
       end
 
       it 'redirects back to the current page' do
-        expect(response).to redirect_to upload_hq_partner_pending_orphan_lists_path(partner.id)
+        expect(response).to redirect_to upload_partner_pending_orphan_lists_path(partner.id)
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
       end
 
       it 'redirects to partner' do
-        expect(response).to redirect_to hq_partner_path(partner)
+        expect(response).to redirect_to partner_path(partner)
       end
     end
   end
@@ -168,7 +168,7 @@ RSpec.describe Hq::PendingOrphanListsController, type: :controller do
     it 'removes existing pending_orphan_list' do
       delete :destroy, id: pending_orphan_list.id, partner_id: partner.id
 
-      expect(response).to redirect_to hq_partner_path(partner)
+      expect(response).to redirect_to partner_path(partner)
     end
   end
 end

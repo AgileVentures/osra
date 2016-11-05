@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::DashboardController, type: :controller do
+RSpec.describe DashboardController, type: :controller do
 
   describe "GET #index view" do
     before(:each) do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'hq/partners/new.html.erb', type: :view do
+RSpec.describe 'partners/new.html.erb', type: :view do
   before :each do
     assign :partner, Partner.new
     assign :statuses, Status.all

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::UsersController, type: :controller do
+RSpec.describe UsersController, type: :controller do
   let(:users) { build_stubbed_list(:user, 3) }
 
   before :each do
@@ -44,7 +44,7 @@ RSpec.describe Hq::UsersController, type: :controller do
     it 'handles valid updates' do
       allow(@old_user).to receive(:save).and_return(true)
       post :update, id: @old_user.id, user: { email: 'some email address'}
-      expect(response).to redirect_to(hq_user_path(@old_user))
+      expect(response).to redirect_to(user_path(@old_user))
       expect(flash[:success]).to_not be_nil
     end
 
@@ -75,7 +75,7 @@ RSpec.describe Hq::UsersController, type: :controller do
     specify 'successful create shows the new user' do
       expect(@new_user).to receive(:save).and_return(true)
       post :create, user: { user_name: 'some user' }
-      expect(response).to redirect_to hq_user_path(@new_user)
+      expect(response).to redirect_to user_path(@new_user)
       expect(flash[:success]).to_not be_nil
     end
 

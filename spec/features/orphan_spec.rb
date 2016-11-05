@@ -9,7 +9,7 @@ RSpec.feature 'Orphan', :type => :feature do
   end
 
   scenario 'There should be a list of orphans on the admin index page' do
-    visit hq_orphans_path
+    visit orphans_path
     and_i_should_see "Orphan 1 Father 1 family 1"
     and_i_should_see_within "Orphan 1", "Father 1 family 1"
     and_i_should_see_within "Orphan 1", "2012-01-01"
@@ -24,14 +24,14 @@ RSpec.feature 'Orphan', :type => :feature do
 
 
   scenario 'Should not be able to create new orphans directly via the UI' do
-    visit hq_orphans_path
+    visit orphans_path
     expect(page).to_not have_link 'New Orphan'
   end
 
   scenario 'Should be able to visit an orphan from the orphan index page' do
-    visit hq_orphans_path
+    visit orphans_path
     when_i_click "Orphan 1", "Orphan 1"
-    and_i_should_be_on "hq_orphan_page", { orphan_id: 1 }
+    and_i_should_be_on "orphan_page", { orphan_id: 1 }
   end
 
   scenario 'Should be inable to edit $osra_num field' do
@@ -72,7 +72,7 @@ RSpec.feature 'Orphan', :type => :feature do
     'orphan[sponsored_by_another_org]']
 
     and_i_click_button "Update Orphan"
-    and_i_should_be_on "hq_orphan_page", { orphan_id: 1 }
+    and_i_should_be_on "orphan_page", { orphan_id: 1 }
     checks_multiple_fields output
 
   end
@@ -85,7 +85,7 @@ RSpec.feature 'Orphan', :type => :feature do
   scenario 'Orphan cannot be older than 22 years of age' do
     visit_orphan( "Orphan 1" )
     and_i_click_link "Edit Orphan"
-    and_i_should_be_on "edit_hq_orphan_page", { orphan_id: 1 }
+    and_i_should_be_on "edit_orphan_page", { orphan_id: 1 }
     fill_in 'orphan[date_of_birth]', with: '1950-01-01'
     and_i_click_button "Update Orphan"
     and_i_should_see "Date of birth Orphan must be younger than 22 years old to join OSRA."
@@ -94,14 +94,14 @@ RSpec.feature 'Orphan', :type => :feature do
   scenario 'Should return to orphan show page if editing an orphan is cancelled' do
     visit_orphan( "Orphan 1" )
     and_i_click_link "Edit Orphan"
-    and_i_should_be_on "edit_hq_orphan_page", { orphan_id: 1 }
+    and_i_should_be_on "edit_orphan_page", { orphan_id: 1 }
     fill_in 'orphan[name]', with: 'Orphan N'
     and_i_click_link "Cancel"
-    and_i_should_be_on "hq_orphan_page", { orphan_id: 1 }
+    and_i_should_be_on "orphan_page", { orphan_id: 1 }
   end
   
   scenario 'export Orphans to csv' do
-    visit hq_orphans_path
+    visit orphans_path
     and_i_should_see "Export to csv"
   end
 
@@ -122,7 +122,7 @@ RSpec.feature 'Orphan', :type => :feature do
 
   def visit_orphan( orphan_name )
     orphan = Orphan.find_by name: orphan_name
-    visit hq_orphan_path orphan.id
+    visit orphan_path orphan.id
   end
 
   def fill_in_multiple_fields( fields, inputs )

@@ -17,21 +17,21 @@ RSpec.feature 'Partner', :type => :feature do
   end
 
   scenario  'There should be a list of partners on the admin index page' do
-    visit hq_partners_path
+    visit partners_path
     and_i_should_see 'Partner1'
     and_i_should_see 'Partner2'
     and_i_should_see 'Partner3'
   end
 
   scenario 'I should see the generated osra numbers on the admin index page' do
-    visit hq_partners_path
+    visit partners_path
     i_should_see_the_following_codes_for_partners [ { name: 'Partner1', expected_code: '11001' },
                                                     { name: 'Partner2', expected_code: '12001' },
                                                     { name: 'Partner3', expected_code: '13001' }]
   end
 
   scenario 'I should see the required fields on the index page' do
-    visit hq_partners_path
+    visit partners_path
     i_should_see_the_following_fields_on_the_page [ { field: 'osra_num',   value: '11001' },
                                                     { field: 'name',       value: 'Partner1' },
                                                     { field: 'status',     value: 'Active' },
@@ -51,9 +51,9 @@ RSpec.feature 'Partner', :type => :feature do
   end
 
   scenario 'Should be able to visit a partner from the partner index page' do
-    visit hq_partners_path
+    visit partners_path
     click_link 'Partner1'
-    and_i_should_be_on :hq_partner_page, { partner_name: 'Partner1' }
+    and_i_should_be_on :partner_page, { partner_name: 'Partner1' }
 
   end
 
@@ -63,7 +63,7 @@ RSpec.feature 'Partner', :type => :feature do
     select 'Aleppo', :from => 'Province'
     fill_in 'Region', :with => 'Region1'
     click_button 'Create Partner'
-    and_i_should_be_on :hq_partner_page, { partner_name: 'Partner4' }
+    and_i_should_be_on :partner_page, { partner_name: 'Partner4' }
     and_i_should_see 'Partner successfuly saved'
     and_i_should_see 'Partner4'
   end
@@ -71,10 +71,10 @@ RSpec.feature 'Partner', :type => :feature do
   scenario 'Should be able to edit a partner from the partner show page' do
     given_i_am_on_page_for_partner 'Show Partner', 'Partner1'
     click_link 'Edit Partner'
-    and_i_should_be_on :edit_hq_partner_page, { partner_name: 'Partner1' }
+    and_i_should_be_on :edit_partner_page, { partner_name: 'Partner1' }
     fill_in 'Region', :with => 'New Region'
     click_button 'Update Partner'
-    and_i_should_be_on :hq_partner_page, { partner_name: 'Partner1' }
+    and_i_should_be_on :partner_page, { partner_name: 'Partner1' }
     and_i_should_see 'Partner successfuly saved'
     and_i_should_see 'New Region'
   end
@@ -94,7 +94,7 @@ RSpec.feature 'Partner', :type => :feature do
     click_link 'Edit Partner'
     fill_in 'Region', :with => 'New Region'
     click_link 'Cancel'
-    and_i_should_be_on :hq_partner_page, { partner_name: 'Partner1' }
+    and_i_should_be_on :partner_page, { partner_name: 'Partner1' }
     and_i_should_not_see 'New Region'
   end
 
@@ -125,11 +125,11 @@ RSpec.feature 'Partner', :type => :feature do
     name = page_name.downcase
     case name
       when 'edit partner' then
-        edit_hq_partner_path id
+        edit_partner_path id
       when 'show partner' then
-        hq_partner_path id
+        partner_path id
       when 'new partner' then
-        new_hq_partner_path
+        new_partner_path
     end
   end
 

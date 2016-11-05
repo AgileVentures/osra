@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::OrphansController, type: :controller do
+RSpec.describe OrphansController, type: :controller do
   let(:orphans) {build_stubbed_list(:orphan, 2)}
   let(:orphan) {build_stubbed :orphan}
   let(:statuses) { [] }
@@ -59,7 +59,7 @@ RSpec.describe Hq::OrphansController, type: :controller do
     specify "Clear Filters" do
       get :index, {page: 1, commit: "Clear Filters"}
 
-      expect(response).to redirect_to hq_orphans_path
+      expect(response).to redirect_to orphans_path
     end
 
     specify 'column_sort' do
@@ -104,7 +104,7 @@ RSpec.describe Hq::OrphansController, type: :controller do
       expect(orphan).to receive(:save).and_return(true)
       patch :update, id: orphan.id, orphan: { name: 'John' }
 
-      expect(response).to redirect_to(hq_orphan_path(orphan))
+      expect(response).to redirect_to(orphan_path(orphan))
       expect(flash[:success]).to_not be_nil
     end
 

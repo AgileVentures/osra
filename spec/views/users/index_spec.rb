@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe "hq/users/index.html.erb", type: :view do
+describe "users/index.html.erb", type: :view do
 
   context 'User action-items' do
     it 'should have a New User link' do
       assign(:users, User.none.paginate(:page => 1))
       render
 
-      expect(rendered).to have_link('New User', new_hq_user_path)
+      expect(rendered).to have_link('New User', new_user_path)
     end
 
     it 'should have a pagination bar' do
@@ -45,7 +45,7 @@ describe "hq/users/index.html.erb", type: :view do
       it 'shows user names as link' do
         render
 
-        expect(rendered).to have_link(@users.first.user_name, href: hq_user_path(@users.first))
+        expect(rendered).to have_link(@users.first.user_name, href: user_path(@users.first))
       end
     end
   end

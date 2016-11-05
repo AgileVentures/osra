@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::SponsorsController, type: :controller do
+RSpec.describe SponsorsController, type: :controller do
   let(:sponsorships_active) {build_stubbed_list :sponsorship, 3, active: true}
   let(:sponsorships_inactive) {build_stubbed_list :sponsorship, 2, active: false}
   let(:sponsor_with_sponsorships) {build_stubbed :sponsor, sponsorships: (sponsorships_active + sponsorships_inactive)}
@@ -70,7 +70,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
 
     specify "Clear Filters" do
       get :index, {page: 1, commit: "Clear Filters"}
-      expect(response).to redirect_to hq_sponsors_path
+      expect(response).to redirect_to sponsors_path
     end
   end
 
@@ -96,14 +96,14 @@ RSpec.describe Hq::SponsorsController, type: :controller do
   context '#create' do
     specify 'successful' do
       post :create, sponsor: build(:sponsor).attributes
-      expect(response).to redirect_to hq_sponsor_url(assigns :sponsor)
+      expect(response).to redirect_to sponsor_url(assigns :sponsor)
     end
 
     specify 'redirects to new when user clicks Create and Add Another' do
       post :create, sponsor: build(:sponsor).attributes,
         commit: 'Create and Add Another'
 
-      expect(response).to redirect_to new_hq_sponsor_path
+      expect(response).to redirect_to new_sponsor_path
     end
 
     specify 'unsuccessful' do
@@ -125,7 +125,7 @@ RSpec.describe Hq::SponsorsController, type: :controller do
       expect(Sponsor).to receive(:find).and_return(sponsor)
       expect(sponsor).to receive(:save).and_return(true)
       put :update, id: sponsor.id, sponsor: sponsor.attributes
-      expect(response).to redirect_to hq_sponsor_url(sponsor)
+      expect(response).to redirect_to sponsor_url(sponsor)
     end
 
     specify 'unsuccessful' do

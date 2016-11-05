@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/pending_orphan_lists/invalid_list.html.erb", type: :view do
+RSpec.describe "pending_orphan_lists/invalid_list.html.erb", type: :view do
   let(:partner) { build_stubbed :partner }
   let(:result) do
     [ {ref: "location1", error: "error1"},
@@ -9,7 +9,7 @@ RSpec.describe "hq/pending_orphan_lists/invalid_list.html.erb", type: :view do
   end
 
   before :each do
-    render template: "hq/pending_orphan_lists/invalid_list.html.erb",
+    render template: "pending_orphan_lists/invalid_list.html.erb",
             locals: { partner: partner,
                       result: result }
   end
@@ -25,6 +25,6 @@ RSpec.describe "hq/pending_orphan_lists/invalid_list.html.erb", type: :view do
   end
 
   it 'shows cancle button' do
-    expect(rendered).to have_link("Cancel", hq_partner_path(partner))
+    expect(rendered).to have_link("Cancel", partner_path(partner))
   end
 end

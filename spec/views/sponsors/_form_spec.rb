@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
+RSpec.describe "sponsors/_form.html.haml", type: :view do
   let(:user) { build_stubbed :user}
   let(:sponsor_full) do
     build_stubbed :sponsor_full, agent: user,
@@ -9,7 +9,7 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
   let(:sponsor_new) { Sponsor.new }
 
   def render_sponsor_form current_sponsor
-    render partial: 'hq/sponsors/form.html.haml',
+    render partial: 'sponsors/form.html.haml',
                           locals: { sponsor: current_sponsor,
                                     statuses: Status.all,
                                     sponsor_types: SponsorType.all,
@@ -30,13 +30,13 @@ RSpec.describe "hq/sponsors/_form.html.haml", type: :view do
     specify 'using an existing Sponsor record' do
       render_sponsor_form sponsor_full
 
-      expect(rendered).to have_link("Cancel", hq_sponsor_path(sponsor_full))
+      expect(rendered).to have_link("Cancel", sponsor_path(sponsor_full))
     end
 
     specify 'using a new Sponsor record' do
       render_sponsor_form sponsor_new
 
-      expect(rendered).to have_link("Cancel", hq_sponsors_path)
+      expect(rendered).to have_link("Cancel", sponsors_path)
     end
   end
 

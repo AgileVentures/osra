@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::SponsorshipsController, type: :controller do
+RSpec.describe SponsorshipsController, type: :controller do
   let(:sponsorship) {build_stubbed :sponsorship, active: true}
   let(:orphan) { instance_double Orphan }
   let(:sponsor) { instance_double Sponsor }
@@ -37,7 +37,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
         end
 
         it 'redirects to sponsor show view' do
-          expect(response).to redirect_to hq_sponsor_path(sponsor)
+          expect(response).to redirect_to sponsor_path(sponsor)
         end
       end
 
@@ -55,7 +55,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
         end
 
         it 'redirects back to sponsorship view' do
-          expect(response).to redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+          expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
         end
       end
     end
@@ -74,7 +74,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       end
 
       it 'redirects to new sponsorship view' do
-        expect(response).to redirect_to hq_new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
+        expect(response).to redirect_to new_sponsorship_path(sponsor, scope: 'eligible_for_sponsorship')
       end
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       expect(sponsorship_inactivator).to receive(:call).and_return(true)
       put :inactivate, id: sponsorship.id, sponsorship: {end_date: date}
 
-      expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+      expect(response).to redirect_to sponsor_path(sponsorship.sponsor)
       expect(flash[:success]).to_not be_nil
     end
 
@@ -103,7 +103,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       expect(sponsorship_inactivator).to receive(:error_msg).and_return("error mess")
       put :inactivate, id: sponsorship.id, sponsorship: {end_date: date}
 
-      expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+      expect(response).to redirect_to sponsor_path(sponsorship.sponsor)
       expect(flash[:error]).to eq "error mess"
     end
   end
@@ -121,7 +121,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       expect(sponsorship_destructor).to receive(:call).and_return(true)
       delete :destroy, id: sponsorship.id
 
-      expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+      expect(response).to redirect_to sponsor_path(sponsorship.sponsor)
       expect(flash[:success]).to_not be_nil
     end
 
@@ -130,7 +130,7 @@ RSpec.describe Hq::SponsorshipsController, type: :controller do
       expect(sponsorship_destructor).to receive(:error_msg).and_return("error mess")
       delete :destroy, id: sponsorship.id
 
-      expect(response).to redirect_to hq_sponsor_path(sponsorship.sponsor)
+      expect(response).to redirect_to sponsor_path(sponsorship.sponsor)
       expect(flash[:error]).to eq "error mess"
     end
   end

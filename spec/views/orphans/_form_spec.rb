@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/orphans/_form.html.erb", type: :view do
+RSpec.describe "orphans/_form.html.erb", type: :view do
 
   let(:statuses) { Orphan.statuses.keys.map { |k| [k.humanize, k] } }
   let(:sponsorship_statuses) do
@@ -12,7 +12,7 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
   end
 
   def render_orphan_form current_orphan
-        render partial: 'hq/orphans/form.html.erb',
+        render partial: 'orphans/form.html.erb',
                         locals: { orphan: current_orphan,
                                   statuses: statuses,
                                   sponsorship_statuses: sponsorship_statuses,
@@ -29,7 +29,7 @@ RSpec.describe "hq/orphans/_form.html.erb", type: :view do
   specify 'has a "Cancel" button when using an existing Orphan record' do
     render_orphan_form orphan_full
 
-    expect(rendered).to have_link("Cancel", hq_orphan_path(orphan_full))
+    expect(rendered).to have_link("Cancel", orphan_path(orphan_full))
   end
 
   specify 'has form values' do

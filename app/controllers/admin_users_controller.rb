@@ -38,7 +38,7 @@ class AdminUsersController < ApplicationController
       # if the password for a user is changed in this way then Devise automatically logs that user out 
       # (security feature in case the user has hacked in).
       # Hence if admin user changes his own pwd he will be logged out, so log him back in again automatically
-      sign_in(@admin_user, :bypass => true) if @admin_user == current_hq_admin_user
+      sign_in(@admin_user, :bypass => true) if @admin_user == current_admin_user
       flash[:success] = 'Admin User successfully saved'
       redirect_to admin_users_url
     else

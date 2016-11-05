@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::PartnersController, type: :controller do
+RSpec.describe PartnersController, type: :controller do
   before :each do
     sign_in instance_double(AdminUser)
   end
@@ -15,7 +15,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
     specify 'successful create redirects to the show view' do
       expect(partner).to receive(:save).and_return(true)
       post :create, partner: partner.attributes
-      expect(response).to redirect_to hq_partner_path(partner)
+      expect(response).to redirect_to partner_path(partner)
     end
 
     specify 'unsuccessful create renders the new view' do
@@ -45,7 +45,7 @@ RSpec.describe Hq::PartnersController, type: :controller do
     specify 'successful update redirects to the show view' do
       expect(@partner).to receive(:save).and_return(true)
       patch :update, id: @partner.id, partner: @partner.attributes
-      expect(response).to redirect_to(hq_partner_path(@partner))
+      expect(response).to redirect_to(partner_path(@partner))
     end
   end
 

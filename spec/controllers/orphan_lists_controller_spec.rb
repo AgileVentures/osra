@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hq::OrphanListsController, type: :controller do
+RSpec.describe OrphanListsController, type: :controller do
   let(:partner) {build_stubbed :partner}
   let(:orphan_lists) {build_stubbed_list :orphan_list, 3}
 

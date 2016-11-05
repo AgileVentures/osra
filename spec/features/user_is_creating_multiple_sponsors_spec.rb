@@ -20,7 +20,7 @@ RSpec.feature 'User enters new sponsor data', :type => :feature do
   end
 
   def when_i_enter_new_sponsor_info
-    visit new_hq_sponsor_path
+    visit new_sponsor_path
     fill_in 'Name', with: 'C. Montgomery Burns'
     fill_in 'Requested orphan count', with: '1'
     select 'London', from: 'sponsor[branch_id]'

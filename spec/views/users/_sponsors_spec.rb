@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe 'hq/users/_sponsors.html.haml', type: :view do
+RSpec.describe 'users/_sponsors.html.haml', type: :view do
   describe 'sponsors exist' do
     let(:sponsors) do
       [FactoryGirl.build_stubbed(:sponsor), FactoryGirl.build_stubbed(:sponsor)]
     end
 
     it 'should render something besides "No Sponsors found"' do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
 
       expect(rendered).to_not be_empty
       expect(rendered).to_not match /No Sponsors found/
@@ -16,7 +16,7 @@ RSpec.describe 'hq/users/_sponsors.html.haml', type: :view do
 
   describe 'no sponsors exist' do
     before :each do
-      render partial: 'hq/users/sponsors.html.haml', locals: {sponsors: [], filters: {}}
+      render partial: 'users/sponsors.html.haml', locals: {sponsors: [], filters: {}}
     end
 
     it 'should indicate no sponsors were found' do

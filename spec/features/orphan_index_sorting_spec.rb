@@ -8,7 +8,7 @@ RSpec.feature 'User views a sorted orphans list by clicking the table headers', 
   end
 
   scenario 'User can sort the orphans list' do
-    visit hq_orphans_path
+    visit orphans_path
 
     i_should_see_orphans_ordered_as ["Aaron", "Bob", "Carl", "John", "Tom"]
     and_i_click_link "Full Name"

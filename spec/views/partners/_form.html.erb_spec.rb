@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/partners/_form.html.erb", type: :view do
+RSpec.describe "partners/_form.html.erb", type: :view do
   let(:provinces) { Province.all }
   let(:statuses) { Status.all }
   let(:partner) { build_stubbed :partner,
@@ -23,14 +23,14 @@ RSpec.describe "hq/partners/_form.html.erb", type: :view do
       allow(partner).to receive(:id).and_return nil
       render
 
-      expect(rendered).to have_link("Cancel", hq_partners_path)
+      expect(rendered).to have_link("Cancel", partners_path)
     end
 
     specify 'existing partner record' do
       allow(partner).to receive(:id).and_return 42
       render
 
-      expect(rendered).to have_link("Cancel", hq_partners_path(42))
+      expect(rendered).to have_link("Cancel", partners_path(42))
     end
   end
 

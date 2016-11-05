@@ -16,7 +16,7 @@ RSpec.feature 'Sponsor', :type => :feature do
   end
 
   scenario 'I should see the required fields on the index page' do
-    visit hq_sponsors_path
+    visit sponsors_path
     @sponsors.each do |sponsor|
       i_should_see_the_following_fields_on_the_page [
         { field: 'osra_num',          value: sponsor.osra_num },
@@ -31,7 +31,7 @@ RSpec.feature 'Sponsor', :type => :feature do
   end
 
   scenario 'I should see the required fields on the sponsor show page' do
-    visit(get_path(:hq_sponsor_page, @sponsor.id))
+    visit(get_path(:sponsor_page, @sponsor.id))
     i_should_see_the_following_fields_on_the_page [
       { field: 'name',                   value: @sponsor.name },
       { field: 'osra_num',               value: @sponsor.osra_num },
@@ -57,9 +57,9 @@ RSpec.feature 'Sponsor', :type => :feature do
   end
 
   scenario 'Should be able to visit a sponsor from the sponsor index page' do
-    visit hq_sponsors_path
+    visit sponsors_path
     click_link @sponsor.name
-    and_i_should_be_on :hq_sponsor_page, { sponsor_name: @sponsor.name }
+    and_i_should_be_on :sponsor_page, { sponsor_name: @sponsor.name }
   end
 
   scenario 'Should be able to add a sponsor from the sponsor index page' do
@@ -75,45 +75,45 @@ RSpec.feature 'Sponsor', :type => :feature do
     select Sponsor.all_cities.first, :from => 'City'
     select @sponsors.first.agent.user_name, :from => 'sponsor_agent_id'
     click_button 'Create Sponsor'
-    and_i_should_be_on :hq_sponsor_page, { sponsor_name: 'Sponsor1' }
+    and_i_should_be_on :sponsor_page, { sponsor_name: 'Sponsor1' }
     and_i_should_see 'Sponsor successfuly saved'
     and_i_should_see 'Sponsor1'
   end
 
   scenario 'Should be able to edit a sponsor from the sponsor show page' do
-    visit(get_path(:hq_sponsor_page, @sponsor.id))
+    visit(get_path(:sponsor_page, @sponsor.id))
     click_link 'Edit Sponsor'
-    and_i_should_be_on :edit_hq_sponsor_page, { sponsor_name: @sponsor.name }
+    and_i_should_be_on :edit_sponsor_page, { sponsor_name: @sponsor.name }
     fill_in 'Additional info', :with => 'Additional Information'
     click_button 'Update Sponsor'
-    and_i_should_be_on :hq_sponsor_page, { sponsor_name: @sponsor.name }
+    and_i_should_be_on :sponsor_page, { sponsor_name: @sponsor.name }
     and_i_should_see 'Sponsor successfuly saved'
     and_i_should_see 'Additional Information'
   end
 
   scenario "can't edit sponsor_type, organization or branch" do
-    visit(get_path(:edit_hq_sponsor_page, @sponsor.id))
+    visit(get_path(:edit_sponsor_page, @sponsor.id))
     i_should_not_be_able_to_change 'Sponsor type', 'sponsor'
     i_should_not_be_able_to_change 'Organization', 'sponsor'
     i_should_not_be_able_to_change 'Branch', 'sponsor'
   end
 
   scenario "can't delete a sponsor from the sponsor show page" do
-    visit(get_path(:hq_sponsor_page, @sponsor.id))
+    visit(get_path(:sponsor_page, @sponsor.id))
     and_i_should_not_see 'Delete Sponsor'
   end
 
   scenario "returns to sponsor show page on cancelling edit sponsor" do
-    visit(get_path(:hq_sponsor_page, @sponsor.id))
+    visit(get_path(:sponsor_page, @sponsor.id))
     click_link 'Edit Sponsor'
     fill_in 'Additional info', :with => 'Additional Information'
     click_link 'Cancel'
-    and_i_should_be_on :hq_sponsor_page, { sponsor_name: @sponsor.name }
+    and_i_should_be_on :sponsor_page, { sponsor_name: @sponsor.name }
     and_i_should_not_see 'Additional Information'
   end
 
   scenario 'export Sponsors to csv' do
-    visit hq_sponsors_path
+    visit sponsors_path
     and_i_should_see "Export to csv"
   end
 

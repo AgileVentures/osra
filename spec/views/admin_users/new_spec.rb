@@ -1,6 +1,6 @@
 require 'rails_helper' 
 
-describe 'hq/admin_users/new.html.erb', type: :view do
+describe 'admin_users/new.html.erb', type: :view do
 
   before :each do
     assign :admin_user, build_stubbed(:admin_user)
@@ -18,7 +18,7 @@ describe 'hq/admin_users/new.html.erb', type: :view do
 
   it 'has a cancel button going to the index page' do
     render
-    expect(rendered).to have_link('Cancel', href: hq_admin_users_path)
+    expect(rendered).to have_link('Cancel', href: admin_users_path)
   end
 
 end

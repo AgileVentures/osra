@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'will_paginate/array'
 
-RSpec.describe Hq::AdminUsersController, type: :controller do
+RSpec.describe AdminUsersController, type: :controller do
 
 # The include statement below is necessary for the unit tests to work when rspec runs the complete test run
 # Otherwise the inclusion of integration tests which use Devise mucks things up.
@@ -41,7 +41,7 @@ RSpec.describe Hq::AdminUsersController, type: :controller do
     specify 'successful create shows the new user on index page' do
       expect(admin_user).to receive(:save).and_return(true)
       post :create, admin_user: { email: 'some email address' }
-      expect(response).to redirect_to hq_admin_users_path
+      expect(response).to redirect_to admin_users_path
       expect(flash[:success]).to_not be_nil
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Hq::AdminUsersController, type: :controller do
 
   before(:each) do
     allow(AdminUser).to receive(:find).and_return(admin_user)
-    allow(controller).to receive(:current_hq_admin_user).and_return(admin_user)
+    allow(controller).to receive(:current_admin_user).and_return(admin_user)
     @request.env["devise.mapping"] = Devise.mappings[:admin_user]
   end
 
@@ -77,7 +77,7 @@ RSpec.describe Hq::AdminUsersController, type: :controller do
       allow(AdminUser).to receive(:find).and_return(admin_user)
       allow(admin_user).to receive(:save).and_return(true)
       post :update, id: admin_user.id, admin_user: { email: 'some email address'}
-      expect(response).to redirect_to(hq_admin_users_path)
+      expect(response).to redirect_to(admin_users_path)
       expect(flash[:success]).to_not be_nil
     end
 
@@ -90,7 +90,7 @@ RSpec.describe Hq::AdminUsersController, type: :controller do
       expect(admin_user).to receive(:destroy).and_return(true)
       delete :destroy, id: admin_user.id
       expect(flash[:success]).to_not be_nil
-      expect(response).to redirect_to(hq_admin_users_path)
+      expect(response).to redirect_to(admin_users_path)
     end
 
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/orphan_lists/index.html.erb", type: :view do
+RSpec.describe "orphan_lists/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partner) {build_stubbed :partner}
     let(:orphan_lists) {build_stubbed_list :orphan_list, 3}

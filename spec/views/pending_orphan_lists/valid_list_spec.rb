@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/pending_orphan_lists/valid_list.html.erb", type: :view do
+RSpec.describe "pending_orphan_lists/valid_list.html.erb", type: :view do
   let(:partner) { build_stubbed :partner }
   let(:pending_orphan_list) { instance_double PendingOrphanList, spreadsheet: 'sheet', destroy!: true }
   let(:orphan_list) { double }
@@ -9,7 +9,7 @@ RSpec.describe "hq/pending_orphan_lists/valid_list.html.erb", type: :view do
   before :each do
     allow(pending_orphan_list).to receive(:id).and_return(1)
 
-    render template: "hq/pending_orphan_lists/valid_list.html.erb",
+    render template: "pending_orphan_lists/valid_list.html.erb",
             locals: { partner: partner,
                       orphan_list: partner.orphan_lists.build,
                       pending_orphan_list: pending_orphan_list,
@@ -28,6 +28,6 @@ RSpec.describe "hq/pending_orphan_lists/valid_list.html.erb", type: :view do
   it 'shows import form' do
     expect(rendered).to have_selector("input[type='hidden'][value='1']")
     expect(rendered).to have_selector("input[type='submit'][value='Import']")
-    expect(rendered).to have_link("Cancel", hq_partner_path(partner))
+    expect(rendered).to have_link("Cancel", partner_path(partner))
   end
 end

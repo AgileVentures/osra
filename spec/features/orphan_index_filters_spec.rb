@@ -26,7 +26,7 @@ end
 def when_i_fill_in_orphan_filter_form
   orphan_filter = FactoryGirl.build(:orphan_filter, orphan: Orphan.first)
 
-  visit hq_orphans_path
+  visit orphans_path
 
   within "#filters" do
     find("select[name='filters[name_option]']").find("option[value='#{orphan_filter[:name_option]}']").select_option

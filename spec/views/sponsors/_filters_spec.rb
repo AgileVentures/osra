@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
+RSpec.describe "sponsors/filters.html.haml", type: :view do
   let(:sponsors_filters) {build :sponsor_filter, name_option: "equals", active_sponsorship_count_option: "greather_than"}
 
   it 'has a form' do
-    render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
+    render partial: "sponsors/filters.html.haml", locals: {filters: {}}
 
     expect(rendered).to have_selector("form")
   end
@@ -21,7 +21,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
     end
 
     specify "empty" do
-      render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
+      render partial: "sponsors/filters.html.haml", locals: {filters: {}}
 
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
@@ -38,7 +38,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
     end
 
     specify "filled" do
-      render partial: "hq/sponsors/filters.html.haml", locals: {filters: sponsors_filters}
+      render partial: "sponsors/filters.html.haml", locals: {filters: sponsors_filters}
 
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
@@ -62,7 +62,7 @@ RSpec.describe "hq/sponsors/filters.html.haml", type: :view do
   end
 
   it "has submit buttons" do
-    render partial: "hq/sponsors/filters.html.haml", locals: {filters: {}}
+    render partial: "sponsors/filters.html.haml", locals: {filters: {}}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
     expect(rendered).to have_selector("input[type='submit'][value='Clear Filters']")

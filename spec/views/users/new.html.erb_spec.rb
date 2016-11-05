@@ -1,6 +1,6 @@
 require 'rails_helper' 
 
-describe 'hq/users/new.html.erb', type: :view do
+describe 'users/new.html.erb', type: :view do
 
   before :each do
     assign :user, build_stubbed(:user)
@@ -13,7 +13,7 @@ describe 'hq/users/new.html.erb', type: :view do
 
   it 'cancel button goes to index page' do
     render
-    expect(rendered).to have_link('Cancel', href: hq_users_path)
+    expect(rendered).to have_link('Cancel', href: users_path)
   end
 
 end

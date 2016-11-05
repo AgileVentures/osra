@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'will_paginate/array'
 
-RSpec.describe "hq/partners/index.html.erb", type: :view do
+RSpec.describe "partners/index.html.erb", type: :view do
   context 'partners exist' do
     let(:partners) do
       (1..5).each_with_object([]) do |num, arr|
@@ -41,7 +41,7 @@ RSpec.describe "hq/partners/index.html.erb", type: :view do
     specify 'New Partner' do
       assign(:partners, [])
       render
-      expect(rendered).to have_link('New Partner', new_hq_partner_path)
+      expect(rendered).to have_link('New Partner', new_partner_path)
     end
   end
 end

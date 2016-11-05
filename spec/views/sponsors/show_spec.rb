@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "hq/sponsors/show.html.haml", type: :view do
+RSpec.describe "sponsors/show.html.haml", type: :view do
   let(:user) { FactoryGirl.build_stubbed(:user) }
   let(:sponsor) { FactoryGirl.build_stubbed(:sponsor, agent: user) }
 
@@ -17,7 +17,7 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
     end
 
     it 'should have an Edit Sponsor button' do
-      expect(rendered).to have_link('Edit Sponsor', edit_hq_sponsor_path(sponsor.id))
+      expect(rendered).to have_link('Edit Sponsor', edit_sponsor_path(sponsor.id))
     end
 
     it 'should have a Link to Orphan button' do
@@ -25,8 +25,8 @@ RSpec.describe "hq/sponsors/show.html.haml", type: :view do
     end
 
     it 'should delegate to partials' do
-      expect(view).to render_template partial: 'hq/sponsors/sponsorships_active.html.haml', locals: {sponsorships: []}
-      expect(view).to render_template partial: 'hq/sponsors/sponsorships_inactive.html.haml', locals: {sponsorships: []}
+      expect(view).to render_template partial: 'sponsors/sponsorships_active.html.haml', locals: {sponsorships: []}
+      expect(view).to render_template partial: 'sponsors/sponsorships_inactive.html.haml', locals: {sponsorships: []}
     end
   end
 

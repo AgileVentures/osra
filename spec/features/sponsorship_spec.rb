@@ -11,13 +11,13 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
 
   scenario 'Pairing a sponsor with orphans' do
     when_i_visit_show_sponsor "First Sponsor"
-    and_i_should_be_on "hq_new_sponsorship_page", {sponsor_name: "First Sponsor"}
+    and_i_should_be_on "new_sponsorship_page", {sponsor_name: "First Sponsor"}
     and_i_should_see "First Sponsor"
     and_i_should_see "First Orphan"
     and_i_should_see "Second Orphan"
     fill_orphan_with "sponsorship_start_date", "First Orphan", "2014-01-01"
     when_i_click "Sponsor this orphan", "First Orphan"
-    and_i_should_be_on "hq_new_sponsorship_page", {sponsor_name: "First Sponsor"}
+    and_i_should_be_on "new_sponsorship_page", {sponsor_name: "First Sponsor"}
     and_i_should_see "Return to Sponsor Page"
     and_i_should_see "No (1/2)"
     and_i_should_see "Sponsorship link was successfully created for First Orphan"
@@ -26,7 +26,7 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     and_i_should_see "Validation failed"
     fill_orphan_with "sponsorship_start_date", "Second Orphan", "2014-02-01"
     when_i_click "Sponsor this orphan", "Second Orphan"
-    and_i_should_be_on "hq_sponsor_page", {sponsor_name: "First Sponsor"}
+    and_i_should_be_on "sponsor_page", {sponsor_name: "First Sponsor"}
     and_i_should_see_within "Currently Sponsored Orphans", "First Orphan father1 family1"
     and_i_should_see "2014-01-01"
     and_i_should_see_within "Currently Sponsored Orphans", "Second Orphan"
@@ -51,13 +51,13 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     sponsor = Sponsor.first
     orphan = Orphan.first
     given_sponsor_sponsors_orphan sponsor, orphan
-    visit hq_sponsor_path sponsor.id
+    visit sponsor_path sponsor.id
     i_should_see_one_active_sponsorship orphan
     click_button 'End Sponsorship'
-    and_i_should_be_on "hq_sponsor_page", {sponsor_name: sponsor.name}
+    and_i_should_be_on "sponsor_page", {sponsor_name: sponsor.name}
     and_i_should_see "Sponsorship Ended"
     i_should_see_one_inactive_sponsorship orphan
-    visit hq_orphan_path orphan.id
+    visit orphan_path orphan.id
     i_should_see_previously_sponsored
   end
 
@@ -65,22 +65,22 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
     sponsor = Sponsor.first
     orphan = Orphan.first
     given_sponsor_sponsors_orphan sponsor, orphan
-    visit hq_sponsor_path sponsor.id
+    visit sponsor_path sponsor.id
     i_should_see_one_active_sponsorship orphan
     click_link 'X'
-    and_i_should_be_on "hq_sponsor_page", {sponsor_name: sponsor.name}
+    and_i_should_be_on "sponsor_page", {sponsor_name: sponsor.name}
     and_i_should_see "Sponsorship record was successfully destroyed"
     i_should_see_no_sponsorships
-    visit hq_orphan_path orphan.id
+    visit orphan_path orphan.id
     i_should_see_unsponsored
   end
 
   scenario 'Link to Sponsor from Orphan page' do
     given_sponsor_sponsors_orphan @first_sponsor, @first_orphan
-    visit hq_orphan_path @first_orphan.id
+    visit orphan_path @first_orphan.id
     and_i_should_see "First Sponsor"
     and_i_click_link "First Sponsor"
-    and_i_should_be_on "hq_sponsor_page", {sponsor_name: @first_sponsor.name}
+    and_i_should_be_on "sponsor_page", {sponsor_name: @first_sponsor.name}
   end
 
   def a_sponsor_exists(sponsor_name)
@@ -140,7 +140,7 @@ RSpec.feature 'Sponsorship Features', :type => :feature do
 
   def visit_sponsor(sponsor_name)
     sponsor = Sponsor.find_by name: sponsor_name
-    visit hq_sponsor_path sponsor.id
+    visit sponsor_path sponsor.id
   end
 
   def when_i_visit_show_sponsor(sponsor_name)

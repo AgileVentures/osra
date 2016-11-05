@@ -5,12 +5,12 @@ require File.expand_path('../config/application', __FILE__)
 
 Osra::Application.load_tasks
 
-namespace :spec do
-  desc 'run all hq specs'
-  task :hq do
-    sh "rspec --pattern 'spec/\*\*/hq{,/\*/\*\*}/\*_spec.rb,spec/models{,/\*/\*\*}/\*_spec.rb'"
-  end
-end
+begin
+  require 'rspec/core/rake_task'
 
-desc 'run all rspec tests'
-task :default => [:spec]
+  RSpec::Core::RakeTask.new(:spec)
+
+  task :default => :spec
+rescue LoadError
+  # no rspec available
+end

@@ -8,7 +8,7 @@ RSpec.feature 'User views a sorted partners list by clicking the table headers',
   end
 
   scenario 'User can sort the partners list' do
-    visit hq_partners_path
+    visit partners_path
 
     i_should_see_partners_ordered_as ["Aaron", "Bob", "Carl", "John", "Tom"]
     and_i_click_link "Name"

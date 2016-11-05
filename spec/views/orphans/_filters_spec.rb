@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "hq/orphans/filters.html.erb", type: :view do
+RSpec.describe "orphans/filters.html.erb", type: :view do
   let(:orphans_filters) {build :orphan_filter}
 
   it 'has a form' do
-    render partial: "hq/orphans/filters.html.erb", locals: {filters: {}}
+    render partial: "orphans/filters.html.erb", locals: {filters: {}}
 
     expect(rendered).to have_selector("form")
   end
@@ -27,7 +27,7 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
     end
 
     specify "empty" do
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: {}}
+      render partial: "orphans/filters.html.erb", locals: {filters: {}}
 
       #text fields
       [:name_value, :father_given_name_value, :family_name_value,
@@ -48,7 +48,7 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
 
 
     specify "filled" do
-      render partial: "hq/orphans/filters.html.erb", locals: {filters: orphans_filters}
+      render partial: "orphans/filters.html.erb", locals: {filters: orphans_filters}
 
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
@@ -70,7 +70,7 @@ RSpec.describe "hq/orphans/filters.html.erb", type: :view do
   end
 
   it "has submit buttons" do
-    render partial: "hq/orphans/filters.html.erb", locals: {filters: {}}
+    render partial: "orphans/filters.html.erb", locals: {filters: {}}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
     expect(rendered).to have_selector("input[type='submit'][value='Clear Filters']")

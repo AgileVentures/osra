@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'will_paginate/array'
 
-RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
+RSpec.describe 'sponsors/index.html.haml', type: :view do
   before :each do
     assign(:sponsors, Sponsor.none)
     assign(:filters, {})
@@ -18,7 +18,7 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
   it 'should delegate to partial' do
     render
 
-    expect(view).to render_template partial: 'hq/sponsors/sponsors.html.haml',
+    expect(view).to render_template partial: 'sponsors/sponsors.html.haml',
                                     locals: {sponsors: Sponsor.none, filters: {}, sort_by: {}, sortable_by_column: true}
   end
 
@@ -43,7 +43,7 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
   describe 'class action-items should have link' do
     specify 'New Sponsor' do
       render
-      expect(rendered).to have_link('New Sponsor', new_hq_sponsor_path)
+      expect(rendered).to have_link('New Sponsor', new_sponsor_path)
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
     assign(:current_sort_column, "name")
     assign(:current_sort_direction, "asc")
     render and expect(rendered).to have_link('Export to csv',
-                                             href: hq_sponsors_path(format: :csv, filters: {}, sort_column: "name", sort_direction: "asc"))
+                                             href: sponsors_path(format: :csv, filters: {}, sort_column: "name", sort_direction: "asc"))
   end
 
   it "should add filters and params to the export to csv link" do
@@ -60,6 +60,6 @@ RSpec.describe 'hq/sponsors/index.html.haml', type: :view do
     assign(:current_sort_column, "name")
     assign(:current_sort_direction, "desc")
     render and expect(rendered).to have_link('Export to csv',
-                                             href: hq_sponsors_path(format: :csv, filters: {"active_sponsorship_count_option"=>"equals", "active_sponsorship_count_value"=>"", "agent_id"=>"", "branch_id"=>"5", "city"=>"Wehnerburgh", "country"=>"", "created_at_from"=>"", "created_at_until"=>"", "gender"=>"Male", "name_option"=>"contains", "name_value"=>"", "organization_id"=>"", "request_fulfilled"=>"", "sponsor_type_id"=>"", "start_date_from"=>"", "start_date_until"=>"", "status_id"=>"", "updated_at_from"=>"", "updated_at_until"=>""}, sort_column: "name", sort_direction: "desc"))
+                                             href: sponsors_path(format: :csv, filters: {"active_sponsorship_count_option"=>"equals", "active_sponsorship_count_value"=>"", "agent_id"=>"", "branch_id"=>"5", "city"=>"Wehnerburgh", "country"=>"", "created_at_from"=>"", "created_at_until"=>"", "gender"=>"Male", "name_option"=>"contains", "name_value"=>"", "organization_id"=>"", "request_fulfilled"=>"", "sponsor_type_id"=>"", "start_date_from"=>"", "start_date_until"=>"", "status_id"=>"", "updated_at_from"=>"", "updated_at_until"=>""}, sort_column: "name", sort_direction: "desc"))
   end
 end

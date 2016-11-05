@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'will_paginate/array'
 
-RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
+RSpec.describe 'admin_users/index.html.erb', type: :view do
 
   describe 'Admin User action items' do
     it 'should have a New Admin User link' do
@@ -9,7 +9,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
 
       render
 
-      expect(rendered).to have_link 'New Admin User', new_hq_admin_user_path
+      expect(rendered).to have_link 'New Admin User', new_admin_user_path
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
     end
 
     it 'should render user info' do
-      allow(view).to receive(:current_hq_admin_user).and_return(nil)
+      allow(view).to receive(:current_admin_user).and_return(nil)
 
       render
 
@@ -39,30 +39,30 @@ RSpec.describe 'hq/admin_users/index.html.erb', type: :view do
 
     describe 'instance action links' do
       it 'should render Edit' do
-        allow(view).to receive(:current_hq_admin_user).and_return(nil)
+        allow(view).to receive(:current_admin_user).and_return(nil)
 
         render
 
         expect(rendered).to have_link 'Edit',
-          edit_hq_admin_user_path(admin_user)
+          edit_admin_user_path(admin_user)
       end
 
       it 'should render Delete for non-signed-in admin users' do
-        allow(view).to receive(:current_hq_admin_user).and_return(nil)
+        allow(view).to receive(:current_admin_user).and_return(nil)
 
         render
 
         expect(rendered).to have_link 'Delete',
-          hq_admin_user_path(admin_user)
+          admin_user_path(admin_user)
       end
 
       it 'should not render Delete for signed-in admin user' do
-        allow(view).to receive(:current_hq_admin_user).and_return(admin_user)
+        allow(view).to receive(:current_admin_user).and_return(admin_user)
 
         render
 
         expect(rendered).not_to have_link 'Delete',
-          hq_admin_user_path(admin_user)
+          admin_user_path(admin_user)
       end
     end
   end

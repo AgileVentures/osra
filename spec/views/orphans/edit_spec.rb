@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'hq/orphans/edit.html.erb', type: :view do
+RSpec.describe 'orphans/edit.html.erb', type: :view do
   before :each do
     assign :statuses, []
     assign :sponsorship_statuses, []

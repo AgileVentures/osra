@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "hq/users/_form.html.erb", type: :view do
+describe "users/_form.html.erb", type: :view do
 
   before :each do
     @user = FactoryGirl.build_stubbed(:user)

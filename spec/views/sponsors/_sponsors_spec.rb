@@ -1,48 +1,48 @@
 require 'rails_helper'
 require 'will_paginate/array'
 
-RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
+RSpec.describe 'sponsors/_sponsors.html.haml', type: :view do
   describe 'sponsors exist' do
     let(:sponsors) do
       [FactoryGirl.build_stubbed(:sponsor), FactoryGirl.build_stubbed(:sponsor)]
     end
 
     it 'should render something besides "No Sponsors found"' do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
 
       expect(rendered).to_not be_empty
       expect(rendered).to_not match /No Sponsors found/
     end
 
     it 'should link to #show actions' do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
 
       sponsors.each do |sponsor|
-        expect(rendered).to match link_to(sponsor.name, hq_sponsor_path(sponsor.id))
+        expect(rendered).to match link_to(sponsor.name, sponsor_path(sponsor.id))
       end
     end
 
     it 'should have pagination buttons' do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
 
       expect(rendered).to have_selector('div.pagination')
     end
 
     it 'should have filters form' do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
 
       expect(response).to render_template(:partial => '_filters.html.haml')
     end
 
     it "should generate sorted links for table headers" do
       expect(view).to receive(:sortable_link).at_least(:once)
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}}
     end
   end
 
   describe 'no sponsors exist' do
     before :each do
-      render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: [], filters: {}}
+      render partial: 'sponsors/sponsors.html.haml', locals: {sponsors: [], filters: {}}
     end
 
     it 'should indicate no sponsors were found' do
@@ -62,7 +62,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
     let(:sponsor) { FactoryGirl.build_stubbed(:sponsor) }
 
     before :each do
-      render :partial => 'hq/sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1)}
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => [sponsor].paginate(page: 1)}
     end
 
     %w[osra_num name status.name sponsor_type.name].each do |attrib|
@@ -79,7 +79,7 @@ RSpec.describe 'hq/sponsors/_sponsors.html.haml', type: :view do
                         active_sponsorship_count: 4, requested_orphan_count: 4 }
 
     it 'shows yes/no & numbers of active & requested sponsorships' do
-      render :partial => 'hq/sponsors/sponsors.html.haml',
+      render :partial => 'sponsors/sponsors.html.haml',
         :locals => { :sponsors => [sponsor_one, sponsor_two].paginate(page: 1) }
 
       expect(rendered).to have_text 'No (2/7)'

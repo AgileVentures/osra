@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "hq/devise/sessions/new.html.erb", type: :view do
+RSpec.describe "devise/sessions/new.html.erb", type: :view do
   let(:resource) {build_stubbed :admin_user}
   before :each do
     render template: subject,
             locals: {
                       resource: resource,
-                      resource_name: :hq_admin_user,
+                      resource_name: :admin_user,
                       devise_mapping: Devise.mappings[:admin_user]
                     }
   end

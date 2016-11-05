@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'hq/sponsors/new.html.haml', type: :view do
+RSpec.describe 'sponsors/new.html.haml', type: :view do
   before :each do
     assign :sponsor, Sponsor.new
     assign :statuses, []

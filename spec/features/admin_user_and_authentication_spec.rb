@@ -22,7 +22,7 @@ RSpec.feature 'AdminUser', :type => :feature do
 
   scenario 'After creation new Admin Users should be able to log in' do
     i_sign_in_as_admin
-    visit hq_admin_users_path
+    visit admin_users_path
     click_link 'New'
     fill_in 'Email', with: 'newadmin.user@example.com'
     fill_in 'Password', with: 'Password'
@@ -35,7 +35,7 @@ RSpec.feature 'AdminUser', :type => :feature do
 
   scenario 'After resetting their password Admin Users should be able to log in with the new credentials' do
     i_sign_in_as_admin
-    visit hq_admin_users_path
+    visit admin_users_path
     click_link 'Edit'
     fill_in 'Email', with: 'newadmin.user@example.com'
     fill_in 'New password', with: 'NewPassword'
@@ -48,13 +48,13 @@ RSpec.feature 'AdminUser', :type => :feature do
 
   scenario 'I should not see a delete link for current_user' do
     i_sign_in_as_admin
-    visit hq_admin_users_path
+    visit admin_users_path
     and_i_should_not_see 'Delete'
   end
 
   scenario 'I should see a delete link for other admin_user' do
     i_sign_in_as_admin
-    visit hq_admin_users_path
+    visit admin_users_path
     and_i_should_not_see 'Delete'
     click_link 'New'
     fill_in 'Email', with: 'newadmin.user@example.com'
@@ -66,20 +66,20 @@ RSpec.feature 'AdminUser', :type => :feature do
 
   scenario 'Should be able to delete another admin user' do
     i_sign_in_as_admin
-    visit hq_admin_users_path
+    visit admin_users_path
     click_link 'New'
     fill_in 'Email', with: 'newadmin.user@example.com'
     fill_in 'Password', with: 'Password'
     fill_in 'Password confirmation', with: 'Password'
     click_button 'Create Admin User'
     click_on 'Delete'
-    and_i_should_be_on :hq_admin_users_page
+    and_i_should_be_on :admin_users_page
     and_i_should_not_see 'newadmin.user@example.com'
   end
 
   def and_i_should_not_have_access_to_restricted_application_pages
-    visit hq_root_path
-    expect(current_path).to eq new_hq_admin_user_session_path
+    visit root_path
+    expect(current_path).to eq new_admin_user_session_path
   end
 
 end

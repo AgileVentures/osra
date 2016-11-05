@@ -1,6 +1,6 @@
 require 'rails_helper' 
 
-describe 'hq/users/edit.html.erb', type: :view do
+describe 'users/edit.html.erb', type: :view do
 
   before :each do
     @user = build_stubbed(:user)
@@ -14,7 +14,7 @@ describe 'hq/users/edit.html.erb', type: :view do
 
   it 'cancel button goes to show page' do
     render
-    expect(rendered).to have_link('Cancel', href: hq_user_path(@user))
+    expect(rendered).to have_link('Cancel', href: user_path(@user))
   end
 
 end
