@@ -1,6 +1,7 @@
 Osra::Application.routes.draw do
 
   root to: "dashboard#index"
+  match "/hq/*path", to: redirect("%{path}"), via: :get
 
   devise_for :admin_users,
     path: '',
