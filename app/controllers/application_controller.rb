@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   NAVIGATION_BUTTONS= [
-    { text: 'OSRA', href: 'root_path', path_regex: /^\/$/, glyph: 'glyphicon-home' },
     { text: 'Dashboard', href: 'dashboard_index_path', path_regex: /^\/dashboard/, glyph: 'glyphicon-dashboard' },
     { text: 'Admin Users', href: 'admin_users_path', path_regex: /^\/admin_users/, glyph: 'glyphicon-user' },
     { text: 'Orphans', href: 'orphans_path', path_regex: /^\/orphans/, glyph: 'glyphicon-user' },
