@@ -1,12 +1,12 @@
 <header class="osra-header">
   <div class="brand">
-    <a href= "<%= hq_root_path %>">OSRA Support System</a>
+    <a href= "<%= root_path %>">OSRA Support System</a>
   </div>
 
   <div class="logout-nav">
-    <% if hq_admin_user_signed_in? %>
-      <div><%= link_to 'logout', :destroy_hq_admin_user_session, method: :delete %></div>
-      <div><%= current_hq_admin_user.email %></div>
+    <% if admin_user_signed_in? %>
+      <div><%= link_to 'logout', :destroy_admin_user_session, method: :delete %></div>
+      <div><%= current_admin_user.email %></div>
     <% end %>
   </div>
 </header>

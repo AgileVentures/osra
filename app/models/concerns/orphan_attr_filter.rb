@@ -1,10 +1,10 @@
 module OrphanAttrFilter
   extend ActiveSupport::Concern
 
-  Orphan.extend WhereWithCondition
-  Orphan::ActiveRecord_Relation.include WhereWithCondition
-
   included do
+    extend WhereWithCondition
+    self::ActiveRecord_Relation.include WhereWithCondition
+
     scope :filter, ->(filters) do
       self
         .where_with_conditions(["orphans.name ILIKE ?", "%#{filters[:name_value]}%"], conditions: [filters[:name_value], filters[:name_option]=="contains"])

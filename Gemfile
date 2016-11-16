@@ -11,7 +11,6 @@ gem 'bootstrap-datepicker-rails', '~> 1.3.1' # bootstrap datepicker
 gem 'autoprefixer-rails', '~> 6.5.1' # auto add vendor prefixes to CSS rules
 gem 'coffee-rails', '~> 4.1.0' # use Coffeescript
 gem 'uglifier', '~> 3.0.3' # compressor for JavaScript assets
-gem 'activeadmin', github: 'activeadmin' # data administration framework
 gem 'sequenced', '>= 2.0.0' # sequential IDs in Models
 gem 'devise', '~> 3.5.10' # authentication solution
 gem 'jquery-rails', '~> 4.2.1' # use jquery with Rails
@@ -29,11 +28,6 @@ gem 'will_paginate-bootstrap', '~> 1.0.1' # bootstrap integration with will_pagi
 
 group :test do
   gem 'capybara', '~> 2.4.4' # interact with pages in tests
-  gem 'cucumber-rails', '~> 1.4.2', require: false # BDD framework
-  gem 'capybara-webkit', '~> 1.4.1' # headless webkit driver for capybara
-  gem 'poltergeist', '~> 1.6' # headless driver for capybara by phantomjs
-  gem 'headless', '~> 1.0.2' # gem that allows capybara-webkit to run without calling xvfb directly
-  gem 'database_cleaner', '~> 1.4' # clean db in tests
   gem 'shoulda-matchers', '~> 2.8', require: false # one-line tests for common Rails validations
 end
 
