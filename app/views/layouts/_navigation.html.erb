@@ -13,7 +13,7 @@
   <!-- Menu -->
   <div class="col-xs-12 col-sm-1 no-horiz-padding collapse navbar-collapse" id="main-navbar">
     <ul class="nav nav-pills nav-stacked" >
-      <% HqController::NAVIGATION_BUTTONS.each do | btn | %>
+      <% ApplicationController::NAVIGATION_BUTTONS.each do | btn | %>
         <li role="presentation" <%= (request.path=~ btn[:path_regex]) ? 'class=active' : 'class=dormant' %> >
           <%= link_to %Q{
             <span class="glyphicon #{btn[:glyph]}" aria-hidden="true"></span>

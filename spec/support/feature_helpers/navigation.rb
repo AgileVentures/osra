@@ -22,13 +22,13 @@ module FeatureHelpers
         when [:partner_name]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
-        when [:hq_partner_orphan_lists]
+        when [:partner_orphan_lists]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
-        when [:upload_hq_partner_pending_orphan_lists]
+        when [:upload_partner_pending_orphan_lists]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
-        when [:validate_hq_partner_pending_orphan_lists]
+        when [:validate_partner_pending_orphan_lists]
           partner = Partner.find_by(name: field_hash[:partner_name])
           get_path page, partner.id
         else raise('path to specified object is not displayed')
@@ -38,24 +38,24 @@ module FeatureHelpers
 
     def get_path page, object_id = ''
       case page.to_sym
-        when :root_page then hq_root_path
-        when :sign_in_page then new_hq_admin_user_session_path
-        when :new_sponsor_page then new_hq_sponsor_path
-        when :hq_sponsor_page then hq_sponsor_path object_id
-        when :edit_hq_sponsor_page then edit_hq_sponsor_path object_id
-        when :hq_new_sponsorship_page then hq_new_sponsorship_path object_id
-        when :hq_orphan_page then hq_orphan_path object_id
-        when :edit_hq_orphan_page then edit_hq_orphan_path object_id
-        when :new_hq_user_page then new_hq_user_path
-        when :hq_user_page then hq_user_path object_id
-        when :edit_hq_user_page then edit_hq_user_path object_id
-        when :hq_partner_page then hq_partner_path object_id
-        when :hq_partner_orphan_lists then hq_partner_orphan_lists_path object_id
-        when :upload_hq_partner_pending_orphan_lists then upload_hq_partner_pending_orphan_lists_path object_id
-        when :validate_hq_partner_pending_orphan_lists then validate_hq_partner_pending_orphan_lists_path object_id
-        when :new_hq_partner_page then new_hq_partner_path
-        when :edit_hq_partner_page then edit_hq_partner_path object_id
-        when :hq_admin_users_page then hq_admin_users_path
+        when :root_page then root_path
+        when :sign_in_page then new_admin_user_session_path
+        when :new_sponsor_page then new_sponsor_path
+        when :sponsor_page then sponsor_path object_id
+        when :edit_sponsor_page then edit_sponsor_path object_id
+        when :new_sponsorship_page then new_sponsorship_path object_id
+        when :orphan_page then orphan_path object_id
+        when :edit_orphan_page then edit_orphan_path object_id
+        when :new_user_page then new_user_path
+        when :user_page then user_path object_id
+        when :edit_user_page then edit_user_path object_id
+        when :partner_page then partner_path object_id
+        when :partner_orphan_lists then partner_orphan_lists_path object_id
+        when :upload_partner_pending_orphan_lists then upload_partner_pending_orphan_lists_path object_id
+        when :validate_partner_pending_orphan_lists then validate_partner_pending_orphan_lists_path object_id
+        when :new_partner_page then new_partner_path
+        when :edit_partner_page then edit_partner_path object_id
+        when :admin_users_page then admin_users_path
         else raise('page to specified is not listed in #page_to')
       end
     end

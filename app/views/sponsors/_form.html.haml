@@ -1,0 +1,100 @@
+= form_for sponsor, :builder => OsraFormBuilder,
+           html: {class: "records_form", role: "form"} do |f|
+  = render 'shared/errors', object: f.object
+  %fieldset
+    .form-group
+      = f.label_for_field :name
+      = f.text_field :name, class: "form-control"
+
+    .form-group
+      = f.label_for_field :status_id
+      = f.collection_select :status_id, statuses, :id, :name, {},
+            class: "form-control"
+
+    .form-group
+      = f.label_for_field :gender
+      = f.select :gender, Settings.lookup.gender, {}, class: "form-control"
+
+    .form-group
+      = f.label_for_field :start_date
+      = f.text_field :start_date, class: "form-control date-picker"
+
+    .form-group
+      = f.label_for_field :requested_orphan_count
+      = f.text_field :requested_orphan_count, class: "form-control"
+
+    - if !f.object.new_record?
+      .form-group
+        = f.label_for_field :request_fulfilled
+        = f.check_box :request_fulfilled,
+            {disabled: !f.object.new_record?, class: "checkbox"}
+
+    .form-group
+      = f.label_for_field :sponsor_type
+      = f.collection_select :sponsor_type_id, sponsor_types, :id, :name,
+            {}, {class: "form-control", disabled: !f.object.new_record?}
+
+    .form-group
+      = f.label_for_field :organization
+      = f.collection_select :organization_id, organizations, :id, :name,
+            {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
+
+    .form-group
+      = f.label_for_field :branch
+      = f.collection_select :branch_id, branches, :id, :name,
+            {include_blank: true},  {class: "form-control", disabled: !f.object.new_record?}
+
+    .form-group
+      = f.label_for_field :payment_plan
+      = f.select :payment_plan, Sponsor::PAYMENT_PLANS,
+            {include_blank: true}, class: "form-control"
+
+    .form-group
+      = f.label_for_field :country
+      = country_select("sponsor", "country",
+                       { format: :en_ar,
+                         selected: f.object.country,
+                         priority_countries: Sponsor::PRIORITY_COUNTRIES,
+                         except: Sponsor::EXCLUDED_COUNTRYS },
+                       { class: "form-control" })
+
+    .form-group
+      = f.label_for_field :city
+      = f.select :city, cities, {}, class: "form-control"
+
+    .form-group
+      = f.label_for_field :new_city_name
+      = f.text_field :new_city_name, class: "form-control"
+
+    .form-group
+      = f.label_for_field :address
+      = f.text_field :address, class: "form-control"
+
+    .form-group
+      = f.label_for_field :email
+      = f.text_field :email, {class: "form-control", type: "email"}
+
+    .form-group
+      = f.label_for_field :contact1
+      = f.text_field :contact1, class: "form-control"
+
+    .form-group
+      = f.label_for_field :contact2
+      = f.text_field :contact2, class: "form-control"
+
+    .form-group
+      = f.label_for_field :additional_info
+      = f.text_field :additional_info, class: "form-control"
+
+    .form-group
+      = f.label_for_field :agent
+      = f.select :agent_id, User.pluck(:user_name, :id),
+            {include_blank: true}, class: "form-control"
+
+    .form-group
+      = f.submit class: 'btn btn-primary'
+      - if f.object.new_record?
+        = f.submit 'Create and Add Another', class: 'btn btn-primary'
+      = link_to 'Cancel',
+                  f.object.new_record? ? sponsors_path : sponsor_path(f.object.id),
+                  class: 'btn btn-default btn-cancel', role: 'button'

@@ -1,0 +1,26 @@
+<%= render partial: "layouts/content_title.erb", locals: {title: "Edit Admin User"} %>
+
+<%= form_for @admin_user, :builder => OsraFormBuilder,
+             html: {class: "records_form", role: "form"} do |f| %>
+  <fieldset>
+    <%= render 'shared/errors', object: f.object %>
+    <div class="form-group">
+      <%= f.label_for_field :email %>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :password, "New password" %>
+      <!-- Use f.label instead of f.label_for_field because label_for is monkey-patched to add the red "(required)" -->
+      <!-- for mandatory fields in the database and within edit admin user it's not necessary to update the password -->
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :password_confirmation %>
+      <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "Update Admin User", class: "btn btn-primary" %>
+      <%= link_to 'Cancel', admin_users_path, class: "btn btn-cancel" %>
+    </div>
+  </fieldset>
+<% end %>

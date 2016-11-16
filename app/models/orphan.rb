@@ -1,5 +1,9 @@
 require 'csv'
+
 class Orphan < ActiveRecord::Base
+  include Initializer
+  include DateHelpers
+  include OrphanAttrFilter
 
   enum status: [
     :active,
@@ -31,10 +35,6 @@ class Orphan < ActiveRecord::Base
     sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name,
     partners.name AS partner_name
   EOF
-
-  include Initializer
-  include DateHelpers
-  include OrphanAttrFilter
 
   after_initialize :set_defaults
 
