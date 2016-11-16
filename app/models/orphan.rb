@@ -146,10 +146,16 @@ class Orphan < ActiveRecord::Base
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        row << (orphan.current_sponsor ? orphan.current_sponsor.name : "--")
+        row << orphan.current_sponsor_for_csv
         csv << row
       end
     end
+  end
+
+  def current_sponsor_for_csv
+    return "--" unless current_sponsor
+
+    "#{current_sponsor.name}, #{current_sponsor.osra_num}"
   end
 
 private

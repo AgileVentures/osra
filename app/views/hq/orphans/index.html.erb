@@ -198,7 +198,7 @@
               </td>
               <td>
                 <% if orphan.sponsor_id %>
-                  <%= link_to orphan.sponsor_name, hq_sponsor_path(orphan.sponsor_id) %>
+                  <%= link_to "#{orphan.sponsor_name}, #{orphan.sponsor_osra_num}", hq_sponsor_path(orphan.sponsor_id) %>
                 <% else %>
                   --
                 <% end %>
