@@ -21,6 +21,7 @@ class Orphan < ActiveRecord::Base
 
   AGE_OF_ELIGIBILITY_TO_JOIN = 22
   VALID_GESTATION = 1
+  DAYS_IN_YEAR = 365
 
   SPONSORSHIP_STATUS_ORDERING = %Q{
   CASE WHEN sponsorship_status = '#{Orphan.sponsorship_statuses[:previously_sponsored]}' THEN '1'
@@ -150,6 +151,10 @@ class Orphan < ActiveRecord::Base
         csv << row
       end
     end
+  end
+
+  def age_in_years
+    (Date.today - date_of_birth).to_i / DAYS_IN_YEAR
   end
 
 private
