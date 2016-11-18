@@ -22,6 +22,7 @@ class Orphan < ActiveRecord::Base
   AGE_OF_ELIGIBILITY_TO_JOIN = 22
   VALID_GESTATION = 1
   DAYS_IN_YEAR = 365
+  AGE_OF_ADULTHOOD = 18
 
   SPONSORSHIP_STATUS_ORDERING = %Q{
   CASE WHEN sponsorship_status = '#{Orphan.sponsorship_statuses[:previously_sponsored]}' THEN '1'
