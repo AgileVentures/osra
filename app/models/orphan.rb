@@ -155,7 +155,12 @@ class Orphan < ActiveRecord::Base
   end
 
   def age_in_years
-    (Date.today - date_of_birth).to_i / DAYS_IN_YEAR
+    today = Date.today
+    dob = date_of_birth
+    born_earlier_in_year = today.month > dob.month ||
+      (today.month == dob.month && today.day >= dob.day)
+
+    today.year - date_of_birth.year - (born_earlier_in_year ? 0 : 1)
   end
 
 private
