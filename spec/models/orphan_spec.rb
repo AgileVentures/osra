@@ -433,7 +433,7 @@ describe Orphan, type: :model do
           end
         end
 
-        describe '#to_csv' do
+        describe '.to_csv' do
           it 'generate csv content for givens orphans' do
             orphan = build_stubbed :orphan, name: "John", gender: "Male", father_given_name: "Mark", family_name: "Doe"
             orphan_attrs = orphan.as_json(methods: [:full_name, :father_name])
@@ -442,6 +442,19 @@ describe Orphan, type: :model do
             output = "Osra Num,Full Name,Father Name,Date Of Birth,Gender,Province Name,Partner Name,Father Is Martyr,Father Deceased,Mother Alive,Priority,Status,Sponsorship Status,Current Sponsor\n,John Mark Doe,Mark Doe,#{orphan.date_of_birth},Male,#{orphan.province_name},partner name,#{orphan.father_is_martyr},#{orphan.father_deceased},#{orphan.mother_alive},#{orphan.priority},#{orphan.status},#{orphan.sponsorship_status},--\n"
 
             expect(Orphan.to_csv([orphan])).to eq(output)
+          end
+        end
+
+        describe "#age_in_years" do
+          it "returns age in whole years" do
+            orphan = build_stubbed :orphan, date_of_birth: 18.years.ago
+            expect(orphan.age_in_years).to eq 18
+
+            orphan = build_stubbed :orphan, date_of_birth: 18.years.ago - 1.day
+            expect(orphan.age_in_years).to eq 18
+
+            orphan = build_stubbed :orphan, date_of_birth: 18.years.ago + 1.day
+            expect(orphan.age_in_years).to eq 17
           end
         end
       end

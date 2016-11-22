@@ -18,6 +18,7 @@ RSpec.describe "orphans/index.html.erb", type: :view do
         sponsor_osra_num: 1,
         status: "Active",
         sponsorship_status: "Unsponsored",
+        age_in_years: 15
       }
       items.map! { |item| item.merge(extra_attrs) }
       items.map! { |item| OpenStruct.new(item) }
