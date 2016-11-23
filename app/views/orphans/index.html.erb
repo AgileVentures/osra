@@ -156,7 +156,7 @@
         </thead>
         <tbody>
           <%- @orphans.each do |orphan| %>
-            <tr id="orphan_<%= orphan.id %>">
+            <tr id="orphan_<%= orphan.id %>" class="<%= child_or_adult? orphan %>">
               <td>
                 <%= link_to orphan.osra_num, orphan_path(orphan) %>
               </td>
