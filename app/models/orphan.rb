@@ -144,20 +144,22 @@ class Orphan < ActiveRecord::Base
                     mother_alive priority status sponsorship_status)
     CSV.generate(headers: true) do |csv|
       headers = attributes.map(&:titleize)
-      headers << "Current Sponsor"
+      headers += ["Current Sponsor", "Sponsor OSRA Num"]
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        row << orphan.current_sponsor_for_csv
+        p row
+        p orphan.current_sponsor_for_csv
+        row += orphan.current_sponsor_for_csv
         csv << row
       end
     end
   end
 
   def current_sponsor_for_csv
-    return "--" unless current_sponsor
+    return [] unless current_sponsor
 
-    "#{current_sponsor.name}, #{current_sponsor.osra_num}"
+    [current_sponsor.name, current_sponsor.osra_num]
   end
 
   def age_in_years
