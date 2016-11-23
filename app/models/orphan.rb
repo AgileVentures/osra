@@ -148,8 +148,6 @@ class Orphan < ActiveRecord::Base
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        p row
-        p orphan.current_sponsor_for_csv
         row += orphan.current_sponsor_for_csv
         csv << row
       end
