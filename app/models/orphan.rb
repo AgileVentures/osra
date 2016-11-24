@@ -148,16 +148,11 @@ class Orphan < ActiveRecord::Base
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        row += orphan.current_sponsor_for_csv
+        sponsor = orphan.current_sponsor
+        row += sponsor ? [sponsor.name, sponsor.osra_num] : %w(-- --)
         csv << row
       end
     end
-  end
-
-  def current_sponsor_for_csv
-    return [] unless current_sponsor
-
-    [current_sponsor.name, current_sponsor.osra_num]
   end
 
   def age_in_years
