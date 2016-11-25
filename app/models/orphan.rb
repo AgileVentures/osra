@@ -144,11 +144,12 @@ class Orphan < ActiveRecord::Base
                     mother_alive priority status sponsorship_status)
     CSV.generate(headers: true) do |csv|
       headers = attributes.map(&:titleize)
-      headers << "Current Sponsor"
+      headers += ["Current Sponsor", "Sponsor OSRA Num"]
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        row << (orphan.current_sponsor ? orphan.current_sponsor.name : "--")
+        sponsor = orphan.current_sponsor
+        row += sponsor ? [sponsor.name, sponsor.osra_num] : %w(-- --)
         csv << row
       end
     end

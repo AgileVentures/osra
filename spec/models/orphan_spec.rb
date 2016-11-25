@@ -433,15 +433,50 @@ describe Orphan, type: :model do
           end
         end
 
-        describe '.to_csv' do
-          it 'generate csv content for givens orphans' do
-            orphan = build_stubbed :orphan, name: "John", gender: "Male", father_given_name: "Mark", family_name: "Doe"
+        describe ".to_csv" do
+          let(:orphan) do
+            orphan = build_stubbed :orphan
             orphan_attrs = orphan.as_json(methods: [:full_name, :father_name])
-            orphan_attrs.merge!({ partner_name: "partner name" })
-            orphan = OpenStruct.new(orphan_attrs)
-            output = "Osra Num,Full Name,Father Name,Date Of Birth,Gender,Province Name,Partner Name,Father Is Martyr,Father Deceased,Mother Alive,Priority,Status,Sponsorship Status,Current Sponsor\n,John Mark Doe,Mark Doe,#{orphan.date_of_birth},Male,#{orphan.province_name},partner name,#{orphan.father_is_martyr},#{orphan.father_deceased},#{orphan.mother_alive},#{orphan.priority},#{orphan.status},#{orphan.sponsorship_status},--\n"
+            orphan_attrs[:partner_name] = "partner name"
+            OpenStruct.new(orphan_attrs)
+          end
+          let(:sponsor) { OpenStruct.new(name: "Mary", osra_num: "1234567") }
+          let(:output_template) do
+            "Osra Num,Full Name,Father Name,Date Of Birth,Gender,Province Name,\
+            Partner Name,Father Is Martyr,Father Deceased,Mother Alive,\
+            Priority,Status,Sponsorship Status,Current Sponsor,\
+            Sponsor OSRA Num\n,\
+            #{orphan.full_name},#{orphan.father_name},#{orphan.date_of_birth},\
+            #{orphan.gender},#{orphan.province_name},partner name,\
+            #{orphan.father_is_martyr},#{orphan.father_deceased},\
+            #{orphan.mother_alive},#{orphan.priority},#{orphan.status},\
+            #{orphan.sponsorship_status},\
+            SPONSOR_NAME,SPONSOR_OSRA_NUM\n".gsub(/\s{2,}/, "")
+          end
 
-            expect(Orphan.to_csv([orphan])).to eq(output)
+          context "when orphan has a current sponsor" do
+            example do
+              orphan.current_sponsor = sponsor
+              sponsor_data = {
+                "SPONSOR_NAME" => sponsor.name,
+                "SPONSOR_OSRA_NUM" => sponsor.osra_num
+              }
+              expected_output = output_template.gsub(
+                /SPONSOR_NAME|SPONSOR_OSRA_NUM/, sponsor_data
+              )
+
+              expect(Orphan.to_csv([orphan])).to eq expected_output
+            end
+          end
+
+          context "when orphan does not have a current sponsor" do
+            example do
+              expected_output = output_template.gsub(
+                /SPONSOR_NAME|SPONSOR_OSRA_NUM/, "--"
+              )
+
+              expect(Orphan.to_csv([orphan])).to eq expected_output
+            end
           end
         end
 
