@@ -1,5 +1,9 @@
 require 'csv'
+
 class Orphan < ActiveRecord::Base
+  include Initializer
+  include DateHelpers
+  include OrphanAttrFilter
 
   enum status: [
     :active,
@@ -17,6 +21,8 @@ class Orphan < ActiveRecord::Base
 
   AGE_OF_ELIGIBILITY_TO_JOIN = 22
   VALID_GESTATION = 1
+  DAYS_IN_YEAR = 365
+  AGE_OF_ADULTHOOD = 18
 
   SPONSORSHIP_STATUS_ORDERING = %Q{
   CASE WHEN sponsorship_status = '#{Orphan.sponsorship_statuses[:previously_sponsored]}' THEN '1'
@@ -31,10 +37,6 @@ class Orphan < ActiveRecord::Base
     sponsors.osra_num AS sponsor_osra_num, provinces.name AS province_name,
     partners.name AS partner_name
   EOF
-
-  include Initializer
-  include DateHelpers
-  include OrphanAttrFilter
 
   after_initialize :set_defaults
 
@@ -142,14 +144,24 @@ class Orphan < ActiveRecord::Base
                     mother_alive priority status sponsorship_status)
     CSV.generate(headers: true) do |csv|
       headers = attributes.map(&:titleize)
-      headers << "Current Sponsor"
+      headers += ["Current Sponsor", "Sponsor OSRA Num"]
       csv << headers
       records.each do |orphan|
         row = attributes.map { |attr| orphan.public_send(attr) }
-        row << (orphan.current_sponsor ? orphan.current_sponsor.name : "--")
+        sponsor = orphan.current_sponsor
+        row += sponsor ? [sponsor.name, sponsor.osra_num] : %w(-- --)
         csv << row
       end
     end
+  end
+
+  def age_in_years
+    today = Date.today
+    dob = date_of_birth
+    born_earlier_in_year = today.month > dob.month ||
+      (today.month == dob.month && today.day >= dob.day)
+
+    today.year - date_of_birth.year - (born_earlier_in_year ? 0 : 1)
   end
 
 private

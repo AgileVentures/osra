@@ -1,0 +1,46 @@
+<%=render partial: "layouts/content_title.erb", locals: {title: "Users"} %>
+
+<div class="main-content-header">
+  <%= link_to('New User', new_user_path,
+              class: 'btn btn-default', role: 'button') %>
+</div>
+
+<% if @users.empty? %>
+  <em>No Users Found</em>
+<% else %>
+  <div class='table-responsive'>
+    <table class='table table-hover' id="users-index">
+      <thead>
+        <tr>
+          <th>
+            User Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Assigned Active Sponsors
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- @users.each do |user| %>
+          <tr>
+            <td>
+              <%= link_to user.user_name, user_path(user) %>
+            </td>
+            <td>
+              <%= user.email %>
+            </td>
+            <td>
+              <%= user.active_sponsors.count %>
+            </td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @users, will_paginate_render_options %>
+  </div>
+<% end %>

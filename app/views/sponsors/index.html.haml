@@ -1,0 +1,12 @@
+=render partial: "layouts/content_title.erb", locals: {title: "Sponsors"}
+
+%div.main-content-header
+  = link_to('New Sponsor', new_sponsor_path, class: 'btn btn-default', role: 'button')
+  = link_to('Export to csv', sponsors_path(format: :csv, filters: @filters,sort_direction: @current_sort_direction  ,sort_column: @current_sort_column ,sort_by: @sort_by ), class: 'btn btn-default', role: 'button')
+  %p
+    Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
+    out of #{total_requested_sponsorships} requested.
+  %p
+    Displaying #{@sponsors.count.to_s} of #{@sponsors_count.to_s} Sponsors.
+
+=render partial: 'sponsors/sponsors.html.haml', locals: {sponsors: @sponsors, filters: @filters, sort_by: @sort_by, sortable_by_column: @sortable_by_column}

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SponsorAttrFilter do
+RSpec.describe Sponsor, type: :model do
 
   let(:sponsor) { create :sponsor }
   let(:individual_type) { SponsorType.find_by_name 'Individual' }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe OrphanAttrFilter do
+RSpec.describe Orphan, type: :model do
 
   let(:orphan) { create :orphan_full }
   let(:unsponsored_sponsorship_status) { Orphan.sponsorship_statuses[:unsponsored] }

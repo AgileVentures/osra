@@ -1,0 +1,18 @@
+<%= form_for @user, :builder => OsraFormBuilder,
+             html: {class: "records_form", role: "form"} do |f| %>
+  <fieldset>
+    <%= render 'shared/errors', object: f.object %>
+    <div class="form-group">
+      <%= f.label_for_field :user_name %>
+      <%= f.text_field :user_name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label_for_field :email %>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit class: "btn btn-primary" %>
+      <%= link_to 'Cancel', cancel_path, class: "btn btn-cancel" %>
+    </div>
+  </fieldset>
+<% end %>
