@@ -32,17 +32,20 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5' # RSpec test framework for Rails
-  gem 'faker', '~> 1.4.3' # easily generate fake data
-  gem 'factory_girl_rails', '~> 4.5.0' # use factories to produce objects
-  gem 'awesome_print', '~> 1.6.1' # Well Formatted output in console
-  gem 'pry-byebug', '~> 3.0.1' # a version of pry and debugger compatible with Ruby >2.0.0
-  gem 'hirb', '~> 0.7.3' # formats ActiveRecord objects into table format in the console
-  gem 'pry-rails', '~> 0.3.3' # integrate pry with rails console
-  gem 'better_errors', '~> 2.1.1' # nice output of rails errors in browser
-  gem 'binding_of_caller', '~> 0.7.2'  # online console and debugging in browser
-  gem 'launchy', '~> 2.4.3' # open capybara-generated pages in browser
-  gem 'web-console', '~> 2.0.0' # debuggin tools for Rails
+  gem 'rspec-rails' # RSpec test framework for Rails
+  gem 'faker' # easily generate fake data
+  gem 'factory_girl_rails' # use factories to produce objects
+  gem 'awesome_print' # Well Formatted output in console
+  gem 'pry-byebug' # a version of pry and debugger compatible with Ruby >2.0.0
+  gem 'hirb' # formats ActiveRecord objects into table format in the console
+  gem 'pry-rails' # integrate pry with rails console
+  gem 'better_errors' # nice output of rails errors in browser
+  gem 'binding_of_caller'  # online console and debugging in browser
+  gem 'launchy' # open capybara-generated pages in browser
+end
+
+group :development do
+  gem 'web-console' # debugging tools for Rails
 end
 
 group :production do
