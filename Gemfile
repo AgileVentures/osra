@@ -18,7 +18,7 @@ gem 'paperclip', '~> 4.2.1' # upload attachment files
 gem 'aws-sdk', '< 2.0' # Amazon Web Services - S3 bucket for Paperclip;
 # as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
 gem 'coveralls', '~> 0.7.9', require: false # measure test coverage
-gem 'country_select', github: 'stefanpenner/country_select' # country drop-down
+gem 'country_select', '~> 2.1.1' # country drop-down
 gem 'roo', '~> 1.13.2' # access contents of spreadsheet files
 gem 'rails_config', '~> 0.4.2' # TODO: consider removing after importer settings refactored
 gem 'newrelic_rpm', '~> 3.10.0' # application monitoring on Heroku
