@@ -200,10 +200,13 @@ GEM
     rake (11.3.0)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
-    roo (1.13.2)
+    roo (2.5.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
+    roo-xls (1.0.0)
       nokogiri
-      rubyzip
-      spreadsheet (> 0.6.4)
+      roo (>= 2.0.0beta1, < 3)
+      spreadsheet (> 0.9.0)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -304,7 +307,8 @@ DEPENDENCIES
   rails (~> 4.2.7)
   rails_12factor (~> 0.0.3)
   rails_config (~> 0.4.2)
-  roo (~> 1.13.2)
+  roo
+  roo-xls
   rspec-rails
   sass-rails
   sequenced
