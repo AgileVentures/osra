@@ -14,8 +14,8 @@ gem 'uglifier' # compressor for JavaScript assets
 gem 'sequenced' # sequential IDs in Models
 gem 'devise' # authentication solution
 gem 'jquery-rails' # use jquery with Rails
-gem 'paperclip', '~> 4.2.1' # upload attachment files
-gem 'aws-sdk', '< 2.0' # Amazon Web Services - S3 bucket for Paperclip;
+gem 'paperclip' # upload attachment files
+gem 'aws-sdk' # Amazon Web Services - S3 bucket for Paperclip;
 # as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
 gem 'coveralls', require: false # measure test coverage
 gem 'country_select', '~> 2.1.1' # country drop-down
