@@ -1,20 +1,36 @@
 require "rails_helper"
 
 RSpec.describe OrphanHelper, type: :helper do
-  describe "#child_or_adult?" do
-    context "when orphan is a child" do
-      it "returns 'child'" do
-        orphan = double "orphan", age_in_years: 17
+  describe "#active_adult?" do
+    context "when active child" do
+      example do
+        orphan = double "orphan", adult?: false, active?: true
 
-        expect(child_or_adult? orphan).to eq "child"
+        expect(active_adult?(orphan)).to eq ""
       end
     end
 
-    context "when orphan is an adult" do
-      it "returns 'adult'" do
-        orphan = double "orphan", age_in_years: 18
+    context "when inactive child" do
+      example do
+        orphan = double "orphan", adult?: false, active?: false
 
-        expect(child_or_adult? orphan).to eq "adult"
+        expect(active_adult?(orphan)).to eq ""
+      end
+    end
+
+    context "when inactive adult" do
+      example do
+        orphan = double "orphan", adult?: true, active?: false
+
+        expect(active_adult?(orphan)).to eq ""
+      end
+    end
+
+    context "when active adult" do
+      example do
+        orphan = double "orphan", adult?: true, active?: true
+
+        expect(active_adult?(orphan)).to eq "active_adult"
       end
     end
   end
