@@ -1,5 +1,5 @@
 module OrphanHelper
   def active_adult?(orphan)
-    orphan.adult? && orphan.active? ? "active_adult" : ""
+    "active_adult" if orphan.adult? && orphan.active?
   end
 end

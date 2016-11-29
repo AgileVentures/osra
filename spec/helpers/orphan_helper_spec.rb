@@ -6,7 +6,7 @@ RSpec.describe OrphanHelper, type: :helper do
       example do
         orphan = double "orphan", adult?: false, active?: true
 
-        expect(active_adult?(orphan)).to eq ""
+        expect(active_adult?(orphan)).to be_nil
       end
     end
 
@@ -14,7 +14,7 @@ RSpec.describe OrphanHelper, type: :helper do
       example do
         orphan = double "orphan", adult?: false, active?: false
 
-        expect(active_adult?(orphan)).to eq ""
+        expect(active_adult?(orphan)).to be_nil
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe OrphanHelper, type: :helper do
       example do
         orphan = double "orphan", adult?: true, active?: false
 
-        expect(active_adult?(orphan)).to eq ""
+        expect(active_adult?(orphan)).to be_nil
       end
     end
 
