@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe OrphanHelper, type: :helper do
-  describe "#active_adult?" do
+  describe "#orphan_highlight_class" do
     context "when active child" do
       example do
         orphan = double "orphan", adult?: false, active?: true
