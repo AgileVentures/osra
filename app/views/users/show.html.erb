@@ -36,7 +36,11 @@
   <% if @user.sponsors.count > 0 %>
     <div class="active_sponsors_index">
       <%= render partial: 'users/sponsors.html.haml',
-            locals: {sponsors: @user.active_sponsors.paginate(:page => params[:page])} %>
+        locals: {
+          sponsors: @user.active_sponsors.paginate(:page => params[:active_sponsor]),
+          param_name: 'active_sponsor'
+        }
+      %>
     </div>
   <% end %>
 </div>
@@ -50,7 +54,11 @@
   <% if @user.sponsors.count > 0 %>
     <div class="inactive_sponsors_index">
       <%= render partial: 'users/sponsors.html.haml',
-            locals: {sponsors: @user.inactive_sponsors.paginate(:page => params[:page])} %>
+        locals: {
+          sponsors: @user.inactive_sponsors.paginate(:page => params[:inactive_sponsor]),
+          param_name: 'inactive_sponsor'
+        }
+      %>
     </div>
   <% end %>
 </div>

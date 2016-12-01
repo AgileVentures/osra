@@ -8,4 +8,8 @@ module WillPaginateHelper
     }
   end
 
+  def render_options_with_custom_param(param_name)
+    will_paginate_render_options.merge(param_name: param_name)
+  end
+
 end
