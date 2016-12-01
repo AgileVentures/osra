@@ -164,6 +164,10 @@ class Orphan < ActiveRecord::Base
     today.year - date_of_birth.year - (born_earlier_in_year ? 0 : 1)
   end
 
+  def adult?
+    age_in_years >= Orphan::AGE_OF_ADULTHOOD
+  end
+
 private
 
   def set_defaults

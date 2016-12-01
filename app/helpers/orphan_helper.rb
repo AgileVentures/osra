@@ -1,5 +1,5 @@
 module OrphanHelper
-  def child_or_adult?(orphan)
-    orphan.age_in_years >= Orphan::AGE_OF_ADULTHOOD ? "adult" : "child"
+  def orphan_highlight_class(orphan)
+    "active_adult" if orphan.adult? && orphan.active?
   end
 end
