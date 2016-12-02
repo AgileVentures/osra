@@ -29,7 +29,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <%= pluralize(@user.active_sponsors.count.to_s, 'Active Sponsor') %>
+      <%= pluralize(@active_sponsors.count.to_s, 'Active Sponsor') %>
     </h3>
   </div>
 
@@ -37,7 +37,7 @@
     <div class="active_sponsors_index">
       <%= render partial: 'users/sponsors.html.haml',
         locals: {
-          sponsors: @user.active_sponsors.paginate(:page => params[:active_sponsor]),
+          sponsors: @active_sponsors,
           param_name: 'active_sponsor'
         }
       %>
@@ -48,14 +48,14 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <%= pluralize(@user.inactive_sponsors.count.to_s, 'Inactive Sponsor') %>
+      <%= pluralize(@inactive_sponsors.count.to_s, 'Inactive Sponsor') %>
     </h3>
   </div>
   <% if @user.sponsors.count > 0 %>
     <div class="inactive_sponsors_index">
       <%= render partial: 'users/sponsors.html.haml',
         locals: {
-          sponsors: @user.inactive_sponsors.paginate(:page => params[:inactive_sponsor]),
+          sponsors: @inactive_sponsors,
           param_name: 'inactive_sponsor'
         }
       %>

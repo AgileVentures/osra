@@ -7,20 +7,25 @@ RSpec.describe 'users/_sponsors.html.haml', type: :view do
     end
 
     it 'should render something besides "No Sponsors found"' do
-      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => sponsors.paginate(page: 1), filters: {}, param_name: ''}
+      allow(view).to receive(:will_paginate)
+
+      render :partial => 'sponsors/sponsors.html.haml', :locals => {:sponsors => build_stubbed_list(:sponsor, 2), param_name: ''}
 
       expect(rendered).to_not be_empty
       expect(rendered).to_not match /No Sponsors found/
+      expect(view).to have_received(:will_paginate)
     end
   end
 
   describe 'no sponsors exist' do
-    before :each do
-      render partial: 'users/sponsors.html.haml', locals: {sponsors: [], filters: {}, param_name: ''}
-    end
 
     it 'should indicate no sponsors were found' do
+      allow(view).to receive(:will_paginate)
+
+      render partial: 'users/sponsors.html.haml', locals: {sponsors: Sponsor.none, param_name: ''}
+
       expect(rendered).to match /No Sponsors found/
+      expect(view).to have_received(:will_paginate)
     end
   end
 end
