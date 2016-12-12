@@ -16,12 +16,12 @@ RSpec.describe Halalas, type: :helper do
   end
 
   specify '#to_s' do
-    expect(Halalas.new(123).to_s).to eq '1.23﷼‎'
-    expect(Halalas.new(0).to_s).to eq '0.00﷼‎'
-    expect(Halalas.new('-0').to_s).to eq '0.00﷼‎'
-    expect(Halalas.new(-1234).to_s).to eq '(12.34)﷼‎'
-    expect(Halalas.new('1000').to_s).to eq '10.00﷼‎'
-    expect(Halalas.new(20000).to_s).to eq '200.00﷼‎'
+    expect(Halalas.new(123).to_s).to eq '1.23 SAR'
+    expect(Halalas.new(0).to_s).to eq '0.00 SAR'
+    expect(Halalas.new('-0').to_s).to eq '0.00 SAR'
+    expect(Halalas.new(-1234).to_s).to eq '(12.34) SAR'
+    expect(Halalas.new('1050').to_s).to eq '10.50 SAR'
+    expect(Halalas.new(20000).to_s).to eq '200.00 SAR'
   end
 end
 

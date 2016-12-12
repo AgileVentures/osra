@@ -3,7 +3,7 @@
 class Halalas
   def initialize value
     @value= Integer(value)
-    @currency_symbol= '﷼‎'
+    @currency_symbol= ' SAR'
   end
 
   def to_s
