@@ -84,8 +84,8 @@ class Sponsor < ActiveRecord::Base
     end
   end
 
-  scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ) }
-  scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ) }
+  scope :all_active, -> { joins(:status).where(statuses: { name: ['Active', 'On Hold'] } ).order(created_at: :desc) }
+  scope :all_inactive, -> { joins(:status).where(statuses: { name: 'Inactive' } ).order(created_at: :desc) }
 
 private
 
