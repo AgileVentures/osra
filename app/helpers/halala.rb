@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 class Halala
   CURRENCY= ' SAR'
-  attr_reader :riyal
 
   def initialize value
     halala= Integer(value)
@@ -14,6 +13,8 @@ class Halala
   end
 
 private
+
+  attr_reader :riyal
 
   def riyal_string
     if riyal < 0
