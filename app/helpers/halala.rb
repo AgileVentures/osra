@@ -1,7 +1,7 @@
 # coding: utf-8
 # frozen_string_literal: true
 class Halala
-  CURRENCY= ' SAR'
+  CURRENCY= 'SAR'
 
   def initialize value
     halala= Integer(value)
@@ -9,7 +9,7 @@ class Halala
   end
 
   def to_s
-    riyal_string + CURRENCY
+    "#{riyal_string} #{CURRENCY}"
   end
 
 private
