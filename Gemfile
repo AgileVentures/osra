@@ -33,7 +33,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5' # RSpec test framework for Rails
-  gem 'faker', '~> 1.4.3' # easily generate fake data
+  gem 'factory-helper', '~> 1.7.7' # easily generate fake data
   gem 'factory_girl_rails', '~> 4.5.0' # use factories to produce objects
   gem 'awesome_print', '~> 1.6.1' # Well Formatted output in console
   gem 'pry-byebug', '~> 3.0.1' # a version of pry and debugger compatible with Ruby >2.0.0
