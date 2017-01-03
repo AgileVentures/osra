@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212003047) do
+ActiveRecord::Schema.define(version: 20170103124956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   end
 
   add_index "branches", ["code"], name: "index_branches_on_code", unique: true, using: :btree
+
+  create_table "cashboxes", force: :cascade do |t|
+    t.integer  "balance",          default: 0
+    t.integer  "cashboxable_id"
+    t.string   "cashboxable_type"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "cashboxes", ["cashboxable_type", "cashboxable_id"], name: "index_cashboxes_on_cashboxable_type_and_cashboxable_id", using: :btree
 
   create_table "organizations", force: :cascade do |t|
     t.integer  "code"
@@ -149,10 +159,15 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "amount",     null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "amount",         null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "destination_id"
+    t.integer  "source_id"
   end
+
+  add_index "payments", ["destination_id"], name: "index_payments_on_destination_id", using: :btree
+  add_index "payments", ["source_id"], name: "index_payments_on_source_id", using: :btree
 
   create_table "pending_orphan_lists", force: :cascade do |t|
     t.string   "spreadsheet_file_name",    limit: 255
