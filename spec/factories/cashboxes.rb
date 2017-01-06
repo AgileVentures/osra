@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :cashbox do
-    balance 1
+    balance { FactoryHelper::MySQL.integer  }
   end
 
 end
