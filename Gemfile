@@ -16,7 +16,6 @@ gem "devise" # authentication solution
 gem "jquery-rails" # use jquery with Rails
 gem "paperclip" # upload attachment files
 gem "aws-sdk" # Amazon Web Services - S3 bucket for Paperclip;
-# as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
 gem "coveralls", require: false # measure test coverage
 gem "country_select", "~> 2.1.1" # country drop-down
 gem "roo" # access contents of spreadsheet files
@@ -34,7 +33,7 @@ end
 
 group :development, :test do
   gem "rspec-rails" # RSpec test framework for Rails
-  gem "faker" # easily generate fake data
+  gem "factory-helper" # easily generate fake data
   gem "factory_girl_rails" # use factories to produce objects
   gem "awesome_print" # Well Formatted output in console
   gem "pry-byebug" # a version of pry and debugger compatible with Ruby >2.0.0
