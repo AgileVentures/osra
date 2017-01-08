@@ -10,4 +10,5 @@ describe Payment, type: :model do
   end
 
   it { is_expected.to validate_numericality_of(:amount).only_integer }
+  it { is_expected.to validate_numericality_of(:amount).is_greater_than(0) }
 end
