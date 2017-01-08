@@ -1,7 +1,10 @@
 class Cashbox < ActiveRecord::Base
   has_many :deposits, class_name: 'Payment', foreign_key: 'destination_id'
-  has_many :withdrawls, class_name: 'Payment', foreign_key: 'source_id'
+  has_many :withdrawals, class_name: 'Payment', foreign_key: 'source_id'
   belongs_to :cashboxable, polymorphic: true
 
-  validates :balance, numericality: { only_integer: true }, allow_nil: false
+  def total
+    deposits.sum(:amount) - withdrawals.sum(:amount)
+  end
+
 end
