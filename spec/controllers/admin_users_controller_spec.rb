@@ -6,7 +6,7 @@ RSpec.describe AdminUsersController, type: :controller do
 # The include statement below is necessary for the unit tests to work when rspec runs the complete test run
 # Otherwise the inclusion of integration tests which use Devise mucks things up.
 # See https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   let(:admin_users) { build_stubbed_list :admin_user, 2 }
   let(:admin_user) { build_stubbed :admin_user }
