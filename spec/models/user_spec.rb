@@ -8,8 +8,8 @@ RSpec.describe User, :type => :model do
 
   it { is_expected.to validate_presence_of :user_name }
   it { is_expected.to validate_presence_of :email }
-  it { is_expected.to validate_uniqueness_of :user_name }
-  it { is_expected.to validate_uniqueness_of :email }
+  it { is_expected.to validate_uniqueness_of(:user_name).case_insensitive }
+  it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
 
   [nil, '', 'not_an_email@'].each do |bad_email|
     it { is_expected.not_to allow_value(bad_email).for :email }
