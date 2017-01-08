@@ -19,6 +19,7 @@ class Sponsorship < ActiveRecord::Base
   validate :sponsor_is_eligible_for_new_sponsorship, on: :create
   validate :orphan_is_eligible_for_new_sponsorship, on: :create
 
+  has_one :cashbox, as: :cashboxable, dependent: :destroy
   belongs_to :sponsor
   belongs_to :orphan
 

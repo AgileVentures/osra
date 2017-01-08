@@ -11,17 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212003047) do
+ActiveRecord::Schema.define(version: 20170108085726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "province_id"
-    t.string   "city",                       limit: 255
-    t.string   "neighborhood",               limit: 255
-    t.string   "street",                     limit: 255
-    t.string   "details",                    limit: 255
+    t.string   "city"
+    t.string   "neighborhood"
+    t.string   "street"
+    t.string   "details"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "orphan_original_address_id"
@@ -33,16 +33,16 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "addresses", ["province_id"], name: "index_addresses_on_province_id", using: :btree
 
   create_table "admin_users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -52,16 +52,25 @@ ActiveRecord::Schema.define(version: 20161212003047) do
 
   create_table "branches", force: :cascade do |t|
     t.integer  "code"
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "branches", ["code"], name: "index_branches_on_code", unique: true, using: :btree
 
+  create_table "cashboxes", force: :cascade do |t|
+    t.integer  "cashboxable_id"
+    t.string   "cashboxable_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "cashboxes", ["cashboxable_type", "cashboxable_id"], name: "index_cashboxes_on_cashboxable_type_and_cashboxable_id", using: :btree
+
   create_table "organizations", force: :cascade do |t|
     t.integer  "code"
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,14 +79,14 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "organizations", ["name"], name: "index_organizations_on_name", unique: true, using: :btree
 
   create_table "orphan_lists", force: :cascade do |t|
-    t.string   "osra_num",                 limit: 255
+    t.string   "osra_num"
     t.integer  "partner_id"
     t.integer  "orphan_count"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequential_id"
-    t.string   "spreadsheet_file_name",    limit: 255
-    t.string   "spreadsheet_content_type", limit: 255
+    t.string   "spreadsheet_file_name"
+    t.string   "spreadsheet_content_type"
     t.integer  "spreadsheet_file_size"
     t.datetime "spreadsheet_updated_at"
   end
@@ -87,41 +96,41 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "orphan_lists", ["sequential_id"], name: "index_orphan_lists_on_sequential_id", using: :btree
 
   create_table "orphans", force: :cascade do |t|
-    t.string   "name",                            limit: 255
+    t.string   "name"
     t.boolean  "father_is_martyr"
-    t.string   "father_occupation",               limit: 255
-    t.string   "father_place_of_death",           limit: 255
-    t.string   "father_cause_of_death",           limit: 255
+    t.string   "father_occupation"
+    t.string   "father_place_of_death"
+    t.string   "father_cause_of_death"
     t.date     "father_date_of_death"
-    t.string   "mother_name",                     limit: 255
+    t.string   "mother_name"
     t.boolean  "mother_alive"
     t.date     "date_of_birth"
-    t.string   "gender",                          limit: 255
-    t.string   "health_status",                   limit: 255
-    t.string   "schooling_status",                limit: 255
+    t.string   "gender"
+    t.string   "health_status"
+    t.string   "schooling_status"
     t.boolean  "goes_to_school"
-    t.string   "guardian_name",                   limit: 255
-    t.string   "guardian_relationship",           limit: 255
+    t.string   "guardian_name"
+    t.string   "guardian_relationship"
     t.integer  "guardian_id_num"
-    t.string   "contact_number",                  limit: 255
-    t.string   "alt_contact_number",              limit: 255
+    t.string   "contact_number"
+    t.string   "alt_contact_number"
     t.boolean  "sponsored_by_another_org"
-    t.string   "another_org_sponsorship_details", limit: 255
+    t.string   "another_org_sponsorship_details"
     t.integer  "minor_siblings_count"
     t.integer  "sponsored_minor_siblings_count"
-    t.string   "comments",                        limit: 255
+    t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "priority",                        limit: 255
+    t.string   "priority"
     t.integer  "sequential_id"
-    t.string   "osra_num",                        limit: 255
+    t.string   "osra_num"
     t.integer  "orphan_list_id"
     t.integer  "province_code"
-    t.string   "father_given_name",               limit: 255,                 null: false
-    t.string   "family_name",                     limit: 255,                 null: false
-    t.integer  "status",                                      default: 0
-    t.integer  "sponsorship_status",                          default: 0
-    t.boolean  "father_deceased",                             default: false
+    t.string   "father_given_name",                               null: false
+    t.string   "family_name",                                     null: false
+    t.integer  "status",                          default: 0
+    t.integer  "sponsorship_status",              default: 0
+    t.boolean  "father_deceased",                 default: false
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
@@ -130,15 +139,15 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
 
   create_table "partners", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "region",          limit: 255
+    t.string   "name"
+    t.string   "region"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "contact_details", limit: 255
+    t.string   "contact_details"
     t.integer  "province_id"
     t.integer  "status_id"
     t.date     "start_date"
-    t.string   "osra_num",        limit: 255
+    t.string   "osra_num"
     t.integer  "sequential_id"
   end
 
@@ -149,14 +158,19 @@ ActiveRecord::Schema.define(version: 20161212003047) do
   add_index "partners", ["status_id"], name: "index_partners_on_status_id", using: :btree
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "amount",     null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "amount",         null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "destination_id"
+    t.integer  "source_id"
   end
 
+  add_index "payments", ["destination_id"], name: "index_payments_on_destination_id", using: :btree
+  add_index "payments", ["source_id"], name: "index_payments_on_source_id", using: :btree
+
   create_table "pending_orphan_lists", force: :cascade do |t|
-    t.string   "spreadsheet_file_name",    limit: 255
-    t.string   "spreadsheet_content_type", limit: 255
+    t.string   "spreadsheet_file_name"
+    t.string   "spreadsheet_content_type"
     t.integer  "spreadsheet_file_size"
     t.datetime "spreadsheet_updated_at"
     t.datetime "created_at"
@@ -165,49 +179,49 @@ ActiveRecord::Schema.define(version: 20161212003047) do
 
   create_table "pending_orphans", force: :cascade do |t|
     t.integer "pending_orphan_list_id"
-    t.string  "name",                            limit: 255
-    t.string  "father_is_martyr",                limit: 255
-    t.string  "father_occupation",               limit: 255
-    t.string  "father_place_of_death",           limit: 255
-    t.string  "father_cause_of_death",           limit: 255
-    t.string  "father_date_of_death",            limit: 255
-    t.string  "mother_name",                     limit: 255
-    t.string  "mother_alive",                    limit: 255
-    t.string  "date_of_birth",                   limit: 255
-    t.string  "gender",                          limit: 255
-    t.string  "health_status",                   limit: 255
-    t.string  "schooling_status",                limit: 255
-    t.string  "goes_to_school",                  limit: 255
-    t.string  "guardian_name",                   limit: 255
-    t.string  "guardian_relationship",           limit: 255
-    t.string  "guardian_id_num",                 limit: 255
-    t.string  "original_address_province",       limit: 255
-    t.string  "original_address_city",           limit: 255
-    t.string  "original_address_neighborhood",   limit: 255
-    t.string  "original_address_street",         limit: 255
-    t.string  "original_address_details",        limit: 255
-    t.string  "current_address_province",        limit: 255
-    t.string  "current_address_city",            limit: 255
-    t.string  "current_address_neighborhood",    limit: 255
-    t.string  "current_address_street",          limit: 255
-    t.string  "current_address_details",         limit: 255
-    t.string  "contact_number",                  limit: 255
-    t.string  "alt_contact_number",              limit: 255
-    t.string  "sponsored_by_another_org",        limit: 255
-    t.string  "another_org_sponsorship_details", limit: 255
-    t.string  "minor_siblings_count",            limit: 255
-    t.string  "sponsored_minor_siblings_count",  limit: 255
-    t.string  "comments",                        limit: 255
+    t.string  "name"
+    t.string  "father_is_martyr"
+    t.string  "father_occupation"
+    t.string  "father_place_of_death"
+    t.string  "father_cause_of_death"
+    t.string  "father_date_of_death"
+    t.string  "mother_name"
+    t.string  "mother_alive"
+    t.string  "date_of_birth"
+    t.string  "gender"
+    t.string  "health_status"
+    t.string  "schooling_status"
+    t.string  "goes_to_school"
+    t.string  "guardian_name"
+    t.string  "guardian_relationship"
+    t.string  "guardian_id_num"
+    t.string  "original_address_province"
+    t.string  "original_address_city"
+    t.string  "original_address_neighborhood"
+    t.string  "original_address_street"
+    t.string  "original_address_details"
+    t.string  "current_address_province"
+    t.string  "current_address_city"
+    t.string  "current_address_neighborhood"
+    t.string  "current_address_street"
+    t.string  "current_address_details"
+    t.string  "contact_number"
+    t.string  "alt_contact_number"
+    t.string  "sponsored_by_another_org"
+    t.string  "another_org_sponsorship_details"
+    t.string  "minor_siblings_count"
+    t.string  "sponsored_minor_siblings_count"
+    t.string  "comments"
     t.boolean "father_deceased"
-    t.string  "father_given_name",               limit: 255
-    t.string  "family_name",                     limit: 255
+    t.string  "father_given_name"
+    t.string  "family_name"
   end
 
   add_index "pending_orphans", ["pending_orphan_list_id"], name: "index_pending_orphans_on_pending_orphan_list_id", using: :btree
 
   create_table "provinces", force: :cascade do |t|
     t.integer  "code"
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -217,36 +231,36 @@ ActiveRecord::Schema.define(version: 20161212003047) do
 
   create_table "sponsor_types", force: :cascade do |t|
     t.integer "code"
-    t.string  "name", limit: 255
+    t.string  "name"
   end
 
   add_index "sponsor_types", ["code"], name: "index_sponsor_types_on_code", unique: true, using: :btree
   add_index "sponsor_types", ["name"], name: "index_sponsor_types_on_name", unique: true, using: :btree
 
   create_table "sponsors", force: :cascade do |t|
-    t.string   "name",                     limit: 255
-    t.string   "address",                  limit: 255
-    t.string   "country",                  limit: 255
-    t.string   "email",                    limit: 255
-    t.string   "contact1",                 limit: 255
-    t.string   "contact2",                 limit: 255
-    t.string   "additional_info",          limit: 255
+    t.string   "name"
+    t.string   "address"
+    t.string   "country"
+    t.string   "email"
+    t.string   "contact1"
+    t.string   "contact2"
+    t.string   "additional_info"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "status_id"
     t.date     "start_date"
     t.integer  "sponsor_type_id"
-    t.string   "gender",                   limit: 255
+    t.string   "gender"
     t.integer  "branch_id"
     t.integer  "organization_id"
-    t.string   "osra_num",                 limit: 255
+    t.string   "osra_num"
     t.integer  "sequential_id"
     t.integer  "requested_orphan_count"
-    t.boolean  "request_fulfilled",                    default: false, null: false
+    t.boolean  "request_fulfilled",        default: false, null: false
     t.integer  "agent_id"
-    t.string   "city",                     limit: 255
-    t.string   "payment_plan",             limit: 255, default: "",    null: false
-    t.integer  "active_sponsorship_count",             default: 0
+    t.string   "city"
+    t.string   "payment_plan",             default: "",    null: false
+    t.integer  "active_sponsorship_count", default: 0
   end
 
   add_index "sponsors", ["agent_id"], name: "index_sponsors_on_agent_id", using: :btree
@@ -274,17 +288,17 @@ ActiveRecord::Schema.define(version: 20161212003047) do
 
   create_table "statuses", force: :cascade do |t|
     t.integer "code"
-    t.string  "name", limit: 255
+    t.string  "name"
   end
 
   add_index "statuses", ["code"], name: "index_statuses_on_code", unique: true, using: :btree
   add_index "statuses", ["name"], name: "index_statuses_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",      limit: 255
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_name",  limit: 255
+    t.string   "user_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
