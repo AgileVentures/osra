@@ -18,25 +18,4 @@ RSpec.describe Cashbox, type: :model do
     end
   end
 
-  describe '#deposit!' do
-    context 'positive amount' do
-      it 'deposit amount to cashbox' do
-        cashbox= Cashbox.create
-
-        cashbox.deposit!(1000)
-
-        expect(cashbox.total).to eq(1000)
-      end
-    end
-
-    context 'negative amount' do
-      it 'does not change the balance' do
-        cashbox= Cashbox.create
-
-        cashbox.deposit!(-100)
-
-        expect(cashbox.total).to eq(0)
-      end
-    end
-  end
 end
