@@ -2,6 +2,6 @@
 # frozen_string_literal: true
 FactoryGirl.define do
   factory :payment do
-    amount { FactoryHelper::MySQL.integer }
+    amount { FactoryHelper::MySQL.integer(unsigned: true) }
   end
 end

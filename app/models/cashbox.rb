@@ -7,4 +7,8 @@ class Cashbox < ActiveRecord::Base
     deposits.sum(:amount) - withdrawals.sum(:amount)
   end
 
+  def deposit!(amount)
+    deposits.create(amount: amount)
+  end
+
 end
