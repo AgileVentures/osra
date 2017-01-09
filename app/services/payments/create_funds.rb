@@ -6,17 +6,19 @@ module Payments
     end
 
     def call
-      @payment.destination = @cashbox
-      @payment.save
+      if @payment.valid?
+        @payment.destination = @cashbox
+        @payment.save
+      end
     end
 
     private
 
     attr_reader :cashbox, :payment
 
-    def initialize(cashbox, payment)
+    def initialize(cashbox, amount, payment_builder = Payment)
       @cashbox = cashbox
-      @payment = payment
+      @payment = payment_builder.new(amount: amount)
     end
   end
 end
