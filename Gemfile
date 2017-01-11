@@ -4,6 +4,8 @@ ruby '2.2.0'
 
 gem 'rails', '~> 4.2.7'
 
+gem 'rest-client', '~> 1.8.0'
+
 gem 'pg', '~> 0.18.1' # Ruby interface to PostgreSQL
 gem 'sass-rails', '~> 5.0.0' # use SASS instead of CSS
 gem 'bootstrap-sass', '~> 3.3.3' # sass powered version of bootstrap
@@ -14,7 +16,7 @@ gem 'uglifier', '~> 3.0.3' # compressor for JavaScript assets
 gem 'sequenced', '>= 2.0.0' # sequential IDs in Models
 gem 'devise', '~> 3.5.10' # authentication solution
 gem 'jquery-rails', '~> 4.2.1' # use jquery with Rails
-gem 'paperclip', '~> 4.2.1' # upload attachment files
+gem 'paperclip', '~> 4.2.2' # upload attachment files
 gem 'aws-sdk', '< 2.0' # Amazon Web Services - S3 bucket for Paperclip;
 # as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
 gem 'coveralls', '~> 0.7.9', require: false # measure test coverage
@@ -42,10 +44,10 @@ group :development, :test do
   gem 'better_errors', '~> 2.1.1' # nice output of rails errors in browser
   gem 'binding_of_caller', '~> 0.7.2'  # online console and debugging in browser
   gem 'launchy', '~> 2.4.3' # open capybara-generated pages in browser
-  gem 'web-console', '~> 2.0.0' # debuggin tools for Rails
+  gem 'web-console', '~> 2.2.0' # debuggin tools for Rails
 end
 
 group :production do
   gem 'rails_12factor', '~> 0.0.3' # required to run the app on Heroku
-  gem 'passenger', '~> 4.0.59' # web server
+  gem 'passenger', '~> 4.0.60' # web server
 end
