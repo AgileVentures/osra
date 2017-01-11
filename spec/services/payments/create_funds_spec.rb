@@ -7,9 +7,17 @@ module Payments
         it 'add funds to a cashbox' do
           cashbox = Cashbox.create
 
-          res = CreateFunds.call(cashbox, 1000)
+          CreateFunds.call(cashbox, 1000)
 
           expect(cashbox.total).to eq(1000)
+        end
+
+        it 'returns true' do
+          cashbox = Cashbox.create
+
+          res = CreateFunds.call(cashbox, 1000)
+
+          expect(res).to be_truthy
         end
       end
 
