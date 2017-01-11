@@ -20,7 +20,7 @@ RSpec.describe "pending_orphan_lists/upload.html.erb", type: :view do
     expect(rendered).to have_selector("form[action='#{validate_partner_pending_orphan_lists_path(partner)}']")
     expect(rendered).to have_selector("input[type='file']")
     expect(rendered).to have_selector("input[type='submit'][value='Upload']")
-    expect(rendered).to have_link("Cancel", partner_path(partner))
+    expect(rendered).to have_link("Cancel", href: partner_path(partner))
   end
 
 end

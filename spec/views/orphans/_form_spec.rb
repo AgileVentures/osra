@@ -29,7 +29,7 @@ RSpec.describe "orphans/_form.html.erb", type: :view do
   specify 'has a "Cancel" button when using an existing Orphan record' do
     render_orphan_form orphan_full
 
-    expect(rendered).to have_link("Cancel", orphan_path(orphan_full))
+    expect(rendered).to have_link("Cancel", href: orphan_path(orphan_full))
   end
 
   specify 'has form values' do

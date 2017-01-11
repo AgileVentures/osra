@@ -55,7 +55,7 @@ RSpec.describe "orphans/index.html.erb", type: :view do
         assign(:orphans_count, orphans_count)
         render
         expect(rendered).to have_link('All (' + orphans_count.to_s + ')',
-                                      new_sponsorship_path(sponsor_id: sponsor.id, scope: :all))
+                                      href: new_sponsorship_path(sponsor_id: sponsor.id, scope: :all))
       end
 
       it 'should show filter orphans for scope eligible for sponsorship' do
@@ -63,7 +63,7 @@ RSpec.describe "orphans/index.html.erb", type: :view do
         assign(:eligible_for_sponsorship, eligible_for_sponsorship)
         render
         expect(rendered).to have_link('Eligible For Sponsorship (' + orphans_sort_by_eligibility_count.to_s + ')',
-                                      new_sponsorship_path(sponsor_id: sponsor.id, scope: :eligible_for_sponsorship))
+                                      href: new_sponsorship_path(sponsor_id: sponsor.id, scope: :eligible_for_sponsorship))
         expect(rendered).to have_content('Beginning')
       end
     end
@@ -73,14 +73,14 @@ RSpec.describe "orphans/index.html.erb", type: :view do
         assign(:orphans_count, orphans_count)
         render
         expect(rendered).to have_link('All (' + orphans_count.to_s + ')',
-                                      orphans_path(sponsor_id: sponsor.id, scope: :all))
+                                      href: orphans_path(sponsor_id: sponsor.id, scope: :all))
       end
 
       it 'should show filter orphans for scope eligible for sponsorship' do
         assign(:orphans_sort_by_eligibility_count, orphans_sort_by_eligibility_count)
         render
         expect(rendered).to have_link('Eligible For Sponsorship (' + orphans_sort_by_eligibility_count.to_s + ')',
-                                      orphans_path(sponsor_id: sponsor.id, scope: :eligible_for_sponsorship))
+                                      href: orphans_path(sponsor_id: sponsor.id, scope: :eligible_for_sponsorship))
       end
     end
 

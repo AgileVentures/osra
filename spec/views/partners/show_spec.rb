@@ -12,12 +12,12 @@ RSpec.describe "partners/show.html.erb", type: :view do
   describe 'instance action-items' do
     specify 'Edit Partner' do
       render
-      expect(rendered).to have_link('Edit Partner', edit_partner_path(partner.id))
+      expect(rendered).to have_link('Edit Partner', href: edit_partner_path(partner.id))
     end
 
     specify 'Upload Orphan List button' do
       render
-      expect(rendered).to have_link('Upload Orphan List', upload_partner_pending_orphan_lists_path(partner.id))
+      expect(rendered).to have_link('Upload Orphan List', href: upload_partner_pending_orphan_lists_path(partner.id))
     end
 
     describe 'Orphan Lists button' do

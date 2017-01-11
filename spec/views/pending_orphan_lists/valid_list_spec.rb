@@ -20,7 +20,7 @@ RSpec.describe "pending_orphan_lists/valid_list.html.erb", type: :view do
     expect(view).to render_template partial: "layouts/_content_title.erb"
   end
 
-  it 'shows Spredsheet orphans table' do
+  it 'shows Spreadsheet orphans table' do
     expect(rendered).to have_text(pending_orphans.first.name)
     expect(rendered).to have_selector('tbody tr', count: 3)
   end
@@ -28,6 +28,6 @@ RSpec.describe "pending_orphan_lists/valid_list.html.erb", type: :view do
   it 'shows import form' do
     expect(rendered).to have_selector("input[value='1']", visible: false)
     expect(rendered).to have_selector("input[type='submit'][value='Import']")
-    expect(rendered).to have_link("Cancel", partner_path(partner))
+    expect(rendered).to have_link("Cancel", href: partner_pending_orphan_list_path(partner, pending_orphan_list))
   end
 end

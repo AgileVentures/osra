@@ -7,7 +7,7 @@ describe "users/index.html.erb", type: :view do
       assign(:users, User.none.paginate(:page => 1))
       render
 
-      expect(rendered).to have_link('New User', new_user_path)
+      expect(rendered).to have_link('New User', href: new_user_path)
     end
 
     it 'should have a pagination bar' do
