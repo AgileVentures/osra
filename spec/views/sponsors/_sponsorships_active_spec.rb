@@ -22,7 +22,7 @@ RSpec.describe 'sponsors/_sponsorships_active.html.haml', type: :view do
     end
 
     it "should have End Sponsorship form" do
-      expect(rendered).to have_button "End Sponsorship", inactivate_sponsorship_path(sponsorships_active.first)
+      expect(rendered).to have_button "End Sponsorship"
       expect(rendered).to have_css("input[type='text'][value='#{Date.current}']")
     end
 

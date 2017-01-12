@@ -46,7 +46,7 @@ RSpec.describe "orphans/index.html.erb", type: :view do
       expect(rendered).to have_content('Displaying ' + orphans.count.to_s + ' of ' + orphans_count.to_s + ' Orphans.')
     end
 
-    context 'sponsors exists' do
+    context 'sponsor exists' do
       before :each do
         assign(:sponsor, sponsor)
       end
@@ -68,19 +68,20 @@ RSpec.describe "orphans/index.html.erb", type: :view do
       end
     end
 
-    context 'sponsors not exists' do
+    context 'sponsor does not exist' do
       it 'should show all orphans for scope all' do
         assign(:orphans_count, orphans_count)
         render
+
         expect(rendered).to have_link('All (' + orphans_count.to_s + ')',
-                                      href: orphans_path(sponsor_id: sponsor.id, scope: :all))
+                                      href: orphans_path(scope: :all))
       end
 
       it 'should show filter orphans for scope eligible for sponsorship' do
         assign(:orphans_sort_by_eligibility_count, orphans_sort_by_eligibility_count)
         render
         expect(rendered).to have_link('Eligible For Sponsorship (' + orphans_sort_by_eligibility_count.to_s + ')',
-                                      href: orphans_path(sponsor_id: sponsor.id, scope: :eligible_for_sponsorship))
+                                      href: orphans_path(scope: :eligible_for_sponsorship))
       end
     end
 
