@@ -73,6 +73,10 @@ a, a:hover {
   // left/right table padding
   tr > td:first-child, tr > th:first-child { padding-left: 20px; }
   tr > td:last-child, tr > th:last-child { padding-right: 20px; }
+
+  tr.active_adult {
+    background-color: rgba(232, 44, 12, 0.2);
+  }
 }
 
 // flashes

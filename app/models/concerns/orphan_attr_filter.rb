@@ -1,10 +1,10 @@
 module OrphanAttrFilter
   extend ActiveSupport::Concern
 
-  Orphan.extend WhereWithCondition
-  Orphan::ActiveRecord_Relation.include WhereWithCondition
-
   included do
+    extend WhereWithCondition
+    self::ActiveRecord_Relation.include WhereWithCondition
+
     scope :filter, ->(filters) do
       self
         .where_with_conditions(["orphans.name ILIKE ?", "%#{filters[:name_value]}%"], conditions: [filters[:name_value], filters[:name_option]=="contains"])
@@ -13,13 +13,13 @@ module OrphanAttrFilter
         .where_with_conditions(["orphans.name ~* ?", "#{filters[:name_value]}$"], conditions: [filters[:name_value], filters[:name_option]=="ends_with"])
         .where_with_conditions(["date_of_birth > ?", filters[:date_of_birth_from]], conditions: [filters[:date_of_birth_from]])
         .where_with_conditions(["date_of_birth < ?", filters[:date_of_birth_until]], conditions: [filters[:date_of_birth_until]])
-        .where_with_conditions(["gender ILIKE ?", filters[:gender]], conditions: [filters[:gender]])
+        .where_with_conditions(["orphans.gender ILIKE ?", filters[:gender]], conditions: [filters[:gender]])
         .where_with_conditions(["province_code = ?", filters[:province_code]], conditions: [filters[:province_code]])
-        .where_with_conditions(["addresses.city ILIKE ?", filters[:original_address_city]], conditions: [filters[:original_address_city]], join: :original_address)
+        .where_with_conditions(["addresses.city ILIKE ?", filters[:original_address_city]], conditions: [filters[:original_address_city]])
         .where_with_conditions(["priority ILIKE ?", filters[:priority]], conditions: [filters[:priority]])
         .where_with_conditions(["sponsorship_status = ?", filters[:sponsorship_status]], conditions: [filters[:sponsorship_status]])
         .where_with_conditions(["status = ?", filters[:status]], conditions: [filters[:status]])
-        .where_with_conditions(["partners.name ILIKE ?", filters[:orphan_list_partner_name]], conditions: [filters[:orphan_list_partner_name]], join: :partner)
+        .where_with_conditions(["partners.name ILIKE ?", filters[:orphan_list_partner_name]], conditions: [filters[:orphan_list_partner_name]])
         .where_with_conditions(["father_given_name ILIKE ?", "%#{filters[:father_given_name_value]}%"], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="contains"])
         .where_with_conditions(["father_given_name ILIKE ?", filters[:father_given_name_value]], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="equals"])
         .where_with_conditions(["father_given_name ~* ?", "^#{filters[:father_given_name_value]}"], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="starts_with"])

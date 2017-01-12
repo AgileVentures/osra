@@ -1,0 +1,23 @@
+<%=render partial: "layouts/content_title.erb",
+          locals: {title: "Upload Spreadsheet for partner: #{@partner.name}, OSRA Number: #{@partner.osra_num}"} %>
+
+<%= form_for :pending_orphan_list, url: {action: "validate", partner_id: @partner},
+        html: {class: "records_form", role: "form"} do |f| %>
+  <%= render 'shared/errors', object: f.object %>
+  <fieldset>
+    <div class="form-group">
+      <%= f.label :spreadsheet %>
+      <%= f.file_field :spreadsheet %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit "Upload", class: 'btn btn-primary' %>
+      <%= link_to "Cancel", partner_path(@partner),
+            class: 'btn btn-default btn-cancel', role: 'button' %>
+    </div>
+  </fieldset>
+<% end %>
+
+
+
+

@@ -1,9 +1,0 @@
-=render partial: "layouts/content_title.erb", locals: {title: "Sponsors"}
-
-%div.main-content-header
-  = link_to('New Sponsor', new_hq_sponsor_path, class: 'btn btn-default', role: 'button')
-  %p
-    Currently sponsoring #{pluralize(total_active_sponsorships, 'orphan')}
-    out of #{total_requested_sponsorships} requested.
-
-=render partial: 'hq/sponsors/sponsors.html.haml', locals: {sponsors: @sponsors, filters: @filters, sort_by: @sort_by, sortable_by_column: @sortable_by_column}

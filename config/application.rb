@@ -31,5 +31,8 @@ module Osra
 
     # Add path to validators
     config.autoload_paths += %W(#{config.root}/app/models/validators/)
+
+    # Load lib
+    config.autoload_paths << Rails.root.join("lib")
   end
 end

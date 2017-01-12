@@ -1,0 +1,230 @@
+<%=render partial: "layouts/content_title.erb", locals: {title: "Orphans"} %>
+
+<%- if @sponsor %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Sponsor
+        </h3>
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Name</dt>
+          <dd><%= @sponsor.name %></dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>Request Fulfilled</dt>
+          <dd><%= @sponsor.request_fulfilled ? 'Yes' : 'No'%>
+            (<%= @sponsor.active_sponsorship_count %>/<%= @sponsor.requested_orphan_count %>)
+          </dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <%= link_to 'Return to Sponsor Page', sponsor_path(@sponsor.id) %>
+        </dl>
+      </div>
+    </div>
+<%- end %>
+
+<div class="main-content-header">
+  <%- if @sponsor %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', new_sponsorship_path(sponsor_id: @sponsor.id, scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  new_sponsorship_path(sponsor_id: @sponsor.id, scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- else %>
+      <%= link_to 'All (' + @orphans_count.to_s + ')', orphans_path(scope: :all),
+                  class: 'btn btn-default', role: 'button' %>
+      <%= link_to 'Eligible For Sponsorship (' + @orphans_sort_by_eligibility_count.to_s + ')',
+                  orphans_path(scope: :eligible_for_sponsorship),
+                  class: 'btn btn-default', role: 'button' %>
+  <%- end %>
+  <%= link_to 'Export to csv', orphans_path(format: :csv, filters: @filters, sort_column: @current_sort_column, sort_direction: @current_sort_direction), class: 'btn btn-default', role: 'button' %>
+    <div class="pagination_information">
+        Displaying <%=@orphans.count.to_s%> of <%=@orphans_count.to_s%> Orphans.
+    </div>
+</div>
+
+<div class="row">
+  <%= render(partial: '/orphans/filters.html.erb',
+             locals: {orphans: @orphans, filters: @filters}) %>
+
+  <%- if @orphans.empty? %>
+    <div class="center">
+      <em>No Orphans found</em>
+    </div>
+  <%- else %>
+    <div class='table-responsive'>
+      <table class='table table-hover' name='orphans'>
+        <thead>
+          <tr>
+            <th>
+              <%= sortable_link("osra_num", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :osra_num)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("orphans.name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Full Name",
+                  sort_column_is_active: (@current_sort_column == :"orphans.name")
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("father_given_name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Father Name",
+                  sort_column_is_active: (@current_sort_column == :father_given_name)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("date_of_birth", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :date_of_birth)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("gender", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :gender)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("province_name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Province Name",
+                  sort_column_is_active: (@current_sort_column == :province_name)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("partner_name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Partner Name",
+                  sort_column_is_active: (@current_sort_column == :partner_name)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("father_is_martyr", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :father_is_martyr)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("father_deceased", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :father_deceased)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("mother_alive", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :mother_alive)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("priority", {
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :priority)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("status", {
+                  table_header: "Orphan Status",
+                  sort_direction: @current_sort_direction,
+                  sort_column_is_active: (@current_sort_column == :status)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("sponsorship_status", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Sponsorship",
+                  sort_column_is_active: (@current_sort_column == :sponsorship_status)
+              }) %>
+            </th>
+            <th>
+              <%= sortable_link("sponsor_name", {
+                  sort_direction: @current_sort_direction,
+                  table_header: "Current Sponsor",
+                  sort_column_is_active: (@current_sort_column == :sponsor_name)
+              }) %>
+            </th>
+            <th>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- @orphans.each do |orphan| %>
+            <tr id="orphan_<%= orphan.id %>" class="<%= orphan_highlight_class orphan %>">
+              <td>
+                <%= link_to orphan.osra_num, orphan_path(orphan) %>
+              </td>
+              <td>
+                <%= link_to orphan.full_name, orphan_path(orphan) %>
+              </td>
+              <td>
+                <%= orphan.father_name %>
+              </td>
+              <td>
+                <%= orphan.date_of_birth %>
+              </td>
+              <td>
+                <%= orphan.gender %>
+              </td>
+              <td>
+                <%= orphan.province_name %>
+              </td>
+              <td>
+                <%= orphan.partner_name %>
+              </td>
+              <td>
+                <%= orphan.father_is_martyr ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.father_deceased ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.mother_alive ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= orphan.priority %>
+              </td>
+              <td>
+                <%= orphan.status.humanize %>
+              </td>
+              <td>
+                <%= orphan.sponsorship_status.humanize %>
+              </td>
+              <td>
+                <% if orphan.sponsor_id %>
+                  <%= link_to "#{orphan.sponsor_name}, #{orphan.sponsor_osra_num}", sponsor_path(orphan.sponsor_id) %>
+                <% else %>
+                  --
+                <% end %>
+              </td>
+              <td>
+                <%- if @sponsor and @eligible_for_sponsorship %>
+                    <%= form_tag sponsor_sponsorships_path(@sponsor), method: :post do %>
+                      <div class="form-group">
+                        <%= label_tag :title, 'Beginning' %>
+                        <%= text_field_tag :sponsorship_start_date,
+                                           Date.current.to_s,
+                                           class: "form-control date-picker" %>
+                        <%= hidden_field_tag :orphan_id, orphan.id %>
+                        <%= submit_tag "Sponsor this orphan", class: "btn btn-primary" %>
+                      </div>
+                    <% end %>
+                <%- end %>
+              </td>
+            </tr>
+          <%- end %>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <%= will_paginate @orphans, will_paginate_render_options %>
+      </div>
+    </div>
+  <%- end %>
+
+</div>

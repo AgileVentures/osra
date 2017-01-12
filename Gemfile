@@ -2,19 +2,18 @@ source 'https://rubygems.org'
 
 ruby '2.2.0'
 
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 4.2.7'
 
 gem 'pg', '~> 0.18.1' # Ruby interface to PostgreSQL
 gem 'sass-rails', '~> 5.0.0' # use SASS instead of CSS
 gem 'bootstrap-sass', '~> 3.3.3' # sass powered version of bootstrap
 gem 'bootstrap-datepicker-rails', '~> 1.3.1' # bootstrap datepicker
-gem 'autoprefixer-rails', '~> 5.1.5' # auto add vendor prefixes to CSS rules
+gem 'autoprefixer-rails', '~> 6.5.1' # auto add vendor prefixes to CSS rules
 gem 'coffee-rails', '~> 4.1.0' # use Coffeescript
-gem 'uglifier', '>= 2.6.0' # compressor for JavaScript assets
-gem 'activeadmin', github: 'activeadmin' # data administration framework
+gem 'uglifier', '~> 3.0.3' # compressor for JavaScript assets
 gem 'sequenced', '>= 2.0.0' # sequential IDs in Models
-gem 'devise', '~> 3.4.1' # authentication solution
-gem 'jquery-rails', '~> 4.0.3' # use jquery with Rails
+gem 'devise', '~> 3.5.10' # authentication solution
+gem 'jquery-rails', '~> 4.2.1' # use jquery with Rails
 gem 'paperclip', '~> 4.2.1' # upload attachment files
 gem 'aws-sdk', '< 2.0' # Amazon Web Services - S3 bucket for Paperclip;
 # as of 07-04-2015, paperclip is not yet compatible with aws-sdk v2.0
@@ -29,16 +28,11 @@ gem 'will_paginate-bootstrap', '~> 1.0.1' # bootstrap integration with will_pagi
 
 group :test do
   gem 'capybara', '~> 2.4.4' # interact with pages in tests
-  gem 'cucumber-rails', '~> 1.4.2', require: false # BDD framework
-  gem 'capybara-webkit', '~> 1.4.1' # headless webkit driver for capybara
-  gem 'poltergeist', '~> 1.6' # headless driver for capybara by phantomjs
-  gem 'headless', '~> 1.0.2' # gem that allows capybara-webkit to run without calling xvfb directly
-  gem 'database_cleaner', '~> 1.4' # clean db in tests
   gem 'shoulda-matchers', '~> 2.8', require: false # one-line tests for common Rails validations
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.2.0' # RSpec test framework for Rails
+  gem 'rspec-rails', '~> 3.5' # RSpec test framework for Rails
   gem 'faker', '~> 1.4.3' # easily generate fake data
   gem 'factory_girl_rails', '~> 4.5.0' # use factories to produce objects
   gem 'awesome_print', '~> 1.6.1' # Well Formatted output in console

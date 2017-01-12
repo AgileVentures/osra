@@ -17,10 +17,10 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: osra_development
+  database: <%= ENV['DB_NAME'] || 'osra_development' %>
   pool: 5
-  username: postgres
-  password:
+  username: <%= ENV['DB_USER'] || 'postgres' %>
+  password: <%= ENV['DB_PASSWORD'] || '' %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -46,10 +46,10 @@ development:
 test: &test
   adapter: postgresql
   encoding: unicode
-  database: osra_test
+  database: <%= ENV['DB_NAME'] || 'osra_test' %>
   pool: 5
-  username: postgres
-  password:
+  username: <%= ENV['DB_USER'] || 'postgres' %>
+  password: <%= ENV['DB_PASSWORD'] || '' %>
 
 production:
   adapter: postgresql
@@ -58,6 +58,3 @@ production:
   pool: 5
   username: postgres
   password:
-
-cucumber:
-  <<: *test

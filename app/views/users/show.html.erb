@@ -1,0 +1,64 @@
+<%=render partial: "layouts/content_title.erb", locals: {title: "Show User: #{@user.user_name}"} %>
+
+<div class="main-content-header">
+  <%= link_to 'Edit User', edit_user_path(@user),
+    class: 'btn btn-default', role: 'button' %>
+</div>
+
+
+<br>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Orphan Details
+    </h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>User Name</dt>
+      <dd><%= @user.user_name %></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Email Address</dt>
+      <dd><%= @user.email %></dd>
+    </dl>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= pluralize(@active_sponsors.count.to_s, 'Active Sponsor') %>
+    </h3>
+  </div>
+
+  <% if @user.sponsors.count > 0 %>
+    <div class="active_sponsors_index">
+      <%= render partial: 'users/sponsors.html.haml',
+        locals: {
+          sponsors: @active_sponsors,
+          param_name: 'active_sponsor'
+        }
+      %>
+    </div>
+  <% end %>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= pluralize(@inactive_sponsors.count.to_s, 'Inactive Sponsor') %>
+    </h3>
+  </div>
+  <% if @user.sponsors.count > 0 %>
+    <div class="inactive_sponsors_index">
+      <%= render partial: 'users/sponsors.html.haml',
+        locals: {
+          sponsors: @inactive_sponsors,
+          param_name: 'inactive_sponsor'
+        }
+      %>
+    </div>
+  <% end %>
+</div>

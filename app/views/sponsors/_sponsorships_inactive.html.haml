@@ -1,0 +1,33 @@
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = pluralize(sponsorships.count.to_s, 'Previously Sponsored Orphan')
+- if sponsorships.count > 0
+  .inactive_sponsors_index
+    .table-responsive
+      %table.table.table-hover
+        %thead
+          %tr
+            %th
+              Orphan name
+            %th
+              Orphan date of birth
+            %th
+              Orphan gender
+            %th
+              Sponsorship Began
+            %th
+              Sponsorship Ended
+        %tbody
+          - sponsorships.each do |sponsorship|
+            %tr
+              %td
+                = link_to sponsorship.orphan.name, orphan_path(sponsorship.orphan)
+              %td
+                = sponsorship.orphan.date_of_birth
+              %td
+                = sponsorship.orphan.gender
+              %td
+                = sponsorship.start_date
+              %td
+                = sponsorship.end_date

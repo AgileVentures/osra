@@ -5,7 +5,7 @@ FactoryGirl.define do
     gender { %w(Male Female).sample }
     contact_number { Faker::PhoneNumber.phone_number }
     father_given_name { Faker::Name.first_name }
-    mother_name { Faker::Name.first_name  }
+    mother_name { Faker::Name.first_name }
     family_name { Faker::Name.last_name }
     father_deceased { [true, false].sample }
     father_is_martyr { father_deceased ? [true, false].sample : false }
