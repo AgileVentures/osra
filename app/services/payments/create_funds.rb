@@ -6,7 +6,7 @@ module Payments
     end
 
     def call
-      payment = payment_builder.create(amount: amount)
+      payment = payment_builder.new(amount: amount)
       if payment.valid?
         payment.destination = cashbox
         payment.save
