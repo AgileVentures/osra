@@ -5,17 +5,13 @@ RSpec.describe Cashbox, type: :model do
   describe '#total' do
     context 'with existing payments' do
       it 'returns balance of cashbox' do
-        cashbox_source = Cashbox.create
-        cashbox_destination = Cashbox.create
+        destination_cashbox = Cashbox.create
+        amount_1 = FactoryHelper::MySQL.int(min: 1, max: 2147483647)
+        amount_2 = FactoryHelper::MySQL.int(min: 1, max: 2147483647)
+        build_payment_from_outside(destination_cashbox, amount_2)
+        build_payment_from_cashbox(destination_cashbox, amount_1)
 
-        deposit_without_source = create(:payment, destination: cashbox_destination,
-                                        amount: 150)
-        deposit_with_source = create(:payment, destination: cashbox_destination,
-                                     source: cashbox_source, amount: 100)
-        withdrawal = create(:payment, amount: 50, source: cashbox_destination)
-
-
-        expect(cashbox_destination.total).to eq(200)
+        expect(destination_cashbox.total).to eq(amount_1 + amount_2)
       end
     end
 
@@ -27,4 +23,13 @@ RSpec.describe Cashbox, type: :model do
     end
   end
 
+  def build_payment_from_cashbox(destination_cashbox, amount)
+    cashbox_source = Cashbox.create
+    create(:payment, destination: destination_cashbox, source: cashbox_source,
+           amount: amount)
+  end
+
+  def build_payment_from_outside(destination_cashbox, amount)
+    create(:payment, destination: destination_cashbox, amount: amount)
+  end
 end
