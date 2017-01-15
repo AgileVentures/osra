@@ -39,3 +39,5 @@
                 = sponsor.sponsor_type.name
               %td
                 = en_ar_country(sponsor.country)
+.pagination
+  = will_paginate sponsors, will_paginate_render_options(param_name: param_name)

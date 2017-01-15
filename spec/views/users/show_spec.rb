@@ -7,6 +7,8 @@ RSpec.describe 'users/show.html.erb', type: :view do
 
     before :each do
       assign :user, user
+      assign :inactive_sponsors, []
+      assign :active_sponsors, []
       render
     end
 
@@ -24,37 +26,4 @@ RSpec.describe 'users/show.html.erb', type: :view do
       end
     end
   end
-
-  specify 'with no active nor inactive sponsors' do
-    assign :user, FactoryGirl.build_stubbed(:user)
-    render
-
-    expect(view).to_not render_template partial: 'sponsors/sponsors.html.haml',
-                                      locals: {sponsors: []}
-  end
-
-  describe 'with sponsors' do
-    let!(:user) { create :user }
-    let!(:sponsors) do
-      [ FactoryGirl.create(:sponsor, agent: user, status: Status.find_by_name('Active')),
-        FactoryGirl.create(:sponsor, agent: user, status: Status.find_by_name('On Hold')),
-        FactoryGirl.create(:sponsor, agent: user, status: Status.find_by_name('Inactive'))
-      ]
-    end
-
-    before :each do
-      assign :user, user
-      render
-    end
-
-    specify 'inactive' do
-      expect(view).to render_template partial: 'users/sponsors.html.haml',
-                                      locals: {sponsors: user.sponsors.all_active.paginate(page: 1)}
-    end
-
-    specify 'active' do
-      expect(view).to render_template partial: 'users/sponsors.html.haml',
-                                      locals: {sponsors: user.sponsors.all_inactive.paginate(page: 1)}
-    end
-  end
-end
+ end

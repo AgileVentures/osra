@@ -21,6 +21,33 @@ RSpec.feature 'User', :type => :feature do
     and_i_should_see '1'
   end
 
+  scenario 'Should be able to paginate active sponsors assigned to user' do
+    allow(Sponsor).to receive(:per_page).and_return(1)
+    create_active_sponsors(98, ['Active Sponsor 1', 'Active Sponsor 2'])
+    create_inactive_sponsors(98, ['Inactive Sponsor 1', 'Inactive Sponsor 2'])
+    visit users_path
+    and_i_click_link 'Michael Knight'
+    within('.active_sponsors_index') do
+      click_on('Next')
+    end
+    and_i_should_not_see('Active Sponsor 2')
+    and_i_should_see('Inactive Sponsor 2')
+  end
+
+  scenario 'Should be able to paginate inactive sponsors assigned to user' do
+    allow(Sponsor).to receive(:per_page).and_return(1)
+    create_active_sponsors(98, ['Active Sponsor 1', 'Active Sponsor 2'])
+    create_inactive_sponsors(98, ['Inactive Sponsor 1', 'Inactive Sponsor 2'])
+    visit users_path
+    and_i_click_link 'Michael Knight'
+    within('.inactive_sponsors_index') do
+      click_on('Next')
+    end
+    and_i_should_not_see('Inactive Sponsor 2')
+    and_i_should_see('Active Sponsor 2')
+  end
+
+
   scenario 'It should be possible to visit a user from the users index page' do
     visit users_path
     and_i_click_link 'Michael Knight'
@@ -70,5 +97,18 @@ RSpec.feature 'User', :type => :feature do
 
   def a_sponsorship_exist( user_id )
       FactoryGirl.create :sponsor, agent_id: user_id, name: 'Sponsor 1'
+  end
+
+  def create_active_sponsors(user_id, names)
+    names.each do |name|
+      FactoryGirl.create(:sponsor, agent_id: user_id, name: name)
+    end
+  end
+
+  def create_inactive_sponsors(user_id, names)
+    inactive_status = Status.find_by_name('Inactive')
+    names.each do |name|
+      FactoryGirl.create(:sponsor, agent_id: user_id, name: name, status: inactive_status)
+    end
   end
 end

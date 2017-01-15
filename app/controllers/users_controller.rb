@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 
   def show
     @user= User.find params[:id]
+    @inactive_sponsors = @user.inactive_sponsors.paginate(:page => params[:inactive_sponsor])
+    @active_sponsors = @user.active_sponsors.paginate(:page => params[:active_sponsor])
   end
 
   def edit
