@@ -49,6 +49,6 @@ group :development do
 end
 
 group :production do
-  gem "rails_12factor", "~> 0.0.3" # required to run the app on Heroku
-  gem "passenger", "~> 4.0.59" # web server
+  gem "rails_12factor" # required to run the app on Heroku
+  gem "passenger" # web server
 end
