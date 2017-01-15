@@ -34,7 +34,7 @@ RSpec.describe 'users/show.html.erb', type: :view do
   end
 
   describe 'with sponsors' do
-    let!(:user) { FactoryGirl.build_stubbed :user }
+    let!(:user) { create :user }
     let!(:sponsors) do
       [ FactoryGirl.create(:sponsor, agent: user, status: Status.find_by_name('Active')),
         FactoryGirl.create(:sponsor, agent: user, status: Status.find_by_name('On Hold')),

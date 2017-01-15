@@ -35,14 +35,14 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it 'handles invalid updates' do
-      allow(@old_user).to receive(:save).and_return(false)
+      allow(@old_user).to receive(:update_attributes).and_return(false)
       post :update, id: @old_user.id, user: { email: 'some email address'}
       expect(response).to render_template 'edit'
       expect(flash[:success]).to be_nil
     end
 
     it 'handles valid updates' do
-      allow(@old_user).to receive(:save).and_return(true)
+      allow(@old_user).to receive(:update_attributes).and_return(true)
       post :update, id: @old_user.id, user: { email: 'some email address'}
       expect(response).to redirect_to(user_path(@old_user))
       expect(flash[:success]).to_not be_nil

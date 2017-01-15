@@ -22,7 +22,7 @@ RSpec.describe User, :type => :model do
   end
 
   describe 'methods' do
-    let(:user) { build_stubbed :user }
+    let(:user) { create :user }
     let(:active_status) { Status.find_by_name 'Active' }
     let(:inactive_status) { Status.find_by_name 'Inactive' }
     let(:active_sponsor) { create :sponsor, agent: user, status: active_status }

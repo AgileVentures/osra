@@ -17,7 +17,7 @@ gem "jquery-rails" # use jquery with Rails
 gem "paperclip" # upload attachment files
 gem "aws-sdk" # Amazon Web Services - S3 bucket for Paperclip;
 gem "coveralls", require: false # measure test coverage
-gem "country_select", "~> 2.1.1" # country drop-down
+gem "country_select" # country drop-down
 gem "roo" # access contents of spreadsheet files
 gem "roo-xls" # extend roo to handle legacy xls files
 gem "config" # TODO: consider removing after importer settings refactored
