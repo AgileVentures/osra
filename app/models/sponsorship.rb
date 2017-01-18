@@ -30,13 +30,6 @@ class Sponsorship < ActiveRecord::Base
 
 private
 
-  def start_date_no_later_than_1st_of_next_month
-    first_of_next_month = Date.current.beginning_of_month.next_month
-    if (self.start_date > first_of_next_month)
-      errors[:start_date] << "can not be later than the first of next month"
-    end
-  end
-
   def end_date_not_before_start_date
     unless end_date >= start_date
       errors[:end_date] << "can't be before the starting date (#{self.start_date})"
