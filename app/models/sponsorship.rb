@@ -2,7 +2,7 @@ class Sponsorship < ActiveRecord::Base
 
   include Initializer
 
-  before_validation(on: :create) { :set_active_to_true }
+  before_validation(on: :create) { |sponsorship| sponsorship.active = true }
 
   validates :sponsor, presence: true
   validates :orphan, presence: true
@@ -41,10 +41,6 @@ private
     unless end_date >= start_date
       errors[:end_date] << "can't be before the starting date (#{self.start_date})"
     end
-  end
-
-  def set_active_to_true
-    self.active = true
   end
 
   def sponsor_is_eligible_for_new_sponsorship
