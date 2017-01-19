@@ -47,6 +47,7 @@ class Sponsor < ActiveRecord::Base
   belongs_to :organization
   belongs_to :status
   belongs_to :sponsor_type
+  has_one :cashbox, as: :cashboxable, dependent: :destroy
   has_many :sponsorships
   has_many :orphans, through: :sponsorships
   belongs_to :agent, :class_name => 'User', :foreign_key => 'agent_id'
