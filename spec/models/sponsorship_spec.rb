@@ -10,6 +10,7 @@ describe Sponsorship, type: :model do
   it { is_expected.to validate_presence_of :orphan }
   it { is_expected.to belong_to :sponsor }
   it { is_expected.to belong_to :orphan }
+  it { is_expected.to have_one :cashbox }
 
   describe 'validations' do
     let(:inactive_status) { Status.find_by_name 'Inactive' }
