@@ -23,14 +23,13 @@ RSpec.describe "partners/_form.html.erb", type: :view do
       allow(partner).to receive(:id).and_return nil
       render
 
-      expect(rendered).to have_link("Cancel", partners_path)
+      expect(rendered).to have_link("Cancel", href: partners_path)
     end
 
     specify 'existing partner record' do
-      allow(partner).to receive(:id).and_return 42
       render
 
-      expect(rendered).to have_link("Cancel", partners_path(42))
+      expect(rendered).to have_link("Cancel", href: partner_path(partner))
     end
   end
 

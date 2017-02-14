@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ActiveSupport::Testing::TimeHelpers
 
-RSpec.describe DateNotBeyondFirstOfNextMonthValidator do
+RSpec.describe DateNotBeyondFirstOfNextMonthValidator, type: :model do
   let(:test_model) do
     Class.new do
       include ActiveModel::Validations
@@ -17,12 +17,12 @@ RSpec.describe DateNotBeyondFirstOfNextMonthValidator do
   before(:all) { travel_to Date.parse "15-12-2012" }
   after(:all) { travel_back }
 
-  let (:today) { Date.current }
-  let (:yesterday) { today.yesterday }
-  let (:first_of_next_month) { today.beginning_of_month.next_month }
-  let (:last_day_of_the_month) { first_of_next_month - 1.day }
-  let (:second_of_next_month) { first_of_next_month + 1.day }
-  let (:two_months_ahead) { today + 2.months }
+  let(:today) { Date.current }
+  let(:yesterday) { today.yesterday }
+  let(:first_of_next_month) { today.beginning_of_month.next_month }
+  let(:last_day_of_the_month) { first_of_next_month - 1.day }
+  let(:second_of_next_month) { first_of_next_month + 1.day }
+  let(:two_months_ahead) { today + 2.months }
 
   it { is_expected.to allow_value(today).for :date_attr }
   it { is_expected.to allow_value(first_of_next_month).for :date_attr }

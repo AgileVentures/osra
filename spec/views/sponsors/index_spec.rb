@@ -43,7 +43,7 @@ RSpec.describe 'sponsors/index.html.haml', type: :view do
   describe 'class action-items should have link' do
     specify 'New Sponsor' do
       render
-      expect(rendered).to have_link('New Sponsor', new_sponsor_path)
+      expect(rendered).to have_link('New Sponsor', href: new_sponsor_path)
     end
   end
 

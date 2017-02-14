@@ -6,7 +6,7 @@ RSpec.describe AdminUsersController, type: :controller do
 # The include statement below is necessary for the unit tests to work when rspec runs the complete test run
 # Otherwise the inclusion of integration tests which use Devise mucks things up.
 # See https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   let(:admin_users) { build_stubbed_list :admin_user, 2 }
   let(:admin_user) { build_stubbed :admin_user }
@@ -67,7 +67,7 @@ RSpec.describe AdminUsersController, type: :controller do
     end
 
     it 'handles invalid updates' do
-      allow(admin_user).to receive(:save).and_return(false)
+      allow(admin_user).to receive(:update_attributes).and_return(false)
       post :update, id: admin_user.id, admin_user: { email: 'some email address'}
       expect(response).to render_template 'edit'
       expect(flash[:success]).to be_nil
@@ -75,7 +75,7 @@ RSpec.describe AdminUsersController, type: :controller do
 
     it 'handles valid updates' do
       allow(AdminUser).to receive(:find).and_return(admin_user)
-      allow(admin_user).to receive(:save).and_return(true)
+      allow(admin_user).to receive(:update_attributes).and_return(true)
       post :update, id: admin_user.id, admin_user: { email: 'some email address'}
       expect(response).to redirect_to(admin_users_path)
       expect(flash[:success]).to_not be_nil

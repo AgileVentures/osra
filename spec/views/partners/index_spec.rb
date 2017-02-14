@@ -41,7 +41,7 @@ RSpec.describe "partners/index.html.erb", type: :view do
     specify 'New Partner' do
       assign(:partners, [])
       render
-      expect(rendered).to have_link('New Partner', new_partner_path)
+      expect(rendered).to have_link('New Partner', href: new_partner_path)
     end
   end
 end

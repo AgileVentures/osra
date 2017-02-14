@@ -5,8 +5,10 @@ class Sponsor < ActiveRecord::Base
 
   NEW_CITY_MENU_OPTION = '**Add New**'
   PAYMENT_PLANS = ['Monthly', 'Every Two Months', 'Every Four Months', 'Every Six Months', 'Annually', 'Other']
+  ALL_COUNTRIES = ISO3166::Country.countries.map { |c| c.alpha2 }
   PRIORITY_COUNTRIES= %w(SA TR AE GB)
-  EXCLUDED_COUNTRYS= %w(IL)
+  EXCLUDED_COUNTRIES= %w(IL)
+  PERMITTED_COUNTRIES = ALL_COUNTRIES - EXCLUDED_COUNTRIES
 
   self.per_page = 10
   attr_accessor :new_city_name
@@ -22,7 +24,7 @@ class Sponsor < ActiveRecord::Base
   validates :name, presence: true
   validates :requested_orphan_count, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
-  validates :country, presence: true, inclusion: { in: ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+  validates :country, presence: true, inclusion: { in: PERMITTED_COUNTRIES }
   validates :city, presence: true,
             exclusion: { in: [NEW_CITY_MENU_OPTION],
                          message: 'Please enter city name below. &darr;' }

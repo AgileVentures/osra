@@ -22,10 +22,8 @@ RSpec.describe 'users/show.html.erb', type: :view do
       end
 
       specify 'Edit User button' do
-        expect(rendered).to have_link 'Edit User', edit_user_path(user)
+        expect(rendered).to have_link 'Edit User', href: edit_user_path(user)
       end
     end
   end
-
  end
-

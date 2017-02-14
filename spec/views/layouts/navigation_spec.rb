@@ -31,7 +31,7 @@ RSpec.describe 'layouts/_navigation.html.erb', type: :view do
         { text: 'foobar', href: '"/pathname/file.extension".reverse', path_regex: /baz/, glyph: 'lorem_ipsum' } ])
       render
 
-      expect(rendered).to have_link("foobar", "noisnetxe.elif/emanhtap/")
+      expect(rendered).to have_link("foobar", href: "noisnetxe.elif/emanhtap/")
     end
   end
 end

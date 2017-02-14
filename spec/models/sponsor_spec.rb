@@ -37,14 +37,14 @@ describe Sponsor, type: :model do
     it { is_expected.to validate_presence_of :status_id }
     it { is_expected.to validate_inclusion_of(:gender).in_array Settings.lookup.gender }
     it { is_expected.to validate_inclusion_of(:payment_plan).in_array (Sponsor::PAYMENT_PLANS << '') }
-    it { is_expected.to validate_inclusion_of(:country).in_array ISO3166::Country.countries.map { |c| c[1] } - ['IL'] }
+    it { is_expected.to validate_inclusion_of(:country).in_array Sponsor::PERMITTED_COUNTRIES }
 
 
     it { is_expected.to validate_numericality_of(:requested_orphan_count).
                             only_integer.is_greater_than(0) }
 
     context "requested_orphan_count_not_less_than_active_sponsorships_count" do
-      let(:sponsor) { build_stubbed :sponsor, requested_orphan_count: 4 }
+      let(:sponsor) { create :sponsor, requested_orphan_count: 4 }
 
       before :each do
         2.times do
@@ -56,14 +56,12 @@ describe Sponsor, type: :model do
       it "requested_orphan_count can't be less than the number of active sponsorships" do
         sponsor.requested_orphan_count = 1
         expect(sponsor).to_not be_valid
-        expect(sponsor.errors.full_messages).to_not be_empty
       end
 
       it "requested_orphan_count can be greather or equal than the number of active sponsorships" do
-        [2,3].each do |count|
+        [2, 3].each do |count|
           sponsor.requested_orphan_count = count
           expect(sponsor).to be_valid
-          expect(sponsor.errors.full_messages).to be_empty
         end
       end
     end
@@ -349,12 +347,12 @@ describe Sponsor, type: :model do
     end
 
     describe '#currently_sponsored_orphans' do
-      let(:new_sponsor) { build_stubbed :sponsor, requested_orphan_count: 5 }
+      let(:new_sponsor) { create :sponsor, requested_orphan_count: 5 }
       let(:current_orphan) { create :orphan }
       let(:past_orphan) { create :orphan }
-      let!(:current_sponsorship) { create :sponsorship,
-                                                sponsor: new_sponsor,
-                                                orphan: current_orphan }
+      let!(:current_sponsorship) do
+        create :sponsorship, sponsor: new_sponsor, orphan: current_orphan
+      end
       let!(:past_sponsorship) { create :sponsorship,
                                              sponsor: new_sponsor,
                                              orphan: past_orphan }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DateBeyondOsraEstablishmentValidator do
+RSpec.describe DateBeyondOsraEstablishmentValidator, type: :model do
   let(:test_model) do
     Class.new do
       include ActiveModel::Validations
