@@ -22,6 +22,7 @@ describe Sponsor, type: :model do
   it { is_expected.to belong_to :sponsor_type }
   it { is_expected.to have_many(:orphans).through :sponsorships }
   it { is_expected.to belong_to :agent }
+  it { is_expected.to have_one :cashbox }
 
   describe "validations" do
     it { is_expected.to validate_presence_of :name }
