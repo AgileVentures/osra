@@ -111,7 +111,7 @@ RSpec.describe Sponsor, type: :model do
         end
 
         specify "agent_id" do
-          unique_sponsor = create :sponsor, agent: build_stubbed(:agent)
+          unique_sponsor = create :sponsor, agent: create(:agent)
           @filter_params[:agent_id] = unique_sponsor.agent_id
 
           expect(Sponsor.filter @filter_params).to eq [unique_sponsor]

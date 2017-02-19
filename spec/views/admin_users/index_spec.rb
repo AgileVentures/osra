@@ -9,7 +9,7 @@ RSpec.describe 'admin_users/index.html.erb', type: :view do
 
       render
 
-      expect(rendered).to have_link 'New Admin User', new_admin_user_path
+      expect(rendered).to have_link 'New Admin User', href: new_admin_user_path
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.describe 'admin_users/index.html.erb', type: :view do
         render
 
         expect(rendered).to have_link 'Edit',
-          edit_admin_user_path(admin_user)
+          href: edit_admin_user_path(admin_user)
       end
 
       it 'should render Delete for non-signed-in admin users' do
@@ -53,7 +53,7 @@ RSpec.describe 'admin_users/index.html.erb', type: :view do
         render
 
         expect(rendered).to have_link 'Delete',
-          admin_user_path(admin_user)
+          href: admin_user_path(admin_user)
       end
 
       it 'should not render Delete for signed-in admin user' do
@@ -62,7 +62,7 @@ RSpec.describe 'admin_users/index.html.erb', type: :view do
         render
 
         expect(rendered).not_to have_link 'Delete',
-          admin_user_path(admin_user)
+          href: admin_user_path(admin_user)
       end
     end
   end

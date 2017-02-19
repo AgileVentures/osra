@@ -8,8 +8,8 @@ RSpec.describe User, :type => :model do
 
   it { is_expected.to validate_presence_of :user_name }
   it { is_expected.to validate_presence_of :email }
-  it { is_expected.to validate_uniqueness_of :user_name }
-  it { is_expected.to validate_uniqueness_of :email }
+  it { is_expected.to validate_uniqueness_of(:user_name).case_insensitive }
+  it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
 
   [nil, '', 'not_an_email@'].each do |bad_email|
     it { is_expected.not_to allow_value(bad_email).for :email }
@@ -22,7 +22,7 @@ RSpec.describe User, :type => :model do
   end
 
   describe 'methods' do
-    let(:user) { build_stubbed :user }
+    let(:user) { create :user }
     let(:active_status) { Status.find_by_name 'Active' }
     let(:inactive_status) { Status.find_by_name 'Inactive' }
     let(:active_sponsor) { create :sponsor, agent: user, status: active_status }

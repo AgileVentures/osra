@@ -30,13 +30,13 @@ RSpec.describe "sponsors/_form.html.haml", type: :view do
     specify 'using an existing Sponsor record' do
       render_sponsor_form sponsor_full
 
-      expect(rendered).to have_link("Cancel", sponsor_path(sponsor_full))
+      expect(rendered).to have_link("Cancel", href: sponsor_path(sponsor_full))
     end
 
     specify 'using a new Sponsor record' do
       render_sponsor_form sponsor_new
 
-      expect(rendered).to have_link("Cancel", sponsors_path)
+      expect(rendered).to have_link("Cancel", href: sponsors_path)
     end
   end
 

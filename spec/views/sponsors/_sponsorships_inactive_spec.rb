@@ -14,7 +14,7 @@ RSpec.describe 'sponsors/_sponsorships_inactive.html.haml', type: :view do
 
     it "should show sponsorships and linked orphans details" do
       sponsorships_inactive.each do |sa|
-        expect(rendered).to have_link(sa.orphan.name, orphan_path(sa.orphan))
+        expect(rendered).to have_link(sa.orphan.name, href: orphan_path(sa.orphan))
         expect(rendered).to have_text(sa.orphan.date_of_birth)
         expect(rendered).to have_text(sa.orphan.gender)
         expect(rendered).to have_text(sa.start_date)

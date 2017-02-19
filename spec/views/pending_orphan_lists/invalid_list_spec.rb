@@ -25,6 +25,6 @@ RSpec.describe "pending_orphan_lists/invalid_list.html.erb", type: :view do
   end
 
   it 'shows cancle button' do
-    expect(rendered).to have_link("Cancel", partner_path(partner))
+    expect(rendered).to have_link("Cancel", href: partner_path(partner))
   end
 end

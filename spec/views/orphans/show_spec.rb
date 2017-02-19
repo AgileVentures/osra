@@ -10,7 +10,7 @@ RSpec.describe "orphans/show.html.erb", type: :view do
     end
 
     it 'should have an Edit Orphan button' do
-      expect(rendered).to have_link('Edit Orphan', edit_orphan_path(orphan.id))
+      expect(rendered).to have_link('Edit Orphan', href: edit_orphan_path(orphan.id))
     end
     
     it 'should have partner field' do
