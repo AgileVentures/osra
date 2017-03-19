@@ -1,4 +1,13 @@
-Paperclip::Attachment.default_options[:s3_host_name] = ENV["S3_HOST_NAME"] || "s3.amazonaws.com"
+# frozen_string_literal: true
+
+Paperclip::Attachment.default_options[:url] = ":s3_domain_url"
+if Rails.env == "test" || ENV["CI"]
+  Paperclip::Attachment.default_options[:path] =
+    ":rails_root/public/system/:class/:attachment/:id_partition/:style/:filename"
+else
+  Paperclip::Attachment.default_options[:path] =
+    "/:class/:attachment/:id_partition/:style/:filename"
+end
 
 module Paperclip
   class MediaTypeSpoofDetector
