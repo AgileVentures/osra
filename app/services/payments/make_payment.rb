@@ -6,19 +6,10 @@ module Payments
     end
 
     def call
-      if can_make_payment?(source, amount)
-        payment = payment_builder.new(source: source,
-                                      destination: destination,
-                                      amount: amount)
-
-        if payment.valid?
-          payment.save
-        else
-          {errors: payment.errors.full_messages}
-        end
-      else
-        {errors: "Amount exceeds cashbox amount"}
-      end
+      payment = payment_builder.new(source: source,
+                                    destination: destination,
+                                    amount: amount)
+      payment.save
     end
 
     private
@@ -32,9 +23,5 @@ module Payments
       @payment_builder = payment_builder
     end
 
-    def can_make_payment?(cashbox, amount)
-      cashbox.total >= amount
-    end
-    
   end
 end
