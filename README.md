@@ -5,7 +5,9 @@ OSRA
 
 [![Build Status](https://semaphoreapp.com/api/v1/projects/2eb67c59-2954-4909-9fdb-abb666331a25/268952/badge.png)](https://semaphoreapp.com/nikita_avvakumov/osra--4)
 
-[![Coverage Status](https://coveralls.io/repos/AgileVentures/osra/badge.png?branch=develop)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
+[![Coverage Status](https://img.shields.io/coveralls/AgileVentures/osra.svg)](https://coveralls.io/r/AgileVentures/osra?branch=develop)
+
+[![Coverage Status](https://img.shields.io/coveralls/motasem-salem/osra.svg)](https://coveralls.io/r/motasem-salem/osra?branch=coveralls_svg)
 
 [![Dependency Status](https://gemnasium.com/AgileVentures/osra.svg)](https://gemnasium.com/AgileVentures/osra)
 
