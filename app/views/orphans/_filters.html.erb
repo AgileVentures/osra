@@ -213,6 +213,9 @@
             </div>
           </div>
         </div>
+        <%- if @eligible_for_sponsorship %>
+          <%= hidden_field_tag :scope , "eligible_for_sponsorship" %>
+        <%- end %>
 
         <div class="form-group-sm">
           <%= submit_tag "Filter", class: 'btn btn-primary' %>
