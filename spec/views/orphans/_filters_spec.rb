@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "orphans/filters.html.erb", type: :view do
   let(:orphans_filters) {build :orphan_filter}
+  let(:sponsor_one) {build :sponsor}
 
   it 'has a form' do
-    render partial: "orphans/filters.html.erb", locals: {filters: {}}
+    render partial: "orphans/filters.html.erb", locals: {filters: {}, sponsor: sponsor_one}
 
     expect(rendered).to have_selector("form")
   end
@@ -27,7 +28,7 @@ RSpec.describe "orphans/filters.html.erb", type: :view do
     end
 
     specify "empty" do
-      render partial: "orphans/filters.html.erb", locals: {filters: {}}
+      render partial: "orphans/filters.html.erb", locals: {filters: {}, sponsor: nil}
 
       #text fields
       [:name_value, :father_given_name_value, :family_name_value,
@@ -48,7 +49,7 @@ RSpec.describe "orphans/filters.html.erb", type: :view do
 
 
     specify "filled" do
-      render partial: "orphans/filters.html.erb", locals: {filters: orphans_filters}
+      render partial: "orphans/filters.html.erb", locals: {filters: orphans_filters, sponsor: nil}
 
       #text fields
       [:name_value, :created_at_from, :created_at_until, :updated_at_from, :updated_at_until,
@@ -70,9 +71,19 @@ RSpec.describe "orphans/filters.html.erb", type: :view do
   end
 
   it "has submit buttons" do
-    render partial: "orphans/filters.html.erb", locals: {filters: {}}
+    render partial: "orphans/filters.html.erb", locals: {filters: {}, sponsor: nil}
 
     expect(rendered).to have_selector("input[type='submit'][value='Filter']")
     expect(rendered).to have_selector("input[type='submit'][value='Clear Filters']")
+  end
+
+  it 'has a hidden field if sponsor exists' do
+    render partial: "orphans/filters.html.erb", locals: {filters: {}, sponsor: sponsor_one}
+    expect(rendered).to have_selector("input[type='hidden'][value='eligible_for_sponsorship']", visible: false)
+  end
+
+  it 'hasn\'t a hidden field if no sponsor exists' do
+    render partial: "orphans/filters.html.erb", locals: {filters: {}, sponsor: nil}
+    expect(rendered).to_not have_selector("input[type='hidden'][value='eligible_for_sponsorship']", visible: false)
   end
 end
