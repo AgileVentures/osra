@@ -8,8 +8,8 @@ class OrphansController < ApplicationController
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
     @filters = filters_params
-    @orphans_before_paginate = Orphan.with_filter_fields.filter(@filters)
-      .order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
+    @orphans_before_paginate = Orphan.with_filter_fields.filter(@filters).
+      order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
     @orphans = @orphans_before_paginate.paginate(:page => params[:page])
 
     load_scope
