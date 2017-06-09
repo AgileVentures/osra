@@ -10,6 +10,9 @@
     </div>
 
     <%= form_tag({action: "index"}, {method: :get, id: "filters", role: "form"}) do %>
+      <% if sponsor %>
+        <%= hidden_field_tag 'scope', 'eligible_for_sponsorship' %>
+      <% end %>
       <fieldset>
         <div class="form-group-sm">
           <%= label_tag :name %>

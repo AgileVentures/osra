@@ -46,8 +46,9 @@
 </div>
 
 <div class="row">
+
   <%= render(partial: '/orphans/filters.html.erb',
-             locals: {orphans: @orphans, filters: @filters}) %>
+             locals: {orphans: @orphans, filters: @filters, sponsor: @sponsor}) %>
 
   <%- if @orphans.empty? %>
     <div class="center">

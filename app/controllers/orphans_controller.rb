@@ -7,7 +7,6 @@ class OrphansController < ApplicationController
 
     @current_sort_column = valid_sort_column
     @current_sort_direction = valid_sort_direction
-
     @filters = filters_params
     @orphans_before_paginate = Orphan.with_filter_fields.filter(@filters).
       order(@current_sort_column.to_s + " " +  @current_sort_direction.to_s)
@@ -42,6 +41,7 @@ private
   def load_scope
     @orphans_count = Orphan.count
     @orphans_sort_by_eligibility_count = Orphan.sort_by_eligibility.count
+
     if params[:scope] == 'eligible_for_sponsorship'
       @orphans = @orphans.sort_by_eligibility
       @eligible_for_sponsorship = true
