@@ -68,6 +68,7 @@ class OrphanImporter
   def check_orphan_validity(fields, row)
     orphan = PendingOrphan.new(fields).to_orphan
     orphan.partner = @partner
+    orphan.orphan_list = OrphanList.new
     unless orphan.valid?
       add_import_errors "invalid orphan attributes for row #{row}",
         orphan.errors.full_messages.join('; ')

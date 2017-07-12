@@ -51,6 +51,7 @@ class PendingOrphanListsController < ApplicationController
                                                orphan_count: 0)
     @pending_orphan_list.pending_orphans.each do |pending_orphan|
       orphan = pending_orphan.to_orphan
+      orphan.partner = @partner
       orphan_list.orphans << orphan
     end
 

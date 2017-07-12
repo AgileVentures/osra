@@ -120,7 +120,7 @@ RSpec.describe PendingOrphanListsController, type: :controller do
   end
 
   describe 'import' do
-    let(:orphan) { instance_double Orphan, :save! => true }
+    let(:orphan) { instance_double Orphan, :save! => true, :partner= => true }
     let(:pending_orphan) { instance_double PendingOrphan, :save! => true }
     let(:orphans_to_import) { [orphan] }
 
