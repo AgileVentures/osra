@@ -3,10 +3,10 @@
   <%= render 'shared/errors', object: f.object %>
   <fieldset>
     <div class="form-group">
-      <%= f.submit class: 'btn btn-primary' %>
+      <%= f.submit class: 'btn btn-primary', id: 'first-submit' %>
       <%= link_to('Cancel',
                   orphan_path(f.object.id),
-                  class: 'btn btn-default btn-cancel', role: 'button') %>
+                  class: 'btn btn-default btn-cancel', id: 'first-cancel', role: 'button') %>
     </div>
 
     <div class="panel panel-default">
