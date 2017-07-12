@@ -2,6 +2,28 @@
              html: {class: "records_form", role: "form"} do |f| %>
   <%= render 'shared/errors', object: f.object %>
   <fieldset>
+    <div class="form-group">
+      <%= f.submit class: 'btn btn-primary', id: 'first-submit' %>
+      <%= link_to('Cancel',
+                  orphan_path(f.object.id),
+                  class: 'btn btn-default btn-cancel', id: 'first-cancel', role: 'button') %>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Field partner
+        </h3>
+        <div class="panel-body">
+          <div class="form-group">
+            <%= f.label_for_field :partner %>
+            <%= f.collection_select :partner_id,
+            partners, :id, :name, {},  {class: "form-control"} %>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Orphan Details</h3>

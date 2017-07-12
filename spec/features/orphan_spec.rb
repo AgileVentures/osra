@@ -71,7 +71,7 @@ RSpec.feature 'Orphan', :type => :feature do
     select_multiple_check_box ['orphan[goes_to_school]', 'orphan[father_deceased]', 'orphan[mother_alive]', 'orphan[father_is_martyr]',
     'orphan[sponsored_by_another_org]']
 
-    and_i_click_button "Update Orphan"
+    and_i_click_button 'first-submit'
     and_i_should_be_on "orphan_page", { orphan_id: 1 }
     checks_multiple_fields output
 
@@ -87,7 +87,7 @@ RSpec.feature 'Orphan', :type => :feature do
     and_i_click_link "Edit Orphan"
     and_i_should_be_on "edit_orphan_page", { orphan_id: 1 }
     fill_in 'orphan[date_of_birth]', with: '1950-01-01'
-    and_i_click_button "Update Orphan"
+    and_i_click_button "first-submit"
     and_i_should_see "Date of birth Orphan must be younger than 22 years old to join OSRA."
   end
 
@@ -96,7 +96,7 @@ RSpec.feature 'Orphan', :type => :feature do
     and_i_click_link "Edit Orphan"
     and_i_should_be_on "edit_orphan_page", { orphan_id: 1 }
     fill_in 'orphan[name]', with: 'Orphan N'
-    and_i_click_link "Cancel"
+    and_i_click_link "first-cancel"
     and_i_should_be_on "orphan_page", { orphan_id: 1 }
   end
   

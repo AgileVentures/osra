@@ -17,6 +17,7 @@ FactoryGirl.define do
     association :original_address, factory: :address
     association :current_address, factory: :address
     orphan_list
+    partner
 
     trait :random_optional_fields do
       status { Orphan.statuses.values.sample }

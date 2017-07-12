@@ -6,7 +6,7 @@ class PendingOrphan < ActiveRecord::Base
   def father_name
     "#{father_given_name} #{family_name}"
   end
-  
+
   def create_orphan
     @orphan = Orphan.new
   end
@@ -17,7 +17,7 @@ class PendingOrphan < ActiveRecord::Base
     orphan
   end
 
-  def address_prefix address
+  def address_prefix(address)
     "#{address}_"
   end
 
@@ -33,7 +33,7 @@ class PendingOrphan < ActiveRecord::Base
     end
   end
 
-  def extract_and_create_address address_type
+  def extract_and_create_address(address_type)
     prefix = address_prefix address_type
     addr_fields = fields_starting_with(self.attributes, prefix)
     addr_params = remove_prefix_from_keys(addr_fields, prefix)
@@ -41,12 +41,11 @@ class PendingOrphan < ActiveRecord::Base
     orphan.send "#{address_type}=", Address.new(addr_params)
   end
 
-  def fields_starting_with dict, prefix
-    dict.select {|key, _| String(key).starts_with? prefix}
+  def fields_starting_with(dict, prefix)
+    dict.select { |key, _| String(key).starts_with? prefix }
   end
 
   def remove_prefix_from_keys(dict, prefix)
     dict.map{ |key, val| [(String(key).gsub prefix, ''), val] }.to_h
   end
-
 end

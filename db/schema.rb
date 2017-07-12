@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161105112734) do
+ActiveRecord::Schema.define(version: 20170712082259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,10 +122,12 @@ ActiveRecord::Schema.define(version: 20161105112734) do
     t.integer  "status",                                      default: 0
     t.integer  "sponsorship_status",                          default: 0
     t.boolean  "father_deceased",                             default: false
+    t.integer  "partner_id"
   end
 
   add_index "orphans", ["orphan_list_id"], name: "index_orphans_on_orphan_list_id", using: :btree
   add_index "orphans", ["osra_num"], name: "index_orphans_on_osra_num", unique: true, using: :btree
+  add_index "orphans", ["partner_id"], name: "index_orphans_on_partner_id", using: :btree
   add_index "orphans", ["priority"], name: "index_orphans_on_priority", using: :btree
   add_index "orphans", ["sequential_id"], name: "index_orphans_on_sequential_id", using: :btree
 
@@ -284,4 +286,5 @@ ActiveRecord::Schema.define(version: 20161105112734) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["user_name"], name: "index_users_on_user_name", unique: true, using: :btree
 
+  add_foreign_key "orphans", "partners"
 end

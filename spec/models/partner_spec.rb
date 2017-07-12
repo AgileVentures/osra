@@ -25,7 +25,7 @@ describe Partner, type: :model do
   end
 
   it { is_expected.to have_many :orphan_lists }
-  it { is_expected.to have_many(:orphans).through :orphan_lists }
+  it { is_expected.to have_many(:orphans) }
 
   it 'should override the default pagination per_page' do
     expect(Partner.per_page).to eq 10
