@@ -61,6 +61,7 @@ private
       [k.humanize, k]
     end
     @provinces = Province.all
+    @partners = Partner.all
   end
 
   def save_orphan
@@ -76,21 +77,21 @@ private
   end
 
   def orphan_params
-    params.require(:orphan)
-      .permit(
-              :name, :father_is_martyr, :father_occupation,
-              :father_place_of_death, :father_cause_of_death,
-              :father_date_of_death, :mother_name, :mother_alive,
-              :date_of_birth, :gender, :health_status, :schooling_status,
-              :goes_to_school, :guardian_name, :guardian_relationship,
-              :guardian_id_num, :contact_number, :alt_contact_number,
-              :sponsored_by_another_org, :another_org_sponsorship_details,
-              :minor_siblings_count, :sponsored_minor_siblings_count, :comments,
-              :status, :priority, :sequential_id, :osra_num, :orphan_list_id,
-              :province_code, :father_given_name, :family_name,
-              :father_deceased, original_address_attributes: ADDRESS_DETAILS,
-              current_address_attributes: ADDRESS_DETAILS
-            )
+    params.require(:orphan).
+      permit(
+        :alt_contact_number, :another_org_sponsorship_details, :comments,
+        :contact_number, :date_of_birth, :family_name,
+        :father_cause_of_death, :father_date_of_death, :father_deceased,
+        :father_given_name, :father_is_martyr, :father_occupation,
+        :father_place_of_death, :gender, :goes_to_school,
+        :guardian_id_num, :guardian_name, :guardian_relationship,
+        :health_status, :minor_siblings_count, :mother_alive,
+        :mother_name, :name, :orphan_list_id, :osra_num, :partner_id,
+        :priority, :province_code, :schooling_status, :sequential_id,
+        :sponsored_by_another_org, :sponsored_minor_siblings_count,
+        :status, current_address_attributes: ADDRESS_DETAILS,
+        original_address_attributes: ADDRESS_DETAILS
+      )
   end
 
   def filters_params

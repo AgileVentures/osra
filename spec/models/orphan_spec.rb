@@ -65,7 +65,7 @@ describe Orphan, type: :model do
   it { is_expected.to have_many :sponsorships }
   it { is_expected.to have_many(:sponsors).through :sponsorships }
 
-  it { is_expected.to have_one(:partner).through(:orphan_list).autosave(false) }
+  it { is_expected.to belong_to(:partner) }
 
   describe "validates father's death details:" do
     let(:orphan) { build :orphan }

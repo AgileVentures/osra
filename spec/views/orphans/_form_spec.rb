@@ -6,6 +6,7 @@ RSpec.describe "orphans/_form.html.erb", type: :view do
   let(:sponsorship_statuses) do
     Orphan.sponsorship_statuses.keys.map { |k| [k.humanize, k] }
   end
+  let(:partners) { Partner.all }
   let(:provinces) { Province.all }
   let(:orphan_full) do
     build_stubbed :orphan_full
@@ -14,9 +15,10 @@ RSpec.describe "orphans/_form.html.erb", type: :view do
   def render_orphan_form current_orphan
         render partial: 'orphans/form.html.erb',
                         locals: { orphan: current_orphan,
-                                  statuses: statuses,
+                                  partners: partners,
+                                  provinces: provinces,
                                   sponsorship_statuses: sponsorship_statuses,
-                                  provinces: provinces
+                                  statuses: statuses
                                 }
   end
 

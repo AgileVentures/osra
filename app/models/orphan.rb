@@ -96,7 +96,7 @@ class Orphan < ActiveRecord::Base
   has_one :current_sponsor, through: :current_sponsorship, class_name: "Sponsor", source: :sponsor
 
   belongs_to :orphan_list
-  has_one :partner, through: :orphan_list, autosave: false
+  belongs_to :partner
 
   delegate :province_code, to: :partner, prefix: true
   delegate :province_name, to: :original_address
