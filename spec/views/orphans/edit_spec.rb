@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'orphans/edit.html.erb', type: :view do
   before :each do
-    assign :statuses, []
-    assign :sponsorship_statuses, []
-    assign :provinces, []
     assign :orphan, build_stubbed(:orphan_full)
+    assign :partners, []
+    assign :provinces, []
+    assign :sponsorship_statuses, []
+    assign :statuses, []
   end
 
   it 'renders the form partial' do
