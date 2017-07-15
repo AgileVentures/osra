@@ -115,12 +115,11 @@ class Orphan < ActiveRecord::Base
 
   scope :with_filter_fields,
     -> {
+      joins("INNER JOIN partners ON orphans.partner_id = partners.id").
       joins("LEFT OUTER JOIN sponsorships ON sponsorships.orphan_id = orphans.id AND sponsorships.active = true").
       joins("LEFT OUTER JOIN sponsors ON sponsorships.sponsor_id = sponsors.id").
       joins("LEFT OUTER JOIN addresses ON addresses.orphan_original_address_id = orphans.id").
       joins("LEFT OUTER JOIN provinces ON addresses.province_id = provinces.id").
-      joins("LEFT OUTER JOIN orphan_lists ON orphan_lists.id = orphans.orphan_list_id").
-      joins("LEFT OUTER JOIN partners ON orphan_lists.partner_id = partners.id").
       select(JOINS_SELECTS)
   }
 

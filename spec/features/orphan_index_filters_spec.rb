@@ -43,7 +43,7 @@ def when_i_fill_in_orphan_filter_form
     find("select[name='filters[original_address_city]']").find("option", text: orphan_filter[:original_address_city]).select_option
     find("select[name='filters[sponsorship_status]']").find("option[value='#{orphan_filter[:sponsorship_status]}']").select_option
     find("select[name='filters[status]']").find("option[value='#{orphan_filter[:status]}']").select_option
-    find("select[name='filters[orphan_list_partner_name]']").find("option", text: orphan_filter[:orphan_list_partner_name]).select_option
+    find("select[name='filters[partner_name]']").find("option", text: orphan_filter[:partner_name]).select_option
     find("select[name='filters[health_status]']").find("option", text: orphan_filter[:health_status]).select_option if orphan_filter[:health_status]
 
     fill_in 'filters[date_of_birth_from]', with: orphan_filter[:date_of_birth_from]
@@ -96,8 +96,8 @@ def and_i_should_see_filters_form_filled_for_orphan
     expect(page.find("select[name='filters[original_address_city]']"))
         .to have_selector("option[value=\"#{orphan_filter[:original_address_city]}\"][selected]")
 
-    expect(page).to have_select("filters[orphan_list_partner_name]",
-                                selected: orphan_filter[:orphan_list_partner_name])
+    expect(page).to have_select("filters[partner_name]",
+                                selected: orphan_filter[:partner_name])
     expect(page.find("select[name='filters[sponsorship_status]']")).to have_selector("option[value='#{orphan_filter[:sponsorship_status]}']")
     expect(page.find("select[name='filters[status]']")).to have_selector("option[value='#{orphan_filter[:status]}']")
     expect(page).to have_select("filters[health_status]",
@@ -125,7 +125,7 @@ def then_i_should_see_filters_form_clear_for_orphan
     #select fields
     [:name_option, :father_given_name_option, :gender, :province_code, :sponsorship_status,
      :status, :father_is_martyr, :mother_alive, :goes_to_school, :original_address_city,
-     :priority, :orphan_list_partner_name, :health_status]. each do |field|
+     :priority, :partner_name, :health_status]. each do |field|
       expect(page).to have_selector("select[name='filters[#{field.to_s}]']")
       expect(page.find("select[name='filters[#{field.to_s}]']")).to_not have_selector("option[selected]")
     end

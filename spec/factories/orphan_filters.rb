@@ -25,7 +25,7 @@ FactoryGirl.define do
         priority: orphan.priority,
         sponsorship_status: Orphan.sponsorship_statuses[orphan.sponsorship_status], #digit
         status: Orphan.statuses[orphan.status], #digit
-        orphan_list_partner_name: orphan.orphan_list.partner.name,
+        partner_name: orphan.partner.name,
         father_given_name_option: father_given_name_option,
         father_given_name_value: orphan.father_given_name,
         family_name_option: family_name_option,
