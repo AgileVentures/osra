@@ -100,9 +100,9 @@
         </div>
 
         <div class="form-group-sm">
-          <%= label_tag :orphan_list_partner_name, "Partner name" %>
-          <%= select_tag "filters[orphan_list_partner_name]",
-                         options_for_select(Partner.all_names, filters[:orphan_list_partner_name]),
+          <%= label_tag :partner_name, "Partner name" %>
+          <%= select_tag "filters[partner_name]",
+                         options_for_select(Partner.all_names, filters[:partner_name]),
                          {include_blank: "Any", class: "form-control"} %>
         </div>
 
