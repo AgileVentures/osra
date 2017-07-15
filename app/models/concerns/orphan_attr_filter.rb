@@ -19,7 +19,7 @@ module OrphanAttrFilter
         .where_with_conditions(["priority ILIKE ?", filters[:priority]], conditions: [filters[:priority]])
         .where_with_conditions(["sponsorship_status = ?", filters[:sponsorship_status]], conditions: [filters[:sponsorship_status]])
         .where_with_conditions(["status = ?", filters[:status]], conditions: [filters[:status]])
-        .where_with_conditions(["partners.name ILIKE ?", filters[:orphan_list_partner_name]], conditions: [filters[:orphan_list_partner_name]])
+        .where_with_conditions(["partners.name ILIKE ?", filters[:partner_name]], conditions: [filters[:partner_name]])
         .where_with_conditions(["father_given_name ILIKE ?", "%#{filters[:father_given_name_value]}%"], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="contains"])
         .where_with_conditions(["father_given_name ILIKE ?", filters[:father_given_name_value]], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="equals"])
         .where_with_conditions(["father_given_name ~* ?", "^#{filters[:father_given_name_value]}"], conditions: [filters[:father_given_name_value], filters[:father_given_name_option]=="starts_with"])

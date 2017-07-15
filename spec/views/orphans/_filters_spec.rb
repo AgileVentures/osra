@@ -23,7 +23,7 @@ RSpec.describe "orphans/filters.html.erb", type: :view do
                             .and_return( (0..(Orphan.sponsorship_statuses.size-1)).to_a )
       allow(Orphan).to receive_message_chain(:distinct, :pluck).with(:status)
                             .and_return( (0..(Orphan.statuses.size-1)).to_a )
-      allow(Partner).to receive_message_chain(:all_names).and_return(["partner1", "partner2", orphans_filters[:orphan_list_partner_name]])
+      allow(Partner).to receive_message_chain(:all_names).and_return(["partner1", "partner2", orphans_filters[:partner_name]])
     end
 
     specify "empty" do

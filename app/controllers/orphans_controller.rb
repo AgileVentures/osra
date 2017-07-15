@@ -99,7 +99,7 @@ private
     permited_filters = params[:filters]
                            .permit(:name_option, :name_value, :date_of_birth_from, :date_of_birth_until,
                                    :gender, :province_code, :original_address_city, :priority,
-                                   :sponsorship_status, :status, :orphan_list_partner_name,
+                                   :sponsorship_status, :status, :partner_name,
                                    :father_given_name_option, :father_given_name_value,
                                    :family_name_option, :family_name_value, :father_is_martyr,
                                    :mother_alive, :health_status, :goes_to_school, :created_at_from,
