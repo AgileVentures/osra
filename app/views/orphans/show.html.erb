@@ -209,6 +209,7 @@
     </dl>
   </div>
 </div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -239,4 +240,25 @@
   </div>
 </div>
 
-
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Sponsorship History
+    </h3>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <% @orphan.sponsorships.each do |sponsorship| %>
+        <li>
+          <b><%= link_to sponsorship.sponsor.name, sponsor_path(sponsorship.sponsor) %></b>:
+          from <%= sponsorship.start_date %> to
+          <% if sponsorship.active %>
+            present
+          <% else %>
+            <%= sponsorship.end_date %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

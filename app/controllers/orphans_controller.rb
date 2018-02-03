@@ -52,7 +52,9 @@ private
   end
 
   def load_orphan
-    @orphan = Orphan.includes([:current_sponsorship, :current_sponsor]).find(params[:id])
+    @orphan = Orphan.includes(
+      [:current_sponsorship, :current_sponsor, sponsorships: [:sponsor]]
+    ).find(params[:id])
   end
 
   def load_associations

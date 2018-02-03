@@ -90,7 +90,7 @@ class Orphan < ActiveRecord::Base
 
   has_one :original_address, foreign_key: 'orphan_original_address_id', class_name: 'Address'
   has_one :current_address, foreign_key: 'orphan_current_address_id', class_name: 'Address'
-  has_many :sponsorships
+  has_many :sponsorships, -> { order(start_date: :desc) }
   has_many :sponsors, through: :sponsorships
   has_one :current_sponsorship, -> { where active: true }, class_name: "Sponsorship"
   has_one :current_sponsor, through: :current_sponsorship, class_name: "Sponsor", source: :sponsor
